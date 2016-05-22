@@ -7,13 +7,13 @@
       <title><![CDATA[android之开发环境搭建]]></title>
       <url>http://hesstudio.cn/2016/05/20/android-env/</url>
       <content type="html"><![CDATA[<hr>
-<h1 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h1><p>Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用对应的Ubuntu版本.   </p>
+<h1 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h1><p>Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用相对应的Ubuntu版本.   </p>
 <ul>
 <li>Android 6.0 (Marshmallow) - AOSP master: Ubuntu 14.04 (Trusty)    </li>
 <li>Android 2.3.x (Gingerbread) - Android 5.x (Lollipop): Ubuntu 12.04 (Precise)   </li>
 <li>Android 1.5 (Cupcake) - Android 2.2.x (Froyo): Ubuntu 10.04 (Lucid)   </li>
 </ul>
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p><strong> 安装jdk: </strong><br>Android 5.0版本前使用的是Oracle的JDK,5.0及以后的版本使用的是OpenJDK.</p>
+<h1 id="软件安"><a href="#软件安" class="headerlink" title="软件安"></a>软件安</h1><p><strong> 安装jdk: </strong><br>Android 5.0版本前使用的是Oracle的JDK,5.0及以后的版本使用的是OpenJDK.</p>
 <ul>
 <li>The master branch of Android in AOSP: Ubuntu - OpenJDK 8</li>
 <li>Android 5.x (Lollipop) - Android 6.0 (Marshmallow): OpenJDK 7</li>
