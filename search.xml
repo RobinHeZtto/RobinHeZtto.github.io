@@ -6,29 +6,296 @@
     <entry>
       <title><![CDATA[android之开发环境搭建]]></title>
       <url>http://hesstudio.cn/2016/05/20/android-env/</url>
-      <content type="html"><![CDATA[<h1 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h1><p>Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用下面的Ubuntu版本.   </p>
+      <content type="html"><![CDATA[<hr>
+<h1 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h1><p>Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用对应的Ubuntu版本.   </p>
 <ul>
 <li>Android 6.0 (Marshmallow) - AOSP master: Ubuntu 14.04 (Trusty)    </li>
 <li>Android 2.3.x (Gingerbread) - Android 5.x (Lollipop): Ubuntu 12.04 (Precise)   </li>
 <li>Android 1.5 (Cupcake) - Android 2.2.x (Froyo): Ubuntu 10.04 (Lucid)   </li>
 </ul>
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><h2 id="jdk安装"><a href="#jdk安装" class="headerlink" title="jdk安装"></a>jdk安装</h2><p>Android 5.0版本前使用的是Oracle的JDK,5.0及以后的版本使用的是OpenJDK.</p>
+<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p><strong> 安装jdk: </strong><br>Android 5.0版本前使用的是Oracle的JDK,5.0及以后的版本使用的是OpenJDK.</p>
 <ul>
 <li>The master branch of Android in AOSP: Ubuntu - OpenJDK 8</li>
 <li>Android 5.x (Lollipop) - Android 6.0 (Marshmallow): OpenJDK 7</li>
 <li>Android 2.3.x (Gingerbread) - Android 4.4.x (KitKat):Java JDK 6</li>
 <li>Android 1.5 (Cupcake) - Android 2.2.x (Froyo): Java JDK 5   </li>
 </ul>
-<p>OpenJdk8安装:<br>Ubuntu15.04及以上:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install openjdk-8-jdk</span><br></pre></td></tr></table></figure></p>
+<p>安装OpenJdk8<br>Ubuntu15.04及以上版本:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo a pt-get update</span><br><span class="line">$ sudo apt-get install openjdk-8-jdk</span><br></pre></td></tr></table></figure></p>
 <p>Ubuntu14.04:<br>下载<a href="http://archive.ubuntu.com/ubuntu/pool/universe/o/openjdk-8/openjdk-8-jre-headless_8u45-b14-1_amd64.deb" target="_blank" rel="external">openjdk-8-jre-headless_8u45-b14-1_amd64.deb</a>安装包.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dpkg -i &#123;downloaded.deb file&#125;   </span><br><span class="line">$ sudo apt-get -f install</span><br></pre></td></tr></table></figure></p>
 <p>对于安装的多个版本JDK,可使用以下命令指定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update-alternatives --config java   </span><br><span class="line">$ sudo update-alternatives --config javac</span><br></pre></td></tr></table></figure></p>
-<h2 id="编译相关开发包"><a href="#编译相关开发包" class="headerlink" title="编译相关开发包"></a>编译相关开发包</h2><p>Ubuntu14.04:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install git-core gnupg flex bison gperf build-essential \</span><br><span class="line">  zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 \</span><br><span class="line">  lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache \</span><br><span class="line">  libgl1-mesa-dev libxml2-utils xsltproc unzip</span><br></pre></td></tr></table></figure></p>
+<p><strong> 安装编译相关开发包: </strong><br>Ubuntu14.04:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install git-core gnupg flex bison gperf build-essential \</span><br><span class="line">  zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 \</span><br><span class="line">  lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache \</span><br><span class="line">  libgl1-mesa-dev libxml2-utils xsltproc unzip</span><br></pre></td></tr></table></figure></p>
 <p>Ubuntu12.02:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install git gnupg flex bison gperf build-essential \</span><br><span class="line">  zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \</span><br><span class="line">  libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \</span><br><span class="line">  libgl1-mesa-dev g++-multilib mingw32 tofrodos \</span><br><span class="line">  python-markdown libxml2-utils xsltproc zlib1g-dev:i386</span><br><span class="line">$ sudo ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so</span><br></pre></td></tr></table></figure></p>
-<h2 id="工具安装"><a href="#工具安装" class="headerlink" title="工具安装"></a>工具安装</h2><h1 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h1><h2 id="安装repo"><a href="#安装repo" class="headerlink" title="安装repo"></a>安装repo</h2><p>repo是Google开发的一个脚本,在git上进行封装,用来简化git下载Android源码的过程.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/bin    </span><br><span class="line">$ PATH=~/bin:$PATH   </span><br><span class="line">$ curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo   </span><br><span class="line">$ chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure></p>
-<h2 id="repo下载"><a href="#repo下载" class="headerlink" title="repo下载"></a>repo下载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ mkdir WORKING_DIRECTORY</span><br><span class="line">$ cd WORKING_DIRECTORY</span><br></pre></td></tr></table></figure>
+<p><strong> 开发工具安装: </strong>  </p>
+<ol>
+<li>下载<a href="https://developer.android.com/studio/index.html" target="_blank" rel="external">Android studio</a></li>
+<li>安装Android SDK</li>
+</ol>
+<h1 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h1><p><strong> Android源码下载: </strong>  </p>
+<table>
+<thead>
+<tr>
+<th>Code name</th>
+<th>Version</th>
+<th>API level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Marshmallow</td>
+<td>6.0</td>
+<td>API level 23</td>
+</tr>
+<tr>
+<td>Lollipop</td>
+<td>5.1</td>
+<td>API level 22</td>
+</tr>
+<tr>
+<td>Lollipop</td>
+<td>5.0</td>
+<td>API level 21</td>
+</tr>
+<tr>
+<td>KitKat</td>
+<td>4.4 - 4.4.4</td>
+<td>API level 19</td>
+</tr>
+<tr>
+<td>Jelly Bean</td>
+<td>4.3.x</td>
+<td>API level 18</td>
+</tr>
+<tr>
+<td>Jelly Bean</td>
+<td>4.2.x</td>
+<td>API level 17</td>
+</tr>
+<tr>
+<td>Jelly Bean</td>
+<td>4.1.x</td>
+<td>API level 16</td>
+</tr>
+<tr>
+<td>Ice Cream Sandwich</td>
+<td>4.0.3 - 4.0.4</td>
+<td>API level 15, NDK 8</td>
+</tr>
+<tr>
+<td>Ice Cream Sandwich</td>
+<td>4.0.1 - 4.0.2</td>
+<td>API level 14, NDK 7</td>
+</tr>
+<tr>
+<td>Honeycomb</td>
+<td>3.2.x</td>
+<td>API level 13</td>
+</tr>
+<tr>
+<td>Honeycomb</td>
+<td>3.1</td>
+<td>API level 12, NDK 6</td>
+</tr>
+<tr>
+<td>Honeycomb</td>
+<td>3.0</td>
+<td>API level 11</td>
+</tr>
+<tr>
+<td>Gingerbread</td>
+<td>2.3.3 - 2.3.7</td>
+<td>API level 10</td>
+</tr>
+<tr>
+<td>Gingerbread</td>
+<td>2.3 - 2.3.2</td>
+<td>API level 9, NDK 5</td>
+</tr>
+<tr>
+<td>Froyo</td>
+<td>2.2.x</td>
+<td>API level 8, NDK 4</td>
+</tr>
+<tr>
+<td>Eclair</td>
+<td>2.1</td>
+<td>API level 7, NDK 3</td>
+</tr>
+<tr>
+<td>Eclair</td>
+<td>2.0.1</td>
+<td>API level 6</td>
+</tr>
+<tr>
+<td>Eclair</td>
+<td>2.0</td>
+<td>API level 5</td>
+</tr>
+<tr>
+<td>Donut</td>
+<td>1.6</td>
+<td>API level 4, NDK 2</td>
+</tr>
+<tr>
+<td>Cupcake</td>
+<td>1.5</td>
+<td>API level 3, NDK 1</td>
+</tr>
+<tr>
+<td>(no code name)</td>
+<td>1.1</td>
+<td>API level 2</td>
+</tr>
+<tr>
+<td>(no code name)</td>
+<td>1.0</td>
+<td>API level 1</td>
+</tr>
+</tbody>
+</table>
+<p>安装repo<br>repo是Google开发的一个脚本,在git上进行封装,用来简化git下载Android源码的过程.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/bin    </span><br><span class="line">$ PATH=~/bin:$PATH   </span><br><span class="line">$ curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo   </span><br><span class="line">$ chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure></p>
+<p>repo下载源码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ mkdir WORKING_DIRECTORY</span><br><span class="line">$ cd WORKING_DIRECTORY</span><br></pre></td></tr></table></figure></p>
 <p>默认下载master分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo init -u https://android.googlesource.com/platform/manifest</span><br></pre></td></tr></table></figure></p>
-<p>指定分支,查看<a href="https://source.android.com/source/build-numbers.html#source-code-tags-and-builds" target="_blank" rel="external">branch list</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo init -u https://android.googlesource.com/platform/manifest -b android-6.0.1_r22</span><br></pre></td></tr></table></figure></p>
-<p>下载:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo sync -j8</span><br></pre></td></tr></table></figure></p>
+<p>或者指定分支下载,<a href="https://source.android.com/source/build-numbers.html#source-code-tags-and-builds" target="_blank" rel="external">查看branch list</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo init -u https://android.googlesource.com/platform/manifest -b android-6.0.1_r22</span><br></pre></td></tr></table></figure></p>
+<p>下载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ repo sync -j8</span><br></pre></td></tr></table></figure></p>
+<p><strong> Kernel源码下载:   </strong><br>虽然Android源码是通用的,但是每个平台kernel源码都有较大的差异,同时Android源码跟Kernel源码也是分开管理的.kernel源码可以通过一下命令获取.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://android.googlesource.com/kernel/common.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/hikey-linaro</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/x86_64.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/exynos.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/goldfish.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/msm.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/omap.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/samsung.git</span><br><span class="line">$ git clone https://android.googlesource.com/kernel/tegra.git</span><br></pre></td></tr></table></figure></p>
+<p>其中goldfish.git是qemu虚拟机的内核代码库.下面是Google设备型号,kernel位置及源码仓库对应表  </p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Binarry location</th>
+<th>Source location</th>
+<th>Build configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hikey</td>
+<td>device/linaro/hikey-kernel</td>
+<td>kernel/hikey-linaro</td>
+<td>hikey_defconfig</td>
+</tr>
+<tr>
+<td>angler</td>
+<td>device/huawei/angler-kernel</td>
+<td>kernel/msm</td>
+<td>angler_defconfig</td>
+</tr>
+<tr>
+<td>bullhead</td>
+<td>device/lge/bullhead-kernel</td>
+<td>kernel/msm</td>
+<td>bullhead_defconfig</td>
+</tr>
+<tr>
+<td>shamu</td>
+<td>device/moto/shamu-kernel</td>
+<td>kernel/msm</td>
+<td>shamu_defconfig</td>
+</tr>
+<tr>
+<td>fugu</td>
+<td>device/asus/fugu-kernel</td>
+<td>kernel/x86_64</td>
+<td>fugu_defconfig</td>
+</tr>
+<tr>
+<td>volantis</td>
+<td>device/htc/flounder-kernel</td>
+<td>kernel/tegra</td>
+<td>flounder_defconfig</td>
+</tr>
+<tr>
+<td>hammerhead</td>
+<td>device/lge/hammerhead-kernel</td>
+<td>kernel/msm</td>
+<td>hammerhead_defconfig</td>
+</tr>
+<tr>
+<td>flo</td>
+<td>device/asus/flo-kernel/kernel</td>
+<td>kernel/msm</td>
+<td>flo_defconfig</td>
+</tr>
+<tr>
+<td>deb</td>
+<td>device/asus/flo-kernel/kernel</td>
+<td>kernel/msm</td>
+<td>flo_defconfig</td>
+</tr>
+<tr>
+<td>manta</td>
+<td>device/samsung/manta/kernel</td>
+<td>kernel/exynos</td>
+<td>manta_defconfig</td>
+</tr>
+<tr>
+<td>mako</td>
+<td>device/lge/mako-kernel/kernel</td>
+<td>kernel/msm</td>
+<td>mako_defconfig</td>
+</tr>
+<tr>
+<td>grouper</td>
+<td>device/asus/grouper/kernel</td>
+<td>kernel/tegra</td>
+<td>tegra3_android_defconfig</td>
+</tr>
+<tr>
+<td>tilapia</td>
+<td>device/asus/grouper/kernel</td>
+<td>kernel/tegra</td>
+<td>tegra3_android_defconfig</td>
+</tr>
+<tr>
+<td>maguro</td>
+<td>device/samsung/tuna/kernel</td>
+<td>kernel/omap</td>
+<td>tuna_defconfig</td>
+</tr>
+<tr>
+<td>toro</td>
+<td>device/samsung/tuna/kernel</td>
+<td>kernel/omap</td>
+<td>tuna_defconfig</td>
+</tr>
+<tr>
+<td>panda</td>
+<td>device/ti/panda/kernel</td>
+<td>kernel/omap</td>
+<td>panda_defconfig</td>
+</tr>
+<tr>
+<td>stingray</td>
+<td>device/moto/wingray/kernel</td>
+<td>kernel/tegra</td>
+<td>stingray_defconfig</td>
+</tr>
+<tr>
+<td>wingray</td>
+<td>device/moto/wingray/kernel</td>
+<td>kernel/tegra</td>
+<td>stingray_defconfig</td>
+</tr>
+<tr>
+<td>crespo</td>
+<td>device/samsung/crespo/kernel</td>
+<td>kernel/samsung</td>
+<td>herring_defconfig</td>
+</tr>
+<tr>
+<td>crespo4g</td>
+<td>device/samsung/crespo/kernel</td>
+<td>kernel/samsung</td>
+<td>herring_defconfig</td>
+</tr>
+</tbody>
+</table>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://source.android.com/source/index.html" target="_blank" rel="external">The Android Source Code</a></li>
+<li><a href="http://www.androiddevtools.cn/" target="_blank" rel="external">AndroidDevTools</a></li>
+</ol>
+<hr>
 ]]></content>
     </entry>
     
