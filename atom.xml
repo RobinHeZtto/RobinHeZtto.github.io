@@ -398,11 +398,11 @@
   </entry>
   
   <entry>
-    <title>Android-消息机制</title>
-    <link href="http://hesstudio.cn/2016/04/15/2016-04-15-android-handler/"/>
-    <id>http://hesstudio.cn/2016/04/15/2016-04-15-android-handler/</id>
+    <title>Android之消息机制</title>
+    <link href="http://hesstudio.cn/2016/04/15/android-handler/"/>
+    <id>http://hesstudio.cn/2016/04/15/android-handler/</id>
     <published>2016-04-15T05:16:33.000Z</published>
-    <updated>2016-05-20T07:44:14.000Z</updated>
+    <updated>2016-05-22T07:28:21.000Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.&lt;/p&gt;
