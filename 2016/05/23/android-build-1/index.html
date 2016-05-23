@@ -68,10 +68,12 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android," />
 
 
 
+
+  
 
 
   <link rel="alternate" href="/atom.xml" title="生活不止眼前的苟且" type="application/atom+xml" />
@@ -86,15 +88,16 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="生活不止眼前的苟且">
-<meta property="og:url" content="http://hesstudio.cn/tags/Ubuntu/index.html">
+<meta name="description" content="Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之Build系统(一)概述">
+<meta property="og:url" content="http://hesstudio.cn/2016/05/23/android-build-1/index.html">
 <meta property="og:site_name" content="生活不止眼前的苟且">
-<meta property="og:description">
+<meta property="og:description" content="Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c">
+<meta property="og:updated_time" content="2016-05-23T07:02:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="生活不止眼前的苟且">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Android之Build系统(一)概述">
+<meta name="twitter:description" content="Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c">
 
 
 
@@ -112,7 +115,7 @@
   };
 </script>
 
-  <title> 标签: Ubuntu | 生活不止眼前的苟且 </title>
+  <title> Android之Build系统(一)概述 | 生活不止眼前的苟且 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -143,7 +146,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -254,46 +257,180 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Ubuntu
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android之Build系统(一)概述
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-23T13:22:51+08:00" content="2016-05-23">
+              2016-05-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/23/android-build-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/android-build-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <hr>
+<blockquote>
+<p>Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c/C++,java)和多目标(同时支持多个产品).</p>
+</blockquote>
+<h1 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h1><p>在完整获取AOSP源码后,可按以下流程来进行源码的编译.<br>1.初始化编译环境:<br><code>$ source build/envsetup.sh</code><br>2.选择编译目标:<br><code>$ lunch aosp_arm-eng</code><br>目标有三种编译类型可选,分别是user,userdebug,eng  </p>
+<table>
+<thead>
+<tr>
+<th>Buildtype</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user</td>
+<td>limited access; suited for production</td>
+</tr>
+<tr>
+<td>userdebug</td>
+<td>like “user” but with root access and debuggability; preferred for debugging</td>
+</tr>
+<tr>
+<td>eng</td>
+<td>development configuration with additional debugging tools</td>
+</tr>
+</tbody>
+</table>
+<p>3.编译代码:<br><code>$ make -j8</code><br>所有的编译目标都在out目录下生成.</p>
+<h1 id="Build系统框架"><a href="#Build系统框架" class="headerlink" title="Build系统框架"></a>Build系统框架</h1><p>Build系统的主要逻辑都集中在make文件中,同时依靠脚本辅助.从大的方面讲,Android Build系统可以分为一下3大块.<br>1.Build核心文件:<br>位于build/core下的文件是Android Build系统的框架与核心,其他device,module的make都依赖<br>2.产品配置文件:<br>产品相关文件主要位于源码的device,vendor目录下,device下主要存放产品配置文件,verdor下主要存放一些硬件的HAL库.<br>3.模块make文件:<br>整个系统中，包含了大量的模块，每个模块都有一个Android.mk文件.Build系统会在整个源码树中扫描名称为“Android.mk”的文件并根据其中的内容来执行模块的编译</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;cm_mc_sid_50200000=1463985980" target="_blank" rel="external">GNU make</a></li>
+<li></li>
+</ol>
+<hr>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2016/05/18/remastersys-md/" itemprop="url">
-              
-                <span itemprop="name">remastersys 备份/制作ubuntu副本</span>
-              
-            </a>
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-18T19:48:30+08:00"
-              content="2016-05-18" >
-          05-18
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/18/remastersys-md/" rel="next" title="remastersys 备份/制作ubuntu副本">
+                <i class="fa fa-chevron-left"></i> remastersys 备份/制作ubuntu副本
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/05/23/android-build-1/"
+     data-title="Android之Build系统(一)概述"
+     data-content=""
+     data-url="http://hesstudio.cn/2016/05/23/android-build-1/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
 
 
           </div>
@@ -301,6 +438,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/23/android-build-1/"
+           data-title="Android之Build系统(一)概述" data-url="http://hesstudio.cn/2016/05/23/android-build-1/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -320,8 +465,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -371,6 +525,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#源码编译"><span class="nav-number">1.</span> <span class="nav-text">源码编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build系统框架"><span class="nav-number">2.</span> <span class="nav-text">Build系统框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -456,6 +621,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hesstudio.cn/"/>
-  <updated>2016-05-21T12:53:38.000Z</updated>
+  <updated>2016-05-23T07:02:25.000Z</updated>
   <id>http://hesstudio.cn/</id>
   
   <author>
@@ -14,6 +14,62 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android之Build系统(一)概述</title>
+    <link href="http://hesstudio.cn/2016/05/23/android-build-1/"/>
+    <id>http://hesstudio.cn/2016/05/23/android-build-1/</id>
+    <published>2016-05-23T05:22:51.000Z</published>
+    <updated>2016-05-23T07:02:25.000Z</updated>
+    
+    <content type="html">&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c/C++,java)和多目标(同时支持多个产品).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;源码编译&quot;&gt;&lt;a href=&quot;#源码编译&quot; class=&quot;headerlink&quot; title=&quot;源码编译&quot;&gt;&lt;/a&gt;源码编译&lt;/h1&gt;&lt;p&gt;在完整获取AOSP源码后,可按以下流程来进行源码的编译.&lt;br&gt;1.初始化编译环境:&lt;br&gt;&lt;code&gt;$ source build/envsetup.sh&lt;/code&gt;&lt;br&gt;2.选择编译目标:&lt;br&gt;&lt;code&gt;$ lunch aosp_arm-eng&lt;/code&gt;&lt;br&gt;目标有三种编译类型可选,分别是user,userdebug,eng  &lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Buildtype&lt;/th&gt;
+&lt;th&gt;Use&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;user&lt;/td&gt;
+&lt;td&gt;limited access; suited for production&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;userdebug&lt;/td&gt;
+&lt;td&gt;like “user” but with root access and debuggability; preferred for debugging&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;eng&lt;/td&gt;
+&lt;td&gt;development configuration with additional debugging tools&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;3.编译代码:&lt;br&gt;&lt;code&gt;$ make -j8&lt;/code&gt;&lt;br&gt;所有的编译目标都在out目录下生成.&lt;/p&gt;
+&lt;h1 id=&quot;Build系统框架&quot;&gt;&lt;a href=&quot;#Build系统框架&quot; class=&quot;headerlink&quot; title=&quot;Build系统框架&quot;&gt;&lt;/a&gt;Build系统框架&lt;/h1&gt;&lt;p&gt;Build系统的主要逻辑都集中在make文件中,同时依靠脚本辅助.从大的方面讲,Android Build系统可以分为一下3大块.&lt;br&gt;1.Build核心文件:&lt;br&gt;位于build/core下的文件是Android Build系统的框架与核心,其他device,module的make都依赖&lt;br&gt;2.产品配置文件:&lt;br&gt;产品相关文件主要位于源码的device,vendor目录下,device下主要存放产品配置文件,verdor下主要存放一些硬件的HAL库.&lt;br&gt;3.模块make文件:&lt;br&gt;整个系统中，包含了大量的模块，每个模块都有一个Android.mk文件.Build系统会在整个源码树中扫描名称为“Android.mk”的文件并根据其中的内容来执行模块的编译&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;amp;cm_mc_sid_50200000=1463985980&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GNU make&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Bui
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://hesstudio.cn/tags/Android/"/>
+    
+  </entry>
   
   <entry>
     <title>remastersys 备份/制作ubuntu副本</title>
@@ -91,7 +147,7 @@
     <link href="http://hesstudio.cn/2016/04/15/android-handler/"/>
     <id>http://hesstudio.cn/2016/04/15/android-handler/</id>
     <published>2016-04-15T05:16:33.000Z</published>
-    <updated>2016-05-22T07:28:21.000Z</updated>
+    <updated>2016-05-23T05:26:40.000Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.&lt;/p&gt;
@@ -206,7 +262,7 @@
     <link href="http://hesstudio.cn/2016/03/20/android-env/"/>
     <id>http://hesstudio.cn/2016/03/20/android-env/</id>
     <published>2016-03-20T06:35:04.000Z</published>
-    <updated>2016-05-22T07:30:37.000Z</updated>
+    <updated>2016-05-23T05:26:35.000Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;h1 id=&quot;系统安装&quot;&gt;&lt;a href=&quot;#系统安装&quot; class=&quot;headerlink&quot; title=&quot;系统安装&quot;&gt;&lt;/a&gt;系统安装&lt;/h1&gt;&lt;p&gt;Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用相对应的Ubuntu版本.   &lt;/p&gt;
