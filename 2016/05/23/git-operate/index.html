@@ -86,25 +86,40 @@
 
 
 
-<meta name="description" content="比较1.工作区与暂存区比较:git diff2.暂存区与HEAD(版本库)比较:git diff --staged3.工作,暂存区(未提交修改)与HEAD(版本库)比较:git diff HEAD
-撤销1.撤销工作区修改:git checkout -- &amp;lt;file&amp;gt;
-日志查看1.普通查看:git log2.
-其他1.修改远程仓库url:git remote set-url origin">
+<meta name="description" content="比较
+工作区与暂存区比较:git diff   
+暂存区与HEAD(版本库当前分支)比较:git diff --staged   
+工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:git diff HEAD
+
+撤销
+撤销工作区修改:git checkout .git checkout -- &amp;lt;file&amp;gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件
+
+撤销工作区,暂">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git操作总结">
 <meta property="og:url" content="http://hesstudio.cn/2016/05/23/git-operate/index.html">
 <meta property="og:site_name" content="生活不止眼前的苟且">
-<meta property="og:description" content="比较1.工作区与暂存区比较:git diff2.暂存区与HEAD(版本库)比较:git diff --staged3.工作,暂存区(未提交修改)与HEAD(版本库)比较:git diff HEAD
-撤销1.撤销工作区修改:git checkout -- &amp;lt;file&amp;gt;
-日志查看1.普通查看:git log2.
-其他1.修改远程仓库url:git remote set-url origin">
-<meta property="og:updated_time" content="2016-05-24T01:46:15.000Z">
+<meta property="og:description" content="比较
+工作区与暂存区比较:git diff   
+暂存区与HEAD(版本库当前分支)比较:git diff --staged   
+工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:git diff HEAD
+
+撤销
+撤销工作区修改:git checkout .git checkout -- &amp;lt;file&amp;gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件
+
+撤销工作区,暂">
+<meta property="og:updated_time" content="2016-05-24T02:22:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git操作总结">
-<meta name="twitter:description" content="比较1.工作区与暂存区比较:git diff2.暂存区与HEAD(版本库)比较:git diff --staged3.工作,暂存区(未提交修改)与HEAD(版本库)比较:git diff HEAD
-撤销1.撤销工作区修改:git checkout -- &amp;lt;file&amp;gt;
-日志查看1.普通查看:git log2.
-其他1.修改远程仓库url:git remote set-url origin">
+<meta name="twitter:description" content="比较
+工作区与暂存区比较:git diff   
+暂存区与HEAD(版本库当前分支)比较:git diff --staged   
+工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:git diff HEAD
+
+撤销
+撤销工作区修改:git checkout .git checkout -- &amp;lt;file&amp;gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件
+
+撤销工作区,暂">
 
 
 
@@ -332,10 +347,27 @@
       
 
       
-        <h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><p>1.工作区与暂存区比较:<br><code>git diff</code><br>2.暂存区与HEAD(版本库)比较:<br><code>git diff --staged</code><br>3.工作,暂存区(未提交修改)与HEAD(版本库)比较:<br><code>git diff HEAD</code></p>
-<h1 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h1><p>1.撤销工作区修改:<br><code>git checkout -- &lt;file&gt;</code></p>
-<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><p>1.普通查看:<br><code>git log</code><br>2.</p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>1.修改远程仓库url:<br><code>git remote set-url origin new-url</code></p>
+        <hr>
+<h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><ol>
+<li>工作区与暂存区比较:<br><code>git diff</code>   </li>
+<li>暂存区与HEAD(版本库当前分支)比较:<br><code>git diff --staged</code>   </li>
+<li>工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:<br><code>git diff HEAD</code></li>
+</ol>
+<h1 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h1><ol>
+<li><p>撤销工作区修改:<br><code>git checkout .</code><br><code>git checkout -- &lt;file&gt;</code><br>该命令会将暂存区全部文件或指定文件替换工作区对应文件</p>
+</li>
+<li><p>撤销工作区,暂存区修改:<br><code>git checkout HEAD .</code><br><code>git checkout HEAD &lt;file&gt;</code><br>该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,</p>
+</li>
+</ol>
+<h1 id="移除"><a href="#移除" class="headerlink" title="移除"></a>移除</h1><p>1.</p>
+<p>2.</p>
+<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><ol>
+<li>普通查看:<br><code>git log</code><br>2.</li>
+</ol>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
+<li>修改远程仓库url:<br><code>git remote set-url origin new-url</code></li>
+</ol>
+<hr>
 
       
     </div>
@@ -366,13 +398,17 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/23/android-build-1/" rel="next" title="Android之Build系统(一)概述">
-                <i class="fa fa-chevron-left"></i> Android之Build系统(一)概述
+              <a href="/2016/05/23/android-build-1/" rel="next" title="Android Build系统概述">
+                <i class="fa fa-chevron-left"></i> Android Build系统概述
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/24/android-build-2/" rel="prev" title="Android Build系统之envsetup.sh">
+                Android Build系统之envsetup.sh <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -463,7 +499,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -473,7 +509,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -509,7 +545,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#比较"><span class="nav-number">1.</span> <span class="nav-text">比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#撤销"><span class="nav-number">2.</span> <span class="nav-text">撤销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志查看"><span class="nav-number">3.</span> <span class="nav-text">日志查看</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#比较"><span class="nav-number">1.</span> <span class="nav-text">比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#撤销"><span class="nav-number">2.</span> <span class="nav-text">撤销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#移除"><span class="nav-number">3.</span> <span class="nav-text">移除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志查看"><span class="nav-number">4.</span> <span class="nav-text">日志查看</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
           </div>
         </section>

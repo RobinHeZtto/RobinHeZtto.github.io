@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hesstudio.cn/"/>
-  <updated>2016-05-24T01:46:15.000Z</updated>
+  <updated>2016-05-24T07:35:13.000Z</updated>
   <id>http://hesstudio.cn/</id>
   
   <author>
@@ -16,21 +16,204 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>git操作总结</title>
-    <link href="http://hesstudio.cn/2016/05/23/git-operate/"/>
-    <id>http://hesstudio.cn/2016/05/23/git-operate/</id>
-    <published>2016-05-23T08:58:56.000Z</published>
-    <updated>2016-05-24T01:46:15.000Z</updated>
+    <title>Android Build系统之envsetup.sh</title>
+    <link href="http://hesstudio.cn/2016/05/24/android-build-2/"/>
+    <id>http://hesstudio.cn/2016/05/24/android-build-2/</id>
+    <published>2016-05-24T02:50:45.000Z</published>
+    <updated>2016-05-24T07:35:13.000Z</updated>
     
-    <content type="html">&lt;h1 id=&quot;比较&quot;&gt;&lt;a href=&quot;#比较&quot; class=&quot;headerlink&quot; title=&quot;比较&quot;&gt;&lt;/a&gt;比较&lt;/h1&gt;&lt;p&gt;1.工作区与暂存区比较:&lt;br&gt;&lt;code&gt;git diff&lt;/code&gt;&lt;br&gt;2.暂存区与HEAD(版本库)比较:&lt;br&gt;&lt;code&gt;git diff --staged&lt;/code&gt;&lt;br&gt;3.工作,暂存区(未提交修改)与HEAD(版本库)比较:&lt;br&gt;&lt;code&gt;git diff HEAD&lt;/code&gt;&lt;/p&gt;
-&lt;h1 id=&quot;撤销&quot;&gt;&lt;a href=&quot;#撤销&quot; class=&quot;headerlink&quot; title=&quot;撤销&quot;&gt;&lt;/a&gt;撤销&lt;/h1&gt;&lt;p&gt;1.撤销工作区修改:&lt;br&gt;&lt;code&gt;git checkout -- &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;h1 id=&quot;日志查看&quot;&gt;&lt;a href=&quot;#日志查看&quot; class=&quot;headerlink&quot; title=&quot;日志查看&quot;&gt;&lt;/a&gt;日志查看&lt;/h1&gt;&lt;p&gt;1.普通查看:&lt;br&gt;&lt;code&gt;git log&lt;/code&gt;&lt;br&gt;2.&lt;/p&gt;
-&lt;h1 id=&quot;其他&quot;&gt;&lt;a href=&quot;#其他&quot; class=&quot;headerlink&quot; title=&quot;其他&quot;&gt;&lt;/a&gt;其他&lt;/h1&gt;&lt;p&gt;1.修改远程仓库url:&lt;br&gt;&lt;code&gt;git remote set-url origin new-url&lt;/code&gt;&lt;/p&gt;
+    <content type="html">&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Android Build系统是比较大的模块,为了能快速了解整个模块的组织架构,后面采用从入口开始分析的方式,一步步深入分析Android的Build系统.在编译AOSP前,首先运行的是envsetup.sh脚本,所以下面就从envsetup.sh脚本开始分析.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;envsetup-sh的作用&quot;&gt;&lt;a href=&quot;#envsetup-sh的作用&quot; class=&quot;headerlink&quot; title=&quot;envsetup.sh的作用&quot;&gt;&lt;/a&gt;envsetup.sh的作用&lt;/h1&gt;&lt;p&gt;打开envsetup.sh脚本,可以看到该脚本定义了很多的shell命令,这些命令在envsetup.sh脚本执行后可以直接在shell环境中使用.忽略掉定义部分,envsetup.sh脚本实际执行的代码只有数行,如下:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;# 中间部分代码&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# add the default one here&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_arm-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_arm64-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_mips-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_mips64-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_x86-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_x86_64-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# 结尾部分代码&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;if [ &amp;quot;x$SHELL&amp;quot; != &amp;quot;x/bin/bash&amp;quot; ]; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    case `ps -o command -p $$` in&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *bash*)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            echo &amp;quot;WARNING: Only bash is supported, use of other shell would lead to erroneous results&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    esac&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# Execute the contents of any erroneous files we can find.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;for f in `test -d device &amp;amp;&amp;amp; find -L device -maxdepth 4 -name &amp;apos;vendorsetup.sh&amp;apos; 2&amp;gt; /dev/null | sort` \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         `test -d vendor &amp;amp;&amp;amp; find -L vendor -maxdepth 4 -name &amp;apos;vendorsetup.sh&amp;apos; 2&amp;gt; /dev/null | sort`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;do&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    echo &amp;quot;including $f&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    . $f&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;done&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;unset f&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;addcompletions&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;中间部分有6条add_lunch_combo的调用,结尾部分首先会判断是否是bash环境,如果不是提示警告.接着查找device与vendor目录下的vendorsetup.sh脚本并执行.&lt;br&gt;先看add_lunch_combo的定义&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;function add_lunch_combo()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local new_combo=$1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local c&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for c in $&amp;#123;LUNCH_MENU_CHOICES[@]&amp;#125; ; do&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if [ &amp;quot;$new_combo&amp;quot; = &amp;quot;$c&amp;quot; ] ; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            return&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    done&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    LUNCH_MENU_CHOICES=($&amp;#123;LUNCH_MENU_CHOICES[@]&amp;#125; $new_combo)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;可以看到add_lunch_combo的作用就是将传递的$1参数加入到LUNCH_MENU_CHOICES数组中.&lt;br&gt;再看一下vendorsetup.sh的定义,以bullhead为例,device/lge/bullhead/vendorsetup.sh的内容如下:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_bullhead-userdebug&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;可以发现整个envsetup.sh执行过后,除了定义了一些shell函数,剩下的工作就是利用add_lunch_combo将传递给其的参数加入到全局数组LUNCH_MENU_CHOICES中,到底LUNCH_MENU_CHOICES有什么作用呢?我们可以在终端执行一下lunch命令,输出如下:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You’re building on Linux&lt;/p&gt;
+&lt;p&gt;Lunch menu… pick a combo:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1. aosp_arm-eng
+2. aosp_arm64-eng
+3. aosp_mips-eng
+4. aosp_mips64-eng
+5. aosp_x86-eng
+6. aosp_x86_64-eng
+7. aosp_deb-userdebug
+8. aosp_flo-userdebug
+9. full_fugu-userdebug
+10. aosp_fugu-userdebug
+11. mini_emulator_arm64-userdebug
+12. m_e_arm-userdebug
+13. mini_emulator_mips-userdebug
+14. mini_emulator_x86_64-userdebug
+15. mini_emulator_x86-userdebug
+16. aosp_flounder-userdebug
+17. aosp_angler-userdebug
+18. aosp_bullhead-userdebug
+19. aosp_hammerhead-userdebug
+20. aosp_hammerhead_fp-userdebug
+21. aosp_shamu-userdebug
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Which would you like? [aosp_arm-eng]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;实际上上面的这些选项就是通过add_lunch_combo加进去的.&lt;/p&gt;
+&lt;p&gt;envsetup.sh脚本中定义的很多shell命令,一些常用的如下.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;lunch&lt;/td&gt;
+&lt;td&gt;lunch &lt;product_name&gt;&lt;build_variant&gt; 指定当前编译产品&lt;/build_variant&gt;&lt;/product_name&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;下面分析以下lunch命令的功能:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;function lunch()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local answer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ &amp;quot;$1&amp;quot; ] ; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        answer=$1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    else&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        print_lunch_menu&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo -n &amp;quot;Which would you like? [aosp_arm-eng] &amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        read answer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local selection=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 如果lunch后没跟参数,默认aosp_arm-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ -z &amp;quot;$answer&amp;quot; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        selection=aosp_arm-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    elif (echo -n $answer | grep -q -e &amp;quot;^[0-9][0-9]*$&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if [ $answer -le $&amp;#123;#LUNCH_MENU_CHOICES[@]&amp;#125; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            selection=$&amp;#123;LUNCH_MENU_CHOICES[$(($answer-1))]&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    elif (echo -n $answer | grep -q -e &amp;quot;^[^\-][^\-]*-[^\-][^\-]*$&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        selection=$answer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ -z &amp;quot;$selection&amp;quot; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;Invalid lunch combo: $answer&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return 1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_BUILD_APPS=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 变量selection &amp;quot;-&amp;quot;分割的前部分赋值product&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local product=$(echo -n $selection | sed -e &amp;quot;s/-.*$//&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    check_product $product&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ $? -ne 0 ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Don&amp;apos;t have a product spec for: &amp;apos;$product&amp;apos;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Do you have the right repo manifest?&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        product=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 变量selection &amp;quot;-&amp;quot;分割的后部分赋值variant&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local variant=$(echo -n $selection | sed -e &amp;quot;s/^[^\-]*-//&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    check_variant $variant&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ $? -ne 0 ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Invalid variant: &amp;apos;$variant&amp;apos;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Must be one of $&amp;#123;VARIANT_CHOICES[@]&amp;#125;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        variant=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ -z &amp;quot;$product&amp;quot; -o -z &amp;quot;$variant&amp;quot; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return 1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_PRODUCT=$product&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_BUILD_VARIANT=$variant&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_BUILD_TYPE=release&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 设置更多环境变量&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    set_stuff_for_environment&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 打印设置的环境变量&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printconfig&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;lunch aosp_bullhead-userdebug执行完毕后输出如下:   &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PLATFORM_VERSION_CODENAME=REL&lt;br&gt;PLATFORM_VERSION=6.0.1&lt;br&gt;TARGET_PRODUCT=aosp_bullhead&lt;br&gt;TARGET_BUILD_VARIANT=userdebug&lt;br&gt;TARGET_BUILD_TYPE=release&lt;br&gt;TARGET_BUILD_APPS=&lt;br&gt;TARGET_ARCH=arm64&lt;br&gt;TARGET_ARCH_VARIANT=armv8-a&lt;br&gt;TARGET_CPU_VARIANT=cortex-a53&lt;br&gt;TARGET_2ND_ARCH=arm&lt;br&gt;TARGET_2ND_ARCH_VARIANT=armv7-a-neon&lt;br&gt;TARGET_2ND_CPU_VARIANT=cortex-a7&lt;br&gt;HOST_ARCH=x86_64&lt;br&gt;HOST_OS=linux&lt;br&gt;HOST_OS_EXTRA=Linux-4.2.0-27-generic-x86_64-with-Ubuntu-14.04-trusty&lt;br&gt;HOST_BUILD_TYPE=release&lt;br&gt;BUILD_ID=MHC19J&lt;br&gt;OUT_DIR=out   &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;环境变量&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;PLATFORM_VERSION_CODENAME&lt;/td&gt;
+&lt;td&gt;代表平台版本名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PLATFORM_VERSION&lt;/td&gt;
+&lt;td&gt;表示平台版本号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_PRODUCT&lt;/td&gt;
+&lt;td&gt;表示产品名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_BUILD_VARIANT&lt;/td&gt;
+&lt;td&gt;表示产品编译类型,可以是eng,userdebug,debug&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_BUILD_TYPE&lt;/td&gt;
+&lt;td&gt;编译类型,可以是release或者debug,当为debug时,编译时会加入调试信息&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_BUILD_APPS&lt;/td&gt;
+&lt;td&gt;编译android时为空,编译模块是为模块的路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_ARCH&lt;/td&gt;
+&lt;td&gt;目标cpu架构&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_ARCH_VARIANT&lt;/td&gt;
+&lt;td&gt;目标cpu架构版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_CPU_VARIANT&lt;/td&gt;
+&lt;td&gt;目标cpu代号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_2ND_ARCH&lt;/td&gt;
+&lt;td&gt;目标第二cpu架构&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_2ND_ARCH_VARIANT&lt;/td&gt;
+&lt;td&gt;目标第二cpu架构版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TARGET_2ND_CPU_VARIANT&lt;/td&gt;
+&lt;td&gt;目标第二代cpu代号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HOST_ARCH&lt;/td&gt;
+&lt;td&gt;编译平台架构&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HOST_OS&lt;/td&gt;
+&lt;td&gt;编译平台操作系统&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HOST_OS_EXTRA&lt;/td&gt;
+&lt;td&gt;编译平台额外信息&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HOST_BUILD_TYPE&lt;/td&gt;
+&lt;td&gt;编译平台编译类型&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;BUILD_ID&lt;/td&gt;
+&lt;td&gt;编译ID,会出现编译版本信息中&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OUT_DIR&lt;/td&gt;
+&lt;td&gt;编译输出目录&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
 </content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;比较&quot;&gt;&lt;a href=&quot;#比较&quot; class=&quot;headerlink&quot; title=&quot;比较&quot;&gt;&lt;/a&gt;比较&lt;/h1&gt;&lt;p&gt;1.工作区与暂存区比较:&lt;br&gt;&lt;code&gt;git diff&lt;/code&gt;&lt;br&gt;2.暂存区与HEAD(版本库)比较:&lt;br&gt;&lt;code&gt;g
+      &lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Android Build系统是比较大的模块,为了能快速了解整个模块的组织架构,后面采用从入口开始分析的方式,一步步深入分析Android的Build系统.在编译AOSP前,首先运行的是envsetup.sh脚本,所以下面就从envset
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://hesstudio.cn/tags/Android/"/>
+    
+      <category term="Build" scheme="http://hesstudio.cn/tags/Build/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>git操作总结</title>
+    <link href="http://hesstudio.cn/2016/05/23/git-operate/"/>
+    <id>http://hesstudio.cn/2016/05/23/git-operate/</id>
+    <published>2016-05-23T08:58:56.000Z</published>
+    <updated>2016-05-24T02:22:57.000Z</updated>
+    
+    <content type="html">&lt;hr&gt;
+&lt;h1 id=&quot;比较&quot;&gt;&lt;a href=&quot;#比较&quot; class=&quot;headerlink&quot; title=&quot;比较&quot;&gt;&lt;/a&gt;比较&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;工作区与暂存区比较:&lt;br&gt;&lt;code&gt;git diff&lt;/code&gt;   &lt;/li&gt;
+&lt;li&gt;暂存区与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;git diff --staged&lt;/code&gt;   &lt;/li&gt;
+&lt;li&gt;工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;git diff HEAD&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;撤销&quot;&gt;&lt;a href=&quot;#撤销&quot; class=&quot;headerlink&quot; title=&quot;撤销&quot;&gt;&lt;/a&gt;撤销&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;撤销工作区修改:&lt;br&gt;&lt;code&gt;git checkout .&lt;/code&gt;&lt;br&gt;&lt;code&gt;git checkout -- &amp;lt;file&amp;gt;&lt;/code&gt;&lt;br&gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;撤销工作区,暂存区修改:&lt;br&gt;&lt;code&gt;git checkout HEAD .&lt;/code&gt;&lt;br&gt;&lt;code&gt;git checkout HEAD &amp;lt;file&amp;gt;&lt;/code&gt;&lt;br&gt;该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;移除&quot;&gt;&lt;a href=&quot;#移除&quot; class=&quot;headerlink&quot; title=&quot;移除&quot;&gt;&lt;/a&gt;移除&lt;/h1&gt;&lt;p&gt;1.&lt;/p&gt;
+&lt;p&gt;2.&lt;/p&gt;
+&lt;h1 id=&quot;日志查看&quot;&gt;&lt;a href=&quot;#日志查看&quot; class=&quot;headerlink&quot; title=&quot;日志查看&quot;&gt;&lt;/a&gt;日志查看&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;普通查看:&lt;br&gt;&lt;code&gt;git log&lt;/code&gt;&lt;br&gt;2.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;其他&quot;&gt;&lt;a href=&quot;#其他&quot; class=&quot;headerlink&quot; title=&quot;其他&quot;&gt;&lt;/a&gt;其他&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;修改远程仓库url:&lt;br&gt;&lt;code&gt;git remote set-url origin new-url&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;h1 id=&quot;比较&quot;&gt;&lt;a href=&quot;#比较&quot; class=&quot;headerlink&quot; title=&quot;比较&quot;&gt;&lt;/a&gt;比较&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;工作区与暂存区比较:&lt;br&gt;&lt;code&gt;git diff&lt;/code&gt;   &lt;/li&gt;
+&lt;li&gt;暂存区与HEAD(版本
     
     </summary>
     
@@ -40,11 +223,11 @@
   </entry>
   
   <entry>
-    <title>Android之Build系统(一)概述</title>
+    <title>Android Build系统概述</title>
     <link href="http://hesstudio.cn/2016/05/23/android-build-1/"/>
     <id>http://hesstudio.cn/2016/05/23/android-build-1/</id>
     <published>2016-05-23T05:22:51.000Z</published>
-    <updated>2016-05-23T07:02:25.000Z</updated>
+    <updated>2016-05-24T05:23:52.000Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;blockquote&gt;
@@ -76,8 +259,7 @@
 &lt;p&gt;3.编译代码:&lt;br&gt;&lt;code&gt;$ make -j8&lt;/code&gt;&lt;br&gt;所有的编译目标都在out目录下生成.&lt;/p&gt;
 &lt;h1 id=&quot;Build系统框架&quot;&gt;&lt;a href=&quot;#Build系统框架&quot; class=&quot;headerlink&quot; title=&quot;Build系统框架&quot;&gt;&lt;/a&gt;Build系统框架&lt;/h1&gt;&lt;p&gt;Build系统的主要逻辑都集中在make文件中,同时依靠脚本辅助.从大的方面讲,Android Build系统可以分为一下3大块.&lt;br&gt;1.Build核心文件:&lt;br&gt;位于build/core下的文件是Android Build系统的框架与核心,其他device,module的make都依赖&lt;br&gt;2.产品配置文件:&lt;br&gt;产品相关文件主要位于源码的device,vendor目录下,device下主要存放产品配置文件,verdor下主要存放一些硬件的HAL库.&lt;br&gt;3.模块make文件:&lt;br&gt;整个系统中，包含了大量的模块，每个模块都有一个Android.mk文件.Build系统会在整个源码树中扫描名称为“Android.mk”的文件并根据其中的内容来执行模块的编译&lt;/p&gt;
 &lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;amp;cm_mc_sid_50200000=1463985980&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GNU make&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;amp;cm_mc_sid_50200000=1463985980&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GNU make&lt;/a&gt;&lt;br&gt;2.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
 </content>
@@ -93,6 +275,8 @@
     
       <category term="Android" scheme="http://hesstudio.cn/tags/Android/"/>
     
+      <category term="Build" scheme="http://hesstudio.cn/tags/Build/"/>
+    
   </entry>
   
   <entry>
@@ -100,7 +284,7 @@
     <link href="http://hesstudio.cn/2016/05/18/remastersys-md/"/>
     <id>http://hesstudio.cn/2016/05/18/remastersys-md/</id>
     <published>2016-05-18T11:48:30.000Z</published>
-    <updated>2016-05-21T12:53:38.000Z</updated>
+    <updated>2016-05-24T03:02:57.000Z</updated>
     
     <content type="html">&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;Remastersys是由Tony Brijeski 发起的免费软件项目,可以把已安装的Ubuntu、Debian及其衍生版打包成一个可以用来安装的Live CD/DVD的iso文件.&lt;/p&gt;
 &lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;ul&gt;
@@ -129,6 +313,8 @@
     
     
       <category term="Ubuntu" scheme="http://hesstudio.cn/tags/Ubuntu/"/>
+    
+      <category term="Tools" scheme="http://hesstudio.cn/tags/Tools/"/>
     
   </entry>
   
@@ -286,7 +472,7 @@
     <link href="http://hesstudio.cn/2016/03/20/android-env/"/>
     <id>http://hesstudio.cn/2016/03/20/android-env/</id>
     <published>2016-03-20T06:35:04.000Z</published>
-    <updated>2016-05-23T05:26:35.000Z</updated>
+    <updated>2016-05-24T06:34:39.000Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;h1 id=&quot;系统安装&quot;&gt;&lt;a href=&quot;#系统安装&quot; class=&quot;headerlink&quot; title=&quot;系统安装&quot;&gt;&lt;/a&gt;系统安装&lt;/h1&gt;&lt;p&gt;Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用相对应的Ubuntu版本.   &lt;/p&gt;
@@ -295,7 +481,7 @@
 &lt;li&gt;Android 2.3.x (Gingerbread) - Android 5.x (Lollipop): Ubuntu 12.04 (Precise)   &lt;/li&gt;
 &lt;li&gt;Android 1.5 (Cupcake) - Android 2.2.x (Froyo): Ubuntu 10.04 (Lucid)   &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h1 id=&quot;软件安&quot;&gt;&lt;a href=&quot;#软件安&quot; class=&quot;headerlink&quot; title=&quot;软件安&quot;&gt;&lt;/a&gt;软件安&lt;/h1&gt;&lt;p&gt;&lt;strong&gt; 安装jdk: &lt;/strong&gt;&lt;br&gt;Android 5.0版本前使用的是Oracle的JDK,5.0及以后的版本使用的是OpenJDK.&lt;/p&gt;
+&lt;h1 id=&quot;软件安装&quot;&gt;&lt;a href=&quot;#软件安装&quot; class=&quot;headerlink&quot; title=&quot;软件安装&quot;&gt;&lt;/a&gt;软件安装&lt;/h1&gt;&lt;p&gt;&lt;strong&gt; 安装jdk: &lt;/strong&gt;&lt;br&gt;Android 5.0版本前使用的是Oracle的JDK,5.0及以后的版本使用的是OpenJDK.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The master branch of Android in AOSP: Ubuntu - OpenJDK 8&lt;/li&gt;
 &lt;li&gt;Android 5.x (Lollipop) - Android 6.0 (Marshmallow): OpenJDK 7&lt;/li&gt;

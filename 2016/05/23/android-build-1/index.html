@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Android,Build," />
 
 
 
@@ -88,13 +88,13 @@
 
 <meta name="description" content="Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android之Build系统(一)概述">
+<meta property="og:title" content="Android Build系统概述">
 <meta property="og:url" content="http://hesstudio.cn/2016/05/23/android-build-1/index.html">
 <meta property="og:site_name" content="生活不止眼前的苟且">
 <meta property="og:description" content="Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c">
-<meta property="og:updated_time" content="2016-05-23T07:02:25.000Z">
+<meta property="og:updated_time" content="2016-05-24T05:23:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android之Build系统(一)概述">
+<meta name="twitter:title" content="Android Build系统概述">
 <meta name="twitter:description" content="Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c">
 
 
@@ -113,7 +113,7 @@
   };
 </script>
 
-  <title> Android之Build系统(一)概述 | 生活不止眼前的苟且 </title>
+  <title> Android Build系统概述 | 生活不止眼前的苟且 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -276,7 +276,7 @@
             
             
               
-                Android之Build系统(一)概述
+                Android Build系统概述
               
             
           </h1>
@@ -353,8 +353,7 @@
 <p>3.编译代码:<br><code>$ make -j8</code><br>所有的编译目标都在out目录下生成.</p>
 <h1 id="Build系统框架"><a href="#Build系统框架" class="headerlink" title="Build系统框架"></a>Build系统框架</h1><p>Build系统的主要逻辑都集中在make文件中,同时依靠脚本辅助.从大的方面讲,Android Build系统可以分为一下3大块.<br>1.Build核心文件:<br>位于build/core下的文件是Android Build系统的框架与核心,其他device,module的make都依赖<br>2.产品配置文件:<br>产品相关文件主要位于源码的device,vendor目录下,device下主要存放产品配置文件,verdor下主要存放一些硬件的HAL库.<br>3.模块make文件:<br>整个系统中，包含了大量的模块，每个模块都有一个Android.mk文件.Build系统会在整个源码树中扫描名称为“Android.mk”的文件并根据其中的内容来执行模块的编译</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;cm_mc_sid_50200000=1463985980" target="_blank" rel="external">GNU make</a></li>
-<li></li>
+<li><a href="http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;cm_mc_sid_50200000=1463985980" target="_blank" rel="external">GNU make</a><br>2.</li>
 </ol>
 <hr>
 
@@ -379,6 +378,8 @@
         <div class="post-tags">
           
             <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Build/" rel="tag">#Build</a>
           
         </div>
       
@@ -413,7 +414,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2016/05/23/android-build-1/"
-     data-title="Android之Build系统(一)概述"
+     data-title="Android Build系统概述"
      data-content=""
      data-url="http://hesstudio.cn/2016/05/23/android-build-1/">
   <div class="ds-share-inline">
@@ -443,7 +444,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/05/23/android-build-1/"
-           data-title="Android之Build系统(一)概述" data-url="http://hesstudio.cn/2016/05/23/android-build-1/">
+           data-title="Android Build系统概述" data-url="http://hesstudio.cn/2016/05/23/android-build-1/">
       </div>
     
   </div>
@@ -488,7 +489,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -498,7 +499,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
