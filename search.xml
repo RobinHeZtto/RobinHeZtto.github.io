@@ -4,6 +4,16 @@
   
     
     <entry>
+      <title><![CDATA[git操作总结]]></title>
+      <url>http://hesstudio.cn/2016/05/23/git-operate/</url>
+      <content type="html"><![CDATA[<h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><p>1.工作区与暂存区比较:<br><code>git diff</code><br>2.暂存区与HEAD(版本库)比较:<br><code>git diff --staged</code><br>3.工作,暂存区(未提交修改)与HEAD(版本库)比较:<br><code>git diff HEAD</code></p>
+<h1 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h1><p>1.撤销工作区修改:<br><code>git checkout -- &lt;file&gt;</code></p>
+<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><p>1.普通查看:<br><code>git log</code><br>2.</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>1.修改远程仓库url:<br><code>git remote set-url origin new-url</code></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Android之Build系统(一)概述]]></title>
       <url>http://hesstudio.cn/2016/05/23/android-build-1/</url>
       <content type="html"><![CDATA[<hr>
