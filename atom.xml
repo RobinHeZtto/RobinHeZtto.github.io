@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hesstudio.cn/"/>
-  <updated>2016-05-24T07:35:13.000Z</updated>
+  <updated>2016-06-07T06:25:09.000Z</updated>
   <id>http://hesstudio.cn/</id>
   
   <author>
@@ -14,6 +14,125 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ubuntu14.04 FTP服务器搭建</title>
+    <link href="http://hesstudio.cn/2016/06/06/ftp/"/>
+    <id>http://hesstudio.cn/2016/06/06/ftp/</id>
+    <published>2016-06-06T08:14:12.000Z</published>
+    <updated>2016-06-07T06:25:09.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.&lt;/p&gt;
+&lt;h1 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;安装： &lt;code&gt;sudo apt-get install vsftpd&lt;/code&gt;    &lt;/li&gt;
+&lt;li&gt;创建FTP账户： &lt;code&gt;sudo useradd -g ftp -s /sbin/nologin -d /home/ftp_directory ftpuser&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;设置账户密码： &lt;code&gt;sudo passwd ftpuser&lt;/code&gt;   &lt;/li&gt;
+&lt;li&gt;重启服务： &lt;code&gt;sudo service vsftpd restart&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;备份&lt;br&gt;vsftpd的配置文件位于/etc/vsftpd.conf，修改之前先备份配置文件&lt;br&gt;&lt;code&gt;sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.bak&lt;/code&gt;    &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;目录限制&lt;br&gt;默认情况下，用户登陆FTP后，是可以切换到根目录以外的主机其他目录，为了加以限制，可做如下配置：&lt;br&gt;&lt;code&gt;chroot_list_enable=YES&lt;/code&gt;&lt;br&gt;&lt;code&gt;chroot_list_file=/etc/vsftpd.chroot_list&lt;/code&gt;&lt;br&gt;然后设置chroot_local_user，有以下二种设置&lt;br&gt;设置&lt;code&gt;chroot_local_user＝YES&lt;/code&gt;表示/etc/vsftpd.chroot_list文件中用户不能chroot，其他用户可以&lt;br&gt;设置&lt;code&gt;chroot_local_user=NO&lt;/code&gt;表示/etc/vsftpd.chroot_list中用户可以chroot，其他用户不行&lt;br&gt;创建vsftpd.chroot_list，写入需控制chroot的用户&lt;br&gt;&lt;code&gt;sudo touch /etc/vsftpd.chroot_list&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;写权限&lt;br&gt;&lt;code&gt;write_enable=YES&lt;/code&gt;&lt;br&gt;如果开启了chroot来控制用户路径，则用户不再具有该用户根目录的写的权限&lt;br&gt;需设置&lt;code&gt;allow_writeable_chroot=YES&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;530 Login incorrect&lt;br&gt;如果在登陆时返回530 Login incorrect.&lt;br&gt;修改&lt;br&gt;&lt;code&gt;pam_service_name=vsftpd&lt;/code&gt;&lt;br&gt;为&lt;br&gt;&lt;code&gt;pam_service_name=ftp&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;相关配置参数&lt;br&gt;（1）ftpd_banner=welcome to ftp service ：设置连接服务器后的欢迎信息&lt;br&gt;（2）idle_session_timeout=60 ：限制远程的客户机连接后，所建立的控制连接，在多长时间没有做任何的操作就会中断(秒)&lt;br&gt;（3）data_connection_timeout=120 ：设置客户机在进行数据传输时,设置空闲的数据中断时间&lt;br&gt;（4）accept_timeout=60 设置在多长时间后自动建立连接&lt;br&gt;（5）connect_timeout=60 设置数据连接的最大激活时间，多长时间断开，为别人所使用&lt;br&gt;（6）max_clients=200 指明服务器总的客户并发连接数为200&lt;br&gt;（7）max_per_ip=3 指明每个客户机的最大连接数为3&lt;br&gt;（8）local_max_rate=50000(50kbytes/sec) 本地用户最大传输速率限制&lt;br&gt;（9）anon_max_rate=30000匿名用户的最大传输速率限制&lt;br&gt;（10）pasv_min_port=端口&lt;br&gt;（11）pasv-max-prot=端口号 定义最大与最小端口，为0表示任意端口;为客户端连接指明端口&lt;br&gt;（12）listen_address=IP地址 设置ftp服务来监听的地址，客户端可以用哪个地址来连接&lt;br&gt;（13）listen_port=端口号 设置FTP工作的端口号，默认的为21&lt;br&gt;（14）chroot_local_user=YES 设置所有的本地用户可以chroot&lt;br&gt;（15）chroot_local_user=NO 设置指定用户能够chroot&lt;br&gt;（16）chroot_list_enable=YES&lt;br&gt;（17）chroot_list_file=/etc/vsftpd/chroot_list(只有/etc/vsftpd/chroot_list中的指定的用户才能执行 )&lt;br&gt;（18）local_root=path 无论哪个用户都能登录的用户，定义登录帐号的主目录, 若没有指定，则每一个用户则进入到个人用户主目录&lt;br&gt;（19）chroot_local_user=yes/no 是否锁定本地系统帐号用户主目录(所有);锁定后，用户只能访问用户的主目录/home/user,不能利用cd命令向上转;只能向下&lt;br&gt;（20）chroot_list_enable=yes/no 锁定指定文件中用户的主目录(部分),文件：/chroot_list_file=path 中指定;&lt;br&gt;（21）userlist_enable=YES/NO 是否加载用户列表文件&lt;br&gt;（22）userlist_deny=YES 表示上面所加载的用户是否允许拒绝登录&lt;br&gt;（23）userlist_file=/etc/vsftpd/user_list 列表文件   &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的
+    
+    </summary>
+    
+    
+      <category term="FTP" scheme="http://hesstudio.cn/tags/FTP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jenkins环境搭建</title>
+    <link href="http://hesstudio.cn/2016/06/01/jenkins/"/>
+    <id>http://hesstudio.cn/2016/06/01/jenkins/</id>
+    <published>2016-06-01T06:22:04.000Z</published>
+    <updated>2016-06-03T05:42:43.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key | sudo apt-key add -&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo sh -c &amp;#39;echo deb http://pkg.jenkins-ci.org/debian-stable binary/ &amp;gt; /etc/apt/sources.list.d/jenkins.list&amp;#39;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo apt-get install jenkins&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;FAQ&quot;&gt;&lt;a href=&quot;#FAQ&quot; class=&quot;headerlink&quot; title=&quot;FAQ&quot;&gt;&lt;/a&gt;FAQ&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;jenkins账户&lt;br&gt;jenkins安装后,会创建一个名为jenkins的服务账号(可通过&lt;code&gt;cat /etc/passwd&lt;/code&gt;查看),该账号是没有home目录的,可通过&lt;code&gt;sudo su -s /bin/bash jenkins&lt;/code&gt;切换到该账户&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://jenkins.io/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;jenkins官网&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenki
+    
+    </summary>
+    
+    
+      <category term="jenkins" scheme="http://hesstudio.cn/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>android_build-3</title>
+    <link href="http://hesstudio.cn/2016/05/31/android-build-3/"/>
+    <id>http://hesstudio.cn/2016/05/31/android-build-3/</id>
+    <published>2016-05-31T02:28:54.000Z</published>
+    <updated>2016-05-31T02:30:31.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;image&quot;&gt;&lt;a href=&quot;#image&quot; class=&quot;headerlink&quot; title=&quot;image&quot;&gt;&lt;/a&gt;image&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;boot.img &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;image&quot;&gt;&lt;a href=&quot;#image&quot; class=&quot;headerlink&quot; title=&quot;image&quot;&gt;&lt;/a&gt;image&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;boot.img &lt;/li&gt;
+&lt;/ol&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>linux-sed</title>
+    <link href="http://hesstudio.cn/2016/05/30/linux-sed/"/>
+    <id>http://hesstudio.cn/2016/05/30/linux-sed/</id>
+    <published>2016-05-30T06:04:18.000Z</published>
+    <updated>2016-06-01T06:23:12.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;^ 匹配行开始，如：/^sed/匹配所有以sed开头的行。&lt;br&gt;$ 匹配行结束，如：/sed$/匹配所有以sed结尾的行。&lt;br&gt;. 匹配一个非换行符的任意字符，如：/s.d/匹配s后接一个任意字符，最后是d。&lt;br&gt;* 匹配0个或多个字符，如：/&lt;em&gt;sed/匹配所有模板是一个或多个空格后紧跟sed的行。&lt;br&gt;[] 匹配一个指定范围内的字符，如/[ss]ed/匹配sed和Sed。&lt;br&gt;[^] 匹配一个不在指定范围内的字符，如：/[^A-RT-Z]ed/匹配不包含A-R和T-Z的一个字母开头，紧跟ed的行。&lt;br&gt;(..) 匹配子串，保存匹配的字符，如s/(love)able/\1rs，loveable被替换成lovers。&lt;br&gt;&amp;amp; 保存搜索字符用来替换其他字符，如s/love/&lt;strong&gt;&amp;amp;&lt;/strong&gt;/，love这成&lt;em&gt;*love&lt;/em&gt;&lt;/em&gt;。&lt;br&gt;\&amp;lt; 匹配单词的开始，如:/\ 匹配单词的结束，如/love&gt;/匹配包含以love结尾的单词的行。&lt;br&gt; x{m} 重复字符x，m次，如：/0{5}/匹配包含5个0的行。&lt;br&gt; x{m,} 重复字符x，至少m次，如：/0{5,}/匹配至少有5个0的行。&lt;br&gt;  x{m,n} 重复字符x，至少m次，不多于n次，如：/0{5,10}/匹配5~10个0的行。    &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;来自: &lt;a href=&quot;http://man.linuxde.net/sed&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://man.linuxde.net/sed&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;^ 匹配行开始，如：/^sed/匹配所有以sed开头的行。&lt;br&gt;$ 匹配行结束，如：/sed$/匹配所有以sed结尾的行。&lt;br&gt;. 匹配一个非换行符的任意字符，如：/s.d/匹配s后接一个任意字符，最后是d。&lt;br&gt;* 匹配0个或多个字符，如：
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Android Build系统之envsetup.sh</title>
@@ -183,26 +302,30 @@
     <link href="http://hesstudio.cn/2016/05/23/git-operate/"/>
     <id>http://hesstudio.cn/2016/05/23/git-operate/</id>
     <published>2016-05-23T08:58:56.000Z</published>
-    <updated>2016-05-24T02:22:57.000Z</updated>
+    <updated>2016-05-27T06:23:59.000Z</updated>
     
     <content type="html">&lt;hr&gt;
-&lt;h1 id=&quot;比较&quot;&gt;&lt;a href=&quot;#比较&quot; class=&quot;headerlink&quot; title=&quot;比较&quot;&gt;&lt;/a&gt;比较&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;工作区与暂存区比较:&lt;br&gt;&lt;code&gt;git diff&lt;/code&gt;   &lt;/li&gt;
-&lt;li&gt;暂存区与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;git diff --staged&lt;/code&gt;   &lt;/li&gt;
-&lt;li&gt;工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;git diff HEAD&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&quot;撤销&quot;&gt;&lt;a href=&quot;#撤销&quot; class=&quot;headerlink&quot; title=&quot;撤销&quot;&gt;&lt;/a&gt;撤销&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;撤销工作区修改:&lt;br&gt;&lt;code&gt;git checkout .&lt;/code&gt;&lt;br&gt;&lt;code&gt;git checkout -- &amp;lt;file&amp;gt;&lt;/code&gt;&lt;br&gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件&lt;/p&gt;
+&lt;h1 id=&quot;基本操作&quot;&gt;&lt;a href=&quot;#基本操作&quot; class=&quot;headerlink&quot; title=&quot;基本操作&quot;&gt;&lt;/a&gt;基本操作&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;配置&lt;br&gt;Usage: git config –global|–system|–local|–list&lt;br&gt;&lt;code&gt;$ git config --global user.name [username]&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git config --global user.email [email]&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git config --global color.ui true&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;撤销工作区,暂存区修改:&lt;br&gt;&lt;code&gt;git checkout HEAD .&lt;/code&gt;&lt;br&gt;&lt;code&gt;git checkout HEAD &amp;lt;file&amp;gt;&lt;/code&gt;&lt;br&gt;该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;初始化版本库&lt;br&gt;&lt;code&gt;$ git init&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&quot;移除&quot;&gt;&lt;a href=&quot;#移除&quot; class=&quot;headerlink&quot; title=&quot;移除&quot;&gt;&lt;/a&gt;移除&lt;/h1&gt;&lt;p&gt;1.&lt;/p&gt;
-&lt;p&gt;2.&lt;/p&gt;
-&lt;h1 id=&quot;日志查看&quot;&gt;&lt;a href=&quot;#日志查看&quot; class=&quot;headerlink&quot; title=&quot;日志查看&quot;&gt;&lt;/a&gt;日志查看&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;普通查看:&lt;br&gt;&lt;code&gt;git log&lt;/code&gt;&lt;br&gt;2.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&quot;其他&quot;&gt;&lt;a href=&quot;#其他&quot; class=&quot;headerlink&quot; title=&quot;其他&quot;&gt;&lt;/a&gt;其他&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;暂存&lt;br&gt;&lt;code&gt;$ git add .&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git add -u&lt;/code&gt;   暂存已跟踪文件&lt;br&gt;&lt;code&gt;$ git add -A&lt;/code&gt;   跟踪文件并暂存&lt;br&gt;&lt;code&gt;$ git add -p&lt;/code&gt;   选择性暂存文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;状态查看&lt;br&gt;&lt;code&gt;$ git status&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git status -s&lt;/code&gt; 精简显示   &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;比较&lt;br&gt;工作区与暂存区比较:&lt;br&gt;&lt;code&gt;$ git diff&lt;/code&gt;&lt;br&gt;暂存区与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;$ git diff --staged&lt;/code&gt;&lt;br&gt;工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;$ git diff HEAD&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;撤销&lt;br&gt;撤销工作区修改:&lt;br&gt;&lt;code&gt;$ git checkout .&lt;/code&gt;&lt;br&gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件&lt;br&gt;&lt;code&gt;$ git checkout -- &amp;lt;file&amp;gt;&lt;/code&gt;   &lt;/p&gt;
+&lt;p&gt;撤销工作区,暂存区修改:&lt;br&gt;&lt;code&gt;$ git checkout HEAD .&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git checkout HEAD &amp;lt;file&amp;gt;&lt;/code&gt;&lt;br&gt;该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,&lt;/p&gt;
+&lt;p&gt;暂存区域撤销:&lt;br&gt;&lt;code&gt;$ git reset HEAD&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;移除&lt;br&gt;暂存区移除:&lt;br&gt;&lt;code&gt;$ git rm --cached &amp;lt;file&amp;gt;&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;日志查看&lt;br&gt;&lt;code&gt;git log&lt;/code&gt;   &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;其他&lt;/p&gt;
+&lt;/li&gt;
 &lt;li&gt;修改远程仓库url:&lt;br&gt;&lt;code&gt;git remote set-url origin new-url&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
@@ -211,9 +334,8 @@
     <summary type="html">
     
       &lt;hr&gt;
-&lt;h1 id=&quot;比较&quot;&gt;&lt;a href=&quot;#比较&quot; class=&quot;headerlink&quot; title=&quot;比较&quot;&gt;&lt;/a&gt;比较&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;工作区与暂存区比较:&lt;br&gt;&lt;code&gt;git diff&lt;/code&gt;   &lt;/li&gt;
-&lt;li&gt;暂存区与HEAD(版本
+&lt;h1 id=&quot;基本操作&quot;&gt;&lt;a href=&quot;#基本操作&quot; class=&quot;headerlink&quot; title=&quot;基本操作&quot;&gt;&lt;/a&gt;基本操作&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;配置&lt;br&gt;Usage: git config –global|–system|–local|–
     
     </summary>
     
@@ -320,8 +442,8 @@
   
   <entry>
     <title>GIT+Gerrit+Jenkins环境搭建</title>
-    <link href="http://hesstudio.cn/2016/05/18/Gerrit-md/"/>
-    <id>http://hesstudio.cn/2016/05/18/Gerrit-md/</id>
+    <link href="http://hesstudio.cn/2016/05/18/gerrit-md/"/>
+    <id>http://hesstudio.cn/2016/05/18/gerrit-md/</id>
     <published>2016-05-18T02:09:57.000Z</published>
     <updated>2016-05-20T07:44:14.000Z</updated>
     

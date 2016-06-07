@@ -4,6 +4,68 @@
   
     
     <entry>
+      <title><![CDATA[Ubuntu14.04 FTP服务器搭建]]></title>
+      <url>http://hesstudio.cn/2016/06/06/ftp/</url>
+      <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ol>
+<li>安装： <code>sudo apt-get install vsftpd</code>    </li>
+<li>创建FTP账户： <code>sudo useradd -g ftp -s /sbin/nologin -d /home/ftp_directory ftpuser</code></li>
+<li>设置账户密码： <code>sudo passwd ftpuser</code>   </li>
+<li>重启服务： <code>sudo service vsftpd restart</code></li>
+</ol>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ol>
+<li><p>备份<br>vsftpd的配置文件位于/etc/vsftpd.conf，修改之前先备份配置文件<br><code>sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.bak</code>    </p>
+</li>
+<li><p>目录限制<br>默认情况下，用户登陆FTP后，是可以切换到根目录以外的主机其他目录，为了加以限制，可做如下配置：<br><code>chroot_list_enable=YES</code><br><code>chroot_list_file=/etc/vsftpd.chroot_list</code><br>然后设置chroot_local_user，有以下二种设置<br>设置<code>chroot_local_user＝YES</code>表示/etc/vsftpd.chroot_list文件中用户不能chroot，其他用户可以<br>设置<code>chroot_local_user=NO</code>表示/etc/vsftpd.chroot_list中用户可以chroot，其他用户不行<br>创建vsftpd.chroot_list，写入需控制chroot的用户<br><code>sudo touch /etc/vsftpd.chroot_list</code>  </p>
+</li>
+<li><p>写权限<br><code>write_enable=YES</code><br>如果开启了chroot来控制用户路径，则用户不再具有该用户根目录的写的权限<br>需设置<code>allow_writeable_chroot=YES</code>  </p>
+</li>
+<li><p>530 Login incorrect<br>如果在登陆时返回530 Login incorrect.<br>修改<br><code>pam_service_name=vsftpd</code><br>为<br><code>pam_service_name=ftp</code>  </p>
+</li>
+<li><p>相关配置参数<br>（1）ftpd_banner=welcome to ftp service ：设置连接服务器后的欢迎信息<br>（2）idle_session_timeout=60 ：限制远程的客户机连接后，所建立的控制连接，在多长时间没有做任何的操作就会中断(秒)<br>（3）data_connection_timeout=120 ：设置客户机在进行数据传输时,设置空闲的数据中断时间<br>（4）accept_timeout=60 设置在多长时间后自动建立连接<br>（5）connect_timeout=60 设置数据连接的最大激活时间，多长时间断开，为别人所使用<br>（6）max_clients=200 指明服务器总的客户并发连接数为200<br>（7）max_per_ip=3 指明每个客户机的最大连接数为3<br>（8）local_max_rate=50000(50kbytes/sec) 本地用户最大传输速率限制<br>（9）anon_max_rate=30000匿名用户的最大传输速率限制<br>（10）pasv_min_port=端口<br>（11）pasv-max-prot=端口号 定义最大与最小端口，为0表示任意端口;为客户端连接指明端口<br>（12）listen_address=IP地址 设置ftp服务来监听的地址，客户端可以用哪个地址来连接<br>（13）listen_port=端口号 设置FTP工作的端口号，默认的为21<br>（14）chroot_local_user=YES 设置所有的本地用户可以chroot<br>（15）chroot_local_user=NO 设置指定用户能够chroot<br>（16）chroot_list_enable=YES<br>（17）chroot_list_file=/etc/vsftpd/chroot_list(只有/etc/vsftpd/chroot_list中的指定的用户才能执行 )<br>（18）local_root=path 无论哪个用户都能登录的用户，定义登录帐号的主目录, 若没有指定，则每一个用户则进入到个人用户主目录<br>（19）chroot_local_user=yes/no 是否锁定本地系统帐号用户主目录(所有);锁定后，用户只能访问用户的主目录/home/user,不能利用cd命令向上转;只能向下<br>（20）chroot_list_enable=yes/no 锁定指定文件中用户的主目录(部分),文件：/chroot_list_file=path 中指定;<br>（21）userlist_enable=YES/NO 是否加载用户列表文件<br>（22）userlist_deny=YES 表示上面所加载的用户是否允许拒绝登录<br>（23）userlist_file=/etc/vsftpd/user_list 列表文件   </p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[jenkins环境搭建]]></title>
+      <url>http://hesstudio.cn/2016/06/01/jenkins/</url>
+      <content type="html"><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ol>
+<li><code>wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key | sudo apt-key add -</code></li>
+<li><code>sudo sh -c &#39;echo deb http://pkg.jenkins-ci.org/debian-stable binary/ &gt; /etc/apt/sources.list.d/jenkins.list&#39;</code></li>
+<li><code>sudo apt-get update</code></li>
+<li><code>sudo apt-get install jenkins</code></li>
+</ol>
+<h1 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h1><ol>
+<li>jenkins账户<br>jenkins安装后,会创建一个名为jenkins的服务账号(可通过<code>cat /etc/passwd</code>查看),该账号是没有home目录的,可通过<code>sudo su -s /bin/bash jenkins</code>切换到该账户</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://jenkins.io/index.html" target="_blank" rel="external">jenkins官网</a></li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android_build-3]]></title>
+      <url>http://hesstudio.cn/2016/05/31/android-build-3/</url>
+      <content type="html"><![CDATA[<h1 id="image"><a href="#image" class="headerlink" title="image"></a>image</h1><ol>
+<li>boot.img </li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[linux-sed]]></title>
+      <url>http://hesstudio.cn/2016/05/30/linux-sed/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>^ 匹配行开始，如：/^sed/匹配所有以sed开头的行。<br>$ 匹配行结束，如：/sed$/匹配所有以sed结尾的行。<br>. 匹配一个非换行符的任意字符，如：/s.d/匹配s后接一个任意字符，最后是d。<br>* 匹配0个或多个字符，如：/<em>sed/匹配所有模板是一个或多个空格后紧跟sed的行。<br>[] 匹配一个指定范围内的字符，如/[ss]ed/匹配sed和Sed。<br>[^] 匹配一个不在指定范围内的字符，如：/[^A-RT-Z]ed/匹配不包含A-R和T-Z的一个字母开头，紧跟ed的行。<br>(..) 匹配子串，保存匹配的字符，如s/(love)able/\1rs，loveable被替换成lovers。<br>&amp; 保存搜索字符用来替换其他字符，如s/love/<strong>&amp;</strong>/，love这成<em>*love</em></em>。<br>\&lt; 匹配单词的开始，如:/\ 匹配单词的结束，如/love>/匹配包含以love结尾的单词的行。<br> x{m} 重复字符x，m次，如：/0{5}/匹配包含5个0的行。<br> x{m,} 重复字符x，至少m次，如：/0{5,}/匹配至少有5个0的行。<br>  x{m,n} 重复字符x，至少m次，不多于n次，如：/0{5,10}/匹配5~10个0的行。    </p>
+</blockquote>
+<p>来自: <a href="http://man.linuxde.net/sed" target="_blank" rel="external">http://man.linuxde.net/sed</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Android Build系统之envsetup.sh]]></title>
       <url>http://hesstudio.cn/2016/05/24/android-build-2/</url>
       <content type="html"><![CDATA[<hr>
@@ -152,23 +214,27 @@
       <title><![CDATA[git操作总结]]></title>
       <url>http://hesstudio.cn/2016/05/23/git-operate/</url>
       <content type="html"><![CDATA[<hr>
-<h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><ol>
-<li>工作区与暂存区比较:<br><code>git diff</code>   </li>
-<li>暂存区与HEAD(版本库当前分支)比较:<br><code>git diff --staged</code>   </li>
-<li>工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:<br><code>git diff HEAD</code></li>
-</ol>
-<h1 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h1><ol>
-<li><p>撤销工作区修改:<br><code>git checkout .</code><br><code>git checkout -- &lt;file&gt;</code><br>该命令会将暂存区全部文件或指定文件替换工作区对应文件</p>
+<h1 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h1><ol>
+<li><p>配置<br>Usage: git config –global|–system|–local|–list<br><code>$ git config --global user.name [username]</code><br><code>$ git config --global user.email [email]</code><br><code>$ git config --global color.ui true</code></p>
 </li>
-<li><p>撤销工作区,暂存区修改:<br><code>git checkout HEAD .</code><br><code>git checkout HEAD &lt;file&gt;</code><br>该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,</p>
+<li><p>初始化版本库<br><code>$ git init</code></p>
 </li>
-</ol>
-<h1 id="移除"><a href="#移除" class="headerlink" title="移除"></a>移除</h1><p>1.</p>
-<p>2.</p>
-<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><ol>
-<li>普通查看:<br><code>git log</code><br>2.</li>
-</ol>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
+<li><p>暂存<br><code>$ git add .</code><br><code>$ git add -u</code>   暂存已跟踪文件<br><code>$ git add -A</code>   跟踪文件并暂存<br><code>$ git add -p</code>   选择性暂存文件</p>
+</li>
+<li><p>状态查看<br><code>$ git status</code><br><code>$ git status -s</code> 精简显示   </p>
+</li>
+<li><p>比较<br>工作区与暂存区比较:<br><code>$ git diff</code><br>暂存区与HEAD(版本库当前分支)比较:<br><code>$ git diff --staged</code><br>工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:<br><code>$ git diff HEAD</code></p>
+</li>
+<li><p>撤销<br>撤销工作区修改:<br><code>$ git checkout .</code><br>该命令会将暂存区全部文件或指定文件替换工作区对应文件<br><code>$ git checkout -- &lt;file&gt;</code>   </p>
+<p>撤销工作区,暂存区修改:<br><code>$ git checkout HEAD .</code><br><code>$ git checkout HEAD &lt;file&gt;</code><br>该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,</p>
+<p>暂存区域撤销:<br><code>$ git reset HEAD</code></p>
+</li>
+<li><p>移除<br>暂存区移除:<br><code>$ git rm --cached &lt;file&gt;</code>  </p>
+</li>
+<li><p>日志查看<br><code>git log</code>   </p>
+</li>
+<li><p>其他</p>
+</li>
 <li>修改远程仓库url:<br><code>git remote set-url origin new-url</code></li>
 </ol>
 <hr>
@@ -239,7 +305,7 @@
     
     <entry>
       <title><![CDATA[GIT+Gerrit+Jenkins环境搭建]]></title>
-      <url>http://hesstudio.cn/2016/05/18/Gerrit-md/</url>
+      <url>http://hesstudio.cn/2016/05/18/gerrit-md/</url>
       <content type="html"><![CDATA[<p>[TOC]</p>
 <h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
 <li><p>创建gerrit管理用户<br>$ sudo adduser gerrit<br>$ sudo passwd gerrit</p>

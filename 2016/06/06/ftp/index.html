@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="FTP," />
 
 
 
@@ -86,15 +86,28 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="生活不止眼前的苟且">
-<meta property="og:url" content="http://hesstudio.cn/page/2/index.html">
+<meta name="description" content="简介vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.
+安装
+安装： sudo apt-get install vsftpd    
+创建FTP账户： sudo useradd -g ftp -s /sbin/nologin -d /home/ftp_directory ftpuser
+设置账">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu14.04 FTP服务器搭建">
+<meta property="og:url" content="http://hesstudio.cn/2016/06/06/ftp/index.html">
 <meta property="og:site_name" content="生活不止眼前的苟且">
-<meta property="og:description">
+<meta property="og:description" content="简介vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.
+安装
+安装： sudo apt-get install vsftpd    
+创建FTP账户： sudo useradd -g ftp -s /sbin/nologin -d /home/ftp_directory ftpuser
+设置账">
+<meta property="og:updated_time" content="2016-06-07T06:25:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="生活不止眼前的苟且">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Ubuntu14.04 FTP服务器搭建">
+<meta name="twitter:description" content="简介vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.
+安装
+安装： sudo apt-get install vsftpd    
+创建FTP账户： sudo useradd -g ftp -s /sbin/nologin -d /home/ftp_directory ftpuser
+设置账">
 
 
 
@@ -112,7 +125,7 @@
   };
 </script>
 
-  <title> 生活不止眼前的苟且 </title>
+  <title> Ubuntu14.04 FTP服务器搭建 | 生活不止眼前的苟且 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -143,9 +156,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -255,9 +266,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -277,10 +288,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/05/23/git-operate/" itemprop="url">
-                  git操作总结
-                </a>
+                Ubuntu14.04 FTP服务器搭建
               
             
           </h1>
@@ -292,8 +300,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T16:58:56+08:00" content="2016-05-23">
-              2016-05-23
+            <time itemprop="dateCreated" datetime="2016-06-06T16:14:12+08:00" content="2016-06-06">
+              2016-06-06
             </time>
           </span>
 
@@ -303,8 +311,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/23/git-operate/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/git-operate/" itemprop="commentsCount"></span>
+                <a href="/2016/06/06/ftp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/ftp/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -327,491 +335,97 @@
       
 
       
-        
-          
-          
-基本操作
-配置Usage: git config –global|–system|–local|–list$ git config --global user.name [username]$ git config --global user.email [email]$ git config -
-          ...
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ol>
+<li>安装： <code>sudo apt-get install vsftpd</code>    </li>
+<li>创建FTP账户： <code>sudo useradd -g ftp -s /sbin/nologin -d /home/ftp_directory ftpuser</code></li>
+<li>设置账户密码： <code>sudo passwd ftpuser</code>   </li>
+<li>重启服务： <code>sudo service vsftpd restart</code></li>
+</ol>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ol>
+<li><p>备份<br>vsftpd的配置文件位于/etc/vsftpd.conf，修改之前先备份配置文件<br><code>sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.bak</code>    </p>
+</li>
+<li><p>目录限制<br>默认情况下，用户登陆FTP后，是可以切换到根目录以外的主机其他目录，为了加以限制，可做如下配置：<br><code>chroot_list_enable=YES</code><br><code>chroot_list_file=/etc/vsftpd.chroot_list</code><br>然后设置chroot_local_user，有以下二种设置<br>设置<code>chroot_local_user＝YES</code>表示/etc/vsftpd.chroot_list文件中用户不能chroot，其他用户可以<br>设置<code>chroot_local_user=NO</code>表示/etc/vsftpd.chroot_list中用户可以chroot，其他用户不行<br>创建vsftpd.chroot_list，写入需控制chroot的用户<br><code>sudo touch /etc/vsftpd.chroot_list</code>  </p>
+</li>
+<li><p>写权限<br><code>write_enable=YES</code><br>如果开启了chroot来控制用户路径，则用户不再具有该用户根目录的写的权限<br>需设置<code>allow_writeable_chroot=YES</code>  </p>
+</li>
+<li><p>530 Login incorrect<br>如果在登陆时返回530 Login incorrect.<br>修改<br><code>pam_service_name=vsftpd</code><br>为<br><code>pam_service_name=ftp</code>  </p>
+</li>
+<li><p>相关配置参数<br>（1）ftpd_banner=welcome to ftp service ：设置连接服务器后的欢迎信息<br>（2）idle_session_timeout=60 ：限制远程的客户机连接后，所建立的控制连接，在多长时间没有做任何的操作就会中断(秒)<br>（3）data_connection_timeout=120 ：设置客户机在进行数据传输时,设置空闲的数据中断时间<br>（4）accept_timeout=60 设置在多长时间后自动建立连接<br>（5）connect_timeout=60 设置数据连接的最大激活时间，多长时间断开，为别人所使用<br>（6）max_clients=200 指明服务器总的客户并发连接数为200<br>（7）max_per_ip=3 指明每个客户机的最大连接数为3<br>（8）local_max_rate=50000(50kbytes/sec) 本地用户最大传输速率限制<br>（9）anon_max_rate=30000匿名用户的最大传输速率限制<br>（10）pasv_min_port=端口<br>（11）pasv-max-prot=端口号 定义最大与最小端口，为0表示任意端口;为客户端连接指明端口<br>（12）listen_address=IP地址 设置ftp服务来监听的地址，客户端可以用哪个地址来连接<br>（13）listen_port=端口号 设置FTP工作的端口号，默认的为21<br>（14）chroot_local_user=YES 设置所有的本地用户可以chroot<br>（15）chroot_local_user=NO 设置指定用户能够chroot<br>（16）chroot_list_enable=YES<br>（17）chroot_list_file=/etc/vsftpd/chroot_list(只有/etc/vsftpd/chroot_list中的指定的用户才能执行 )<br>（18）local_root=path 无论哪个用户都能登录的用户，定义登录帐号的主目录, 若没有指定，则每一个用户则进入到个人用户主目录<br>（19）chroot_local_user=yes/no 是否锁定本地系统帐号用户主目录(所有);锁定后，用户只能访问用户的主目录/home/user,不能利用cd命令向上转;只能向下<br>（20）chroot_list_enable=yes/no 锁定指定文件中用户的主目录(部分),文件：/chroot_list_file=path 中指定;<br>（21）userlist_enable=YES/NO 是否加载用户列表文件<br>（22）userlist_deny=YES 表示上面所加载的用户是否允许拒绝登录<br>（23）userlist_file=/etc/vsftpd/user_list 列表文件   </p>
+</li>
+</ol>
 
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/23/git-operate/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/23/android-build-1/" itemprop="url">
-                  Android Build系统概述
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T13:22:51+08:00" content="2016-05-23">
-              2016-05-23
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/23/android-build-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/android-build-1/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
+            <a href="/tags/FTP/" rel="tag">#FTP</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          
-
-Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/23/android-build-1/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/01/jenkins/" rel="next" title="jenkins环境搭建">
+                <i class="fa fa-chevron-left"></i> jenkins环境搭建
+              </a>
+            
           </div>
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+          <div class="post-nav-prev post-nav-item">
             
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/18/remastersys-md/" itemprop="url">
-                  remastersys 备份/制作ubuntu副本
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-18T19:48:30+08:00" content="2016-05-18">
-              2016-05-18
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/18/remastersys-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/18/remastersys-md/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          简介Remastersys是由Tony Brijeski 发起的免费软件项目,可以把已安装的Ubuntu、Debian及其衍生版打包成一个可以用来安装的Live CD/DVD的iso文件.
-安装
-环境: ubuntu14.04
-步骤:$ wget &quot;https://www.freesoft
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/18/remastersys-md/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
+
+    <div class="post-spread">
       
+        <div class="ds-share flat" data-thread-key="2016/06/06/ftp/"
+     data-title="Ubuntu14.04 FTP服务器搭建"
+     data-content=""
+     data-url="http://hesstudio.cn/2016/06/06/ftp/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
 
-  
-  
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/18/gerrit-md/" itemprop="url">
-                  GIT+Gerrit+Jenkins环境搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-18T10:09:57+08:00" content="2016-05-18">
-              2016-05-18
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/18/gerrit-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/18/gerrit-md/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          [TOC]
-准备
-创建gerrit管理用户$ sudo adduser gerrit$ sudo passwd gerrit
-
-配置java环境  
-
-下载gerrithttps://www.gerritcodereview.com/
-
-安装与配置
-安装$ su gerrit$ cd ~$ java
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/18/gerrit-md/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/15/android-handler/" itemprop="url">
-                  Android之消息机制
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-15T13:16:33+08:00" content="2016-04-15">
-              2016-04-15
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/04/15/android-handler/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/15/android-handler/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-简介消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.
-Android的消息队列是线程相关的,每启动一个线程,都可以在内部创
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/15/android-handler/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
+  </div>
 
 
           </div>
@@ -819,6 +433,14 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/06/ftp/"
+           data-title="Ubuntu14.04 FTP服务器搭建" data-url="http://hesstudio.cn/2016/06/06/ftp/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -838,8 +460,17 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -889,6 +520,17 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -974,6 +616,10 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
