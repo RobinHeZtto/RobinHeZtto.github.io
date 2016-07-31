@@ -4,6 +4,38 @@
   
     
     <entry>
+      <title><![CDATA[android-ota]]></title>
+      <url>http://hesstudio.cn/2016/06/30/android-ota/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android-recovery]]></title>
+      <url>http://hesstudio.cn/2016/06/30/android-recovery/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Android之签名机制]]></title>
+      <url>http://hesstudio.cn/2016/06/29/android-sign/</url>
+      <content type="html"><![CDATA[<p><a href="http://www.mobibrw.com/2015/2657" target="_blank" rel="external">http://www.mobibrw.com/2015/2657</a><br><a href="http://www.mobibrw.com/2015/2826" target="_blank" rel="external">http://www.mobibrw.com/2015/2826</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Thinking-in-programming-language.md]]></title>
+      <url>http://hesstudio.cn/2016/06/26/Thinking-in-programming-language-md/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android studio使用]]></title>
+      <url>http://hesstudio.cn/2016/06/12/android-studio/</url>
+      <content type="html"><![CDATA[<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><p>查找方法 Ctrl+F12<br>查找文件 Ctrl+Shift+N<br>优化导入的类/包 Ctrl+Alt+O</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Ubuntu14.04 FTP服务器搭建]]></title>
       <url>http://hesstudio.cn/2016/06/06/ftp/</url>
       <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.</p>
@@ -47,166 +79,12 @@
     </entry>
     
     <entry>
-      <title><![CDATA[android_build-3]]></title>
-      <url>http://hesstudio.cn/2016/05/31/android-build-3/</url>
-      <content type="html"><![CDATA[<h1 id="image"><a href="#image" class="headerlink" title="image"></a>image</h1><ol>
-<li>boot.img </li>
-</ol>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[linux-sed]]></title>
       <url>http://hesstudio.cn/2016/05/30/linux-sed/</url>
       <content type="html"><![CDATA[<blockquote>
 <p>^ 匹配行开始，如：/^sed/匹配所有以sed开头的行。<br>$ 匹配行结束，如：/sed$/匹配所有以sed结尾的行。<br>. 匹配一个非换行符的任意字符，如：/s.d/匹配s后接一个任意字符，最后是d。<br>* 匹配0个或多个字符，如：/<em>sed/匹配所有模板是一个或多个空格后紧跟sed的行。<br>[] 匹配一个指定范围内的字符，如/[ss]ed/匹配sed和Sed。<br>[^] 匹配一个不在指定范围内的字符，如：/[^A-RT-Z]ed/匹配不包含A-R和T-Z的一个字母开头，紧跟ed的行。<br>(..) 匹配子串，保存匹配的字符，如s/(love)able/\1rs，loveable被替换成lovers。<br>&amp; 保存搜索字符用来替换其他字符，如s/love/<strong>&amp;</strong>/，love这成<em>*love</em></em>。<br>\&lt; 匹配单词的开始，如:/\ 匹配单词的结束，如/love>/匹配包含以love结尾的单词的行。<br> x{m} 重复字符x，m次，如：/0{5}/匹配包含5个0的行。<br> x{m,} 重复字符x，至少m次，如：/0{5,}/匹配至少有5个0的行。<br>  x{m,n} 重复字符x，至少m次，不多于n次，如：/0{5,10}/匹配5~10个0的行。    </p>
 </blockquote>
 <p>来自: <a href="http://man.linuxde.net/sed" target="_blank" rel="external">http://man.linuxde.net/sed</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Android Build系统之envsetup.sh]]></title>
-      <url>http://hesstudio.cn/2016/05/24/android-build-2/</url>
-      <content type="html"><![CDATA[<hr>
-<blockquote>
-<p>Android Build系统是比较大的模块,为了能快速了解整个模块的组织架构,后面采用从入口开始分析的方式,一步步深入分析Android的Build系统.在编译AOSP前,首先运行的是envsetup.sh脚本,所以下面就从envsetup.sh脚本开始分析.</p>
-</blockquote>
-<h1 id="envsetup-sh的作用"><a href="#envsetup-sh的作用" class="headerlink" title="envsetup.sh的作用"></a>envsetup.sh的作用</h1><p>打开envsetup.sh脚本,可以看到该脚本定义了很多的shell命令,这些命令在envsetup.sh脚本执行后可以直接在shell环境中使用.忽略掉定义部分,envsetup.sh脚本实际执行的代码只有数行,如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># 中间部分代码</span><br><span class="line"># add the default one here</span><br><span class="line">add_lunch_combo aosp_arm-eng</span><br><span class="line">add_lunch_combo aosp_arm64-eng</span><br><span class="line">add_lunch_combo aosp_mips-eng</span><br><span class="line">add_lunch_combo aosp_mips64-eng</span><br><span class="line">add_lunch_combo aosp_x86-eng</span><br><span class="line">add_lunch_combo aosp_x86_64-eng</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"># 结尾部分代码</span><br><span class="line">if [ &quot;x$SHELL&quot; != &quot;x/bin/bash&quot; ]; then</span><br><span class="line">    case `ps -o command -p $$` in</span><br><span class="line">        *bash*)</span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            echo &quot;WARNING: Only bash is supported, use of other shell would lead to erroneous results&quot;</span><br><span class="line">            ;;</span><br><span class="line">    esac</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># Execute the contents of any erroneous files we can find.</span><br><span class="line">for f in `test -d device &amp;&amp; find -L device -maxdepth 4 -name &apos;vendorsetup.sh&apos; 2&gt; /dev/null | sort` \</span><br><span class="line">         `test -d vendor &amp;&amp; find -L vendor -maxdepth 4 -name &apos;vendorsetup.sh&apos; 2&gt; /dev/null | sort`</span><br><span class="line">do</span><br><span class="line">    echo &quot;including $f&quot;</span><br><span class="line">    . $f</span><br><span class="line">done</span><br><span class="line">unset f</span><br><span class="line"></span><br><span class="line">addcompletions</span><br></pre></td></tr></table></figure>
-<p>中间部分有6条add_lunch_combo的调用,结尾部分首先会判断是否是bash环境,如果不是提示警告.接着查找device与vendor目录下的vendorsetup.sh脚本并执行.<br>先看add_lunch_combo的定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function add_lunch_combo()</span><br><span class="line">&#123;</span><br><span class="line">    local new_combo=$1</span><br><span class="line">    local c</span><br><span class="line">    for c in $&#123;LUNCH_MENU_CHOICES[@]&#125; ; do</span><br><span class="line">        if [ &quot;$new_combo&quot; = &quot;$c&quot; ] ; then</span><br><span class="line">            return</span><br><span class="line">        fi</span><br><span class="line">    done</span><br><span class="line">    LUNCH_MENU_CHOICES=($&#123;LUNCH_MENU_CHOICES[@]&#125; $new_combo)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>可以看到add_lunch_combo的作用就是将传递的$1参数加入到LUNCH_MENU_CHOICES数组中.<br>再看一下vendorsetup.sh的定义,以bullhead为例,device/lge/bullhead/vendorsetup.sh的内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_lunch_combo aosp_bullhead-userdebug</span><br></pre></td></tr></table></figure></p>
-<p>可以发现整个envsetup.sh执行过后,除了定义了一些shell函数,剩下的工作就是利用add_lunch_combo将传递给其的参数加入到全局数组LUNCH_MENU_CHOICES中,到底LUNCH_MENU_CHOICES有什么作用呢?我们可以在终端执行一下lunch命令,输出如下:</p>
-<blockquote>
-<p>You’re building on Linux</p>
-<p>Lunch menu… pick a combo:</p>
-<pre><code>1. aosp_arm-eng
-2. aosp_arm64-eng
-3. aosp_mips-eng
-4. aosp_mips64-eng
-5. aosp_x86-eng
-6. aosp_x86_64-eng
-7. aosp_deb-userdebug
-8. aosp_flo-userdebug
-9. full_fugu-userdebug
-10. aosp_fugu-userdebug
-11. mini_emulator_arm64-userdebug
-12. m_e_arm-userdebug
-13. mini_emulator_mips-userdebug
-14. mini_emulator_x86_64-userdebug
-15. mini_emulator_x86-userdebug
-16. aosp_flounder-userdebug
-17. aosp_angler-userdebug
-18. aosp_bullhead-userdebug
-19. aosp_hammerhead-userdebug
-20. aosp_hammerhead_fp-userdebug
-21. aosp_shamu-userdebug
-</code></pre><p>Which would you like? [aosp_arm-eng]</p>
-</blockquote>
-<p>实际上上面的这些选项就是通过add_lunch_combo加进去的.</p>
-<p>envsetup.sh脚本中定义的很多shell命令,一些常用的如下.</p>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>lunch</td>
-<td>lunch <product_name><build_variant> 指定当前编译产品</build_variant></product_name></td>
-</tr>
-</tbody>
-</table>
-<p>下面分析以下lunch命令的功能:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">function lunch()</span><br><span class="line">&#123;</span><br><span class="line">    local answer</span><br><span class="line"></span><br><span class="line">    if [ &quot;$1&quot; ] ; then</span><br><span class="line">        answer=$1</span><br><span class="line">    else</span><br><span class="line">        print_lunch_menu</span><br><span class="line">        echo -n &quot;Which would you like? [aosp_arm-eng] &quot;</span><br><span class="line">        read answer</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    local selection=</span><br><span class="line"></span><br><span class="line">    # 如果lunch后没跟参数,默认aosp_arm-eng</span><br><span class="line">    if [ -z &quot;$answer&quot; ]</span><br><span class="line">    then</span><br><span class="line">        selection=aosp_arm-eng</span><br><span class="line">    elif (echo -n $answer | grep -q -e &quot;^[0-9][0-9]*$&quot;)</span><br><span class="line">    then</span><br><span class="line">        if [ $answer -le $&#123;#LUNCH_MENU_CHOICES[@]&#125; ]</span><br><span class="line">        then</span><br><span class="line">            selection=$&#123;LUNCH_MENU_CHOICES[$(($answer-1))]&#125;</span><br><span class="line">        fi</span><br><span class="line">    elif (echo -n $answer | grep -q -e &quot;^[^\-][^\-]*-[^\-][^\-]*$&quot;)</span><br><span class="line">    then</span><br><span class="line">        selection=$answer</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    if [ -z &quot;$selection&quot; ]</span><br><span class="line">    then</span><br><span class="line">        echo</span><br><span class="line">        echo &quot;Invalid lunch combo: $answer&quot;</span><br><span class="line">        return 1</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    export TARGET_BUILD_APPS=</span><br><span class="line"></span><br><span class="line">    # 变量selection &quot;-&quot;分割的前部分赋值product</span><br><span class="line">    local product=$(echo -n $selection | sed -e &quot;s/-.*$//&quot;)</span><br><span class="line">    check_product $product</span><br><span class="line">    if [ $? -ne 0 ]</span><br><span class="line">    then</span><br><span class="line">        echo</span><br><span class="line">        echo &quot;** Don&apos;t have a product spec for: &apos;$product&apos;&quot;</span><br><span class="line">        echo &quot;** Do you have the right repo manifest?&quot;</span><br><span class="line">        product=</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    # 变量selection &quot;-&quot;分割的后部分赋值variant</span><br><span class="line">    local variant=$(echo -n $selection | sed -e &quot;s/^[^\-]*-//&quot;)</span><br><span class="line">    check_variant $variant</span><br><span class="line">    if [ $? -ne 0 ]</span><br><span class="line">    then</span><br><span class="line">        echo</span><br><span class="line">        echo &quot;** Invalid variant: &apos;$variant&apos;&quot;</span><br><span class="line">        echo &quot;** Must be one of $&#123;VARIANT_CHOICES[@]&#125;&quot;</span><br><span class="line">        variant=</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    if [ -z &quot;$product&quot; -o -z &quot;$variant&quot; ]</span><br><span class="line">    then</span><br><span class="line">        echo</span><br><span class="line">        return 1</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    export TARGET_PRODUCT=$product</span><br><span class="line">    export TARGET_BUILD_VARIANT=$variant</span><br><span class="line">    export TARGET_BUILD_TYPE=release</span><br><span class="line"></span><br><span class="line">    echo</span><br><span class="line"></span><br><span class="line">    # 设置更多环境变量</span><br><span class="line">    set_stuff_for_environment</span><br><span class="line">    # 打印设置的环境变量</span><br><span class="line">    printconfig</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>lunch aosp_bullhead-userdebug执行完毕后输出如下:   </p>
-<blockquote>
-<p>PLATFORM_VERSION_CODENAME=REL<br>PLATFORM_VERSION=6.0.1<br>TARGET_PRODUCT=aosp_bullhead<br>TARGET_BUILD_VARIANT=userdebug<br>TARGET_BUILD_TYPE=release<br>TARGET_BUILD_APPS=<br>TARGET_ARCH=arm64<br>TARGET_ARCH_VARIANT=armv8-a<br>TARGET_CPU_VARIANT=cortex-a53<br>TARGET_2ND_ARCH=arm<br>TARGET_2ND_ARCH_VARIANT=armv7-a-neon<br>TARGET_2ND_CPU_VARIANT=cortex-a7<br>HOST_ARCH=x86_64<br>HOST_OS=linux<br>HOST_OS_EXTRA=Linux-4.2.0-27-generic-x86_64-with-Ubuntu-14.04-trusty<br>HOST_BUILD_TYPE=release<br>BUILD_ID=MHC19J<br>OUT_DIR=out   </p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>环境变量</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PLATFORM_VERSION_CODENAME</td>
-<td>代表平台版本名称</td>
-</tr>
-<tr>
-<td>PLATFORM_VERSION</td>
-<td>表示平台版本号</td>
-</tr>
-<tr>
-<td>TARGET_PRODUCT</td>
-<td>表示产品名称</td>
-</tr>
-<tr>
-<td>TARGET_BUILD_VARIANT</td>
-<td>表示产品编译类型,可以是eng,userdebug,debug</td>
-</tr>
-<tr>
-<td>TARGET_BUILD_TYPE</td>
-<td>编译类型,可以是release或者debug,当为debug时,编译时会加入调试信息</td>
-</tr>
-<tr>
-<td>TARGET_BUILD_APPS</td>
-<td>编译android时为空,编译模块是为模块的路径</td>
-</tr>
-<tr>
-<td>TARGET_ARCH</td>
-<td>目标cpu架构</td>
-</tr>
-<tr>
-<td>TARGET_ARCH_VARIANT</td>
-<td>目标cpu架构版本</td>
-</tr>
-<tr>
-<td>TARGET_CPU_VARIANT</td>
-<td>目标cpu代号</td>
-</tr>
-<tr>
-<td>TARGET_2ND_ARCH</td>
-<td>目标第二cpu架构</td>
-</tr>
-<tr>
-<td>TARGET_2ND_ARCH_VARIANT</td>
-<td>目标第二cpu架构版本</td>
-</tr>
-<tr>
-<td>TARGET_2ND_CPU_VARIANT</td>
-<td>目标第二代cpu代号</td>
-</tr>
-<tr>
-<td>HOST_ARCH</td>
-<td>编译平台架构</td>
-</tr>
-<tr>
-<td>HOST_OS</td>
-<td>编译平台操作系统</td>
-</tr>
-<tr>
-<td>HOST_OS_EXTRA</td>
-<td>编译平台额外信息</td>
-</tr>
-<tr>
-<td>HOST_BUILD_TYPE</td>
-<td>编译平台编译类型</td>
-</tr>
-<tr>
-<td>BUILD_ID</td>
-<td>编译ID,会出现编译版本信息中</td>
-</tr>
-<tr>
-<td>OUT_DIR</td>
-<td>编译输出目录</td>
-</tr>
-</tbody>
-</table>
-<hr>
 ]]></content>
     </entry>
     
@@ -236,45 +114,6 @@
 <li><p>其他</p>
 </li>
 <li>修改远程仓库url:<br><code>git remote set-url origin new-url</code></li>
-</ol>
-<hr>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Android Build系统概述]]></title>
-      <url>http://hesstudio.cn/2016/05/23/android-build-1/</url>
-      <content type="html"><![CDATA[<hr>
-<blockquote>
-<p>Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c/C++,java)和多目标(同时支持多个产品).</p>
-</blockquote>
-<h1 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h1><p>在完整获取AOSP源码后,可按以下流程来进行源码的编译.<br>1.初始化编译环境:<br><code>$ source build/envsetup.sh</code><br>2.选择编译目标:<br><code>$ lunch aosp_arm-eng</code><br>目标有三种编译类型可选,分别是user,userdebug,eng  </p>
-<table>
-<thead>
-<tr>
-<th>Buildtype</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>user</td>
-<td>limited access; suited for production</td>
-</tr>
-<tr>
-<td>userdebug</td>
-<td>like “user” but with root access and debuggability; preferred for debugging</td>
-</tr>
-<tr>
-<td>eng</td>
-<td>development configuration with additional debugging tools</td>
-</tr>
-</tbody>
-</table>
-<p>3.编译代码:<br><code>$ make -j8</code><br>所有的编译目标都在out目录下生成.</p>
-<h1 id="Build系统框架"><a href="#Build系统框架" class="headerlink" title="Build系统框架"></a>Build系统框架</h1><p>Build系统的主要逻辑都集中在make文件中,同时依靠脚本辅助.从大的方面讲,Android Build系统可以分为一下3大块.<br>1.Build核心文件:<br>位于build/core下的文件是Android Build系统的框架与核心,其他device,module的make都依赖<br>2.产品配置文件:<br>产品相关文件主要位于源码的device,vendor目录下,device下主要存放产品配置文件,verdor下主要存放一些硬件的HAL库.<br>3.模块make文件:<br>整个系统中，包含了大量的模块，每个模块都有一个Android.mk文件.Build系统会在整个源码树中扫描名称为“Android.mk”的文件并根据其中的内容来执行模块的编译</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;cm_mc_sid_50200000=1463985980" target="_blank" rel="external">GNU make</a><br>2.</li>
 </ol>
 <hr>
 ]]></content>
@@ -422,8 +261,24 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Android之开发环境搭建]]></title>
-      <url>http://hesstudio.cn/2016/03/20/android-env/</url>
+      <title><![CDATA[Android FAQ]]></title>
+      <url>http://hesstudio.cn/2016/03/27/android-faq/</url>
+      <content type="html"><![CDATA[<h1 id="如何引用Hide-API"><a href="#如何引用Hide-API" class="headerlink" title="如何引用Hide API"></a>如何引用Hide API</h1><ol>
+<li>反射</li>
+<li>替换class文件.找到源码编译出的对应文件的class，替换Android SDK中android.jar对应的class文件</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[UML Sequence Diagram]]></title>
+      <url>http://hesstudio.cn/2015/06/30/uml-sequence-diagram/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Android之开发环境]]></title>
+      <url>http://hesstudio.cn/2015/03/20/android-env/</url>
       <content type="html"><![CDATA[<hr>
 <h1 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h1><p>Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用相对应的Ubuntu版本.   </p>
 <ul>
@@ -714,6 +569,15 @@
 <li><a href="http://www.androiddevtools.cn/" target="_blank" rel="external">AndroidDevTools</a></li>
 </ol>
 <hr>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[os_process_thread]]></title>
+      <url>http://hesstudio.cn/2014/10/30/os-process-thread/</url>
+      <content type="html"><![CDATA[<p>进程/线程之间区别</p>
+<p>进程同步</p>
+<p>java api</p>
 ]]></content>
     </entry>
     
