@@ -4,6 +4,292 @@
   
     
     <entry>
+      <title><![CDATA[Android之Init]]></title>
+      <url>http://hesstudio.cn/2016/08/22/android-init/</url>
+      <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Init进程是内核启动后在用户空间创建的第一个用户级进程,它的pid为1.其他所有的进程都是由其直接或间接fork产生的.</p>
+<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/boot-flow.jpg?raw=true" alt="Android系统启动"><br></div><br>Init调用流程如下图示,通过kernel/arch/arm/kernel/head-common.S <code>b    start_kernel</code>进入到kernel/init/main.c <code>start_kernel</code>执行.并在run_init_process()中通过do_execve创建Init进程.<br><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/android_init_flow.jpg?raw=true" alt="Kernel init flow"><br></div>
+
+<p>kernel_init()中的execute_command即/init，通过run_init_process执行execve()系统调用来启动init进程。如果没有定义execute_command，则在/sbin，/etc，/bin查找，否则Kernel Panic.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">static int __ref kernel_init(void *unused)</span><br><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">  if (execute_command) &#123;</span><br><span class="line">    ret = run_init_process(execute_command);</span><br><span class="line">    if (!ret)</span><br><span class="line">      return 0;</span><br><span class="line">    pr_err(&quot;Failed to execute %s (error %d).  Attempting defaults...\n&quot;,</span><br><span class="line">      execute_command, ret);</span><br><span class="line">  &#125;</span><br><span class="line">  if (!try_to_run_init_process(&quot;/sbin/init&quot;) ||</span><br><span class="line">	    !try_to_run_init_process(&quot;/etc/init&quot;) ||</span><br><span class="line">	    !try_to_run_init_process(&quot;/bin/init&quot;) ||</span><br><span class="line">	    !try_to_run_init_process(&quot;/bin/sh&quot;))</span><br><span class="line">		return 0;</span><br><span class="line"></span><br><span class="line">	panic(&quot;No working init found.  Try passing init= option to kernel. &quot;</span><br><span class="line">	      &quot;See Linux Documentation/init.txt for guidance.&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Android中的Init进程与Linux不同,它主要实现了以下的四大功能.</p>
+<ul>
+<li>解析执行init.rc文件</li>
+<li>创建设备节点</li>
+<li>处理子进程的终止</li>
+<li>属性服务</li>
+</ul>
+<h1 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h1><blockquote>
+<p>system/core/init/init.cpp<br>system/core/init/util.cpp<br>system/core/init/klog.c<br>/system/core/init/signal_handler.cpp</p>
+</blockquote>
+<p>下面从init.cpp的main()开始逐段来分析init进程的执行流程:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">if (!strcmp(basename(argv[0]), &quot;ueventd&quot;)) &#123;</span><br><span class="line">    return ueventd_main(argc, argv);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (!strcmp(basename(argv[0]), &quot;watchdogd&quot;)) &#123;</span><br><span class="line">    return watchdogd_main(argc, argv);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Clear the umask.</span><br><span class="line">umask(0);</span><br><span class="line"></span><br><span class="line">add_environment(&quot;PATH&quot;, _PATH_DEFPATH);</span><br><span class="line"></span><br><span class="line">bool is_first_stage = (argc == 1) || (strcmp(argv[1], &quot;--second-stage&quot;) != 0);</span><br><span class="line"></span><br><span class="line">// Get the basic filesystem setup we need put together in the initramdisk</span><br><span class="line">// on / and then we&apos;ll let the rc file figure out the rest.</span><br><span class="line">if (is_first_stage) &#123;</span><br><span class="line">    mount(&quot;tmpfs&quot;, &quot;/dev&quot;, &quot;tmpfs&quot;, MS_NOSUID, &quot;mode=0755&quot;);</span><br><span class="line">    mkdir(&quot;/dev/pts&quot;, 0755);</span><br><span class="line">    mkdir(&quot;/dev/socket&quot;, 0755);</span><br><span class="line">    mount(&quot;devpts&quot;, &quot;/dev/pts&quot;, &quot;devpts&quot;, 0, NULL);</span><br><span class="line">    #define MAKE_STR(x) __STRING(x)</span><br><span class="line">    mount(&quot;proc&quot;, &quot;/proc&quot;, &quot;proc&quot;, 0, &quot;hidepid=2,gid=&quot; MAKE_STR(AID_READPROC));</span><br><span class="line">    mount(&quot;sysfs&quot;, &quot;/sys&quot;, &quot;sysfs&quot;, 0, NULL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>首先根据init的执行参数argv[0]判断是否是执行ueventd或watchdogd(ueventd与watchdogd功能在init中实现),通过system/core/init/Android.mk可以知道,/sbin/ueventd与/sbin/watchdogd实际上都链接到init.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Create symlinks</span><br><span class="line">LOCAL_POST_INSTALL_CMD := $(hide) mkdir -p $(TARGET_ROOT_OUT)/sbin; \</span><br><span class="line">    ln -sf ../init $(TARGET_ROOT_OUT)/sbin/ueventd; \</span><br><span class="line">    ln -sf ../init $(TARGET_ROOT_OUT)/sbin/watchdogd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>umask(0),umask设置文件属性掩码0，即进程创建文件属性默认为0777.</p>
+</li>
+<li>is_first_stage是用来判断init是在内核空间还是在用户空间启动,is_first_stage为true意味着init是在内核空间启动.init需要在内核空间下运行是因为加载selinux时需要内核态才能执行.</li>
+<li>如果是在内核态启动,创建/dev，/proc，/sys目录并mount相应的虚拟内存文件系统</li>
+</ol>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// We must have some place other than / to create the device nodes for</span><br><span class="line">// kmsg and null, otherwise we won&apos;t be able to remount / read-only</span><br><span class="line">// later on. Now that tmpfs is mounted on /dev, we can actually talk</span><br><span class="line">// to the outside world.</span><br><span class="line">open_devnull_stdio();</span><br><span class="line">klog_init();</span><br><span class="line">klog_set_level(KLOG_NOTICE_LEVEL);</span><br><span class="line"></span><br><span class="line">NOTICE(&quot;init %s started!\n&quot;, is_first_stage ? &quot;first stage&quot; : &quot;second stage&quot;);</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>open_devnull_stdio();屏蔽标准输入/输出/错误,即标准输入输出都无法输出信息，如下代码所示,创建/dev/<strong>null</strong>并通过dup2()复制文件描述符，重定向stdin,stdout,stderr到/dev/__null__上.(一般daemon进程都会有类似的重定位操作)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">void open_devnull_stdio(void)</span><br><span class="line">&#123;</span><br><span class="line">    // Try to avoid the mknod() call if we can. Since SELinux makes</span><br><span class="line">    // a /dev/null replacement available for free, let&apos;s use it.</span><br><span class="line">    int fd = open(&quot;/sys/fs/selinux/null&quot;, O_RDWR);</span><br><span class="line">    if (fd == -1) &#123;</span><br><span class="line">        // OOPS, /sys/fs/selinux/null isn&apos;t available, likely because</span><br><span class="line">        // /sys/fs/selinux isn&apos;t mounted. Fall back to mknod.</span><br><span class="line">        static const char *name = &quot;/dev/__null__&quot;;</span><br><span class="line">        if (mknod(name, S_IFCHR | 0600, (1 &lt;&lt; 8) | 3) == 0) &#123;</span><br><span class="line">            fd = open(name, O_RDWR);</span><br><span class="line">            unlink(name);</span><br><span class="line">        &#125;</span><br><span class="line">        if (fd == -1) &#123;</span><br><span class="line">            exit(1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dup2(fd, 0);</span><br><span class="line">    dup2(fd, 1);</span><br><span class="line">    dup2(fd, 2);</span><br><span class="line">    if (fd &gt; 2) &#123;</span><br><span class="line">        close(fd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>klog_init,创建kmsg设备节点,printk打印的log可以通过cat /proc/kmsg或者dmesg输出.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void klog_init(void) &#123;</span><br><span class="line">    if (klog_fd &gt;= 0) return; /* Already initialized */</span><br><span class="line"></span><br><span class="line">    klog_fd = open(&quot;/dev/kmsg&quot;, O_WRONLY | O_CLOEXEC);</span><br><span class="line">    if (klog_fd &gt;= 0) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static const char* name = &quot;/dev/__kmsg__&quot;;</span><br><span class="line">    if (mknod(name, S_IFCHR | 0600, (1 &lt;&lt; 8) | 11) == 0) &#123;</span><br><span class="line">        klog_fd = open(name, O_WRONLY | O_CLOEXEC);</span><br><span class="line">        unlink(name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>klog_set_level设置log等级</p>
+</li>
+</ol>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (!is_first_stage) &#123;</span><br><span class="line">    // Indicate that booting is in progress to background fw loaders, etc.</span><br><span class="line">    close(open(&quot;/dev/.booting&quot;, O_WRONLY | O_CREAT | O_CLOEXEC, 0000));</span><br><span class="line"></span><br><span class="line">    property_init();</span><br><span class="line"></span><br><span class="line">    // If arguments are passed both on the command line and in DT,</span><br><span class="line">    // properties set in DT always have priority over the command-line ones.</span><br><span class="line">    process_kernel_dt();</span><br><span class="line">    process_kernel_cmdline();</span><br><span class="line"></span><br><span class="line">    // Propagate the kernel variables to internal variables</span><br><span class="line">    // used by init as well as the current required properties.</span><br><span class="line">    export_kernel_boot_props();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果是在用户态启动，首先利用/dev/.booting来标志进程是否处于初始化状态.</li>
+<li>调用property_init()初始化属性系统，后面详细描述.</li>
+<li><p>调用process_kernel_dt()处理device tree.读取/proc/device-tree/firmware/android/compatible下的android,firmware二个文件,并根据其文件名与文件内容分别设置ro.boot.android,ro.boot.firmware二个属性.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">static void process_kernel_dt() &#123;</span><br><span class="line">    static const char android_dir[] = &quot;/proc/device-tree/firmware/android&quot;;</span><br><span class="line"></span><br><span class="line">    std::string file_name = android::base::StringPrintf(&quot;%s/compatible&quot;, android_dir);</span><br><span class="line"></span><br><span class="line">    std::string dt_file;</span><br><span class="line">    android::base::ReadFileToString(file_name, &amp;dt_file);</span><br><span class="line">    if (!dt_file.compare(&quot;android,firmware&quot;)) &#123;</span><br><span class="line">        ERROR(&quot;firmware/android is not compatible with &apos;android,firmware&apos;\n&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::unique_ptr&lt;DIR, int(*)(DIR*)&gt;dir(opendir(android_dir), closedir);</span><br><span class="line">    if (!dir) return;</span><br><span class="line"></span><br><span class="line">    struct dirent *dp;</span><br><span class="line">    while ((dp = readdir(dir.get())) != NULL) &#123;</span><br><span class="line">        if (dp-&gt;d_type != DT_REG || !strcmp(dp-&gt;d_name, &quot;compatible&quot;) || !strcmp(dp-&gt;d_name, &quot;name&quot;)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        file_name = android::base::StringPrintf(&quot;%s/%s&quot;, android_dir, dp-&gt;d_name);</span><br><span class="line"></span><br><span class="line">        android::base::ReadFileToString(file_name, &amp;dt_file);</span><br><span class="line">        std::replace(dt_file.begin(), dt_file.end(), &apos;,&apos;, &apos;.&apos;);</span><br><span class="line"></span><br><span class="line">        std::string property_name = android::base::StringPrintf(&quot;ro.boot.%s&quot;, dp-&gt;d_name);</span><br><span class="line">        property_set(property_name.c_str(), dt_file.c_str());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用process_kernel_cmdline()读取/proc/cmdline文件,并设置cmdline文件中以androidboot.开头命令的对应ro.boot.开头的属性值.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">static void process_kernel_cmdline() &#123;</span><br><span class="line">    // Don&apos;t expose the raw commandline to unprivileged processes.</span><br><span class="line">    chmod(&quot;/proc/cmdline&quot;, 0440);</span><br><span class="line"></span><br><span class="line">    // The first pass does the common stuff, and finds if we are in qemu.</span><br><span class="line">    // The second pass is only necessary for qemu to export all kernel params</span><br><span class="line">    // as properties.</span><br><span class="line">    import_kernel_cmdline(false, import_kernel_nv);</span><br><span class="line">    if (qemu[0]) import_kernel_cmdline(true, import_kernel_nv);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void import_kernel_nv(const std::string&amp; key, const std::string&amp; value, bool for_emulator) &#123;</span><br><span class="line">    if (key.empty()) return;</span><br><span class="line"></span><br><span class="line">    if (for_emulator) &#123;</span><br><span class="line">        // In the emulator, export any kernel option with the &quot;ro.kernel.&quot; prefix.</span><br><span class="line">        property_set(android::base::StringPrintf(&quot;ro.kernel.%s&quot;, key.c_str()).c_str(), value.c_str());</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (key == &quot;qemu&quot;) &#123;</span><br><span class="line">        strlcpy(qemu, value.c_str(), sizeof(qemu));</span><br><span class="line">    &#125; else if (android::base::StartsWith(key, &quot;androidboot.&quot;)) &#123;</span><br><span class="line">        property_set(android::base::StringPrintf(&quot;ro.boot.%s&quot;, key.c_str() + 12).c_str(),</span><br><span class="line">                     value.c_str());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用export_kernel_boot_props设置boot相关的属性.即根据设置prop_map中src_prop设置dst_prop的值.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">static void export_kernel_boot_props() &#123;</span><br><span class="line">    struct &#123;</span><br><span class="line">        const char *src_prop;</span><br><span class="line">        const char *dst_prop;</span><br><span class="line">        const char *default_value;</span><br><span class="line">    &#125; prop_map[] = &#123;</span><br><span class="line">        &#123; &quot;ro.boot.serialno&quot;,   &quot;ro.serialno&quot;,   &quot;&quot;, &#125;,</span><br><span class="line">        &#123; &quot;ro.boot.mode&quot;,       &quot;ro.bootmode&quot;,   &quot;unknown&quot;, &#125;,</span><br><span class="line">        &#123; &quot;ro.boot.baseband&quot;,   &quot;ro.baseband&quot;,   &quot;unknown&quot;, &#125;,</span><br><span class="line">        &#123; &quot;ro.boot.bootloader&quot;, &quot;ro.bootloader&quot;, &quot;unknown&quot;, &#125;,</span><br><span class="line">        &#123; &quot;ro.boot.hardware&quot;,   &quot;ro.hardware&quot;,   &quot;unknown&quot;, &#125;,</span><br><span class="line">        &#123; &quot;ro.boot.revision&quot;,   &quot;ro.revision&quot;,   &quot;0&quot;, &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    for (size_t i = 0; i &lt; ARRAY_SIZE(prop_map); i++) &#123;</span><br><span class="line">        std::string value = property_get(prop_map[i].src_prop);</span><br><span class="line">        property_set(prop_map[i].dst_prop, (!value.empty()) ? value.c_str() : prop_map[i].default_value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">selinux_initialize(is_first_stage);</span><br><span class="line"></span><br><span class="line">// If we&apos;re in the kernel domain, re-exec init to transition to the init domain now</span><br><span class="line">// that the SELinux policy has been loaded.</span><br><span class="line">if (is_first_stage) &#123;</span><br><span class="line">    if (restorecon(&quot;/init&quot;) == -1) &#123;</span><br><span class="line">        ERROR(&quot;restorecon failed: %s\n&quot;, strerror(errno));</span><br><span class="line">        security_failure();</span><br><span class="line">    &#125;</span><br><span class="line">    char* path = argv[0];</span><br><span class="line">    char* args[] = &#123; path, const_cast&lt;char*&gt;(&quot;--second-stage&quot;), nullptr &#125;;</span><br><span class="line">    if (execv(path, args) == -1) &#123;</span><br><span class="line">        ERROR(&quot;execv(\&quot;%s\&quot;) failed: %s\n&quot;, path, strerror(errno));</span><br><span class="line">        security_failure();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// These directories were necessarily created before initial policy load</span><br><span class="line">// and therefore need their security context restored to the proper value.</span><br><span class="line">// This must happen before /dev is populated by ueventd.</span><br><span class="line">NOTICE(&quot;Running restorecon...\n&quot;);</span><br><span class="line">restorecon(&quot;/dev&quot;);</span><br><span class="line">restorecon(&quot;/dev/socket&quot;);</span><br><span class="line">restorecon(&quot;/dev/__properties__&quot;);</span><br><span class="line">restorecon(&quot;/property_contexts&quot;);</span><br><span class="line">restorecon_recursive(&quot;/sys&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="运行在kernel-domain时-通过selinux-initialize对selinux进行初始化"><a href="#运行在kernel-domain时-通过selinux-initialize对selinux进行初始化" class="headerlink" title="运行在kernel domain时,通过selinux_initialize对selinux进行初始化."></a>运行在kernel domain时,通过selinux_initialize对selinux进行初始化.</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">epoll_fd = epoll_create1(EPOLL_CLOEXEC);</span><br><span class="line">if (epoll_fd == -1) &#123;</span><br><span class="line">    ERROR(&quot;epoll_create1 failed: %s\n&quot;, strerror(errno));</span><br><span class="line">    exit(1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">signal_handler_init();</span><br><span class="line"></span><br><span class="line">property_load_boot_defaults();</span><br><span class="line">export_oem_lock_status();</span><br><span class="line">start_property_service();</span><br></pre></td></tr></table></figure>
+<h1 id="子进程信号处理"><a href="#子进程信号处理" class="headerlink" title="子进程信号处理"></a>子进程信号处理</h1><p>Init进程是系统的一号进程,其他进程都是由其直接或简介生成,所以init进程的作用之一就是处理子进程信号.进程exit退出是会向父进程发出SIGCHLD信号,父进程收到该信号就可以处理子进程的退出从而防止子进程变成僵尸进程.<br>下面从signal_handler_init()分析Init对子进程退出的处理.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void signal_handler_init() &#123;</span><br><span class="line">    // Create a signalling mechanism for SIGCHLD.</span><br><span class="line">    int s[2];</span><br><span class="line">    if (socketpair(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0, s) == -1) &#123;</span><br><span class="line">        ERROR(&quot;socketpair failed: %s\n&quot;, strerror(errno));</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    signal_write_fd = s[0];</span><br><span class="line">    signal_read_fd = s[1];</span><br><span class="line"></span><br><span class="line">    // Write to signal_write_fd if we catch SIGCHLD.</span><br><span class="line">    struct sigaction act;</span><br><span class="line">    memset(&amp;act, 0, sizeof(act));</span><br><span class="line">    act.sa_handler = SIGCHLD_handler;</span><br><span class="line">    act.sa_flags = SA_NOCLDSTOP;</span><br><span class="line">    sigaction(SIGCHLD, &amp;act, 0);</span><br><span class="line"></span><br><span class="line">    ServiceManager::GetInstance().ReapAnyOutstandingChildren();</span><br><span class="line"></span><br><span class="line">    register_epoll_handler(signal_read_fd, handle_signal);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>首先通过socketpair创建一对已连接的本地socket</li>
+<li>通过sigaction注册SIGCHLD信号的处理函数SIGCHLD_handler</li>
+</ol>
+<h1 id="init-rc脚本分析"><a href="#init-rc脚本分析" class="headerlink" title="init.rc脚本分析"></a>init.rc脚本分析</h1><h1 id="属性服务"><a href="#属性服务" class="headerlink" title="属性服务"></a>属性服务</h1><p>./bionic/libc/include/sys/_system_properties.h:90:#define PROP_PATH_RAMDISK_DEFAULT  “/default.prop”</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Android之Init.rc语法]]></title>
+      <url>http://hesstudio.cn/2016/08/20/android-init-language/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>译自system/core/init/readme.txt</p>
+</blockquote>
+<h1 id="Android-init-rc语法"><a href="#Android-init-rc语法" class="headerlink" title="Android init.rc语法"></a>Android init.rc语法</h1><p>Android init.rc包含四种类型的声明，分别是<strong>Actions</strong>，<strong>Commands</strong>，<strong>Services</strong>，和<strong>Options</strong>。<br>其语法规则如下：</p>
+<ul>
+<li><p>init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，并且以”#”开头进行行注释。</p>
+</li>
+<li><p>Actions和Services默认声明了一个新的section，所有该section下的command与options都属于它，在section前申明的command和options将会被其忽略。</p>
+</li>
+<li><p>Actions与Services的命名是唯一的,后面的重复定义被视为无效。</p>
+</li>
+</ul>
+<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><p>Action由一系列命令组成,通过trigger来决定什么时候执行,”on”后面跟的字符串即为ation的trigger.当trigger事件发生时，如果action不在to-be-executed中，将被加入到to-be-executed的队尾等待执行。</p>
+<p>在to-be-executed队列中的每个action按FIFO顺序执行，同样action中的command也是按定义的先后顺序依次执行。init除了执行action的command，还负责设备节点的创建及销毁，属性设置，进程重启等工作。</p>
+<p>Actions的格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">on &lt;trigger&gt;</span><br><span class="line">   &lt;command&gt;</span><br><span class="line">   &lt;command&gt;</span><br><span class="line">   &lt;command&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h2><p>Services由init启动并且可以在退出时重启(可选)，Services的格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service &lt;name&gt; &lt;pathname&gt; [ &lt;argument&gt; ]*</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure></p>
+<h2 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h2><p>Options用来描述Services，它决定service的执行行为.</p>
+<ul>
+<li>critical<br>表示关键的service，如果service4分钟内异常退出4次将会重启进入recovery模式。</li>
+<li>disabled<br>指定disable的service，不会随class service启动，只有通过<code>start service_name</code>启动时才能启动</li>
+<li>setenv &lt;&lt;name&gt; &lt;value&gt;<br>service启动时设置环境变量值</li>
+<li>socket &lt;name&gt; &lt;type&gt; &lt;perm&gt; [ &lt;user&gt; [ &lt;group&gt; [ &lt;seclabel&gt; ] ] ]<br>为要启动的进程创建名为/dev/socket/&lt;name&gt;的socket,&lt;type&gt;可选”dgram”或”stream”,&lt;user&gt; [ &lt;group&gt;默认为0.</li>
+<li>user &lt;username&gt;<br>在service启动时为其设置user，默认为root</li>
+<li>group &lt;groupname&gt; [ &lt;groupname&gt; ]*<br>在service启动时为其设置group，默认为root</li>
+<li>seclabel &lt;seclabel&gt;<br>SELinux security context</li>
+<li>oneshot<br>定义oneshot的service，退出后不再重启</li>
+<li>class &lt;name&gt;<br>为服务指定所属class，属于同一class的服务可以同时启动或停止.默认为default</li>
+<li>onrestart<br>服务重启时,执行一条命令</li>
+</ul>
+<h2 id="Triggers"><a href="#Triggers" class="headerlink" title="Triggers"></a>Triggers</h2><p>Triggers是on后面的字符串，匹配某类事件的发生来执行action。</p>
+<ul>
+<li><p>boot<br>init执行后触发的第一个trigger.</p>
+</li>
+<li><p>&lt;name&gt;=&lt;value&gt;<br>设置属性值时触发Trigger</p>
+</li>
+</ul>
+<h2 id="Commands"><a href="#Commands" class="headerlink" title="Commands"></a>Commands</h2><p>Commands即Action或services onrestart中所执行的命令,</p>
+<ul>
+<li><p>bootchart_init<br> 启动bootcharting</p>
+</li>
+<li><p>chmod &lt;octal-mode&gt; &lt;path&gt;<br>chmod权限</p>
+</li>
+<li><p>chown &lt;owner&gt; &lt;group&gt; &lt;path&gt;<br> chown用户/组</p>
+</li>
+<li><p>class_start &lt;serviceclass&gt;<br>启动serviceclass下所有未启动的服务服务,disable的除外</p>
+</li>
+<li><p>class_stop &lt;serviceclass&gt;<br>停止serviceclass下所有已启动的服务服务,disable的除外</p>
+</li>
+<li><p>class_reset &lt;serviceclass&gt;<br> Stop all services of the specified class if they are<br> currently running, without disabling them. They can be restarted<br> later using class_start.</p>
+</li>
+<li><p>copy &lt;src&gt; &lt;dst&gt;<br> copy操作</p>
+</li>
+<li><p>domainname &lt;name&gt;<br> 设置domain name.</p>
+</li>
+<li><p>enable &lt;servicename&gt;<br>enable服务，该服务可以随class service启动或停止</p>
+</li>
+<li><p>exec [ &lt;seclabel&gt; [&lt;user&gt; [ &lt;group&gt; ]<em> ] ] – &lt;command&gt; [ &lt;argument&gt; ]</em><br>fork并执行command，将阻塞init直到执行完毕</p>
+</li>
+<li><p>export &lt;name&gt; &lt;value&gt;<br>export环境变量值</p>
+</li>
+<li><p>hostname &lt;name&gt;<br> 设置hostname.</p>
+</li>
+<li><p>ifup &lt;interface&gt;<br>启用网络接口</p>
+</li>
+<li><p>import &lt;filename&gt;<br>import其他initrc文件</p>
+</li>
+<li><p>insmod &lt;path&gt;<br>加载指定驱动模块</p>
+</li>
+<li><p>load_all_props<br> Loads properties from /system, /vendor, et cetera.<br> This is included in the default init.rc.</p>
+</li>
+<li><p>load_persist_props<br> Loads persistent properties when /data has been decrypted.<br> This is included in the default init.rc.</p>
+</li>
+<li><p>loglevel &lt;level&gt;<br>设置log级别</p>
+</li>
+<li><p>mkdir &lt;path&gt; [mode] [owner] [group]<br>创建dir</p>
+</li>
+<li><p>mount_all &lt;fstab&gt;<br>mount所有fstab.</p>
+</li>
+<li><p>mount &lt;type&gt; &lt;device&gt; &lt;dir&gt; [ &lt;flag&gt; ]* [&lt;options&gt;]<br>mount文件系统到执行目录</p>
+</li>
+<li><p>powerctl<br> Internal implementation detail used to respond to changes to the<br> “sys.powerctl” system property, used to implement rebooting.</p>
+</li>
+<li><p>restart &lt;service&gt;<br>restart服务</p>
+</li>
+<li><p>restorecon &lt;path&gt; [ &lt;path&gt; ]*<br>重新存储&lt;path&gt;到由file_contexts配置的安全上下文.</p>
+</li>
+<li><p>restorecon_recursive &lt;path&gt; [ &lt;path&gt; ]*<br> Recursively restore the directory tree named by &lt;path&gt; to the<br> security contexts specified in the file_contexts configuration.</p>
+</li>
+<li><p>rm &lt;path&gt;<br>rm文件</p>
+</li>
+<li><p>rmdir &lt;path&gt;<br>rmdir</p>
+</li>
+<li><p>setprop &lt;name&gt; &lt;value&gt;<br>设置属性</p>
+</li>
+<li><p>setrlimit &lt;resource&gt; &lt;cur&gt; &lt;max&gt;<br>设置进程占用的资源大小，包括可打开文件数目，大小</p>
+</li>
+<li><p>start &lt;service&gt;<br> 启动服务</p>
+</li>
+<li><p>stop &lt;service&gt;<br>停止服务</p>
+</li>
+<li><p>swapon_all &lt;fstab&gt;<br> Calls fs_mgr_swapon_all on the given fstab file.</p>
+</li>
+<li><p>symlink &lt;target&gt; &lt;path&gt;<br>创建连接到target的path符号链接</p>
+</li>
+<li><p>sysclktz &lt;mins_west_of_gmt&gt;<br> Set the system clock base (0 if system clock ticks in GMT)</p>
+</li>
+<li><p>trigger &lt;event&gt;<br>trigger的事件</p>
+</li>
+<li><p>verity_load_state<br> Internal implementation detail used to load dm-verity state.</p>
+</li>
+<li><p>verity_update_state &lt;mount_point&gt;<br> Internal implementation detail used to update dm-verity state and<br> set the partition.&lt;mount_point&gt;.verified properties used by adb remount<br> because fs_mgr can’t set them directly itself.</p>
+</li>
+<li><p>wait &lt;path&gt; [ &lt;timeout&gt; ]<br> Poll文件，默认timeout为5s</p>
+</li>
+<li><p>write &lt;path&gt; &lt;content&gt;<br>打开指定文件并写入字符串</p>
+</li>
+</ul>
+<h2 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h2><p>Init进程运行过程中,以下的属性值会随时更新(可通过adb shell getprop查看)：</p>
+<ul>
+<li><p>init.action<br>当前执行的action</p>
+</li>
+<li><p>init.command<br>将被执行的命令</p>
+</li>
+<li><p>init.svc.&lt;name&gt;<br>服务的运行状态(“stopped”, “running”, “restarting”)</p>
+</li>
+</ul>
+<hr>
+<h1 id="Android-Init-Language"><a href="#Android-Init-Language" class="headerlink" title="Android Init Language"></a>Android Init Language</h1><p>The Android Init Language consists of four broad classes of statements,<br>which are Actions, Commands, Services, and Options.</p>
+<p>All of these are line-oriented, consisting of tokens separated by<br>whitespace.  The c-style backslash escapes may be used to insert<br>whitespace into a token.  Double quotes may also be used to prevent<br>whitespace from breaking text into multiple tokens.  The backslash,<br>when it is the last character on a line, may be used for line-folding.</p>
+<p>Lines which start with a # (leading whitespace allowed) are comments.</p>
+<p>Actions and Services implicitly declare a new section.  All commands<br>or options belong to the section most recently declared.  Commands<br>or options before the first section are ignored.</p>
+<p>Actions and Services have unique names.  If a second Action or Service<br>is declared with the same name as an existing one, it is ignored as<br>an error.  (??? should we override instead)</p>
+<h2 id="Actions-1"><a href="#Actions-1" class="headerlink" title="Actions"></a>Actions</h2><p>Actions are named sequences of commands.  Actions have a trigger which<br>is used to determine when the action should occur.  When an event<br>occurs which matches an action’s trigger, that action is added to<br>the tail of a to-be-executed queue (unless it is already on the<br>queue).</p>
+<p>Each action in the queue is dequeued in sequence and each command in<br>that action is executed in sequence.  Init handles other activities<br>(device creation/destruction, property setting, process restarting)<br>“between” the execution of the commands in activities.</p>
+<p>Actions take the form of:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">on &lt;trigger&gt;</span><br><span class="line">   &lt;command&gt;</span><br><span class="line">   &lt;command&gt;</span><br><span class="line">   &lt;command&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Services-1"><a href="#Services-1" class="headerlink" title="Services"></a>Services</h2><p>Services are programs which init launches and (optionally) restarts<br>when they exit.  Services take the form of:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service &lt;name&gt; &lt;pathname&gt; [ &lt;argument&gt; ]*</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure></p>
+<h2 id="Options-1"><a href="#Options-1" class="headerlink" title="Options"></a>Options</h2><p>Options are modifiers to services.  They affect how and when init<br>runs the service.</p>
+<p>critical<br>  This is a device-critical service. If it exits more than four times in<br>  four minutes, the device will reboot into recovery mode.</p>
+<p>disabled<br>  This service will not automatically start with its class.<br>  It must be explicitly started by name.</p>
+<p>setenv &lt;name&gt; &lt;value&gt;<br>  Set the environment variable &lt;name&gt; to &lt;value&gt; in the launched process.</p>
+<p>socket &lt;name&gt; &lt;type&gt; &lt;perm&gt; [ &lt;user&gt; [ &lt;group&gt; [ &lt;seclabel&gt; ] ] ]<br>  Create a unix domain socket named /dev/socket/&lt;name&gt; and pass<br>  its fd to the launched process.  &lt;type&gt; must be “dgram”, “stream” or “seqpacket”.<br>  User and group default to 0.<br>  ‘seclabel’ is the SELinux security context for the socket.<br>  It defaults to the service security context, as specified by seclabel or<br>  computed based on the service executable file security context.</p>
+<p>user &lt;username&gt;<br>  Change to username before exec’ing this service.<br>  Currently defaults to root.  (??? probably should default to nobody)<br>  Currently, if your process requires linux capabilities then you cannot use<br>  this command. You must instead request the capabilities in-process while<br>  still root, and then drop to your desired uid.</p>
+<p>group &lt;groupname&gt; [ &lt;groupname&gt; ]*<br>  Change to groupname before exec’ing this service.  Additional<br>  groupnames beyond the (required) first one are used to set the<br>  supplemental groups of the process (via setgroups()).<br>  Currently defaults to root.  (??? probably should default to nobody)</p>
+<p>seclabel &lt;seclabel&gt;<br>  Change to ‘seclabel’ before exec’ing this service.<br>  Primarily for use by services run from the rootfs, e.g. ueventd, adbd.<br>  Services on the system partition can instead use policy-defined transitions<br>  based on their file security context.<br>  If not specified and no transition is defined in policy, defaults to the init context.</p>
+<p>oneshot<br>  Do not restart the service when it exits.</p>
+<p>class &lt;name&gt;<br>  Specify a class name for the service.  All services in a<br>  named class may be started or stopped together.  A service<br>  is in the class “default” if one is not specified via the<br>  class option.</p>
+<p>onrestart<br>  Execute a Command (see below) when service restarts.</p>
+<p>writepid &lt;file…&gt;<br>  Write the child’s pid to the given files when it forks. Meant for<br>  cgroup/cpuset usage.</p>
+<h2 id="Triggers-1"><a href="#Triggers-1" class="headerlink" title="Triggers"></a>Triggers</h2><p>Triggers are strings which can be used to match certain kinds<br>of events and used to cause an action to occur.</p>
+<p>boot<br>   This is the first trigger that will occur when init starts<br>   (after /init.conf is loaded)</p>
+<p>&lt;name&gt;=&lt;value&gt;<br>   Triggers of this form occur when the property &lt;name&gt; is set<br>   to the specific value &lt;value&gt;.</p>
+<p>   One can also test multiple properties to execute a group<br>   of commands. For example:</p>
+<p>   on property:test.a=1 &amp;&amp; property:test.b=1<br>       setprop test.c 1</p>
+<p>   The above stub sets test.c to 1 only when<br>   both test.a=1 and test.b=1</p>
+<h2 id="Commands-1"><a href="#Commands-1" class="headerlink" title="Commands"></a>Commands</h2><p>bootchart_init<br>   Start bootcharting if configured (see below).<br>   This is included in the default init.rc.</p>
+<p>chmod &lt;octal-mode&gt; &lt;path&gt;<br>   Change file access permissions.</p>
+<p>chown &lt;owner&gt; &lt;group&gt; &lt;path&gt;<br>   Change file owner and group.</p>
+<p>class_start &lt;serviceclass&gt;<br>   Start all services of the specified class if they are<br>   not already running.</p>
+<p>class_stop &lt;serviceclass&gt;<br>   Stop and disable all services of the specified class if they are<br>   currently running.</p>
+<p>class_reset &lt;serviceclass&gt;<br>   Stop all services of the specified class if they are<br>   currently running, without disabling them. They can be restarted<br>   later using class_start.</p>
+<p>copy &lt;src&gt; &lt;dst&gt;<br>   Copies a file. Similar to write, but useful for binary/large<br>   amounts of data.</p>
+<p>domainname &lt;name&gt;<br>   Set the domain name.</p>
+<p>enable &lt;servicename&gt;<br>   Turns a disabled service into an enabled one as if the service did not<br>   specify disabled.<br>   If the service is supposed to be running, it will be started now.<br>   Typically used when the bootloader sets a variable that indicates a specific<br>   service should be started when needed. E.g.<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">on property:ro.boot.myfancyhardware=1</span><br><span class="line">  enable my_fancy_service_for_my_fancy_hardware</span><br></pre></td></tr></table></figure></p>
+<p>exec [ &lt;seclabel&gt; [ &lt;user&gt; [ &lt;group&gt; ]<em> ] ] – &lt;command&gt; [ &lt;argument&gt; ]</em><br>   Fork and execute command with the given arguments. The command starts<br>   after “–” so that an optional security context, user, and supplementary<br>   groups can be provided. No other commands will be run until this one<br>   finishes. &lt;seclabel&gt; can be a - to denote default.</p>
+<p>export &lt;name&gt; &lt;value&gt;<br>   Set the environment variable &lt;name&gt; equal to &lt;value&gt; in the<br>   global environment (which will be inherited by all processes<br>   started after this command is executed)</p>
+<p>hostname &lt;name&gt;<br>   Set the host name.</p>
+<p>ifup &lt;interface&gt;<br>   Bring the network interface &lt;interface&gt; online.</p>
+<p>import &lt;filename&gt;<br>   Parse an init config file, extending the current configuration.</p>
+<p>insmod &lt;path&gt;<br>   Install the module at &lt;path&gt;</p>
+<p>load_all_props<br>   Loads properties from /system, /vendor, et cetera.<br>   This is included in the default init.rc.</p>
+<p>load_persist_props<br>   Loads persistent properties when /data has been decrypted.<br>   This is included in the default init.rc.</p>
+<p>loglevel &lt;level&gt;<br>   Sets the kernel log level to level. Properties are expanded within &lt;level&gt;.</p>
+<p>mkdir &lt;path&gt; [mode] [owner] [group]<br>   Create a directory at &lt;path&gt;, optionally with the given mode, owner, and<br>   group. If not provided, the directory is created with permissions 755 and<br>   owned by the root user and root group. If provided, the mode, owner and group<br>   will be updated if the directory exists already.</p>
+<p>mount_all &lt;fstab&gt;<br>   Calls fs_mgr_mount_all on the given fs_mgr-format fstab.</p>
+<p>mount &lt;type&gt; &lt;device&gt; &lt;dir&gt; [ &lt;flag&gt; ]* [&lt;options&gt;]<br>   Attempt to mount the named device at the directory &lt;dir&gt;<br>   &lt;device&gt; may be of the form mtd@name to specify a mtd block<br>   device by name.<br>   &lt;flag&gt;s include “ro”, “rw”, “remount”, “noatime”, …<br>   &lt;options&gt; include “barrier=1”, “noauto_da_alloc”, “discard”, … as<br>   a comma separated string, eg: barrier=1,noauto_da_alloc</p>
+<p>powerctl<br>   Internal implementation detail used to respond to changes to the<br>   “sys.powerctl” system property, used to implement rebooting.</p>
+<p>restart &lt;service&gt;<br>   Like stop, but doesn’t disable the service.</p>
+<p>restorecon &lt;path&gt; [ &lt;path&gt; ]*<br>   Restore the file named by &lt;path&gt; to the security context specified<br>   in the file_contexts configuration.<br>   Not required for directories created by the init.rc as these are<br>   automatically labeled correctly by init.</p>
+<p>restorecon_recursive &lt;path&gt; [ &lt;path&gt; ]*<br>   Recursively restore the directory tree named by &lt;path&gt; to the<br>   security contexts specified in the file_contexts configuration.</p>
+<p>rm &lt;path&gt;<br>   Calls unlink(2) on the given path. You might want to<br>   use “exec – rm …” instead (provided the system partition is<br>   already mounted).</p>
+<p>rmdir &lt;path&gt;<br>   Calls rmdir(2) on the given path.</p>
+<p>setprop &lt;name&gt; &lt;value&gt;<br>   Set system property &lt;name&gt; to &lt;value&gt;. Properties are expanded<br>   within &lt;value&gt;.</p>
+<p>setrlimit &lt;resource&gt; &lt;cur&gt; &lt;max&gt;<br>   Set the rlimit for a resource.</p>
+<p>start &lt;service&gt;<br>   Start a service running if it is not already running.</p>
+<p>stop &lt;service&gt;<br>   Stop a service from running if it is currently running.</p>
+<p>swapon_all &lt;fstab&gt;<br>   Calls fs_mgr_swapon_all on the given fstab file.</p>
+<p>symlink &lt;target&gt; &lt;path&gt;<br>   Create a symbolic link at &lt;path&gt; with the value &lt;target&gt;</p>
+<p>sysclktz &lt;mins_west_of_gmt&gt;<br>   Set the system clock base (0 if system clock ticks in GMT)</p>
+<p>trigger &lt;event&gt;<br>   Trigger an event.  Used to queue an action from another<br>   action.</p>
+<p>verity_load_state<br>   Internal implementation detail used to load dm-verity state.</p>
+<p>verity_update_state &lt;mount_point&gt;<br>   Internal implementation detail used to update dm-verity state and<br>   set the partition.&lt;mount_point&gt;.verified properties used by adb remount<br>   because fs_mgr can’t set them directly itself.</p>
+<p>wait &lt;path&gt; [ &lt;timeout&gt; ]<br>   Poll for the existence of the given file and return when found,<br>   or the timeout has been reached. If timeout is not specified it<br>   currently defaults to five seconds.</p>
+<p>write &lt;path&gt; &lt;content&gt;<br>   Open the file at &lt;path&gt; and write a string to it with write(2).<br>   If the file does not exist, it will be created. If it does exist,<br>   it will be truncated. Properties are expanded within &lt;content&gt;.</p>
+<h2 id="Properties-1"><a href="#Properties-1" class="headerlink" title="Properties"></a>Properties</h2><p>Init updates some system properties to provide some insight into<br>what it’s doing:</p>
+<p>init.action<br>   Equal to the name of the action currently being executed or “” if none</p>
+<p>init.command<br>   Equal to the command being executed or “” if none.</p>
+<p>init.svc.&lt;name&gt;<br>   State of a named service (“stopped”, “running”, “restarting”)</p>
+<h2 id="Bootcharting"><a href="#Bootcharting" class="headerlink" title="Bootcharting"></a>Bootcharting</h2><p>This version of init contains code to perform “bootcharting”: generating log<br>files that can be later processed by the tools provided by www.bootchart.org.</p>
+<p>On the emulator, use the -bootchart &lt;timeout&gt; option to boot with bootcharting<br>activated for &lt;timeout&gt; seconds.</p>
+<p>On a device, create /data/bootchart/start with a command like the following:</p>
+<p>  adb shell ‘echo $TIMEOUT &gt; /data/bootchart/start’</p>
+<p>Where the value of $TIMEOUT corresponds to the desired bootcharted period in<br>seconds. Bootcharting will stop after that many seconds have elapsed.<br>You can also stop the bootcharting at any moment by doing the following:</p>
+<p>  adb shell ‘echo 1 &gt; /data/bootchart/stop’</p>
+<p>Note that /data/bootchart/stop is deleted automatically by init at the end of<br>the bootcharting. This is not the case with /data/bootchart/start, so don’t<br>forget to delete it when you’re done collecting data.</p>
+<p>The log files are written to /data/bootchart/. A script is provided to<br>retrieve them and create a bootchart.tgz file that can be used with the<br>bootchart command-line utility:</p>
+<p>  sudo apt-get install pybootchartgui<br>  <code># grab-bootchart.sh uses $ANDROID_SERIAL.</code><br>  $ANDROID_BUILD_TOP/system/core/init/grab-bootchart.sh</p>
+<p>One thing to watch for is that the bootchart will show init as if it started<br>running at 0s. You’ll have to look at dmesg to work out when the kernel<br>actually started init.</p>
+<h2 id="Debugging-init"><a href="#Debugging-init" class="headerlink" title="Debugging init"></a>Debugging init</h2><p>By default, programs executed by init will drop stdout and stderr into<br>/dev/null. To help with debugging, you can execute your program via the<br>Android program logwrapper. This will redirect stdout/stderr into the<br>Android logging system (accessed via logcat).</p>
+<p>For example<br>service akmd /system/bin/logwrapper /sbin/akmd</p>
+<p>For quicker turnaround when working on init itself, use:</p>
+<p>  mm -j<br>  m ramdisk-nodeps<br>  m bootimage-nodeps<br>  adb reboot bootloader<br>  fastboot boot $ANDROID_PRODUCT_OUT/boot.img</p>
+<p>Alternatively, use the emulator:</p>
+<p>  emulator -partition-size 1024 -verbose -show-kernel -no-window</p>
+<p>You might want to call klog_set_level(6) after the klog_init() call<br>so you see the kernel logging in dmesg (or the emulator output).</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Ubuntu下使用rsync进行数据同步备份]]></title>
       <url>http://hesstudio.cn/2016/08/19/ubuntu-rsync/</url>
       <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>rsync是remote sync的简称,它是一款类unix系统下数据同步备份,增量文件快速传输的工具.rsync采用”rsync算法”,不仅能为client和server的提供文件快速同步,并且能够对整个目录树/文件系统进行同步备份.</p>
