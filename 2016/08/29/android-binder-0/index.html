@@ -86,20 +86,20 @@
 
 
 
-<meta name="description" content="Binder简介在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.
-Android是基于Linux内核开发,而在Linux系">
+<meta name="description" content="Binder简介Android系统中,应用程序的四大组件Acyiviy,Service,Broadcast Receiver,Content Provider可以运行在一个进程中,也可运行在不同进程中,同时Android系统的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务都是采用Binder来进行跨进程通信.
+Android是基于Linux内核开发的,Linux系统中传">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Binder之概述">
 <meta property="og:url" content="http://hesstudio.cn/2016/08/29/android-binder-0/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="Binder简介在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.
-Android是基于Linux内核开发,而在Linux系">
+<meta property="og:description" content="Binder简介Android系统中,应用程序的四大组件Acyiviy,Service,Broadcast Receiver,Content Provider可以运行在一个进程中,也可运行在不同进程中,同时Android系统的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务都是采用Binder来进行跨进程通信.
+Android是基于Linux内核开发的,Linux系统中传">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true">
-<meta property="og:updated_time" content="2016-10-03T02:05:34.000Z">
+<meta property="og:updated_time" content="2016-10-05T10:00:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Binder之概述">
-<meta name="twitter:description" content="Binder简介在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.
-Android是基于Linux内核开发,而在Linux系">
+<meta name="twitter:description" content="Binder简介Android系统中,应用程序的四大组件Acyiviy,Service,Broadcast Receiver,Content Provider可以运行在一个进程中,也可运行在不同进程中,同时Android系统的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务都是采用Binder来进行跨进程通信.
+Android是基于Linux内核开发的,Linux系统中传">
 <meta name="twitter:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true">
 
 
@@ -328,18 +328,24 @@ Android是基于Linux内核开发,而在Linux系">
       
 
       
-        <h1 id="Binder简介"><a href="#Binder简介" class="headerlink" title="Binder简介"></a>Binder简介</h1><p>在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.</p>
-<p>Android是基于Linux内核开发,而在Linux系统中,传统的IPC机制有Pipe,ShareMemory,Singal,Message,Socket等,Android并未完全采用这些传统的进程间通信机制(Zygote采用了Socket,Init子进程退出采用了Singal),而是引入了Binder作为主要的IPC机制.</p>
+        <h1 id="Binder简介"><a href="#Binder简介" class="headerlink" title="Binder简介"></a>Binder简介</h1><p>Android系统中,应用程序的四大组件Acyiviy,Service,Broadcast Receiver,Content Provider可以运行在一个进程中,也可运行在不同进程中,同时Android系统的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务都是采用Binder来进行跨进程通信.</p>
+<p>Android是基于Linux内核开发的,Linux系统中传统的IPC机制有Pipe,ShareMemory,Singal,Message,Socket等,Android并未完全采用这些传统的进程间通信机制(Zygote采用了Socket,Init子进程退出采用了Singal),而是引入了Binder作为主要的IPC机制.</p>
 <p>Binder是在<a href="http://www.angryredplanet.com/~hackbod/openbinder/docs/html/BinderIPCMechanism.html" target="_blank" rel="external">OpebBinder</a>的基础上实现的,OpenBinder是一个开源的系统IPC机制,最初是由 Be Inc开发，后来由Palm, Inc公司负责开发，Google对其改造后应用到了Android系统上.</p>
 <p>Binder相比其他的IPC机制有什么优势?</p>
 <ol>
+<li>基于Client-Server的通信方式.APP通过调用不同的service server就可以非常方便的完成很多功能.</li>
 <li>高效率.Binder中数据传输只需要一次拷贝(用户空间虚拟地址与内核空间虚拟地址映射到同一物理内存),节省时间的同时也节省了空间.</li>
 <li>面向对象的RPC调用,模糊了进程边界,淡化进程间通信过程.在Android的C++/java面向对象语言环境中,Binder更加符合面向对象思想,Binder的实体位于一个进程中,而引用却可以分布在各个进程中,通过Binder引用调用就像本地调用一样.这种通信方式更加适合Android组件化的思想.</li>
 <li>安全性.Android为每个安装的应用程序分配了自己的UID,Binder能依据调用进程的UID,PID来进行权限控制.</li>
 </ol>
-<h1 id="Binder机制"><a href="#Binder机制" class="headerlink" title="Binder机制"></a>Binder机制</h1><p>Binder采用的是CS通信方式，对于提供服务的进程即server进程，请求服务的进程即client进程.同一个server进程可能存在多个service组件，同时同一个clent进程可以请求多个service组件.<br>如下图所示，Binder的通信涉及到4个角色，分别是Client，Service，Service Mananger与Binder Driver.<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true" alt=""><br>Client,Service,Service Mananger都运行在用户空间中，由于用户进程地址空间是独立且不能相互访问的，而内核空间是全局共享的，所以Client，Service，Service Mananger通过SystemCall(open,mmap,ioctl)来访问/dev/binder间接执行用户空间进程间的通信.</p>
-<h1 id="Binder分析"><a href="#Binder分析" class="headerlink" title="Binder分析"></a>Binder分析</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://blog.csdn.net/universus/article/details/6211589" target="_blank" rel="external">Android Bander设计与实现 - 设计篇</a></li>
+<h1 id="Binder机制"><a href="#Binder机制" class="headerlink" title="Binder机制"></a>Binder机制</h1><p>Binder采用的是CS通信方式，对于提供服务的进程即server进程，请求服务的进程即client进程.同一个server进程可能存在多个service组件，同时同一个clent进程可以请求多个service组件.<br>如下图所示，Binder的通信涉及到4个角色，分别是Client，Service，Service Mananger与Binder Driver.<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true" alt=""><br>Client,Service,Service Mananger都运行在用户空间中，由于用户进程地址空间是独立且不能相互访问的，而内核空间是全局共享的，所以Client，Service，Service Mananger通过SystemCall(open,mmap,ioctl)来访问/dev/binder间接与用户空间进程建立通信通道.</p>
+<h1 id="Binder分析"><a href="#Binder分析" class="headerlink" title="Binder分析"></a>Binder分析</h1><ol>
+<li><a href="http://www.hesstudio.cn/2016/09/06/android-binder-1/" target="_blank" rel="external">Android Binder之Binder Driver</a></li>
+<li><a href="http://www.hesstudio.cn/2016/09/15/android-binder-2/" target="_blank" rel="external">Android Binder之Service Manager</a></li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://blog.csdn.net/universus/article/details/6211589" target="_blank" rel="external">Android Binder设计与实现 - 设计篇</a></li>
+<li><a href="http://item.jd.com/11104739.html" target="_blank" rel="external">Android系统源代码情景分析</a></li>
 </ol>
 
       
@@ -520,7 +526,7 @@ Android是基于Linux内核开发,而在Linux系">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder简介"><span class="nav-number">1.</span> <span class="nav-text">Binder简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder机制"><span class="nav-number">2.</span> <span class="nav-text">Binder机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder分析"><span class="nav-number">3.</span> <span class="nav-text">Binder分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder简介"><span class="nav-number">1.</span> <span class="nav-text">Binder简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder机制"><span class="nav-number">2.</span> <span class="nav-text">Binder机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder分析"><span class="nav-number">3.</span> <span class="nav-text">Binder分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
         </section>
