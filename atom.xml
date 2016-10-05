@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hesstudio.cn/"/>
-  <updated>2016-09-15T15:45:12.000Z</updated>
+  <updated>2016-10-03T07:53:17.000Z</updated>
   <id>http://hesstudio.cn/</id>
   
   <author>
@@ -16,15 +16,85 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Android Binder之Service Manager</title>
-    <link href="http://hesstudio.cn/2016/09/15/android-binder-2/"/>
-    <id>http://hesstudio.cn/2016/09/15/android-binder-2/</id>
-    <published>2016-09-15T15:43:14.000Z</published>
-    <updated>2016-09-15T15:45:12.000Z</updated>
+    <title>android-binder-5</title>
+    <link href="http://hesstudio.cn/2016/10/03/android-binder-5/"/>
+    <id>http://hesstudio.cn/2016/10/03/android-binder-5/</id>
+    <published>2016-10-03T07:53:17.000Z</published>
+    <updated>2016-10-03T07:53:17.000Z</updated>
     
     <content type="html"></content>
     
     <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>android-binder-4</title>
+    <link href="http://hesstudio.cn/2016/09/30/android-binder-4/"/>
+    <id>http://hesstudio.cn/2016/09/30/android-binder-4/</id>
+    <published>2016-09-30T07:53:13.000Z</published>
+    <updated>2016-10-03T07:55:15.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>android-binder-3</title>
+    <link href="http://hesstudio.cn/2016/09/23/android-binder-3/"/>
+    <id>http://hesstudio.cn/2016/09/23/android-binder-3/</id>
+    <published>2016-09-23T07:53:07.000Z</published>
+    <updated>2016-10-03T07:55:11.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Android Binder之Service Manager</title>
+    <link href="http://hesstudio.cn/2016/09/15/android-binder-2/"/>
+    <id>http://hesstudio.cn/2016/09/15/android-binder-2/</id>
+    <published>2016-09-15T15:43:14.000Z</published>
+    <updated>2016-10-03T03:38:02.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;启动&quot;&gt;&lt;a href=&quot;#启动&quot; class=&quot;headerlink&quot; title=&quot;启动&quot;&gt;&lt;/a&gt;启动&lt;/h1&gt;&lt;p&gt;servicemanager是由Init启动的deamon进程，它的启动脚本如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;service servicemanager /system/bin/servicemanager&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    class core&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    user system&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    group system readproc&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    critical&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart healthd&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart zygote&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart audioserver&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart media&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart surfaceflinger&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart inputflinger&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart drm&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onrestart restart cameraserver&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    writepid /dev/cpuset/system-background/tasks&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;流程&quot;&gt;&lt;a href=&quot;#流程&quot; class=&quot;headerlink&quot; title=&quot;流程&quot;&gt;&lt;/a&gt;流程&lt;/h1&gt;&lt;p&gt;servicemanager的源码位于frameworks/native/cmds/servicemanager下,启动入口是service_manager.c的main()函数,下图是servicemanager的具体启动流程.&lt;/p&gt;
+&lt;p&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/XRobinHe/Resource/blob/master/blog/image/android/binder_service_manager.jpg?raw=true&quot; alt=&quot;service_manager&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;br&gt;下面从main()开始分析servicemanager的启动过程.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;int main()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    struct binder_state *bs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bs = binder_open(128*1024);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (!bs) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ALOGE(&amp;quot;failed to open binder driver\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return -1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (binder_become_context_manager(bs)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ALOGE(&amp;quot;cannot become context manager (%s)\n&amp;quot;, strerror(errno));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return -1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    selinux_enabled = is_selinux_enabled();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    sehandle = selinux_android_service_context_handle();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    selinux_status_open(true);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (selinux_enabled &amp;gt; 0) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (sehandle == NULL) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ALOGE(&amp;quot;SELinux: Failed to acquire sehandle. Aborting.\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            abort();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (getcon(&amp;amp;service_manager_context) != 0) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ALOGE(&amp;quot;SELinux: Failed to acquire service_manager context. Aborting.\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            abort();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    union selinux_callback cb;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    cb.func_audit = audit_callback;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    selinux_set_callback(SELINUX_CB_AUDIT, cb);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    cb.func_log = selinux_log_callback;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    selinux_set_callback(SELINUX_CB_LOG, cb);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    binder_loop(bs, svcmgr_handler);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;整个启动过程分成三步，首先binder_open打开/dev/binder并mmap到本进程地址空间，然后binder_become_context_manager注册成为整个binder通信系统的管理者，最后调用binder_loop循环等待并处理client的请求.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;binder_open：&lt;/strong&gt;&lt;br&gt;首先看一下binder_state的定义&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_state&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int fd;  // 打开/dev/binder的文件描述符&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    void *mapped; // mmap的起始地址&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    size_t mapsize; // mmap的大小&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;binder_open的信息都保存在binder_state中&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_state *binder_open(size_t mapsize)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    struct binder_state *bs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    struct binder_version vers;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bs = malloc(sizeof(*bs));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (!bs) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        errno = ENOMEM;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bs-&amp;gt;fd = open(&amp;quot;/dev/binder&amp;quot;, O_RDWR | O_CLOEXEC);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (bs-&amp;gt;fd &amp;lt; 0) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fprintf(stderr,&amp;quot;binder: cannot open device (%s)\n&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                strerror(errno));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        goto fail_open;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if ((ioctl(bs-&amp;gt;fd, BINDER_VERSION, &amp;amp;vers) == -1) ||&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        (vers.protocol_version != BINDER_CURRENT_PROTOCOL_VERSION)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fprintf(stderr,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;quot;binder: kernel driver version (%d) differs from user space version (%d)\n&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                vers.protocol_version, BINDER_CURRENT_PROTOCOL_VERSION);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        goto fail_open;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bs-&amp;gt;mapsize = mapsize;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bs-&amp;gt;mapped = mmap(NULL, mapsize, PROT_READ, MAP_PRIVATE, bs-&amp;gt;fd, 0);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (bs-&amp;gt;mapped == MAP_FAILED) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fprintf(stderr,&amp;quot;binder: cannot map device (%s)\n&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                strerror(errno));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        goto fail_map;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return bs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fail_map:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    close(bs-&amp;gt;fd);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fail_open:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    free(bs);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;binder_open主要完成了open与mmap操作，分别会调到driver的binder_open与binder_mmap,对应的信息保存在binder_state结构体.其中mmap,第一个参数是映射内存的起始地址，NULL代表让系统自动选定地址.mapsize大小是128*1024B，即128K.PROT_READ表示映射区域是可读的,MAP_PRIVATE表示建立一个写入时拷贝的私有映射，即当进程中对该内存区域进行写入时，是写入到映射的拷贝中.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;binder_become_context_manager:&lt;/strong&gt;&lt;br&gt;binder_become_context_manager的目的是注册成Binder的上下文管理者，它是通过ioctl来实现的.其中BINDER_SET_CONTEXT_MGR在drivers/staging/android/uapi/binder.h中定义&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;int binder_become_context_manager(struct binder_state *bs)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return ioctl(bs-&amp;gt;fd, BINDER_SET_CONTEXT_MGR, 0);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define BINDER_SET_CONTEXT_MGR      _IOW(&amp;apos;b&amp;apos;, 7, __s32)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;通过ioctl设置BINDER_SET_CONTEXT_MGR参数0来成为binder的上下文管理者.下面主要分析ioctl的BINDER_SET_CONTEXT_MGR实现.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int ret;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_proc *proc = filp-&amp;gt;private_data;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_thread *thread;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned int size = _IOC_SIZE(cmd);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	void __user *ubuf = (void __user *)arg;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	binder_lock(__func__);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	thread = binder_get_thread(proc);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	if (thread == NULL) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		ret = -ENOMEM;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		goto err;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	switch (cmd) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	case BINDER_SET_CONTEXT_MGR:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if (binder_context_mgr_node != NULL) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			pr_err(&amp;quot;BINDER_SET_CONTEXT_MGR already set\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			ret = -EBUSY;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			goto err;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		ret = security_binder_set_context_mgr(proc-&amp;gt;tsk);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if (ret &amp;lt; 0)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			goto err;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if (uid_valid(binder_context_mgr_uid)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			if (!uid_eq(binder_context_mgr_uid, current-&amp;gt;cred-&amp;gt;euid)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				pr_err(&amp;quot;BINDER_SET_CONTEXT_MGR bad uid %d != %d\n&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				       from_kuid(&amp;amp;init_user_ns, current-&amp;gt;cred-&amp;gt;euid),&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				       from_kuid(&amp;amp;init_user_ns, binder_context_mgr_uid));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				ret = -EPERM;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				goto err;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125; else&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			binder_context_mgr_uid = current-&amp;gt;cred-&amp;gt;euid;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		binder_context_mgr_node = binder_new_node(proc, 0, 0);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if (binder_context_mgr_node == NULL) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			ret = -ENOMEM;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			goto err;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		binder_context_mgr_node-&amp;gt;local_weak_refs++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		binder_context_mgr_node-&amp;gt;local_strong_refs++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		binder_context_mgr_node-&amp;gt;has_strong_ref = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		binder_context_mgr_node-&amp;gt;has_weak_ref = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		break;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	ret = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;err:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	if (thread)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		thread-&amp;gt;looper &amp;amp;= ~BINDER_LOOPER_STATE_NEED_RETURN;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	binder_unlock(__func__);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	wait_event_interruptible(binder_user_error_wait, binder_stop_on_user_error &amp;lt; 2);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	if (ret &amp;amp;&amp;amp; ret != -ERESTARTSYS)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		pr_info(&amp;quot;%d:%d ioctl %x %lx returned %d\n&amp;quot;, proc-&amp;gt;pid, current-&amp;gt;pid, cmd, arg, ret);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;err_unlocked:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	trace_binder_ioctl_done(ret);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return ret;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;首先获取当前线程对应的binder_thread结构体，如果没有则创建一个.再检查binder_context_mgr_node是否为NULL，不为NULL即说明context mannager已经注册,出错返回.然后设置binder_context_mgr_uid为当前uid，并通过binder_new_node新建binder实体并赋值给binder_context_mgr_node.新建Binder实体后并增加其引用计数防止驱动将其释放.最后清除thread BINDER_LOOPER_STATE_NEED_RETURN状态返回.下面是binder_new_node的实现：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;static struct binder_node *binder_new_node(struct binder_proc *proc,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;					   binder_uintptr_t ptr,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;					   binder_uintptr_t cookie)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_node **p = &amp;amp;proc-&amp;gt;nodes.rb_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_node *parent = NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_node *node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	while (*p) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		parent = *p;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		node = rb_entry(parent, struct binder_node, rb_node);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if (ptr &amp;lt; node-&amp;gt;ptr)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			p = &amp;amp;(*p)-&amp;gt;rb_left;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		else if (ptr &amp;gt; node-&amp;gt;ptr)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			p = &amp;amp;(*p)-&amp;gt;rb_right;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		else&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			return NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	node = kzalloc_preempt_disabled(sizeof(*node));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	if (node == NULL)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		return NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	binder_stats_created(BINDER_STAT_NODE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	rb_link_node(&amp;amp;node-&amp;gt;rb_node, parent, p);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	rb_insert_color(&amp;amp;node-&amp;gt;rb_node, &amp;amp;proc-&amp;gt;nodes);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	node-&amp;gt;debug_id = ++binder_last_id;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	node-&amp;gt;proc = proc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	node-&amp;gt;ptr = ptr;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	node-&amp;gt;cookie = cookie;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	node-&amp;gt;work.type = BINDER_WORK_NODE;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	INIT_LIST_HEAD(&amp;amp;node-&amp;gt;work.entry);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	INIT_LIST_HEAD(&amp;amp;node-&amp;gt;async_todo);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	binder_debug(BINDER_DEBUG_INTERNAL_REFS,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		     &amp;quot;%d:%d node %d u%016llx c%016llx created\n&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		     proc-&amp;gt;pid, current-&amp;gt;pid, node-&amp;gt;debug_id,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		     (u64)node-&amp;gt;ptr, (u64)node-&amp;gt;cookie);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;binder_new_node()有三个参数，proc即当前进程在kernel中的binder对象binder_proc，ptr与cookie用来描述binder本地对象，由于是service manager，对应的binder本地对象地址值为0.binder_new_node根据ptr在proc的node红黑书中索引，如果找到已经创建的binder_node实体返回NULL，没有找到则创建binder_node实体对象.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;biner_loop:&lt;/strong&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。&lt;/p&gt;
+&lt;/blockquote&gt;
+
     
     </summary>
     
@@ -40,11 +110,54 @@
     <link href="http://hesstudio.cn/2016/09/06/android-binder-1/"/>
     <id>http://hesstudio.cn/2016/09/06/android-binder-1/</id>
     <published>2016-09-06T15:40:21.000Z</published>
-    <updated>2016-09-15T15:45:08.000Z</updated>
+    <updated>2016-10-03T13:43:17.000Z</updated>
     
-    <content type="html"></content>
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;binder驱动源码位于drivers/staging/android/下，主要包括binder.c与uapi/binder.h&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;数据结构&quot;&gt;&lt;a href=&quot;#数据结构&quot; class=&quot;headerlink&quot; title=&quot;数据结构&quot;&gt;&lt;/a&gt;数据结构&lt;/h1&gt;&lt;p&gt;在分析驱动之前，先了解binder驱动中所定义的数据结构.binder的数据结构大概可以分成二类看，一类是内部使用的，在binder.c中定义，另一类是内外部使用，在binder.h中定义.&lt;/p&gt;
+&lt;h2 id=&quot;binder-node&quot;&gt;&lt;a href=&quot;#binder-node&quot; class=&quot;headerlink&quot; title=&quot;binder_node&quot;&gt;&lt;/a&gt;binder_node&lt;/h2&gt;&lt;p&gt;binder_node在binder.c中定义，属于binder driver内部数据结构，它是binder实体在内核中的描述.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_node &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int debug_id;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_work work;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	union &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		struct rb_node rb_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		struct hlist_node dead_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_proc *proc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct hlist_head refs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int internal_strong_refs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int local_weak_refs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int local_strong_refs;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	binder_uintptr_t ptr;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	binder_uintptr_t cookie;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned has_strong_ref:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned pending_strong_ref:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned has_weak_ref:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned pending_weak_ref:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned has_async_transaction:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned accept_fds:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned min_priority:8;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct list_head async_todo;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;union {&lt;br&gt;struct rb_node rb_node;&lt;br&gt;struct hlist_node dead_node;&lt;br&gt;};&lt;br&gt;binder_node未销毁时通过rb_node链接到proc-&amp;gt;nodes红黑树上.&lt;br&gt;binder_node销毁时通过dead_node加入到死亡的hash list上.&lt;/li&gt;
+&lt;li&gt;struct binder_proc *proc;　binder实体(服务)所在的宿主进程.&lt;/li&gt;
+&lt;li&gt;struct hlist_head refs; binder的引用hash list,所有该binder实体的引用都保存在该hash list中.&lt;/li&gt;
+&lt;li&gt;binder_uintptr_t ptr; 描述用户空间的service組件，Binder实体对应的Server在用户空间的本地Binder的引用&lt;/li&gt;
+&lt;li&gt;binder_uintptr_t cookie; 描述用户空间的service組件，Binder实体对应的Server在用户空间的本地Binder地址&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;binder-ref&quot;&gt;&lt;a href=&quot;#binder-ref&quot; class=&quot;headerlink&quot; title=&quot;binder_ref&quot;&gt;&lt;/a&gt;binder_ref&lt;/h2&gt;&lt;p&gt;binder_ref在binder.c中定义，属于binder driver内部数据结构，它是binder引用(Client组件)在内核中的描述.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_ref &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	/* Lookups needed: */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	/*   node + proc =&amp;gt; ref (transaction) */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	/*   desc + proc =&amp;gt; ref (transaction, inc/dec ref) */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	/*   node =&amp;gt; refs + procs (proc exit) */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int debug_id;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_node rb_node_desc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_node rb_node_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct hlist_node node_entry;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_proc *proc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_node *node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	uint32_t desc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int strong;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int weak;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_ref_death *death;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;struct rb_node rb_node_desc;    以句柄值作为关键字关联到binder_proc-&amp;gt;refs_by_desc红黑树&lt;/li&gt;
+&lt;li&gt;struct rb_node rb_node_node;　以binder实体对象地址作为关键字关联到binder_proc-&amp;gt;refs_by_node红黑树&lt;/li&gt;
+&lt;li&gt;struct hlist_node node_entry;    binder_node的引用节点，关联到binder_node-&amp;gt;refs&lt;/li&gt;
+&lt;li&gt;struct binder_proc *proc; 引用所在的宿主进程.&lt;/li&gt;
+&lt;li&gt;struct binder_node *node;    引用所对应的binder_node实体.&lt;/li&gt;
+&lt;li&gt;uint32_t desc;    Binder引用的句柄值，Binder驱动为binder引用分配的一个唯一的int型整数（进程范围内唯一）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;binder-proc&quot;&gt;&lt;a href=&quot;#binder-proc&quot; class=&quot;headerlink&quot; title=&quot;binder_proc&quot;&gt;&lt;/a&gt;binder_proc&lt;/h2&gt;&lt;p&gt;binder_proc在binder.c中定义，属于binder driver内部数据结构，它是使用binder通信的进程在在内核中的描述.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_proc &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct hlist_node proc_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_root threads;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_root nodes;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_root refs_by_desc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_root refs_by_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int pid;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct vm_area_struct *vma;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct mm_struct *vma_vm_mm;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct task_struct *tsk;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct files_struct *files;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct hlist_node deferred_work_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int deferred_work;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	void *buffer;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	ptrdiff_t user_buffer_offset;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct list_head buffers;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_root free_buffers;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_root allocated_buffers;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	size_t free_async_space;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct page **pages;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	size_t buffer_size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	uint32_t buffer_free;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct list_head todo;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	wait_queue_head_t wait;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_stats stats;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct list_head delivered_death;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int max_threads;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int requested_threads;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int requested_threads_started;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int ready_threads;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	long default_priority;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct dentry *debugfs_entry;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;struct hlist_node proc_node; 全局哈希链表binder_procs的节点，所有binder_proc都被加入到该链表&lt;/li&gt;
+&lt;li&gt;struct rb_root threads;    binder_thread红黑树，关联binder_thread-&amp;gt;rb_node&lt;/li&gt;
+&lt;li&gt;struct rb_root nodes;    binder_node红黑树，关联binder_node-&amp;gt;rb_node&lt;/li&gt;
+&lt;li&gt;struct rb_root refs_by_desc;　以binder_ref描述句柄为关键字的红黑树，关联binder_ref-&amp;gt;rb_node_desc&lt;/li&gt;
+&lt;li&gt;struct rb_root refs_by_node;    以binder_ref关联的实体地址为关键字的红黑树，关联binder_ref-&amp;gt;rb_node&lt;/li&gt;
+&lt;li&gt;int pid;　进程id&lt;/li&gt;
+&lt;li&gt;struct vm_area_struct *vma; 进程虚拟地址空间&lt;/li&gt;
+&lt;li&gt;struct task_struct *tsk;　进程task_struct控制块&lt;/li&gt;
+&lt;li&gt;void *buffer;　进程在内核虚拟内存中的起始地址&lt;/li&gt;
+&lt;li&gt;ptrdiff_t user_buffer_offset;　内核虚拟地址和用户虚拟地址之间的差值&lt;/li&gt;
+&lt;li&gt;struct list_head todo;　进程的待处理事务队列&lt;/li&gt;
+&lt;li&gt;wait_queue_head_t wait;　等待队列&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;binder-thread&quot;&gt;&lt;a href=&quot;#binder-thread&quot; class=&quot;headerlink&quot; title=&quot;binder_thread&quot;&gt;&lt;/a&gt;binder_thread&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_thread &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_proc *proc;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_node rb_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int pid;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	int looper;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_transaction *transaction_stack;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct list_head todo;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	uint32_t return_error; /* Write failed, return error code in read buf */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	uint32_t return_error2; /* Write failed, return error code in read */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		/* buffer. Used when sending a reply to a dead process that */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		/* we are also waiting on */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	wait_queue_head_t wait;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_stats stats;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;binder-buffer&quot;&gt;&lt;a href=&quot;#binder-buffer&quot; class=&quot;headerlink&quot; title=&quot;binder_buffer&quot;&gt;&lt;/a&gt;binder_buffer&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;struct binder_buffer &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct list_head entry; /* free and allocated entries by address */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct rb_node rb_node; /* free entry by size or allocated entry */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				/* by address */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned free:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned allow_user_free:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned async_transaction:1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	unsigned debug_id:29;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_transaction *transaction;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	struct binder_node *target_node;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	size_t data_size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	size_t offsets_size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	uint8_t data[0];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;binder-write-read&quot;&gt;&lt;a href=&quot;#binder-write-read&quot; class=&quot;headerlink&quot; title=&quot;binder_write_read&quot;&gt;&lt;/a&gt;binder_write_read&lt;/h2&gt;</content>
     
     <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;binder驱动源码位于drivers/staging/android/下，主要包括binder.c与uapi/binder.h&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;数据结构&quot;&gt;&lt;a href=&quot;#数据结构&quot; class=&quot;head
     
     </summary>
     
@@ -56,11 +169,11 @@
   </entry>
   
   <entry>
-    <title>Android之Binder概述</title>
+    <title>Android Binder之概述</title>
     <link href="http://hesstudio.cn/2016/08/29/android-binder-0/"/>
     <id>http://hesstudio.cn/2016/08/29/android-binder-0/</id>
     <published>2016-08-29T15:40:27.000Z</published>
-    <updated>2016-10-01T09:49:13.000Z</updated>
+    <updated>2016-10-03T02:05:34.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Binder简介&quot;&gt;&lt;a href=&quot;#Binder简介&quot; class=&quot;headerlink&quot; title=&quot;Binder简介&quot;&gt;&lt;/a&gt;Binder简介&lt;/h1&gt;&lt;p&gt;在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.&lt;/p&gt;
 &lt;p&gt;Android是基于Linux内核开发,而在Linux系统中,传统的IPC机制有Pipe,ShareMemory,Singal,Message,Socket等,Android并未完全采用这些传统的进程间通信机制(Zygote采用了Socket,Init子进程退出采用了Singal),而是引入了Binder作为主要的IPC机制.&lt;/p&gt;
@@ -72,7 +185,10 @@
 &lt;li&gt;安全性.Android为每个安装的应用程序分配了自己的UID,Binder能依据调用进程的UID,PID来进行权限控制.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h1 id=&quot;Binder机制&quot;&gt;&lt;a href=&quot;#Binder机制&quot; class=&quot;headerlink&quot; title=&quot;Binder机制&quot;&gt;&lt;/a&gt;Binder机制&lt;/h1&gt;&lt;p&gt;Binder采用的是CS通信方式，对于提供服务的进程即server进程，请求服务的进程即client进程.同一个server进程可能存在多个service组件，同时同一个clent进程可以请求多个service组件.&lt;br&gt;如下图所示，Binder的通信涉及到4个角色，分别是Client，Service，Service Mananger与Binder Driver.&lt;br&gt;&lt;img src=&quot;https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true&quot; alt=&quot;&quot;&gt;&lt;br&gt;Client,Service,Service Mananger都运行在用户空间中，由于用户进程地址空间是独立且不能相互访问的，而内核空间是全局共享的，所以Client，Service，Service Mananger通过SystemCall(open,mmap,ioctl)来访问/dev/binder间接执行用户空间进程间的通信.&lt;/p&gt;
-&lt;h1 id=&quot;Binder分析&quot;&gt;&lt;a href=&quot;#Binder分析&quot; class=&quot;headerlink&quot; title=&quot;Binder分析&quot;&gt;&lt;/a&gt;Binder分析&lt;/h1&gt;</content>
+&lt;h1 id=&quot;Binder分析&quot;&gt;&lt;a href=&quot;#Binder分析&quot; class=&quot;headerlink&quot; title=&quot;Binder分析&quot;&gt;&lt;/a&gt;Binder分析&lt;/h1&gt;&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/universus/article/details/6211589&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Bander设计与实现 - 设计篇&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
     
     <summary type="html">
     
@@ -887,273 +1003,6 @@
     
     </summary>
     
-    
-  </entry>
-  
-  <entry>
-    <title>Android Build系统之envsetup.sh</title>
-    <link href="http://hesstudio.cn/2016/05/24/android-build-2/"/>
-    <id>http://hesstudio.cn/2016/05/24/android-build-2/</id>
-    <published>2016-05-24T02:50:45.000Z</published>
-    <updated>2016-08-06T13:41:59.000Z</updated>
-    
-    <content type="html">&lt;hr&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Android Build系统是比较大的模块,为了能快速了解整个模块的组织架构,后面采用从入口开始分析的方式,一步步深入分析Android的Build系统.在编译AOSP前,首先运行的是envsetup.sh脚本,所以下面就从envsetup.sh脚本开始分析.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;envsetup-sh的作用&quot;&gt;&lt;a href=&quot;#envsetup-sh的作用&quot; class=&quot;headerlink&quot; title=&quot;envsetup.sh的作用&quot;&gt;&lt;/a&gt;envsetup.sh的作用&lt;/h1&gt;&lt;p&gt;打开envsetup.sh脚本,可以看到该脚本定义了很多的shell命令,这些命令在envsetup.sh脚本执行后可以直接在shell环境中使用.忽略掉定义部分,envsetup.sh脚本实际执行的代码只有数行,如下:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;# 中间部分代码&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# add the default one here&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_arm-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_arm64-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_mips-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_mips64-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_x86-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_x86_64-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# 结尾部分代码&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;if [ &amp;quot;x$SHELL&amp;quot; != &amp;quot;x/bin/bash&amp;quot; ]; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    case `ps -o command -p $$` in&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *bash*)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            echo &amp;quot;WARNING: Only bash is supported, use of other shell would lead to erroneous results&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    esac&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# Execute the contents of any erroneous files we can find.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;for f in `test -d device &amp;amp;&amp;amp; find -L device -maxdepth 4 -name &amp;apos;vendorsetup.sh&amp;apos; 2&amp;gt; /dev/null | sort` \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         `test -d vendor &amp;amp;&amp;amp; find -L vendor -maxdepth 4 -name &amp;apos;vendorsetup.sh&amp;apos; 2&amp;gt; /dev/null | sort`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;do&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    echo &amp;quot;including $f&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    . $f&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;done&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;unset f&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;addcompletions&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;中间部分有6条add_lunch_combo的调用,结尾部分首先会判断是否是bash环境,如果不是提示警告.接着查找device与vendor目录下的vendorsetup.sh脚本并执行.&lt;br&gt;先看add_lunch_combo的定义&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;function add_lunch_combo()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local new_combo=$1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local c&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for c in $&amp;#123;LUNCH_MENU_CHOICES[@]&amp;#125; ; do&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if [ &amp;quot;$new_combo&amp;quot; = &amp;quot;$c&amp;quot; ] ; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            return&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    done&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    LUNCH_MENU_CHOICES=($&amp;#123;LUNCH_MENU_CHOICES[@]&amp;#125; $new_combo)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;可以看到add_lunch_combo的作用就是将传递的$1参数加入到LUNCH_MENU_CHOICES数组中.&lt;br&gt;再看一下vendorsetup.sh的定义,以bullhead为例,device/lge/bullhead/vendorsetup.sh的内容如下:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;add_lunch_combo aosp_bullhead-userdebug&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;可以发现整个envsetup.sh执行过后,除了定义了一些shell函数,剩下的工作就是利用add_lunch_combo将传递给其的参数加入到全局数组LUNCH_MENU_CHOICES中,到底LUNCH_MENU_CHOICES有什么作用呢?我们可以在终端执行一下lunch命令,输出如下:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;You’re building on Linux&lt;/p&gt;
-&lt;p&gt;Lunch menu… pick a combo:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1. aosp_arm-eng
-2. aosp_arm64-eng
-3. aosp_mips-eng
-4. aosp_mips64-eng
-5. aosp_x86-eng
-6. aosp_x86_64-eng
-7. aosp_deb-userdebug
-8. aosp_flo-userdebug
-9. full_fugu-userdebug
-10. aosp_fugu-userdebug
-11. mini_emulator_arm64-userdebug
-12. m_e_arm-userdebug
-13. mini_emulator_mips-userdebug
-14. mini_emulator_x86_64-userdebug
-15. mini_emulator_x86-userdebug
-16. aosp_flounder-userdebug
-17. aosp_angler-userdebug
-18. aosp_bullhead-userdebug
-19. aosp_hammerhead-userdebug
-20. aosp_hammerhead_fp-userdebug
-21. aosp_shamu-userdebug
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Which would you like? [aosp_arm-eng]&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;实际上上面的这些选项就是通过add_lunch_combo加进去的.&lt;/p&gt;
-&lt;p&gt;envsetup.sh脚本中定义的很多shell命令,一些常用的如下.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;命令&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;lunch&lt;/td&gt;
-&lt;td&gt;lunch &lt;product_name&gt;&lt;build_variant&gt; 指定当前编译产品&lt;/build_variant&gt;&lt;/product_name&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;下面分析以下lunch命令的功能:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;function lunch()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local answer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ &amp;quot;$1&amp;quot; ] ; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        answer=$1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    else&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        print_lunch_menu&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo -n &amp;quot;Which would you like? [aosp_arm-eng] &amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        read answer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local selection=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 如果lunch后没跟参数,默认aosp_arm-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ -z &amp;quot;$answer&amp;quot; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        selection=aosp_arm-eng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    elif (echo -n $answer | grep -q -e &amp;quot;^[0-9][0-9]*$&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if [ $answer -le $&amp;#123;#LUNCH_MENU_CHOICES[@]&amp;#125; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            selection=$&amp;#123;LUNCH_MENU_CHOICES[$(($answer-1))]&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    elif (echo -n $answer | grep -q -e &amp;quot;^[^\-][^\-]*-[^\-][^\-]*$&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        selection=$answer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ -z &amp;quot;$selection&amp;quot; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;Invalid lunch combo: $answer&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return 1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_BUILD_APPS=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 变量selection &amp;quot;-&amp;quot;分割的前部分赋值product&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local product=$(echo -n $selection | sed -e &amp;quot;s/-.*$//&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    check_product $product&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ $? -ne 0 ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Don&amp;apos;t have a product spec for: &amp;apos;$product&amp;apos;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Do you have the right repo manifest?&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        product=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 变量selection &amp;quot;-&amp;quot;分割的后部分赋值variant&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    local variant=$(echo -n $selection | sed -e &amp;quot;s/^[^\-]*-//&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    check_variant $variant&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ $? -ne 0 ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Invalid variant: &amp;apos;$variant&amp;apos;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo &amp;quot;** Must be one of $&amp;#123;VARIANT_CHOICES[@]&amp;#125;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        variant=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if [ -z &amp;quot;$product&amp;quot; -o -z &amp;quot;$variant&amp;quot; ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return 1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_PRODUCT=$product&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_BUILD_VARIANT=$variant&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    export TARGET_BUILD_TYPE=release&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 设置更多环境变量&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    set_stuff_for_environment&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    # 打印设置的环境变量&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printconfig&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;lunch aosp_bullhead-userdebug执行完毕后输出如下:   &lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;PLATFORM_VERSION_CODENAME=REL&lt;br&gt;PLATFORM_VERSION=6.0.1&lt;br&gt;TARGET_PRODUCT=aosp_bullhead&lt;br&gt;TARGET_BUILD_VARIANT=userdebug&lt;br&gt;TARGET_BUILD_TYPE=release&lt;br&gt;TARGET_BUILD_APPS=&lt;br&gt;TARGET_ARCH=arm64&lt;br&gt;TARGET_ARCH_VARIANT=armv8-a&lt;br&gt;TARGET_CPU_VARIANT=cortex-a53&lt;br&gt;TARGET_2ND_ARCH=arm&lt;br&gt;TARGET_2ND_ARCH_VARIANT=armv7-a-neon&lt;br&gt;TARGET_2ND_CPU_VARIANT=cortex-a7&lt;br&gt;HOST_ARCH=x86_64&lt;br&gt;HOST_OS=linux&lt;br&gt;HOST_OS_EXTRA=Linux-4.2.0-27-generic-x86_64-with-Ubuntu-14.04-trusty&lt;br&gt;HOST_BUILD_TYPE=release&lt;br&gt;BUILD_ID=MHC19J&lt;br&gt;OUT_DIR=out   &lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;环境变量&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;PLATFORM_VERSION_CODENAME&lt;/td&gt;
-&lt;td&gt;代表平台版本名称&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;PLATFORM_VERSION&lt;/td&gt;
-&lt;td&gt;表示平台版本号&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_PRODUCT&lt;/td&gt;
-&lt;td&gt;表示产品名称&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_BUILD_VARIANT&lt;/td&gt;
-&lt;td&gt;表示产品编译类型,可以是eng,userdebug,debug&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_BUILD_TYPE&lt;/td&gt;
-&lt;td&gt;编译类型,可以是release或者debug,当为debug时,编译时会加入调试信息&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_BUILD_APPS&lt;/td&gt;
-&lt;td&gt;编译android时为空,编译模块是为模块的路径&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_ARCH&lt;/td&gt;
-&lt;td&gt;目标cpu架构&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_ARCH_VARIANT&lt;/td&gt;
-&lt;td&gt;目标cpu架构版本&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_CPU_VARIANT&lt;/td&gt;
-&lt;td&gt;目标cpu代号&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_2ND_ARCH&lt;/td&gt;
-&lt;td&gt;目标第二cpu架构&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_2ND_ARCH_VARIANT&lt;/td&gt;
-&lt;td&gt;目标第二cpu架构版本&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;TARGET_2ND_CPU_VARIANT&lt;/td&gt;
-&lt;td&gt;目标第二代cpu代号&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;HOST_ARCH&lt;/td&gt;
-&lt;td&gt;编译平台架构&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;HOST_OS&lt;/td&gt;
-&lt;td&gt;编译平台操作系统&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;HOST_OS_EXTRA&lt;/td&gt;
-&lt;td&gt;编译平台额外信息&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;HOST_BUILD_TYPE&lt;/td&gt;
-&lt;td&gt;编译平台编译类型&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;BUILD_ID&lt;/td&gt;
-&lt;td&gt;编译ID,会出现编译版本信息中&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;OUT_DIR&lt;/td&gt;
-&lt;td&gt;编译输出目录&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;hr&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Android Build系统是比较大的模块,为了能快速了解整个模块的组织架构,后面采用从入口开始分析的方式,一步步深入分析Android的Build系统.在编译AOSP前,首先运行的是envsetup.sh脚本,所以下面就从envset
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://hesstudio.cn/tags/Android/"/>
-    
-      <category term="Build" scheme="http://hesstudio.cn/tags/Build/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>git操作总结</title>
-    <link href="http://hesstudio.cn/2016/05/23/git-operate/"/>
-    <id>http://hesstudio.cn/2016/05/23/git-operate/</id>
-    <published>2016-05-23T08:58:56.000Z</published>
-    <updated>2016-05-27T06:23:59.000Z</updated>
-    
-    <content type="html">&lt;hr&gt;
-&lt;h1 id=&quot;基本操作&quot;&gt;&lt;a href=&quot;#基本操作&quot; class=&quot;headerlink&quot; title=&quot;基本操作&quot;&gt;&lt;/a&gt;基本操作&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;配置&lt;br&gt;Usage: git config –global|–system|–local|–list&lt;br&gt;&lt;code&gt;$ git config --global user.name [username]&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git config --global user.email [email]&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git config --global color.ui true&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;初始化版本库&lt;br&gt;&lt;code&gt;$ git init&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;暂存&lt;br&gt;&lt;code&gt;$ git add .&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git add -u&lt;/code&gt;   暂存已跟踪文件&lt;br&gt;&lt;code&gt;$ git add -A&lt;/code&gt;   跟踪文件并暂存&lt;br&gt;&lt;code&gt;$ git add -p&lt;/code&gt;   选择性暂存文件&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;状态查看&lt;br&gt;&lt;code&gt;$ git status&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git status -s&lt;/code&gt; 精简显示   &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;比较&lt;br&gt;工作区与暂存区比较:&lt;br&gt;&lt;code&gt;$ git diff&lt;/code&gt;&lt;br&gt;暂存区与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;$ git diff --staged&lt;/code&gt;&lt;br&gt;工作,暂存区(未提交修改)与HEAD(版本库当前分支)比较:&lt;br&gt;&lt;code&gt;$ git diff HEAD&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;撤销&lt;br&gt;撤销工作区修改:&lt;br&gt;&lt;code&gt;$ git checkout .&lt;/code&gt;&lt;br&gt;该命令会将暂存区全部文件或指定文件替换工作区对应文件&lt;br&gt;&lt;code&gt;$ git checkout -- &amp;lt;file&amp;gt;&lt;/code&gt;   &lt;/p&gt;
-&lt;p&gt;撤销工作区,暂存区修改:&lt;br&gt;&lt;code&gt;$ git checkout HEAD .&lt;/code&gt;&lt;br&gt;&lt;code&gt;$ git checkout HEAD &amp;lt;file&amp;gt;&lt;/code&gt;&lt;br&gt;该命令会将HEAD所指向的master分支全部或指定文件替换到工作区,暂存区,&lt;/p&gt;
-&lt;p&gt;暂存区域撤销:&lt;br&gt;&lt;code&gt;$ git reset HEAD&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;移除&lt;br&gt;暂存区移除:&lt;br&gt;&lt;code&gt;$ git rm --cached &amp;lt;file&amp;gt;&lt;/code&gt;  &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;日志查看&lt;br&gt;&lt;code&gt;git log&lt;/code&gt;   &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;其他&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;修改远程仓库url:&lt;br&gt;&lt;code&gt;git remote set-url origin new-url&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;hr&gt;
-&lt;h1 id=&quot;基本操作&quot;&gt;&lt;a href=&quot;#基本操作&quot; class=&quot;headerlink&quot; title=&quot;基本操作&quot;&gt;&lt;/a&gt;基本操作&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;配置&lt;br&gt;Usage: git config –global|–system|–local|–
-    
-    </summary>
-    
-    
-      <category term="Git" scheme="http://hesstudio.cn/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android Build系统概述</title>
-    <link href="http://hesstudio.cn/2016/05/23/android-build-1/"/>
-    <id>http://hesstudio.cn/2016/05/23/android-build-1/</id>
-    <published>2016-05-23T05:22:51.000Z</published>
-    <updated>2016-08-06T13:41:59.000Z</updated>
-    
-    <content type="html">&lt;hr&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Build系统维护着各模块间的依赖关系,以确保某个模块修改能引起所依赖的模块重新编译.另外Build系统还支持多架构(arm,mips,x86),多语言(asm,c/C++,java)和多目标(同时支持多个产品).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;源码编译&quot;&gt;&lt;a href=&quot;#源码编译&quot; class=&quot;headerlink&quot; title=&quot;源码编译&quot;&gt;&lt;/a&gt;源码编译&lt;/h1&gt;&lt;p&gt;在完整获取AOSP源码后,可按以下流程来进行源码的编译.&lt;br&gt;1.初始化编译环境:&lt;br&gt;&lt;code&gt;$ source build/envsetup.sh&lt;/code&gt;&lt;br&gt;2.选择编译目标:&lt;br&gt;&lt;code&gt;$ lunch aosp_arm-eng&lt;/code&gt;&lt;br&gt;目标有三种编译类型可选,分别是user,userdebug,eng  &lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Buildtype&lt;/th&gt;
-&lt;th&gt;Use&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;user&lt;/td&gt;
-&lt;td&gt;limited access; suited for production&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;userdebug&lt;/td&gt;
-&lt;td&gt;like “user” but with root access and debuggability; preferred for debugging&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;eng&lt;/td&gt;
-&lt;td&gt;development configuration with additional debugging tools&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;3.编译代码:&lt;br&gt;&lt;code&gt;$ make -j8&lt;/code&gt;&lt;br&gt;所有的编译目标都在out目录下生成.&lt;/p&gt;
-&lt;h1 id=&quot;Build系统框架&quot;&gt;&lt;a href=&quot;#Build系统框架&quot; class=&quot;headerlink&quot; title=&quot;Build系统框架&quot;&gt;&lt;/a&gt;Build系统框架&lt;/h1&gt;&lt;p&gt;Build系统的主要逻辑都集中在make文件中,同时依靠脚本辅助.从大的方面讲,Android Build系统可以分为一下3大块.&lt;br&gt;1.Build核心文件:&lt;br&gt;位于build/core下的文件是Android Build系统的框架与核心,其他device,module的make都依赖&lt;br&gt;2.产品配置文件:&lt;br&gt;产品相关文件主要位于源码的device,vendor目录下,device下主要存放产品配置文件,verdor下主要存放一些硬件的HAL库.&lt;br&gt;3.模块make文件:&lt;br&gt;整个系统中，包含了大量的模块，每个模块都有一个Android.mk文件.Build系统会在整个源码树中扫描名称为“Android.mk”的文件并根据其中的内容来执行模块的编译&lt;/p&gt;
-&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.gnu.org/software/make/manual/html_node/index.html?cm_mc_uid=03725177062214639675956&amp;amp;cm_mc_sid_50200000=1463985980&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GNU make&lt;/a&gt;&lt;br&gt;2.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;hr&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Android的Build系统是基于GNU make,shell,python构建的一套编译环境.通过该编译环境,不仅可以完成对目标系统的二进制文件,APK应用程序编译,链接,打包等工作,还可以生成目标文件系统镜像,各种配置文件等.Bui
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://hesstudio.cn/tags/Android/"/>
-    
-      <category term="Build" scheme="http://hesstudio.cn/tags/Build/"/>
     
   </entry>
   

@@ -89,15 +89,15 @@
 <meta name="description" content="Binder简介在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.
 Android是基于Linux内核开发,而在Linux系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android之Binder概述">
+<meta property="og:title" content="Android Binder之概述">
 <meta property="og:url" content="http://hesstudio.cn/2016/08/29/android-binder-0/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
 <meta property="og:description" content="Binder简介在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.
 Android是基于Linux内核开发,而在Linux系">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true">
-<meta property="og:updated_time" content="2016-10-01T09:49:13.000Z">
+<meta property="og:updated_time" content="2016-10-03T02:05:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android之Binder概述">
+<meta name="twitter:title" content="Android Binder之概述">
 <meta name="twitter:description" content="Binder简介在Android系统中,应用程序由Acyiviy,Service,Broadcast Receiver,Content Provider四类组件构成,组件可以运行在一个进程中,也可运行在不同进程中,同时Android的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务采用Binder来进行跨进程通信.
 Android是基于Linux内核开发,而在Linux系">
 <meta name="twitter:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true">
@@ -118,7 +118,7 @@ Android是基于Linux内核开发,而在Linux系">
   };
 </script>
 
-  <title> Android之Binder概述 | 生活不止眼前的代码 </title>
+  <title> Android Binder之概述 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -281,7 +281,7 @@ Android是基于Linux内核开发,而在Linux系">
             
             
               
-                Android之Binder概述
+                Android Binder之概述
               
             
           </h1>
@@ -338,7 +338,10 @@ Android是基于Linux内核开发,而在Linux系">
 <li>安全性.Android为每个安装的应用程序分配了自己的UID,Binder能依据调用进程的UID,PID来进行权限控制.</li>
 </ol>
 <h1 id="Binder机制"><a href="#Binder机制" class="headerlink" title="Binder机制"></a>Binder机制</h1><p>Binder采用的是CS通信方式，对于提供服务的进程即server进程，请求服务的进程即client进程.同一个server进程可能存在多个service组件，同时同一个clent进程可以请求多个service组件.<br>如下图所示，Binder的通信涉及到4个角色，分别是Client，Service，Service Mananger与Binder Driver.<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true" alt=""><br>Client,Service,Service Mananger都运行在用户空间中，由于用户进程地址空间是独立且不能相互访问的，而内核空间是全局共享的，所以Client，Service，Service Mananger通过SystemCall(open,mmap,ioctl)来访问/dev/binder间接执行用户空间进程间的通信.</p>
-<h1 id="Binder分析"><a href="#Binder分析" class="headerlink" title="Binder分析"></a>Binder分析</h1>
+<h1 id="Binder分析"><a href="#Binder分析" class="headerlink" title="Binder分析"></a>Binder分析</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://blog.csdn.net/universus/article/details/6211589" target="_blank" rel="external">Android Bander设计与实现 - 设计篇</a></li>
+</ol>
+
       
     </div>
 
@@ -396,7 +399,7 @@ Android是基于Linux内核开发,而在Linux系">
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2016/08/29/android-binder-0/"
-     data-title="Android之Binder概述"
+     data-title="Android Binder之概述"
      data-content=""
      data-url="http://hesstudio.cn/2016/08/29/android-binder-0/">
   <div class="ds-share-inline">
@@ -426,7 +429,7 @@ Android是基于Linux内核开发,而在Linux系">
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/29/android-binder-0/"
-           data-title="Android之Binder概述" data-url="http://hesstudio.cn/2016/08/29/android-binder-0/">
+           data-title="Android Binder之概述" data-url="http://hesstudio.cn/2016/08/29/android-binder-0/">
       </div>
     
   </div>
@@ -471,7 +474,7 @@ Android是基于Linux内核开发,而在Linux系">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -517,7 +520,7 @@ Android是基于Linux内核开发,而在Linux系">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder简介"><span class="nav-number">1.</span> <span class="nav-text">Binder简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder机制"><span class="nav-number">2.</span> <span class="nav-text">Binder机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder分析"><span class="nav-number">3.</span> <span class="nav-text">Binder分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder简介"><span class="nav-number">1.</span> <span class="nav-text">Binder简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder机制"><span class="nav-number">2.</span> <span class="nav-text">Binder机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder分析"><span class="nav-number">3.</span> <span class="nav-text">Binder分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
         </section>
