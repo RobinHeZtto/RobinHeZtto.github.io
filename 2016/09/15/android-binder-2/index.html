@@ -88,24 +88,24 @@
 
 <meta name="description" content="ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。
 
-启动servicemanager是由Init启动的deamon进程，它的启动脚本如下：
-1234567891011121314service servicemanager /syste">
+启动脚本servicemanager是由Init启动的deamon进程，它的启动脚本如下：
+1234567891011121314service servicemanager /sys">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Binder之Service Manager">
 <meta property="og:url" content="http://hesstudio.cn/2016/09/15/android-binder-2/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
 <meta property="og:description" content="ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。
 
-启动servicemanager是由Init启动的deamon进程，它的启动脚本如下：
-1234567891011121314service servicemanager /syste">
+启动脚本servicemanager是由Init启动的deamon进程，它的启动脚本如下：
+1234567891011121314service servicemanager /sys">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/binder_service_manager.jpg?raw=true">
-<meta property="og:updated_time" content="2016-10-03T03:38:02.000Z">
+<meta property="og:updated_time" content="2016-10-06T07:11:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Binder之Service Manager">
 <meta name="twitter:description" content="ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。
 
-启动servicemanager是由Init启动的deamon进程，它的启动脚本如下：
-1234567891011121314service servicemanager /syste">
+启动脚本servicemanager是由Init启动的deamon进程，它的启动脚本如下：
+1234567891011121314service servicemanager /sys">
 <meta name="twitter:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/binder_service_manager.jpg?raw=true">
 
 
@@ -337,9 +337,9 @@
         <blockquote>
 <p>ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。</p>
 </blockquote>
-<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><p>servicemanager是由Init启动的deamon进程，它的启动脚本如下：</p>
+<h1 id="启动脚本"><a href="#启动脚本" class="headerlink" title="启动脚本"></a>启动脚本</h1><p>servicemanager是由Init启动的deamon进程，它的启动脚本如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">service servicemanager /system/bin/servicemanager</span><br><span class="line">    class core</span><br><span class="line">    user system</span><br><span class="line">    group system readproc</span><br><span class="line">    critical</span><br><span class="line">    onrestart restart healthd</span><br><span class="line">    onrestart restart zygote</span><br><span class="line">    onrestart restart audioserver</span><br><span class="line">    onrestart restart media</span><br><span class="line">    onrestart restart surfaceflinger</span><br><span class="line">    onrestart restart inputflinger</span><br><span class="line">    onrestart restart drm</span><br><span class="line">    onrestart restart cameraserver</span><br><span class="line">    writepid /dev/cpuset/system-background/tasks</span><br></pre></td></tr></table></figure>
-<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>servicemanager的源码位于frameworks/native/cmds/servicemanager下,启动入口是service_manager.c的main()函数,下图是servicemanager的具体启动流程.</p>
+<h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><p>servicemanager的源码位于frameworks/native/cmds/servicemanager下,启动入口是service_manager.c的main()函数,下图是servicemanager的具体启动流程.</p>
 <p><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/binder_service_manager.jpg?raw=true" alt="service_manager"><br></div><br>下面从main()开始分析servicemanager的启动过程.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    struct binder_state *bs;</span><br><span class="line"></span><br><span class="line">    bs = binder_open(128*1024);</span><br><span class="line">    if (!bs) &#123;</span><br><span class="line">        ALOGE(&quot;failed to open binder driver\n&quot;);</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (binder_become_context_manager(bs)) &#123;</span><br><span class="line">        ALOGE(&quot;cannot become context manager (%s)\n&quot;, strerror(errno));</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    selinux_enabled = is_selinux_enabled();</span><br><span class="line">    sehandle = selinux_android_service_context_handle();</span><br><span class="line">    selinux_status_open(true);</span><br><span class="line"></span><br><span class="line">    if (selinux_enabled &gt; 0) &#123;</span><br><span class="line">        if (sehandle == NULL) &#123;</span><br><span class="line">            ALOGE(&quot;SELinux: Failed to acquire sehandle. Aborting.\n&quot;);</span><br><span class="line">            abort();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (getcon(&amp;service_manager_context) != 0) &#123;</span><br><span class="line">            ALOGE(&quot;SELinux: Failed to acquire service_manager context. Aborting.\n&quot;);</span><br><span class="line">            abort();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    union selinux_callback cb;</span><br><span class="line">    cb.func_audit = audit_callback;</span><br><span class="line">    selinux_set_callback(SELINUX_CB_AUDIT, cb);</span><br><span class="line">    cb.func_log = selinux_log_callback;</span><br><span class="line">    selinux_set_callback(SELINUX_CB_LOG, cb);</span><br><span class="line"></span><br><span class="line">    binder_loop(bs, svcmgr_handler);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>整个启动过程分成三步，首先binder_open打开/dev/binder并mmap到本进程地址空间，然后binder_become_context_manager注册成为整个binder通信系统的管理者，最后调用binder_loop循环等待并处理client的请求.</p>
 <p><strong>binder_open：</strong><br>首先看一下binder_state的定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct binder_state</span><br><span class="line">&#123;</span><br><span class="line">    int fd;  // 打开/dev/binder的文件描述符</span><br><span class="line">    void *mapped; // mmap的起始地址</span><br><span class="line">    size_t mapsize; // mmap的大小</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
@@ -530,7 +530,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#启动"><span class="nav-number">1.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#流程"><span class="nav-number">2.</span> <span class="nav-text">流程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#启动脚本"><span class="nav-number">1.</span> <span class="nav-text">启动脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动流程"><span class="nav-number">2.</span> <span class="nav-text">启动流程</span></a></li></ol></div>
             
           </div>
         </section>

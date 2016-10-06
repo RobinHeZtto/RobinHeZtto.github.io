@@ -650,7 +650,7 @@
           
 ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象的服务，同时ServiceManager也是一个特殊的service组件。
 
-启动servicemanager是由Init启动的deamon进程，它的启动脚本如下
+启动脚本servicemanager是由Init启动的deamon进程，它的启动脚本
           ...
 
           <div class="post-more-link text-center">
@@ -757,9 +757,9 @@ ServiceManager是Binder进程间通信的核心组件之一，负责管理Servic
         
           
           
-binder驱动源码位于drivers/staging/android/下，包括binder.c与uapi/binder.h，主要负责通信数据传递等
+binder驱动源码位于kernel drivers/staging/android/下，包括binder.c与uapi/binder.h，主要负责通信数据传递等
 
-数据结构在分析驱动之前，先了解binder驱动中所定义的数据结构.数据结构可以分成二类看，一类是内部使用的，在binder.c中定义，另一类是内外
+数据结构在分析驱动之前，先了解binder驱动中所定义的数据结构.数据结构可以分成二类看，一类是内部使用的，在binder.c中定义
           ...
 
           <div class="post-more-link text-center">
