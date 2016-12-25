@@ -278,8 +278,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/29/android-binder-0/" itemprop="url">
-                  Android Binder之概述
+                <a class="post-title-link" href="/2016/04/15/android-handler/" itemprop="url">
+                  Android之消息机制
                 </a>
               
             
@@ -292,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-29T23:40:27+08:00" content="2016-08-29">
-              2016-08-29
+            <time itemprop="dateCreated" datetime="2016-04-15T13:16:33+08:00" content="2016-04-15">
+              2016-04-15
             </time>
           </span>
 
@@ -303,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/29/android-binder-0/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/29/android-binder-0/" itemprop="commentsCount"></span>
+                <a href="/2016/04/15/android-handler/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/15/android-handler/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -329,11 +329,13 @@
       
         
           
-          Binder简介Android系统中,应用程序的四大组件Acyiviy,Service,Broadcast Receiver,Content Provider可以运行在一个进程中,也可运行在不同进程中,同时Android系统的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务
+          
+简介消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.
+Android的消息队列是线程相关的,每启动一个线程,都可以在内部创
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/29/android-binder-0/#more" rel="contents">
+            <a class="btn" href="/2016/04/15/android-handler/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -384,8 +386,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/19/ubuntu-rsync/" itemprop="url">
-                  Ubuntu下使用rsync进行数据同步备份
+                <a class="post-title-link" href="/2016/02/02/android-init/" itemprop="url">
+                  Android之Init
                 </a>
               
             
@@ -398,8 +400,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-19T15:31:08+08:00" content="2016-08-19">
-              2016-08-19
+            <time itemprop="dateCreated" datetime="2016-02-02T15:09:08+08:00" content="2016-02-02">
+              2016-02-02
             </time>
           </span>
 
@@ -409,8 +411,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/19/ubuntu-rsync/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/19/ubuntu-rsync/" itemprop="commentsCount"></span>
+                <a href="/2016/02/02/android-init/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/02/android-init/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -435,12 +437,12 @@
       
         
           
-          简介rsync是remote sync的简称,它是一款类unix系统下数据同步备份,增量文件快速传输的工具.rsync采用”rsync算法”,不仅能为client和server的提供文件快速同步,并且能够对整个目录树/文件系统进行同步备份.
-安装默认情况Ubuntu已经安装了rsync服务,如果没有
+          概述Init进程是Kernel启动后在用户空间创建的第一个用户级进程,它的pid为1.其他所有的用户进程都是由其直接或间接fork产生的.
+Init调用流程如下图示,从汇编代码kernel/arch/arm/kernel/head-common.S b    start_kernel进入到C环境ke
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/19/ubuntu-rsync/#more" rel="contents">
+            <a class="btn" href="/2016/02/02/android-init/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -491,7 +493,118 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/15/android-bootloader/" itemprop="url">
+                <a class="post-title-link" href="/2016/02/01/android-init-language/" itemprop="url">
+                  Android之Init.rc语法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-01T15:09:08+08:00" content="2016-02-01">
+              2016-02-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/01/android-init-language/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/android-init-language/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+译自system/core/init/readme.txt
+
+Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
+
+init.rc所有的语句都是以行为单位，行间使用空格
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/01/android-init-language/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/15/android-lk/" itemprop="url">
                   Android之LK
                 </a>
               
@@ -505,8 +618,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-15T19:44:54+08:00" content="2016-08-15">
-              2016-08-15
+            <time itemprop="dateCreated" datetime="2016-01-15T19:44:54+08:00" content="2016-01-15">
+              2016-01-15
             </time>
           </span>
 
@@ -516,8 +629,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/15/android-bootloader/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/android-bootloader/" itemprop="commentsCount"></span>
+                <a href="/2016/01/15/android-lk/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/15/android-lk/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -549,7 +662,7 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/15/android-bootloader/#more" rel="contents">
+            <a class="btn" href="/2016/01/15/android-lk/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -600,8 +713,8 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
             
               
                 
-                <a class="post-title-link" href="/2016/08/06/android-tools-build-gradle/" itemprop="url">
-                  Android之Gradle
+                <a class="post-title-link" href="/2016/01/01/android-env/" itemprop="url">
+                  Android之开发环境搭建
                 </a>
               
             
@@ -614,8 +727,8 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-06T10:19:58+08:00" content="2016-08-06">
-              2016-08-06
+            <time itemprop="dateCreated" datetime="2016-01-01T14:35:04+08:00" content="2016-01-01">
+              2016-01-01
             </time>
           </span>
 
@@ -625,115 +738,8 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/06/android-tools-build-gradle/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/06/android-tools-build-gradle/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Building the Android Gradle Pluginhttp://tools.android.com/build
-$ mkdir studio-master-dev$ cd studio-master-dev$ repo init -u https://android.googles
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/06/android-tools-build-gradle/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/03/ubuntu-nexus-maven/" itemprop="url">
-                  Ubuntu 14.04 Nexus Maven私服搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-03T16:13:06+08:00" content="2016-08-03">
-              2016-08-03
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/03/ubuntu-nexus-maven/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/03/ubuntu-nexus-maven/" itemprop="commentsCount"></span>
+                <a href="/2016/01/01/android-env/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/01/android-env/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -759,12 +765,14 @@ $ mkdir studio-master-dev$ cd studio-master-dev$ repo init -u https://android.go
         
           
           
-Maven是Apache基于POM(project object model)一个项目管理工具.Maven能够管理项目的构建build,reporting和documentation.
-Nexus是一个强大的Maven仓库管理器，它极大地简化了内部仓库的维护和外部仓库的访问，可以在局域网搭建一个m
+系统安装Google推荐使用64位Ubuntu操作系统开发Android.针对不同的Android版本,推荐使用相对应的Ubuntu版本.   
+
+Android 6.0 (Marshmallow) - AOSP master: Ubuntu 14.04 (Trusty)    
+Android 
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/03/ubuntu-nexus-maven/#more" rel="contents">
+            <a class="btn" href="/2016/01/01/android-env/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -798,7 +806,7 @@ Nexus是一个强大的Maven仓库管理器，它极大地简化了内部仓库�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -839,7 +847,7 @@ Nexus是一个强大的Maven仓库管理器，它极大地简化了内部仓库�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -849,7 +857,7 @@ Nexus是一个强大的Maven仓库管理器，它极大地简化了内部仓库�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

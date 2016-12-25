@@ -91,11 +91,20 @@
 
 
 
-LoaderBootRomPreloader/LK
-KernelInit
+Bootloader
+BootRom
+
+LK
+
+
+
+Kernel
+Init
+
+
 Recovery
 Binder
-Native
+HAL/Native
 Frameworks
 Application
 Build System
@@ -110,18 +119,27 @@ android-captronic">
 
 
 
-LoaderBootRomPreloader/LK
-KernelInit
+Bootloader
+BootRom
+
+LK
+
+
+
+Kernel
+Init
+
+
 Recovery
 Binder
-Native
+HAL/Native
 Frameworks
 Application
 Build System
 参考资料
 android-captronic">
 <meta property="og:image" content="https://source.android.com/images/android_framework_details.png">
-<meta property="og:updated_time" content="2016-12-25T02:52:20.000Z">
+<meta property="og:updated_time" content="2016-12-25T09:30:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android#Overview">
 <meta name="twitter:description" content="Android学习提纲．从底至上．循序渐进．RTFSC．
@@ -129,11 +147,20 @@ android-captronic">
 
 
 
-LoaderBootRomPreloader/LK
-KernelInit
+Bootloader
+BootRom
+
+LK
+
+
+
+Kernel
+Init
+
+
 Recovery
 Binder
-Native
+HAL/Native
 Frameworks
 Application
 Build System
@@ -373,11 +400,20 @@ android-captronic">
 <div align="center"><br><img src="https://source.android.com/images/android_framework_details.png" alt="Android stack"><br></div>
 
 <hr>
-<h1 id="Loader"><a href="#Loader" class="headerlink" title="Loader"></a>Loader</h1><h2 id="BootRom"><a href="#BootRom" class="headerlink" title="BootRom"></a>BootRom</h2><h2 id="Preloader-LK"><a href="#Preloader-LK" class="headerlink" title="Preloader/LK"></a>Preloader/LK</h2><hr>
-<h1 id="Kernel"><a href="#Kernel" class="headerlink" title="Kernel"></a>Kernel</h1><h2 id="Init"><a href="#Init" class="headerlink" title="Init"></a>Init</h2><hr>
+<h1 id="Bootloader"><a href="#Bootloader" class="headerlink" title="Bootloader"></a>Bootloader</h1><ul>
+<li><p>BootRom</p>
+</li>
+<li><p>LK</p>
+</li>
+</ul>
+<hr>
+<h1 id="Kernel"><a href="#Kernel" class="headerlink" title="Kernel"></a>Kernel</h1><ul>
+<li>Init</li>
+</ul>
+<hr>
 <h1 id="Recovery"><a href="#Recovery" class="headerlink" title="Recovery"></a>Recovery</h1><hr>
 <h1 id="Binder"><a href="#Binder" class="headerlink" title="Binder"></a>Binder</h1><hr>
-<h1 id="Native"><a href="#Native" class="headerlink" title="Native"></a>Native</h1><hr>
+<h1 id="HAL-Native"><a href="#HAL-Native" class="headerlink" title="HAL/Native"></a>HAL/Native</h1><hr>
 <h1 id="Frameworks"><a href="#Frameworks" class="headerlink" title="Frameworks"></a>Frameworks</h1><hr>
 <h1 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h1><hr>
 <h1 id="Build-System"><a href="#Build-System" class="headerlink" title="Build System"></a>Build System</h1><hr>
@@ -414,7 +450,7 @@ android-captronic">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2100/01/01/android-questions-and-answers/" rel="next" title="Android#Issue">
+              <a href="/2100/01/01/android-issue/" rel="next" title="Android#Issue">
                 <i class="fa fa-chevron-left"></i> Android#Issue
               </a>
             
@@ -511,7 +547,7 @@ android-captronic">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -521,7 +557,7 @@ android-captronic">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -557,7 +593,7 @@ android-captronic">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Loader"><span class="nav-number">1.</span> <span class="nav-text">Loader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BootRom"><span class="nav-number">1.1.</span> <span class="nav-text">BootRom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preloader-LK"><span class="nav-number">1.2.</span> <span class="nav-text">Preloader/LK</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kernel"><span class="nav-number">2.</span> <span class="nav-text">Kernel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Init"><span class="nav-number">2.1.</span> <span class="nav-text">Init</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recovery"><span class="nav-number">3.</span> <span class="nav-text">Recovery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder"><span class="nav-number">4.</span> <span class="nav-text">Binder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Native"><span class="nav-number">5.</span> <span class="nav-text">Native</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Frameworks"><span class="nav-number">6.</span> <span class="nav-text">Frameworks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Application"><span class="nav-number">7.</span> <span class="nav-text">Application</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-System"><span class="nav-number">8.</span> <span class="nav-text">Build System</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Bootloader"><span class="nav-number">1.</span> <span class="nav-text">Bootloader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kernel"><span class="nav-number">2.</span> <span class="nav-text">Kernel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recovery"><span class="nav-number">3.</span> <span class="nav-text">Recovery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder"><span class="nav-number">4.</span> <span class="nav-text">Binder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HAL-Native"><span class="nav-number">5.</span> <span class="nav-text">HAL/Native</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Frameworks"><span class="nav-number">6.</span> <span class="nav-text">Frameworks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Application"><span class="nav-number">7.</span> <span class="nav-text">Application</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-System"><span class="nav-number">8.</span> <span class="nav-text">Build System</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
         </section>

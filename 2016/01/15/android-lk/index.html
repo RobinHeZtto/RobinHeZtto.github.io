@@ -1,0 +1,824 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Bootloader," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现在Android平台上，Qualcomm、MTK都使用LK来作为系统引导程序.
+
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之LK">
+<meta property="og:url" content="http://robinheztto.com/2016/01/15/android-lk/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现在Android平台上，Qualcomm、MTK都使用LK来作为系统引导程序.
+
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM">
+<meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_call_flow.png?raw=true">
+<meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/bootimg.png?raw=true">
+<meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/device_tree.png?raw=true">
+<meta property="og:updated_time" content="2016-12-25T09:30:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android之LK">
+<meta name="twitter:description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现在Android平台上，Qualcomm、MTK都使用LK来作为系统引导程序.
+
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM">
+<meta name="twitter:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_call_flow.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android之LK | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android之LK
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-15T19:44:54+08:00" content="2016-01-15">
+              2016-01-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/15/android-lk/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/15/android-lk/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现在Android平台上，Qualcomm、MTK都使用LK来作为系统引导程序.</p>
+</blockquote>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成CPU Core初始化后将加载bootloader程序执行。一般bootloader都分成几个文件，分阶段引导。BootROM加载bootloader第一阶段BL1到On-chip SRAM执行，BL1在完成SOC初步的初始化后将引导BL2到SDRAM执行。以MTK平台为例,加载顺序依次为BootROM-&gt;preloader-&gt;LK。</p>
+<p>LK的代码一般在Android源码bootable/bootloader/lk目录下，目录结构如下：<br>├── app 　　　　LK上的应用，aboot，shell等<br>├── arch　　　　体系/架构相关，arm，x86<br>├── dev 　　　　设备相关，key，usb，pmic等<br>├── include　　　头文件<br>├── kernel　　　LK核心，thread，timer等<br>├── lib　　　　　C库<br>├── LICENSE<br>├── make　　　　编译mk文件<br>├── makefile<br>├── platform　　驱动相关<br>├── project　　　makefile文件<br>├── scripts　　　Jtag脚本<br>└── target　　　具体板子相关</p>
+<p>LK的主要目的是引导系统启动，它完成了以下工作：</p>
+<ul>
+<li>硬件初始化，中断向量表，MMU，cache，peripherals，storage，USB，crypto初始化</li>
+<li>加载Linux Kernel与ramdisk(boot.img/recovery.img),引导系统启动</li>
+<li>fastboot模式</li>
+</ul>
+<h1 id="初始化流程分析"><a href="#初始化流程分析" class="headerlink" title="初始化流程分析"></a>初始化流程分析</h1><p>链接脚本arch/arm/system-onesegment.ld中定义了入口地址<code>ENTRY(_start)</code><br>LK将从_start开始执行，_start在/arch/arm/crt0.S中定义。<br>1.crt0.S CPU相关初始化<br>首先初始化异常向量表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.globl _start</span><br><span class="line">_start:</span><br><span class="line">	b	reset</span><br><span class="line">	b	arm_undefined</span><br><span class="line">	b	arm_syscall</span><br><span class="line">	b	arm_prefetch_abort</span><br><span class="line">	b	arm_data_abort</span><br><span class="line">	b	arm_reserved</span><br><span class="line">	b	arm_irq</span><br><span class="line">	b	arm_fiq</span><br></pre></td></tr></table></figure></p>
+<p>接下来执行Set Up CPU操作，调用__cpu_early_init()进行CPU相关初始化。<br>初始化各模式stack<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">.Lstack_setup:</span><br><span class="line">	/* set up the stack for irq, fiq, abort, undefined, system/user, and lastly supervisor mode */</span><br><span class="line">	mrs     r0, cpsr</span><br><span class="line">	bic     r0, r0, #0x1f</span><br><span class="line"></span><br><span class="line">	ldr		r2, =abort_stack_top</span><br><span class="line">	orr     r1, r0, #0x12 // irq</span><br><span class="line">	msr     cpsr_c, r1</span><br><span class="line">	ldr		r13, =irq_save_spot		/* save a pointer to a temporary dumping spot used during irq delivery */</span><br><span class="line"></span><br><span class="line">	orr     r1, r0, #0x11 // fiq</span><br><span class="line">	msr     cpsr_c, r1</span><br><span class="line">	mov		sp, r2</span><br><span class="line"></span><br><span class="line">	orr     r1, r0, #0x17 // abort</span><br><span class="line">	msr     cpsr_c, r1</span><br><span class="line">	mov		sp, r2</span><br><span class="line"></span><br><span class="line">	orr     r1, r0, #0x1b // undefined</span><br><span class="line">	msr     cpsr_c, r1</span><br><span class="line">	mov		sp, r2</span><br><span class="line"></span><br><span class="line">	orr     r1, r0, #0x1f // system</span><br><span class="line">	msr     cpsr_c, r1</span><br><span class="line">	mov		sp, r2</span><br><span class="line"></span><br><span class="line">	orr		r1, r0, #0x13 // supervisor</span><br><span class="line">	msr		cpsr_c, r1</span><br><span class="line">	mov		sp, r2</span><br></pre></td></tr></table></figure></p>
+<p>最后跳入C函数kmain()中执行<br><code>bl        kmain</code></p>
+<p>2.kmain()初始化流程<br>kmain()在kernel/main.c的中定义，执行流程如下：<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_call_flow.png?raw=true" alt="kmain flow"></p>
+<ul>
+<li>thread_init_early();初始化线程相关结构</li>
+<li>arch_early_init();cache,mmu等初始化</li>
+<li>platform_early_init();interrupt contr，timer block初始化</li>
+<li>target_early_init();Uart等初始化</li>
+</ul>
+<p>完成上述初始化操作后，新建线程并在新线程中执行bootstrap2<br><code>thread_resume(thread_create(&quot;bootstrap2&quot;, &amp;bootstrap2, NULL, DEFAULT_PRIORITY, DEFAULT_STACK_SIZE));</code><br>bootstrap2()分别调用arch_init();platform_init();target_init();进一步对硬件平台初始化。最后将调用apps_init()启动LK上的app。</p>
+<p>3.apps_init()<br>apps_init的实现如下，首先遍历<strong>__apps_start</strong>到<strong>__apps_end</strong>位置的app_descriptor，并调用其init函数，然后在新线程中start app。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor __apps_start;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor __apps_end;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">start_app</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor *app)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* one time setup */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">apps_init</span><span class="params">(<span class="keyword">void</span>)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor *app;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* call all the init routines */</span></span><br><span class="line">	<span class="keyword">for</span> (app = &amp;__apps_start; app != &amp;__apps_end; app++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (app-&gt;init)</span><br><span class="line">			app-&gt;init(app);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* start any that want to start on boot */</span></span><br><span class="line">	<span class="keyword">for</span> (app = &amp;__apps_start; app != &amp;__apps_end; app++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (app-&gt;entry &amp;&amp; (app-&gt;flags &amp; APP_FLAG_DONT_START_ON_BOOT) == <span class="number">0</span>) &#123;</span><br><span class="line">			start_app(app);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">app_thread_entry</span><span class="params">(<span class="keyword">void</span> *arg)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor *app = (<span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor *)arg;</span><br><span class="line"></span><br><span class="line">	app-&gt;entry(app, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">start_app</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> app_descriptor *app)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">thread_t</span> *thr;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"starting app %s\n"</span>, app-&gt;name);</span><br><span class="line"></span><br><span class="line">	thr = thread_create(app-&gt;name, &amp;app_thread_entry, (<span class="keyword">void</span> *)app, DEFAULT_PRIORITY, DEFAULT_STACK_SIZE);</span><br><span class="line">	<span class="keyword">if</span>(!thr)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	thread_resume(thr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中<strong>__apps_start</strong>与<strong>__apps_end</strong>在链接脚本arch/arm/system-onesegment.ld中定义，<strong>__apps_start</strong>与<strong>__apps_end</strong>与中间存放的是apps section。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.rodata : &#123;</span><br><span class="line">	*(.rodata .rodata.* .gnu.linkonce.r.*)</span><br><span class="line">	. = ALIGN(4);</span><br><span class="line">	__commands_start = .;</span><br><span class="line">	KEEP (*(.commands))</span><br><span class="line">	__commands_end = .;</span><br><span class="line">	. = ALIGN(4);</span><br><span class="line">	__apps_start = .;</span><br><span class="line">	KEEP (*(.apps))</span><br><span class="line">	__apps_end = .;</span><br><span class="line">	. = ALIGN(4);</span><br><span class="line">	__rodata_end = . ;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所有的LK app都需定义app_descriptor结构体存放到apps段，app_descriptor在include/app.h中定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/* each app needs to define one of these to define its startup conditions */</span><br><span class="line">struct app_descriptor &#123;</span><br><span class="line">	const char *name;</span><br><span class="line">	app_init  init;</span><br><span class="line">	app_entry entry;</span><br><span class="line">	unsigned int flags;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define APP_START(appname) struct app_descriptor _app_##appname __SECTION(&quot;.apps&quot;) = &#123; .name = #appname,</span><br><span class="line">#define APP_END &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>通过宏<strong>APP_START</strong>与<strong>APP_END</strong>定义app_descriptor结构体并放到apps sections中，例如在aboot.c的定义如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">APP_START(aboot)</span><br><span class="line">	.init = aboot_init,</span><br><span class="line">APP_END</span><br></pre></td></tr></table></figure></p>
+<p>即定义了aboot的app_descriptor结构体并存放在apps section中，在apps_init中将调用到aboot_init()<br>至此，初始化流程结束。</p>
+<h1 id="系统引导流程分析"><a href="#系统引导流程分析" class="headerlink" title="系统引导流程分析"></a>系统引导流程分析</h1><p>aboot的主要目的是进行系统引导，它会根据开机模式来决定进入Main System或Recovery或fastboot。<br>下面从aboot_init()来分析整个流程：<br>1.首先设置EMMC/NAND读取page大小<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if (target_is_emmc_boot())</span><br><span class="line">&#123;</span><br><span class="line">	page_size = mmc_page_size();</span><br><span class="line">	page_mask = page_size - 1;</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">	page_size = flash_page_size();</span><br><span class="line">	page_mask = page_size - 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.选择开机模式<br>通过keys_get_state()与check_reboot_mode()确定开机模式。<br>keys_get_state()会检测按键，并根据按键的定义确定进入对应的模式。<br>check_reboot_mode()会读取指定memory位置信息，该位置信息由kernel shutdown时写入，例如执行<code>adb reboot recovery</code>，<code>adb reboot bootloader</code>，check_reboot_mode()获取的分别是<code>RECOVERY_MODE</code>，<code>FASTBOOT_MODE</code>。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">reboot_mode = check_reboot_mode();</span><br><span class="line"><span class="keyword">if</span> (reboot_mode == RECOVERY_MODE)</span><br><span class="line">&#123;</span><br><span class="line">	boot_into_recovery = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(reboot_mode == FASTBOOT_MODE)</span><br><span class="line">&#123;</span><br><span class="line">	boot_into_fastboot = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(reboot_mode == ALARM_BOOT)</span><br><span class="line">&#123;</span><br><span class="line">	boot_reason_alarm = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果reboot_mode不是<code>FASTBOOT_MODE</code>，将调用boot_linux_from_mmc()进入系统引导流程<br>如果reboot_mode等于<code>FASTBOOT_MODE</code>，将执行fastboot_init()进入fastboot模式<br>3.boot_linux_from_mmc()<br>boot_linux_from_mmc()解析boot.img/recovery.img的头部boot_img_hdr结构来获取启动加载信息(如果是recovery模式,将从recovery分区加载recovery.img),其中cmdline对应传递给内核的参数,tags_addr对应device tree table,boot_img_hdr结构体在app/aboot/bootimg.h中定义,如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#define BOOT_MAGIC &quot;ANDROID!&quot;</span><br><span class="line">#define BOOT_MAGIC_SIZE 8</span><br><span class="line">#define BOOT_NAME_SIZE  16</span><br><span class="line">#define BOOT_ARGS_SIZE  512</span><br><span class="line">#define BOOT_IMG_MAX_PAGE_SIZE 4096</span><br><span class="line"></span><br><span class="line">struct boot_img_hdr</span><br><span class="line">&#123;</span><br><span class="line">    unsigned char magic[BOOT_MAGIC_SIZE];</span><br><span class="line"></span><br><span class="line">    unsigned kernel_size;  /* size in bytes */</span><br><span class="line">    unsigned kernel_addr;  /* physical load addr */</span><br><span class="line"></span><br><span class="line">    unsigned ramdisk_size; /* size in bytes */</span><br><span class="line">    unsigned ramdisk_addr; /* physical load addr */</span><br><span class="line"></span><br><span class="line">    unsigned second_size;  /* size in bytes */</span><br><span class="line">    unsigned second_addr;  /* physical load addr */</span><br><span class="line"></span><br><span class="line">    unsigned tags_addr;    /* physical addr for kernel tags */</span><br><span class="line">    unsigned page_size;    /* flash page size we assume */</span><br><span class="line">    unsigned dt_size;      /* device_tree in bytes */</span><br><span class="line">    unsigned unused;    /* future expansion: should be 0 */</span><br><span class="line"></span><br><span class="line">    unsigned char name[BOOT_NAME_SIZE]; /* asciiz product name */</span><br><span class="line"></span><br><span class="line">    unsigned char cmdline[BOOT_ARGS_SIZE];</span><br><span class="line"></span><br><span class="line">    unsigned id[8]; /* timestamp / checksum / sha1 / etc */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>生成的boot.img/recovery.img头部如下图示：<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/bootimg.png?raw=true" alt="boot_img_hdr"><br>根据boot_img_hdr结构的定义可以从上图获取到一下信息：<br><strong>kernel_size:</strong> 0x009fc707<br><strong>kernel_addr:</strong> 0x80008000<br><strong>ramdisk_size:</strong> 0x001ddfb9<br><strong>ramdisk_addr:</strong> 0x81000000<br><strong>second_size:</strong> 0x00000000<br><strong>second_addr:</strong> 0x80f00000<br><strong>tags_addr:</strong> 0x80000100<br><strong>page_size:</strong> 0x00000100<br><strong>cmdline:</strong><br>console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 cma=32M@0-0xffffffff androidboot.selinux=permissive</p>
+<p>在解析完boot_img_hdr后，boot_img_hdr的信息被传递给boot_linux执行具体的加载启动工作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">boot_linux((void *)hdr-&gt;kernel_addr, (void *)hdr-&gt;tags_addr,</span><br><span class="line">		 (const char *)hdr-&gt;cmdline, board_machtype(),</span><br><span class="line">		 (void *)hdr-&gt;ramdisk_addr, hdr-&gt;ramdisk_size);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> typedef void entry_func_ptr(unsigned, unsigned, unsigned*);</span><br><span class="line"> void boot_linux(void *kernel, unsigned *tags,</span><br><span class="line"> 		const char *cmdline, unsigned machtype,</span><br><span class="line"> 		void *ramdisk, unsigned ramdisk_size)</span><br><span class="line"> &#123;</span><br><span class="line"> 	unsigned char *final_cmdline;</span><br><span class="line"> #if DEVICE_TREE</span><br><span class="line"> 	int ret = 0;</span><br><span class="line"> #endif</span><br><span class="line"></span><br><span class="line"> 	void (*entry)(unsigned, unsigned, unsigned*) = (entry_func_ptr*)(PA((addr_t)kernel));</span><br><span class="line"> 	uint32_t tags_phys = PA((addr_t)tags);</span><br><span class="line"> 	struct kernel64_hdr *kptr = (struct kernel64_hdr*)kernel;</span><br><span class="line"></span><br><span class="line"> 	ramdisk = (void *)PA((addr_t)ramdisk);</span><br><span class="line"></span><br><span class="line"> 	final_cmdline = update_cmdline((const char*)cmdline);</span><br><span class="line"></span><br><span class="line"> #if DEVICE_TREE</span><br><span class="line"> 	dprintf(INFO, &quot;Updating device tree: start\n&quot;);</span><br><span class="line"></span><br><span class="line"> 	/* Update the Device Tree */</span><br><span class="line"> 	ret = update_device_tree((void *)tags,(const char *)final_cmdline, ramdisk, ramdisk_size);</span><br><span class="line"> 	if(ret)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		dprintf(CRITICAL, &quot;ERROR: Updating Device Tree Failed \n&quot;);</span><br><span class="line"> 		ASSERT(0);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	dprintf(INFO, &quot;Updating device tree: done\n&quot;);</span><br><span class="line"> #else</span><br><span class="line"> 	/* Generating the Atags */</span><br><span class="line"> 	generate_atags(tags, final_cmdline, ramdisk, ramdisk_size);</span><br><span class="line"> #endif</span><br><span class="line"></span><br><span class="line"> 	free(final_cmdline);</span><br><span class="line"></span><br><span class="line"> #if VERIFIED_BOOT</span><br><span class="line"> 	/* Write protect the device info */</span><br><span class="line"> 	if (!boot_into_recovery &amp;&amp; target_build_variant_user() &amp;&amp; devinfo_present &amp;&amp; mmc_write_protect(&quot;devinfo&quot;, 1))</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		dprintf(INFO, &quot;Failed to write protect dev info\n&quot;);</span><br><span class="line"> 		ASSERT(0);</span><br><span class="line"> 	&#125;</span><br><span class="line"> #endif</span><br><span class="line"></span><br><span class="line"> 	/* Turn off splash screen if enabled */</span><br><span class="line"> #if DISPLAY_SPLASH_SCREEN</span><br><span class="line"> 	target_display_shutdown();</span><br><span class="line"> #endif</span><br><span class="line"></span><br><span class="line"> 	/* Perform target specific cleanup */</span><br><span class="line"> 	target_uninit();</span><br><span class="line"></span><br><span class="line"> 	dprintf(INFO, &quot;booting linux @ %p, ramdisk @ %p (%d), tags/device tree @ %p\n&quot;,</span><br><span class="line"> 		entry, ramdisk, ramdisk_size, (void *)tags_phys);</span><br><span class="line"></span><br><span class="line"> 	enter_critical_section();</span><br><span class="line"></span><br><span class="line"> 	/* Initialise wdog to catch early kernel crashes */</span><br><span class="line"> #if WDOG_SUPPORT</span><br><span class="line"> 	msm_wdog_init();</span><br><span class="line"> #endif</span><br><span class="line"> 	/* do any platform specific cleanup before kernel entry */</span><br><span class="line"> 	platform_uninit();</span><br><span class="line"></span><br><span class="line"> 	arch_disable_cache(UCACHE);</span><br><span class="line"></span><br><span class="line"> #if ARM_WITH_MMU</span><br><span class="line"> 	arch_disable_mmu();</span><br><span class="line"> #endif</span><br><span class="line"> 	bs_set_timestamp(BS_KERNEL_ENTRY);</span><br><span class="line"></span><br><span class="line"> 	if (IS_ARM64(kptr))</span><br><span class="line"> 		/* Jump to a 64bit kernel */</span><br><span class="line"> 		scm_elexec_call((paddr_t)kernel, tags_phys);</span><br><span class="line"> 	else</span><br><span class="line"> 		/* Jump to a 32bit kernel */</span><br><span class="line"> 		entry(0, machtype, (unsigned*)tags_phys);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，LK引导过程完成，将进入系统启动过程。</p>
+<h1 id="LK-fastboot模式"><a href="#LK-fastboot模式" class="headerlink" title="LK fastboot模式"></a>LK fastboot模式</h1><p>当LK通过检测按键或reboot_mode是<code>FASTBOOT_MODE</code>时，将进入到fastboot模式。<br>1.注册fastboot Command<br>通过aboot_fastboot_register_commands()注册fastboot支持的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">void aboot_fastboot_register_commands(void)</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	char hw_platform_buf[MAX_RSP_SIZE];</span><br><span class="line"></span><br><span class="line">	struct fastboot_cmd_desc cmd_list[] = &#123;</span><br><span class="line">						/* By default the enabled list is empty. */</span><br><span class="line">						&#123;&quot;&quot;, NULL&#125;,</span><br><span class="line">						/* move commands enclosed within the below ifndef to here</span><br><span class="line">						 * if they need to be enabled in user build.</span><br><span class="line">						 */</span><br><span class="line">#ifndef DISABLE_FASTBOOT_CMDS</span><br><span class="line">						/* Register the following commands only for non-user builds */</span><br><span class="line">						&#123;&quot;flash:&quot;, cmd_flash&#125;,</span><br><span class="line">						&#123;&quot;erase:&quot;, cmd_erase&#125;,</span><br><span class="line">						&#123;&quot;boot&quot;, cmd_boot&#125;,</span><br><span class="line">						&#123;&quot;continue&quot;, cmd_continue&#125;,</span><br><span class="line">						&#123;&quot;reboot&quot;, cmd_reboot&#125;,</span><br><span class="line">						&#123;&quot;reboot-bootloader&quot;, cmd_reboot_bootloader&#125;,</span><br><span class="line">						&#123;&quot;oem unlock&quot;, cmd_oem_unlock&#125;,</span><br><span class="line">						&#123;&quot;oem unlock-go&quot;, cmd_oem_unlock_go&#125;,</span><br><span class="line">						&#123;&quot;oem lock&quot;, cmd_oem_lock&#125;,</span><br><span class="line">						&#123;&quot;flashing unlock&quot;, cmd_oem_unlock&#125;,</span><br><span class="line">						&#123;&quot;flashing lock&quot;, cmd_oem_lock&#125;,</span><br><span class="line">						&#123;&quot;flashing lock_critical&quot;, cmd_flashing_lock_critical&#125;,</span><br><span class="line">						&#123;&quot;flashing unlock_critical&quot;, cmd_flashing_unlock_critical&#125;,</span><br><span class="line">						&#123;&quot;flashing get_unlock_ability&quot;, cmd_flashing_get_unlock_ability&#125;,</span><br><span class="line">						&#123;&quot;oem device-info&quot;, cmd_oem_devinfo&#125;,</span><br><span class="line">						&#123;&quot;preflash&quot;, cmd_preflash&#125;,</span><br><span class="line">						&#123;&quot;oem enable-charger-screen&quot;, cmd_oem_enable_charger_screen&#125;,</span><br><span class="line">						&#123;&quot;oem disable-charger-screen&quot;, cmd_oem_disable_charger_screen&#125;,</span><br><span class="line">						&#123;&quot;oem off-mode-charge&quot;, cmd_oem_off_mode_charger&#125;,</span><br><span class="line">						&#123;&quot;oem select-display-panel&quot;, cmd_oem_select_display_panel&#125;,</span><br><span class="line">#if UNITTEST_FW_SUPPORT</span><br><span class="line">						&#123;&quot;oem run-tests&quot;, cmd_oem_runtests&#125;,</span><br><span class="line">#endif</span><br><span class="line">#endif</span><br><span class="line">						&#125;;</span><br><span class="line"></span><br><span class="line">	int fastboot_cmds_count = sizeof(cmd_list)/sizeof(cmd_list[0]);</span><br><span class="line">	for (i = 1; i &lt; fastboot_cmds_count; i++)</span><br><span class="line">		fastboot_register(cmd_list[i].name,cmd_list[i].cb);</span><br><span class="line"></span><br><span class="line">	/* publish variables and their values */</span><br><span class="line">	fastboot_publish(&quot;product&quot;,  TARGET(BOARD));</span><br><span class="line">	fastboot_publish(&quot;kernel&quot;,   &quot;lk&quot;);</span><br><span class="line">	fastboot_publish(&quot;serialno&quot;, sn_buf);</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	 * partition info is supported only for emmc partitions</span><br><span class="line">	 * Calling this for NAND prints some error messages which</span><br><span class="line">	 * is harmless but misleading. Avoid calling this for NAND</span><br><span class="line">	 * devices.</span><br><span class="line">	 */</span><br><span class="line">	if (target_is_emmc_boot())</span><br><span class="line">		publish_getvar_partition_info(part_info, ARRAY_SIZE(part_info));</span><br><span class="line"></span><br><span class="line">	/* Max download size supported */</span><br><span class="line">	snprintf(max_download_size, MAX_RSP_SIZE, &quot;\t0x%x&quot;,</span><br><span class="line">			target_get_max_flash_size());</span><br><span class="line">	fastboot_publish(&quot;max-download-size&quot;, (const char *) max_download_size);</span><br><span class="line">	/* Is the charger screen check enabled */</span><br><span class="line">	snprintf(charger_screen_enabled, MAX_RSP_SIZE, &quot;%d&quot;,</span><br><span class="line">			device.charger_screen_enabled);</span><br><span class="line">	fastboot_publish(&quot;charger-screen-enabled&quot;,</span><br><span class="line">			(const char *) charger_screen_enabled);</span><br><span class="line">	fastboot_publish(&quot;off-mode-charge&quot;, (const char *) charger_screen_enabled);</span><br><span class="line">	snprintf(panel_display_mode, MAX_RSP_SIZE, &quot;%s&quot;,</span><br><span class="line">			device.display_panel);</span><br><span class="line">	fastboot_publish(&quot;display-panel&quot;,</span><br><span class="line">			(const char *) panel_display_mode);</span><br><span class="line">	fastboot_publish(&quot;version-bootloader&quot;, (const char *) device.bootloader_version);</span><br><span class="line">	fastboot_publish(&quot;version-baseband&quot;, (const char *) device.radio_version);</span><br><span class="line">	fastboot_publish(&quot;secure&quot;, is_secure_boot_enable()? &quot;yes&quot;:&quot;no&quot;);</span><br><span class="line">	smem_get_hw_platform_name((unsigned char *) hw_platform_buf, sizeof(hw_platform_buf));</span><br><span class="line">	snprintf(get_variant, MAX_RSP_SIZE, &quot;%s %s&quot;, hw_platform_buf,</span><br><span class="line">		target_is_emmc_boot()? &quot;eMMC&quot;:&quot;UFS&quot;);</span><br><span class="line">	fastboot_publish(&quot;variant&quot;, (const char *) get_variant);</span><br><span class="line">#if CHECK_BAT_VOLTAGE</span><br><span class="line">	update_battery_status();</span><br><span class="line">	fastboot_publish(&quot;battery-voltage&quot;, (const char *) battery_voltage);</span><br><span class="line">	fastboot_publish(&quot;battery-soc-ok&quot;, (const char *) battery_soc_ok);</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中主要是通过fastboot_register注册Command到cmdlist，通过fastboot_publish注册variables到varlist。<br>它们的实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">static struct fastboot_cmd *cmdlist;</span><br><span class="line"></span><br><span class="line">void fastboot_register(const char *prefix,</span><br><span class="line">		       void (*handle)(const char *arg, void *data, unsigned sz))</span><br><span class="line">&#123;</span><br><span class="line">	struct fastboot_cmd *cmd;</span><br><span class="line">	cmd = malloc(sizeof(*cmd));</span><br><span class="line">	if (cmd) &#123;</span><br><span class="line">		cmd-&gt;prefix = prefix;</span><br><span class="line">		cmd-&gt;prefix_len = strlen(prefix);</span><br><span class="line">		cmd-&gt;handle = handle;</span><br><span class="line">		cmd-&gt;next = cmdlist;</span><br><span class="line">		cmdlist = cmd;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static struct fastboot_var *varlist;</span><br><span class="line"></span><br><span class="line">void fastboot_publish(const char *name, const char *value)</span><br><span class="line">&#123;</span><br><span class="line">	struct fastboot_var *var;</span><br><span class="line">	var = malloc(sizeof(*var));</span><br><span class="line">	if (var) &#123;</span><br><span class="line">		var-&gt;name = name;</span><br><span class="line">		var-&gt;value = value;</span><br><span class="line">		var-&gt;next = varlist;</span><br><span class="line">		varlist = var;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行adb reboot bootloader进入fastboot模式后，可以在PC端的fastboot可执行文件(Fastboot客户端源码在system/core/fastboot下，通过系统源码编译后的科执行文件位于./out/host/linux-x86/bin/fastboot目录下)与目标按fastboot协议交互。<br>通过fastboot_register注册到cmdlist的命令，都可以在pc端通过fastboot执行，常用的命令有：<br><strong><code>fastboot  devices</code></strong> 查看连接设备<br><strong><code>fastboot  update &lt;filename&gt;</code></strong> 更新update.zip包<br><strong><code>fastboot  flashall</code></strong> flash boot, system, vendor, and recovery<br><strong><code>fastboot  flash &lt;partition&gt; [ &lt;filename&gt; ]</code></strong> flash指定分区<br><strong><code>fastboot  erase &lt;partition&gt;</code></strong> erase执行分区<br><strong><code>fastboot  continue</code></strong> 继续启动<br><strong><code>fastboot  reboot bootloader</code></strong> reboot到bootloader<br><strong><code>fastboot  oem unlock</code></strong> oem解锁</p>
+<p>通过fastboot_publish publish到varlist的value可以通过<code>fastboot getvar &lt;variable&gt;</code>获取，例如<br><strong><code>fastboot getvar version</code></strong><br><strong><code>fastboot getvar product</code></strong></p>
+<p>2.启动fastboot<br>通过<code>fastboot_init(target_get_scratch_address(), target_get_max_flash_size());</code>初始化并启动fastboot。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">int fastboot_init(void *base, unsigned size)</span><br><span class="line">&#123;</span><br><span class="line">	char sn_buf[13];</span><br><span class="line">	thread_t *thr;</span><br><span class="line">	dprintf(INFO, &quot;fastboot_init()\n&quot;);</span><br><span class="line"></span><br><span class="line">	download_base = base;</span><br><span class="line">	download_max = size;</span><br><span class="line"></span><br><span class="line">	/* target specific initialization before going into fastboot. */</span><br><span class="line">	target_fastboot_init();</span><br><span class="line"></span><br><span class="line">	/* setup serialno */</span><br><span class="line">	target_serialno((unsigned char *) sn_buf);</span><br><span class="line">	dprintf(SPEW,&quot;serial number: %s\n&quot;,sn_buf);</span><br><span class="line">	surf_udc_device.serialno = sn_buf;</span><br><span class="line"></span><br><span class="line">	if(!strcmp(target_usb_controller(), &quot;dwc&quot;))</span><br><span class="line">	&#123;</span><br><span class="line">#ifdef USB30_SUPPORT</span><br><span class="line">		surf_udc_device.t_usb_if = target_usb30_init();</span><br><span class="line"></span><br><span class="line">		/* initialize udc functions to use dwc controller */</span><br><span class="line">		usb_if.udc_init            = usb30_udc_init;</span><br><span class="line">		usb_if.udc_register_gadget = usb30_udc_register_gadget;</span><br><span class="line">		usb_if.udc_start           = usb30_udc_start;</span><br><span class="line">		usb_if.udc_stop            = usb30_udc_stop;</span><br><span class="line"></span><br><span class="line">		usb_if.udc_endpoint_alloc  = usb30_udc_endpoint_alloc;</span><br><span class="line">		usb_if.udc_request_alloc   = usb30_udc_request_alloc;</span><br><span class="line">		usb_if.udc_request_free    = usb30_udc_request_free;</span><br><span class="line"></span><br><span class="line">		usb_if.usb_read            = usb30_usb_read;</span><br><span class="line">		usb_if.usb_write           = usb30_usb_write;</span><br><span class="line">#else</span><br><span class="line">		dprintf(CRITICAL, &quot;USB30 needs to be enabled for this target.\n&quot;);</span><br><span class="line">		ASSERT(0);</span><br><span class="line">#endif</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		/* initialize udc functions to use the default chipidea controller */</span><br><span class="line">		usb_if.udc_init            = udc_init;</span><br><span class="line">		usb_if.udc_register_gadget = udc_register_gadget;</span><br><span class="line">		usb_if.udc_start           = udc_start;</span><br><span class="line">		usb_if.udc_stop            = udc_stop;</span><br><span class="line"></span><br><span class="line">		usb_if.udc_endpoint_alloc  = udc_endpoint_alloc;</span><br><span class="line">		usb_if.udc_request_alloc   = udc_request_alloc;</span><br><span class="line">		usb_if.udc_request_free    = udc_request_free;</span><br><span class="line"></span><br><span class="line">		usb_if.usb_read            = hsusb_usb_read;</span><br><span class="line">		usb_if.usb_write           = hsusb_usb_write;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/* register udc device */</span><br><span class="line">	usb_if.udc_init(&amp;surf_udc_device);</span><br><span class="line"></span><br><span class="line">	event_init(&amp;usb_online, 0, EVENT_FLAG_AUTOUNSIGNAL);</span><br><span class="line">	event_init(&amp;txn_done, 0, EVENT_FLAG_AUTOUNSIGNAL);</span><br><span class="line"></span><br><span class="line">	in = usb_if.udc_endpoint_alloc(UDC_TYPE_BULK_IN, 512);</span><br><span class="line">	if (!in)</span><br><span class="line">		goto fail_alloc_in;</span><br><span class="line">	out = usb_if.udc_endpoint_alloc(UDC_TYPE_BULK_OUT, 512);</span><br><span class="line">	if (!out)</span><br><span class="line">		goto fail_alloc_out;</span><br><span class="line"></span><br><span class="line">	fastboot_endpoints[0] = in;</span><br><span class="line">	fastboot_endpoints[1] = out;</span><br><span class="line"></span><br><span class="line">	req = usb_if.udc_request_alloc();</span><br><span class="line">	if (!req)</span><br><span class="line">		goto fail_alloc_req;</span><br><span class="line"></span><br><span class="line">	/* register gadget */</span><br><span class="line">	if (usb_if.udc_register_gadget(&amp;fastboot_gadget))</span><br><span class="line">		goto fail_udc_register;</span><br><span class="line"></span><br><span class="line">	fastboot_register(&quot;getvar:&quot;, cmd_getvar);</span><br><span class="line">	fastboot_register(&quot;download:&quot;, cmd_download);</span><br><span class="line">	fastboot_publish(&quot;version&quot;, &quot;0.5&quot;);</span><br><span class="line"></span><br><span class="line">	thr = thread_create(&quot;fastboot&quot;, fastboot_handler, 0, DEFAULT_PRIORITY, 4096);</span><br><span class="line">	if (!thr)</span><br><span class="line">	&#123;</span><br><span class="line">		goto fail_alloc_in;</span><br><span class="line">	&#125;</span><br><span class="line">	thread_resume(thr);</span><br><span class="line"></span><br><span class="line">	usb_if.udc_start();</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line"></span><br><span class="line">fail_udc_register:</span><br><span class="line">	usb_if.udc_request_free(req);</span><br><span class="line">fail_alloc_req:</span><br><span class="line">	usb_if.udc_endpoint_free(out);</span><br><span class="line">fail_alloc_out:</span><br><span class="line">	usb_if.udc_endpoint_free(in);</span><br><span class="line">fail_alloc_in:</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>fastboot_init()主要工作是初始化usb_controller_interface,然后调用usb_if.udc_start()监听usb event,在新建线程等待usb event并调用fastboot_handler处理。fastboot_init后display_fastboot_menu_thread()将会在新线程中被调用,即用来在LCD上显示fastboot菜单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static int fastboot_handler(void *arg)</span><br><span class="line">&#123;</span><br><span class="line">	for (;;) &#123;</span><br><span class="line">		event_wait(&amp;usb_online);</span><br><span class="line">		fastboot_command_loop();</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>fastboot_handler中等待usb事件，通过usb_if.usb_read()读取usb数据，并检索出对应cmdlist里的命令调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">static void fastboot_command_loop(void)</span><br><span class="line">&#123;</span><br><span class="line">	struct fastboot_cmd *cmd;</span><br><span class="line">	int r;</span><br><span class="line">#if CHECK_BAT_VOLTAGE</span><br><span class="line">	boolean is_first_erase_flash = false;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">	dprintf(INFO,&quot;fastboot: processing commands\n&quot;);</span><br><span class="line"></span><br><span class="line">	uint8_t *buffer = (uint8_t *)memalign(CACHE_LINE, ROUNDUP(4096, CACHE_LINE));</span><br><span class="line">	if (!buffer)</span><br><span class="line">	&#123;</span><br><span class="line">		dprintf(CRITICAL, &quot;Could not allocate memory for fastboot buffer\n.&quot;);</span><br><span class="line">		ASSERT(0);</span><br><span class="line">	&#125;</span><br><span class="line">again:</span><br><span class="line">	while (fastboot_state != STATE_ERROR) &#123;</span><br><span class="line"></span><br><span class="line">		/* Read buffer must be cleared first. If buffer is not cleared,</span><br><span class="line">		 * the original data in buf trailing the received command is</span><br><span class="line">		 * interpreted as part of the command.</span><br><span class="line">		 */</span><br><span class="line">		memset(buffer, 0, MAX_RSP_SIZE);</span><br><span class="line">		arch_clean_invalidate_cache_range((addr_t) buffer, MAX_RSP_SIZE);</span><br><span class="line"></span><br><span class="line">		r = usb_if.usb_read(buffer, MAX_RSP_SIZE);</span><br><span class="line">		if (r &lt; 0) break;</span><br><span class="line">		buffer[r] = 0;</span><br><span class="line">		dprintf(INFO,&quot;fastboot: %s\n&quot;, buffer);</span><br><span class="line"></span><br><span class="line">#if CHECK_BAT_VOLTAGE</span><br><span class="line">		/* check battery voltage before erase or flash image */</span><br><span class="line">		if (!strncmp((const char*) buffer, &quot;getvar:partition-type&quot;, 21))</span><br><span class="line">			is_first_erase_flash = true;</span><br><span class="line"></span><br><span class="line">		if (is_first_erase_flash) &#123;</span><br><span class="line">			if (!strncmp((const char*) buffer, &quot;erase&quot;, 5) ||</span><br><span class="line">				!strncmp((const char*) buffer, &quot;flash&quot;, 5)) &#123;</span><br><span class="line">				if (!target_battery_soc_ok()) &#123;</span><br><span class="line">					dprintf(INFO,&quot;fastboot: battery voltage: %d\n&quot;,</span><br><span class="line">						target_get_battery_voltage());</span><br><span class="line">					fastboot_fail(&quot;Warning: battery&apos;s capacity is very low\n&quot;);</span><br><span class="line">					return;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">		fastboot_state = STATE_COMMAND;</span><br><span class="line"></span><br><span class="line">		for (cmd = cmdlist; cmd; cmd = cmd-&gt;next) &#123;</span><br><span class="line">			if (memcmp(buffer, cmd-&gt;prefix, cmd-&gt;prefix_len))</span><br><span class="line">				continue;</span><br><span class="line">			cmd-&gt;handle((const char*) buffer + cmd-&gt;prefix_len,</span><br><span class="line">				    (void*) download_base, download_size);</span><br><span class="line">			if (fastboot_state == STATE_COMMAND)</span><br><span class="line">				fastboot_fail(&quot;unknown reason&quot;);</span><br><span class="line"></span><br><span class="line">#if CHECK_BAT_VOLTAGE</span><br><span class="line">			if (!strncmp((const char*) buffer, &quot;erase&quot;, 5) ||</span><br><span class="line">				!strncmp((const char*) buffer, &quot;flash&quot;, 5)) &#123;</span><br><span class="line">				if (is_first_erase_flash) &#123;</span><br><span class="line">					is_first_erase_flash = false;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">#endif</span><br><span class="line">			goto again;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		fastboot_fail(&quot;unknown command&quot;);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	fastboot_state = STATE_OFFLINE;</span><br><span class="line">	dprintf(INFO,&quot;fastboot: oops!\n&quot;);</span><br><span class="line">	free(buffer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Device-tree"><a href="#Device-tree" class="headerlink" title="Device tree"></a>Device tree</h1><p>Device tree是描述设备硬件信息的数据结构，通过.dts源文件定义，一般位于kernel/arch/arm/boot/dts目录下, .dts编译生成.dtb文件后将LK传递给kernel执行设备初始化工作。<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/device_tree.png?raw=true" alt="Device Tree"><br>关于Device Tree的详细说明，可参考宋宝华老师的博文 <a href="http://blog.csdn.net/21cnbao/article/details/8457546" target="_blank" rel="external">ARM Linux 3.x的设备树（Device Tree）</a>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Bootloader/" rel="tag">#Bootloader</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/01/android-env/" rel="next" title="Android之开发环境搭建">
+                <i class="fa fa-chevron-left"></i> Android之开发环境搭建
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/01/android-init-language/" rel="prev" title="Android之Init.rc语法">
+                Android之Init.rc语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/01/15/android-lk/"
+     data-title="Android之LK"
+     data-content=""
+     data-url="http://robinheztto.com/2016/01/15/android-lk/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/15/android-lk/"
+           data-title="Android之LK" data-url="http://robinheztto.com/2016/01/15/android-lk/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化流程分析"><span class="nav-number">2.</span> <span class="nav-text">初始化流程分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统引导流程分析"><span class="nav-number">3.</span> <span class="nav-text">系统引导流程分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LK-fastboot模式"><span class="nav-number">4.</span> <span class="nav-text">LK fastboot模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Device-tree"><span class="nav-number">5.</span> <span class="nav-text">Device tree</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>
