@@ -89,7 +89,7 @@
 <meta name="description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="生活不止眼前的代码">
-<meta property="og:url" content="http://hesstudio.cn/page/2/index.html">
+<meta property="og:url" content="http://robinheztto.com/page/2/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
 <meta property="og:description">
 <meta name="twitter:card" content="summary">
@@ -278,8 +278,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/29/android-binder-0/" itemprop="url">
-                  Android Binder之概述
+                <a class="post-title-link" href="/2016/11/28/android-zygote-1/" itemprop="url">
+                  Android之Zygote-启动流程
                 </a>
               
             
@@ -292,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-29T23:40:27+08:00" content="2016-08-29">
-              2016-08-29
+            <time itemprop="dateCreated" datetime="2016-11-28T15:09:08+08:00" content="2016-11-28">
+              2016-11-28
             </time>
           </span>
 
@@ -303,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/29/android-binder-0/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/29/android-binder-0/" itemprop="commentsCount"></span>
+                <a href="/2016/11/28/android-zygote-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/android-zygote-1/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -329,11 +329,15 @@
       
         
           
-          Binder简介Android系统中,应用程序的四大组件Acyiviy,Service,Broadcast Receiver,Content Provider可以运行在一个进程中,也可运行在不同进程中,同时Android系统的各类系统服务也可运行在不同的进程中,运行在不同进程的应用程序组件及系统服务
+          
+Zygote是Android系统中非常关键的一个进程，它孵化了Android中所有的上层java应用程序。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
+
+frameworks/base/cmds/app_process/app_main.cpp
+frameworks/base
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/29/android-binder-0/#more" rel="contents">
+            <a class="btn" href="/2016/11/28/android-zygote-1/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -384,7 +388,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/22/android-init/" itemprop="url">
+                <a class="post-title-link" href="/2016/11/26/android-init/" itemprop="url">
                   Android之Init
                 </a>
               
@@ -398,8 +402,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-22T15:21:31+08:00" content="2016-08-22">
-              2016-08-22
+            <time itemprop="dateCreated" datetime="2016-11-26T15:09:08+08:00" content="2016-11-26">
+              2016-11-26
             </time>
           </span>
 
@@ -409,8 +413,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/22/android-init/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/android-init/" itemprop="commentsCount"></span>
+                <a href="/2016/11/26/android-init/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/android-init/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -435,12 +439,12 @@
       
         
           
-          概述Init进程是Kernel启动后在用户空间创建的第一个用户级进程,它的pid为1.其他所有的进程都是由其直接或间接fork产生的.
-Init调用如下图示,从汇编kernel/arch/arm/kernel/head-common.S b    start_kernel进入到C环境kernel/i
+          概述Init进程是Kernel启动后在用户空间创建的第一个用户级进程,它的pid为1.其他所有的用户进程都是由其直接或间接fork产生的.
+Init调用流程如下图示,从汇编代码kernel/arch/arm/kernel/head-common.S b    start_kernel进入到C环境ke
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/22/android-init/#more" rel="contents">
+            <a class="btn" href="/2016/11/26/android-init/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -491,7 +495,7 @@ Init调用如下图示,从汇编kernel/arch/arm/kernel/head-common.S b    start_
             
               
                 
-                <a class="post-title-link" href="/2016/08/20/android-init-language/" itemprop="url">
+                <a class="post-title-link" href="/2016/11/25/android-init-language/" itemprop="url">
                   Android之Init.rc语法
                 </a>
               
@@ -505,8 +509,8 @@ Init调用如下图示,从汇编kernel/arch/arm/kernel/head-common.S b    start_
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-20T15:30:14+08:00" content="2016-08-20">
-              2016-08-20
+            <time itemprop="dateCreated" datetime="2016-11-25T15:09:08+08:00" content="2016-11-25">
+              2016-11-25
             </time>
           </span>
 
@@ -516,8 +520,8 @@ Init调用如下图示,从汇编kernel/arch/arm/kernel/head-common.S b    start_
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/20/android-init-language/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/android-init-language/" itemprop="commentsCount"></span>
+                <a href="/2016/11/25/android-init-language/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/25/android-init-language/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -545,13 +549,13 @@ Init调用如下图示,从汇编kernel/arch/arm/kernel/head-common.S b    start_
           
 译自system/core/init/readme.txt
 
-Android init.rc语法Android init.rc包含四种类型的声明，分别是Actions，Commands，Services，和Options。其语法规则如下：
+Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
 
-init.rc所有的语句都是以行为单位，行间使用空格分隔
+init.rc所有的语句都是以行为单位，行间使用空格
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/20/android-init-language/#more" rel="contents">
+            <a class="btn" href="/2016/11/25/android-init-language/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -602,8 +606,8 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
             
               
                 
-                <a class="post-title-link" href="/2016/08/19/ubuntu-rsync/" itemprop="url">
-                  Ubuntu下使用rsync进行数据同步备份
+                <a class="post-title-link" href="/2016/11/23/android-binder-7/" itemprop="url">
+                  android-binder-7
                 </a>
               
             
@@ -616,8 +620,8 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-19T15:31:08+08:00" content="2016-08-19">
-              2016-08-19
+            <time itemprop="dateCreated" datetime="2016-11-23T15:07:26+08:00" content="2016-11-23">
+              2016-11-23
             </time>
           </span>
 
@@ -627,8 +631,8 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/19/ubuntu-rsync/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/19/ubuntu-rsync/" itemprop="commentsCount"></span>
+                <a href="/2016/11/23/android-binder-7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/23/android-binder-7/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -653,12 +657,11 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
       
         
           
-          简介rsync是remote sync的简称,它是一款类unix系统下数据同步备份,增量文件快速传输的工具.rsync采用”rsync算法”,不仅能为client和server的提供文件快速同步,并且能够对整个目录树/文件系统进行同步备份.
-安装默认情况Ubuntu已经安装了rsync服务,如果没有
-          ...
+          
+          
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/19/ubuntu-rsync/#more" rel="contents">
+            <a class="btn" href="/2016/11/23/android-binder-7/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -709,8 +712,8 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
             
               
                 
-                <a class="post-title-link" href="/2016/08/15/android-bootloader/" itemprop="url">
-                  Android之LK
+                <a class="post-title-link" href="/2016/11/23/android-binder-6/" itemprop="url">
+                  android-binder-6
                 </a>
               
             
@@ -723,8 +726,8 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-15T19:44:54+08:00" content="2016-08-15">
-              2016-08-15
+            <time itemprop="dateCreated" datetime="2016-11-23T15:07:23+08:00" content="2016-11-23">
+              2016-11-23
             </time>
           </span>
 
@@ -734,8 +737,8 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/15/android-bootloader/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/android-bootloader/" itemprop="commentsCount"></span>
+                <a href="/2016/11/23/android-binder-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/23/android-binder-6/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -761,13 +764,10 @@ init.rc所有的语句都是以行为单位，行间使用空格分隔
         
           
           
-LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现在Android平台上，Qualcomm、MTK都使用LK来作为系统引导程序.
-
-概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。
-          ...
+          
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/15/android-bootloader/#more" rel="contents">
+            <a class="btn" href="/2016/11/23/android-binder-6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -801,7 +801,7 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -842,7 +842,7 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -852,7 +852,7 @@ LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

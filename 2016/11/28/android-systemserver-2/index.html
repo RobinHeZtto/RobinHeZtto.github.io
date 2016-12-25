@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Android,Framework," />
 
 
 
@@ -86,22 +86,16 @@
 
 
 
-<meta name="description" content="如何引用Hide API
-反射
-替换class文件.找到源码编译出的对应文件的class，替换Android SDK中android.jar对应的class文件">
+<meta name="description" content="上篇Android SystemServer启动之进程创建分析的是SystemServer启动的第一阶段，本篇继续分析SystemServer进程创建以后个服务启动的过程，上文分析到ZygoteInit.main()中catch MethodAndArgsCaller异常后，将执行MethodAndArgsCaller.run反射到SystemServer.main方法，本篇接着从SystemS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android FAQ">
-<meta property="og:url" content="http://hesstudio.cn/2016/03/27/android-faq/index.html">
+<meta property="og:title" content="Android之SystemServer启动(下)">
+<meta property="og:url" content="http://robinheztto.com/2016/11/28/android-systemserver-2/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="如何引用Hide API
-反射
-替换class文件.找到源码编译出的对应文件的class，替换Android SDK中android.jar对应的class文件">
-<meta property="og:updated_time" content="2016-07-03T02:08:01.000Z">
+<meta property="og:description" content="上篇Android SystemServer启动之进程创建分析的是SystemServer启动的第一阶段，本篇继续分析SystemServer进程创建以后个服务启动的过程，上文分析到ZygoteInit.main()中catch MethodAndArgsCaller异常后，将执行MethodAndArgsCaller.run反射到SystemServer.main方法，本篇接着从SystemS">
+<meta property="og:updated_time" content="2016-12-04T03:09:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android FAQ">
-<meta name="twitter:description" content="如何引用Hide API
-反射
-替换class文件.找到源码编译出的对应文件的class，替换Android SDK中android.jar对应的class文件">
+<meta name="twitter:title" content="Android之SystemServer启动(下)">
+<meta name="twitter:description" content="上篇Android SystemServer启动之进程创建分析的是SystemServer启动的第一阶段，本篇继续分析SystemServer进程创建以后个服务启动的过程，上文分析到ZygoteInit.main()中catch MethodAndArgsCaller异常后，将执行MethodAndArgsCaller.run反射到SystemServer.main方法，本篇接着从SystemS">
 
 
 
@@ -119,7 +113,7 @@
   };
 </script>
 
-  <title> Android FAQ | 生活不止眼前的代码 </title>
+  <title> Android之SystemServer启动(下) | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -282,7 +276,7 @@
             
             
               
-                Android FAQ
+                Android之SystemServer启动(下)
               
             
           </h1>
@@ -294,8 +288,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-27T14:10:33+08:00" content="2016-03-27">
-              2016-03-27
+            <time itemprop="dateCreated" datetime="2016-11-28T15:09:20+08:00" content="2016-11-28">
+              2016-11-28
             </time>
           </span>
 
@@ -305,8 +299,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/27/android-faq/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/27/android-faq/" itemprop="commentsCount"></span>
+                <a href="/2016/11/28/android-systemserver-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/android-systemserver-2/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -329,10 +323,11 @@
       
 
       
-        <h1 id="如何引用Hide-API"><a href="#如何引用Hide-API" class="headerlink" title="如何引用Hide API"></a>如何引用Hide API</h1><ol>
-<li>反射</li>
-<li>替换class文件.找到源码编译出的对应文件的class，替换Android SDK中android.jar对应的class文件</li>
-</ol>
+        <blockquote>
+<p>上篇Android SystemServer启动之进程创建分析的是SystemServer启动的第一阶段，本篇继续分析SystemServer进程创建以后个服务启动的过程，上文分析到ZygoteInit.main()中catch MethodAndArgsCaller异常后，将执行MethodAndArgsCaller.run反射到SystemServer.main方法，本篇接着从SystemServer.main()开始分析</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * The main entry point from zygote.</span><br><span class="line"> */</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    new SystemServer().run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public SystemServer() &#123;</span><br><span class="line">    // Check for factory test mode.</span><br><span class="line">    mFactoryTestMode = FactoryTest.getMode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">private void run() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        // 调整系统时间，如果时间在1970以前，调整到1970年</span><br><span class="line">        if (System.currentTimeMillis() &lt; EARLIEST_SUPPORTED_TIME) &#123;</span><br><span class="line">            Slog.w(TAG, &quot;System clock is before 1970; setting to 1970.&quot;);</span><br><span class="line">            SystemClock.setCurrentTimeMillis(EARLIEST_SUPPORTED_TIME);</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">        //设置persist.sys.dalvik.vm.lib.2属性值为当前虚拟机库文件libart.so</span><br><span class="line">        SystemProperties.set(&quot;persist.sys.dalvik.vm.lib.2&quot;, VMRuntime.getRuntime().vmLibrary());</span><br><span class="line"></span><br><span class="line">        // Enable sampling profiler，用于性能统计</span><br><span class="line">        if (SamplingProfilerIntegration.isEnabled()) &#123;</span><br><span class="line">            SamplingProfilerIntegration.start();</span><br><span class="line">            mProfilerSnapshotTimer = new Timer();</span><br><span class="line">            mProfilerSnapshotTimer.schedule(new TimerTask() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void run() &#123;</span><br><span class="line">                        SamplingProfilerIntegration.writeSnapshot(&quot;system_server&quot;, null);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;, SNAPSHOT_INTERVAL, SNAPSHOT_INTERVAL);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 清除vm内存增长上限，设定虚拟机堆内存利用率为0.8</span><br><span class="line">        VMRuntime.getRuntime().clearGrowthLimit();</span><br><span class="line">        VMRuntime.getRuntime().setTargetHeapUtilization(0.8f);</span><br><span class="line"></span><br><span class="line">        // Some devices rely on runtime fingerprint generation, so make sure</span><br><span class="line">        // we&apos;ve defined it before booting further.</span><br><span class="line">        Build.ensureFingerprintProperty();</span><br><span class="line"></span><br><span class="line">        //设置访问Environment需要指定用户</span><br><span class="line">        Environment.setUserRequired(true);</span><br><span class="line"></span><br><span class="line">        // Within the system server, any incoming Bundles should be defused</span><br><span class="line">        // to avoid throwing BadParcelableException.</span><br><span class="line">        BaseBundle.setShouldDefuse(true);</span><br><span class="line"></span><br><span class="line">        // Ensure binder calls into the system always run at foreground priority.</span><br><span class="line">        BinderInternal.disableBackgroundScheduling(true);</span><br><span class="line"></span><br><span class="line">        // Increase the number of binder threads in system_server</span><br><span class="line">        BinderInternal.setMaxThreads(sMaxBinderThreads);</span><br><span class="line"></span><br><span class="line">        // Prepare the main looper thread (this thread).</span><br><span class="line">        android.os.Process.setThreadPriority(</span><br><span class="line">            android.os.Process.THREAD_PRIORITY_FOREGROUND);</span><br><span class="line">        android.os.Process.setCanSelfBackground(false);</span><br><span class="line">        Looper.prepareMainLooper();</span><br><span class="line"></span><br><span class="line">        // 加载android_servers.so库(frameworks/base/services/)</span><br><span class="line">        System.loadLibrary(&quot;android_servers&quot;);</span><br><span class="line"></span><br><span class="line">        // Check whether we failed to shut down last time we tried.</span><br><span class="line">        // This call may not return.</span><br><span class="line">        performPendingShutdown();</span><br><span class="line"></span><br><span class="line">        // 获取SystemServer的Context对象</span><br><span class="line">        createSystemContext();</span><br><span class="line"></span><br><span class="line">        // Create the system service manager.</span><br><span class="line">        mSystemServiceManager = new SystemServiceManager(mSystemContext);</span><br><span class="line">        LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_SYSTEM_SERVER);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Start services.</span><br><span class="line">    try &#123;</span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_SYSTEM_SERVER, &quot;StartServices&quot;);</span><br><span class="line">        startBootstrapServices();</span><br><span class="line">        startCoreServices();</span><br><span class="line">        startOtherServices();</span><br><span class="line">    &#125; catch (Throwable ex) &#123;</span><br><span class="line">        Slog.e(&quot;System&quot;, &quot;******************************************&quot;);</span><br><span class="line">        Slog.e(&quot;System&quot;, &quot;************ Failure starting system services&quot;, ex);</span><br><span class="line">        throw ex;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_SYSTEM_SERVER);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // For debug builds, log event loop stalls to dropbox for analysis.</span><br><span class="line">    if (StrictMode.conditionallyEnableDebugLogging()) &#123;</span><br><span class="line">        Slog.i(TAG, &quot;Enabled StrictMode for system server main thread.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Loop forever.</span><br><span class="line">    Looper.loop();</span><br><span class="line">    throw new RuntimeException(&quot;Main thread loop unexpectedly exited&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -356,6 +351,8 @@
           
             <a href="/tags/Android/" rel="tag">#Android</a>
           
+            <a href="/tags/Framework/" rel="tag">#Framework</a>
+          
         </div>
       
 
@@ -363,16 +360,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/20/android-env/" rel="next" title="Android之开发环境搭建">
-                <i class="fa fa-chevron-left"></i> Android之开发环境搭建
+              <a href="/2016/11/28/android-systemserver-1/" rel="next" title="Android之SystemServer启动(上)">
+                <i class="fa fa-chevron-left"></i> Android之SystemServer启动(上)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/04/15/android-handler/" rel="prev" title="Android之消息机制">
-                Android之消息机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2100/01/01/android-questions-and-answers/" rel="prev" title="Android#Issue">
+                Android#Issue <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -388,10 +385,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/03/27/android-faq/"
-     data-title="Android FAQ"
+        <div class="ds-share flat" data-thread-key="2016/11/28/android-systemserver-2/"
+     data-title="Android之SystemServer启动(下)"
      data-content=""
-     data-url="http://hesstudio.cn/2016/03/27/android-faq/">
+     data-url="http://robinheztto.com/2016/11/28/android-systemserver-2/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -418,8 +415,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/27/android-faq/"
-           data-title="Android FAQ" data-url="http://hesstudio.cn/2016/03/27/android-faq/">
+      <div class="ds-thread" data-thread-key="2016/11/28/android-systemserver-2/"
+           data-title="Android之SystemServer启动(下)" data-url="http://robinheztto.com/2016/11/28/android-systemserver-2/">
       </div>
     
   </div>
@@ -464,7 +461,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -474,7 +471,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -510,7 +507,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何引用Hide-API"><span class="nav-number">1.</span> <span class="nav-text">如何引用Hide API</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
         </section>
