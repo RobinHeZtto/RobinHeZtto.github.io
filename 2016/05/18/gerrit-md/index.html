@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="C," />
+  <meta name="keywords" content="git gerrit jenkins," />
 
 
 
@@ -86,118 +86,46 @@
 
 
 
-<meta name="description" content="数据类型
+<meta name="description" content="[TOC]
+准备
+创建gerrit管理用户$ sudo adduser gerrit$ sudo passwd gerrit
 
+配置java环境  
 
+下载gerrithttps://www.gerritcodereview.com/
 
-
-Tables
-Are
-Cool
-
-
-
-
-col 3 is
-right-aligned
-$1600
-
-
-col 2 is
-centered
-$12
-
-
-zebra stripes
-are neat
-$1
-
-
-
-
-true or falseＣ语言中，非０表示真，０表示假
-
-constconst并不能把变量变为常量，只是通过编译器限定其只读属性。
-
-
-预处理，编译，汇编，链接，加载">
+安装与配置
+安装$ su gerrit$ cd ~$ java -jar gerrit-2.12.2.war init -d review_site  
+配置$">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C语言基础">
-<meta property="og:url" content="http://robinheztto.com/2013/11/21/c-basics/index.html">
+<meta property="og:title" content="GIT+Gerrit+Jenkins环境搭建">
+<meta property="og:url" content="http://robinheztto.com/2016/05/18/gerrit-md/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="数据类型
+<meta property="og:description" content="[TOC]
+准备
+创建gerrit管理用户$ sudo adduser gerrit$ sudo passwd gerrit
 
+配置java环境  
 
+下载gerrithttps://www.gerritcodereview.com/
 
-
-Tables
-Are
-Cool
-
-
-
-
-col 3 is
-right-aligned
-$1600
-
-
-col 2 is
-centered
-$12
-
-
-zebra stripes
-are neat
-$1
-
-
-
-
-true or falseＣ语言中，非０表示真，０表示假
-
-constconst并不能把变量变为常量，只是通过编译器限定其只读属性。
-
-
-预处理，编译，汇编，链接，加载">
-<meta property="og:updated_time" content="2016-12-25T02:52:20.000Z">
+安装与配置
+安装$ su gerrit$ cd ~$ java -jar gerrit-2.12.2.war init -d review_site  
+配置$">
+<meta property="og:updated_time" content="2016-12-31T02:22:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C语言基础">
-<meta name="twitter:description" content="数据类型
+<meta name="twitter:title" content="GIT+Gerrit+Jenkins环境搭建">
+<meta name="twitter:description" content="[TOC]
+准备
+创建gerrit管理用户$ sudo adduser gerrit$ sudo passwd gerrit
 
+配置java环境  
 
+下载gerrithttps://www.gerritcodereview.com/
 
-
-Tables
-Are
-Cool
-
-
-
-
-col 3 is
-right-aligned
-$1600
-
-
-col 2 is
-centered
-$12
-
-
-zebra stripes
-are neat
-$1
-
-
-
-
-true or falseＣ语言中，非０表示真，０表示假
-
-constconst并不能把变量变为常量，只是通过编译器限定其只读属性。
-
-
-预处理，编译，汇编，链接，加载">
+安装与配置
+安装$ su gerrit$ cd ~$ java -jar gerrit-2.12.2.war init -d review_site  
+配置$">
 
 
 
@@ -215,7 +143,7 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
   };
 </script>
 
-  <title> C语言基础 | 生活不止眼前的代码 </title>
+  <title> GIT+Gerrit+Jenkins环境搭建 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -378,7 +306,7 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
             
             
               
-                C语言基础
+                GIT+Gerrit+Jenkins环境搭建
               
             
           </h1>
@@ -390,8 +318,8 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2013-11-21T11:28:00+08:00" content="2013-11-21">
-              2013-11-21
+            <time itemprop="dateCreated" datetime="2016-05-18T10:09:57+08:00" content="2016-05-18">
+              2016-05-18
             </time>
           </span>
 
@@ -401,8 +329,8 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2013/11/21/c-basics/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2013/11/21/c-basics/" itemprop="commentsCount"></span>
+                <a href="/2016/05/18/gerrit-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/18/gerrit-md/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -425,43 +353,18 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
       
 
       
-        <ul>
-<li>数据类型</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>true or false<br>Ｃ语言中，非０表示真，０表示假</p>
+        <p>[TOC]</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
+<li><p>创建gerrit管理用户<br>$ sudo adduser gerrit<br>$ sudo passwd gerrit</p>
 </li>
-<li><p>const<br>const并不能把变量变为常量，只是通过编译器限定其只读属性。</p>
+<li><p>配置java环境  </p>
 </li>
+<li>下载gerrit<br><a href="https://www.gerritcodereview.com/" target="_blank" rel="external">https://www.gerritcodereview.com/</a></li>
 </ul>
-<p>预处理，编译，汇编，链接，加载</p>
-<p>参考资料：<br>《连接器和加载器》<br>《链接器和加载器》<br>《C专家编程》</p>
+<h3 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h3><ul>
+<li>安装<br>$ su gerrit<br>$ cd ~<br>$ java -jar gerrit-2.12.2.war init -d review_site  </li>
+<li>配置<br>$ vi review_site/etc/gerrit.config</li>
+</ul>
 
       
     </div>
@@ -483,7 +386,7 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
       
         <div class="post-tags">
           
-            <a href="/tags/C/" rel="tag">#C</a>
+            <a href="/tags/git-gerrit-jenkins/" rel="tag">#git gerrit jenkins</a>
           
         </div>
       
@@ -492,16 +395,16 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2012/09/03/ubuntu-ssh-git/" rel="next" title="Ubuntu ssh git服务搭建">
-                <i class="fa fa-chevron-left"></i> Ubuntu ssh git服务搭建
+              <a href="/2016/04/15/android-handler/" rel="next" title="Android之消息机制">
+                <i class="fa fa-chevron-left"></i> Android之消息机制
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2013/12/21/java-basics/" rel="prev" title="Java语言基础">
-                Java语言基础 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/06/android-tools-build-gradle/" rel="prev" title="Android之Gradle">
+                Android之Gradle <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -517,10 +420,10 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2013/11/21/c-basics/"
-     data-title="C语言基础"
+        <div class="ds-share flat" data-thread-key="2016/05/18/gerrit-md/"
+     data-title="GIT+Gerrit+Jenkins环境搭建"
      data-content=""
-     data-url="http://robinheztto.com/2013/11/21/c-basics/">
+     data-url="http://robinheztto.com/2016/05/18/gerrit-md/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -547,8 +450,8 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2013/11/21/c-basics/"
-           data-title="C语言基础" data-url="http://robinheztto.com/2013/11/21/c-basics/">
+      <div class="ds-thread" data-thread-key="2016/05/18/gerrit-md/"
+           data-title="GIT+Gerrit+Jenkins环境搭建" data-url="http://robinheztto.com/2016/05/18/gerrit-md/">
       </div>
     
   </div>
@@ -593,7 +496,7 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -603,7 +506,7 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -639,7 +542,7 @@ constconst并不能把变量变为常量，只是通过编译器限定其只读�
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装与配置"><span class="nav-number">2.</span> <span class="nav-text">安装与配置</span></a></li></ol></div>
             
           </div>
         </section>

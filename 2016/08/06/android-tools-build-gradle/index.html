@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android,Gradle," />
 
 
 
@@ -86,15 +86,19 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="生活不止眼前的代码">
-<meta property="og:url" content="http://robinheztto.com/archives/2013/12/index.html">
+<meta name="description" content="Building the Android Gradle Pluginhttp://tools.android.com/build
+$ mkdir studio-master-dev$ cd studio-master-dev$ repo init -u https://android.googlesource.com/platform/manifest -b studio-master-dev$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之Gradle">
+<meta property="og:url" content="http://robinheztto.com/2016/08/06/android-tools-build-gradle/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description">
+<meta property="og:description" content="Building the Android Gradle Pluginhttp://tools.android.com/build
+$ mkdir studio-master-dev$ cd studio-master-dev$ repo init -u https://android.googlesource.com/platform/manifest -b studio-master-dev$">
+<meta property="og:updated_time" content="2016-12-31T02:22:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="生活不止眼前的代码">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Android之Gradle">
+<meta name="twitter:description" content="Building the Android Gradle Pluginhttp://tools.android.com/build
+$ mkdir studio-master-dev$ cd studio-master-dev$ repo init -u https://android.googlesource.com/platform/manifest -b studio-master-dev$">
 
 
 
@@ -112,7 +116,7 @@
   };
 </script>
 
-  <title> 归档 | 生活不止眼前的代码 </title>
+  <title> Android之Gradle | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -143,7 +147,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -254,66 +258,158 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 30 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
 
-      
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android之Gradle
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-06T10:19:58+08:00" content="2016-08-06">
+              2016-08-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/06/android-tools-build-gradle/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/06/android-tools-build-gradle/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
+        <h1 id="Building-the-Android-Gradle-Plugin"><a href="#Building-the-Android-Gradle-Plugin" class="headerlink" title="Building the Android Gradle Plugin"></a>Building the Android Gradle Plugin</h1><p><a href="http://tools.android.com/build" target="_blank" rel="external">http://tools.android.com/build</a></p>
+<p>$ mkdir studio-master-dev<br>$ cd studio-master-dev<br>$ repo init -u <a href="https://android.googlesource.com/platform/manifest" target="_blank" rel="external">https://android.googlesource.com/platform/manifest</a> -b studio-master-dev<br>$ repo sync</p>
+<p>sudo add-apt-repository ppa:openjdk-r/ppa<br>sudo apt-get update<br>sudo apt-get install openjdk-8-jdk<br>sudo update-alternatives –config java<br>sudo update-alternatives –config javac</p>
+<p>$ cd tools<br>$ ./gradlew init<br>$ ./gradlew assemble<br>$ ./gradlew publishLocal</p>
+<p>关于String 定义msgid后字符串重名的问题，由于不是标准Application做法，gradle不支持<br>代码见sdk-common/src/main/java/com/android/ide/common/res2/ValueResourceParser2.java<br>checkDuplicate() -&gt;<br>else if (set.contains(name) &amp;&amp; resource.getType() != ResourceType.PUBLIC) {<br>                System.out.println(“checkDuplicate ——&gt; “ + resource.getType());<br>                throw MergingException.withMessage(<br>                        “Found item %s/%s more than one time”,<br>                        resource.getType().getDisplayName(), name).withFile(from).build();<br>            }</p>
+<p>关于Gradle vs. Make for AOSP build，参考<a href="https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI" target="_blank" rel="external">https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI</a>　<br>关于Gradle参考<a href="http://tools.android.com/tech-docs" target="_blank" rel="external">http://tools.android.com/tech-docs</a></p>
+
+      
+    </div>
+
+    <div>
+      
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2013">2013</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Gradle/" rel="tag">#Gradle</a>
+          
         </div>
       
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/18/gerrit-md/" rel="next" title="GIT+Gerrit+Jenkins环境搭建">
+                <i class="fa fa-chevron-left"></i> GIT+Gerrit+Jenkins环境搭建
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/29/android-binder-0/" rel="prev" title="Android Binder之概述">
+                Android Binder之概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2013/12/21/java-basics/" itemprop="url">
-              
-                <span itemprop="name">Java语言基础</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2013-12-21T11:28:00+08:00"
-              content="2013-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
+      
+    </footer>
   </article>
 
 
 
-    
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/06/android-tools-build-gradle/"
+     data-title="Android之Gradle"
+     data-content=""
+     data-url="http://robinheztto.com/2016/08/06/android-tools-build-gradle/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
 
-  </section>
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
 
-  
-
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
 
 
           </div>
@@ -321,6 +417,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/06/android-tools-build-gradle/"
+           data-title="Android之Gradle" data-url="http://robinheztto.com/2016/08/06/android-tools-build-gradle/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -340,8 +444,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -352,7 +465,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -362,7 +475,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -391,6 +504,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Building-the-Android-Gradle-Plugin"><span class="nav-number">1.</span> <span class="nav-text">Building the Android Gradle Plugin</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -476,11 +600,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   

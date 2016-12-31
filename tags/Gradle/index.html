@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Tools," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -86,49 +86,15 @@
 
 
 
-<meta name="description" content="在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包
-
-
-准备
-Root Android设备
-下载安装Wireshark
-下载Android tcpdump binary文件
-
-使用
-adb root
-adb remount
-adb push tcpdu">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Android之抓包">
-<meta property="og:url" content="http://robinheztto.com/2016/07/14/android-tcpdump/index.html">
+<meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="生活不止眼前的代码">
+<meta property="og:url" content="http://robinheztto.com/tags/Gradle/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包
-
-
-准备
-Root Android设备
-下载安装Wireshark
-下载Android tcpdump binary文件
-
-使用
-adb root
-adb remount
-adb push tcpdu">
-<meta property="og:updated_time" content="2016-08-21T01:42:01.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android之抓包">
-<meta name="twitter:description" content="在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包
-
-
-准备
-Root Android设备
-下载安装Wireshark
-下载Android tcpdump binary文件
-
-使用
-adb root
-adb remount
-adb push tcpdu">
+<meta name="twitter:title" content="生活不止眼前的代码">
+<meta name="twitter:description">
 
 
 
@@ -146,7 +112,7 @@ adb push tcpdu">
   };
 </script>
 
-  <title> Android之抓包 | 生活不止眼前的代码 </title>
+  <title> 标签: Gradle | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -177,7 +143,7 @@ adb push tcpdu">
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -288,182 +254,46 @@ adb push tcpdu">
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <div id="posts" class="posts-collapse">
+    <div class="collection-title">
+      <h2 >
+        Gradle
+        <small>标签</small>
+      </h2>
+    </div>
 
     
-      <header class="post-header">
+      
 
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h1 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
+            <a class="post-title-link" href="/2016/08/06/android-tools-build-gradle/" itemprop="url">
               
-                Android之抓包
+                <span itemprop="name">Android之Gradle</span>
               
-            
-          </h1>
+            </a>
         
+      </h1>
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-14T13:42:46+08:00" content="2016-07-14">
-              2016-07-14
-            </time>
-          </span>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-08-06T10:19:58+08:00"
+              content="2016-08-06" >
+          08-06
+        </time>
+      </div>
 
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/14/android-tcpdump/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/14/android-tcpdump/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <hr>
-<blockquote>
-<p>在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包</p>
-</blockquote>
-<hr>
-<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><ol>
-<li>Root Android设备</li>
-<li>下载安装<a href="https://www.wireshark.org/#download" target="_blank" rel="external">Wireshark</a></li>
-<li>下载<a href="http://www.androidtcpdump.com/android-tcpdump/downloads" target="_blank" rel="external">Android tcpdump binary文件</a></li>
-</ol>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><ol>
-<li><code>adb root</code></li>
-<li><code>adb remount</code></li>
-<li><code>adb push tcpdump /system/bin</code></li>
-<li><code>chmod 6755 /system/bin/tcpdump</code></li>
-<li><code>tcpdump -i any -p -s 0 -w /sdcard/capture.pcap</code></li>
-<li><code>adb pull /sdcard/capture.pcap</code></li>
-<li>Wireshark分析capture.pcap数据包</li>
-</ol>
-<h1 id="tcpdump参数"><a href="#tcpdump参数" class="headerlink" title="tcpdump参数"></a>tcpdump参数</h1><ol>
-<li>-i<br>监视指定网络接口的数据包，可通过tcpdump -D查看可抓包的网卡</li>
-<li>-p<br>一般情况下,把网络接口设置为非’混杂’模式.但必须注意,在特殊情况下此网络接口还是会以’混杂’模式来工作；从而,’-p’的设与不设,不能当做以下选现的代名词:’ether host {local-hw-add}’或’ether broadcast’(nt: 前者表示只匹配以太网地址为host 的包, 后者表示匹配以太网地址为广播地址的数据包).</li>
-<li>-s<br>抓取数据包时默认抓取长度为68字节,-S 0指定可以抓到完整的数据包</li>
-<li>-w<br>保存成pacp/cap文件，供Wireshark分析</li>
-</ol>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.androidtcpdump.com/" target="_blank" rel="external">Android tcpdump</a></li>
-<li><a href="http://www.tcpdump.org/" target="_blank" rel="external">tcpdump.org</a></li>
-<li><a href="https://www.wireshark.org/" target="_blank" rel="external">Wireshark</a></li>
-</ol>
-
-      
-    </div>
-
-    <div>
-      
-        
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Android/" rel="tag">#Android</a>
-          
-            <a href="/tags/Tools/" rel="tag">#Tools</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/04/15/android-handler/" rel="next" title="Android之消息机制">
-                <i class="fa fa-chevron-left"></i> Android之消息机制
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/29/android-binder-0/" rel="prev" title="Android Binder之概述">
-                Android Binder之概述 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
-      
-        <div class="ds-share flat" data-thread-key="2016/07/14/android-tcpdump/"
-     data-title="Android之抓包"
-     data-content=""
-     data-url="http://robinheztto.com/2016/07/14/android-tcpdump/">
-  <div class="ds-share-inline">
-    <ul  class="ds-share-icons-16">
-
-      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
-      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
-      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-
-    </ul>
-    <div class="ds-share-icons-more">
-    </div>
+    
   </div>
-</div>
-      
-    </div>
-  </div>
+
+  
 
 
           </div>
@@ -471,14 +301,6 @@ adb push tcpdu">
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2016/07/14/android-tcpdump/"
-           data-title="Android之抓包" data-url="http://robinheztto.com/2016/07/14/android-tcpdump/">
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -498,17 +320,8 @@ adb push tcpdu">
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -519,7 +332,7 @@ adb push tcpdu">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -529,7 +342,7 @@ adb push tcpdu">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -558,17 +371,6 @@ adb push tcpdu">
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tcpdump参数"><span class="nav-number">3.</span> <span class="nav-text">tcpdump参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -654,10 +456,6 @@ adb push tcpdu">
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
 
   
 
