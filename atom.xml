@@ -322,103 +322,11 @@
   </entry>
   
   <entry>
-    <title>android-binder-7</title>
-    <link href="http://robinheztto.com/2016/11/23/android-binder-7/"/>
-    <id>http://robinheztto.com/2016/11/23/android-binder-7/</id>
-    <published>2016-11-23T07:07:26.000Z</published>
-    <updated>2016-12-04T03:09:39.000Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>android-binder-6</title>
-    <link href="http://robinheztto.com/2016/11/23/android-binder-6/"/>
-    <id>http://robinheztto.com/2016/11/23/android-binder-6/</id>
-    <published>2016-11-23T07:07:23.000Z</published>
-    <updated>2016-12-04T03:09:39.000Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>android-binder-5</title>
-    <link href="http://robinheztto.com/2016/10/03/android-binder-5/"/>
-    <id>http://robinheztto.com/2016/10/03/android-binder-5/</id>
-    <published>2016-10-03T07:53:17.000Z</published>
-    <updated>2016-10-03T07:53:17.000Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>android-binder-4</title>
-    <link href="http://robinheztto.com/2016/09/30/android-binder-4/"/>
-    <id>http://robinheztto.com/2016/09/30/android-binder-4/</id>
-    <published>2016-09-30T07:53:13.000Z</published>
-    <updated>2016-10-03T07:55:15.000Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Android之Gradle</title>
-    <link href="http://robinheztto.com/2016/08/06/android-tools-build-gradle/"/>
-    <id>http://robinheztto.com/2016/08/06/android-tools-build-gradle/</id>
-    <published>2016-08-06T02:19:58.000Z</published>
-    <updated>2016-12-31T02:22:52.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;Building-the-Android-Gradle-Plugin&quot;&gt;&lt;a href=&quot;#Building-the-Android-Gradle-Plugin&quot; class=&quot;headerlink&quot; title=&quot;Building the Android Gradle Plugin&quot;&gt;&lt;/a&gt;Building the Android Gradle Plugin&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://tools.android.com/build&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://tools.android.com/build&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;$ mkdir studio-master-dev&lt;br&gt;$ cd studio-master-dev&lt;br&gt;$ repo init -u &lt;a href=&quot;https://android.googlesource.com/platform/manifest&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://android.googlesource.com/platform/manifest&lt;/a&gt; -b studio-master-dev&lt;br&gt;$ repo sync&lt;/p&gt;
-&lt;p&gt;sudo add-apt-repository ppa:openjdk-r/ppa&lt;br&gt;sudo apt-get update&lt;br&gt;sudo apt-get install openjdk-8-jdk&lt;br&gt;sudo update-alternatives –config java&lt;br&gt;sudo update-alternatives –config javac&lt;/p&gt;
-&lt;p&gt;$ cd tools&lt;br&gt;$ ./gradlew init&lt;br&gt;$ ./gradlew assemble&lt;br&gt;$ ./gradlew publishLocal&lt;/p&gt;
-&lt;p&gt;关于String 定义msgid后字符串重名的问题，由于不是标准Application做法，gradle不支持&lt;br&gt;代码见sdk-common/src/main/java/com/android/ide/common/res2/ValueResourceParser2.java&lt;br&gt;checkDuplicate() -&amp;gt;&lt;br&gt;else if (set.contains(name) &amp;amp;&amp;amp; resource.getType() != ResourceType.PUBLIC) {&lt;br&gt;                System.out.println(“checkDuplicate ——&amp;gt; “ + resource.getType());&lt;br&gt;                throw MergingException.withMessage(&lt;br&gt;                        “Found item %s/%s more than one time”,&lt;br&gt;                        resource.getType().getDisplayName(), name).withFile(from).build();&lt;br&gt;            }&lt;/p&gt;
-&lt;p&gt;关于Gradle vs. Make for AOSP build，参考&lt;a href=&quot;https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI&lt;/a&gt;　&lt;br&gt;关于Gradle参考&lt;a href=&quot;http://tools.android.com/tech-docs&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://tools.android.com/tech-docs&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Building-the-Android-Gradle-Plugin&quot;&gt;&lt;a href=&quot;#Building-the-Android-Gradle-Plugin&quot; class=&quot;headerlink&quot; title=&quot;Building the Android Gra
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://robinheztto.com/tags/Android/"/>
-    
-      <category term="Gradle" scheme="http://robinheztto.com/tags/Gradle/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Android之消息机制</title>
-    <link href="http://robinheztto.com/2016/04/15/android-handler/"/>
-    <id>http://robinheztto.com/2016/04/15/android-handler/</id>
-    <published>2016-04-15T05:16:33.000Z</published>
-    <updated>2016-05-23T05:26:40.000Z</updated>
+    <link href="http://robinheztto.com/2016/11/24/android-handler/"/>
+    <id>http://robinheztto.com/2016/11/24/android-handler/</id>
+    <published>2016-11-24T07:53:07.000Z</published>
+    <updated>2017-01-02T12:08:49.000Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.&lt;/p&gt;
@@ -525,6 +433,70 @@
     
     
       <category term="Android" scheme="http://robinheztto.com/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>android-binder-7</title>
+    <link href="http://robinheztto.com/2016/11/23/android-binder-7/"/>
+    <id>http://robinheztto.com/2016/11/23/android-binder-7/</id>
+    <published>2016-11-23T07:07:26.000Z</published>
+    <updated>2016-12-04T03:09:39.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>android-binder-6</title>
+    <link href="http://robinheztto.com/2016/11/23/android-binder-6/"/>
+    <id>http://robinheztto.com/2016/11/23/android-binder-6/</id>
+    <published>2016-11-23T07:07:23.000Z</published>
+    <updated>2016-12-04T03:09:39.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>android-binder-5</title>
+    <link href="http://robinheztto.com/2016/10/03/android-binder-5/"/>
+    <id>http://robinheztto.com/2016/10/03/android-binder-5/</id>
+    <published>2016-10-03T07:53:17.000Z</published>
+    <updated>2016-10-03T07:53:17.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>android-binder-4</title>
+    <link href="http://robinheztto.com/2016/09/30/android-binder-4/"/>
+    <id>http://robinheztto.com/2016/09/30/android-binder-4/</id>
+    <published>2016-09-30T07:53:13.000Z</published>
+    <updated>2016-10-03T07:55:15.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
     
   </entry>
   
@@ -1223,6 +1195,349 @@
       <category term="Android" scheme="http://robinheztto.com/tags/Android/"/>
     
       <category term="Tools" scheme="http://robinheztto.com/tags/Tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android之开发环境搭建</title>
+    <link href="http://robinheztto.com/2016/01/01/android-env/"/>
+    <id>http://robinheztto.com/2016/01/01/android-env/</id>
+    <published>2016-01-01T06:35:04.000Z</published>
+    <updated>2016-12-31T06:14:33.000Z</updated>
+    
+    <content type="html">&lt;hr&gt;
+&lt;h1 id=&quot;系统安装&quot;&gt;&lt;a href=&quot;#系统安装&quot; class=&quot;headerlink&quot; title=&quot;系统安装&quot;&gt;&lt;/a&gt;系统安装&lt;/h1&gt;&lt;p&gt;Google推荐使用64位Ubuntu操作系统开发Android，针对不同的Android版本，推荐使用相对应的Ubuntu版本。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Android 6.0 (Marshmallow) - AOSP master: Ubuntu 14.04 (Trusty)    &lt;/li&gt;
+&lt;li&gt;Android 2.3.x (Gingerbread) - Android 5.x (Lollipop): Ubuntu 12.04 (Precise)   &lt;/li&gt;
+&lt;li&gt;Android 1.5 (Cupcake) - Android 2.2.x (Froyo): Ubuntu 10.04 (Lucid)   &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;软件安装&quot;&gt;&lt;a href=&quot;#软件安装&quot; class=&quot;headerlink&quot; title=&quot;软件安装&quot;&gt;&lt;/a&gt;软件安装&lt;/h1&gt;&lt;p&gt;&lt;strong&gt; 安装jdk: &lt;/strong&gt;&lt;br&gt;Android 5.0版本前使用的是Oracle的JDK，5.0及以后的版本使用的是OpenJDK.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The master branch of Android in AOSP: Ubuntu - OpenJDK 8&lt;/li&gt;
+&lt;li&gt;Android 5.x (Lollipop) - Android 6.0 (Marshmallow): OpenJDK 7&lt;/li&gt;
+&lt;li&gt;Android 2.3.x (Gingerbread) - Android 4.4.x (KitKat):Java JDK 6&lt;/li&gt;
+&lt;li&gt;Android 1.5 (Cupcake) - Android 2.2.x (Froyo): Java JDK 5   &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OpenJdk8安装：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Ubuntu15.04及以上版本:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo apt-get update&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo apt-get install openjdk-8-jdk&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ubuntu14.04:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo add-apt-repository ppa:openjdk-r/ppa&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo apt-get update&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo apt-get install openjdk-8-jdk&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;对于安装的多个版本JDK,可使用以下命令指定   &lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo update-alternatives --config java   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo update-alternatives --config javac&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt; 安装编译相关开发包: &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Ubuntu14.04:  &lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo apt-get install git-core gnupg flex bison gperf build-essential \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  libgl1-mesa-dev libxml2-utils xsltproc unzip&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ubuntu12.02:   &lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ sudo apt-get install git gnupg flex bison gperf build-essential \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  libgl1-mesa-dev g++-multilib mingw32 tofrodos \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  python-markdown libxml2-utils xsltproc zlib1g-dev:i386&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ sudo ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt; 开发工具安装: &lt;/strong&gt;  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;下载&lt;a href=&quot;https://developer.android.com/studio/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android studio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;安装Android SDK&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;源码下载&quot;&gt;&lt;a href=&quot;#源码下载&quot; class=&quot;headerlink&quot; title=&quot;源码下载&quot;&gt;&lt;/a&gt;源码下载&lt;/h1&gt;&lt;p&gt;&lt;strong&gt; Android源码下载: &lt;/strong&gt;  &lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Code name&lt;/th&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;API level&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nougat&lt;/td&gt;
+&lt;td&gt;7.1&lt;/td&gt;
+&lt;td&gt;API level 25&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nougat&lt;/td&gt;
+&lt;td&gt;7.0&lt;/td&gt;
+&lt;td&gt;API level 24&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Marshmallow&lt;/td&gt;
+&lt;td&gt;6.0&lt;/td&gt;
+&lt;td&gt;API level 23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Lollipop&lt;/td&gt;
+&lt;td&gt;5.1&lt;/td&gt;
+&lt;td&gt;API level 22&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Lollipop&lt;/td&gt;
+&lt;td&gt;5.0&lt;/td&gt;
+&lt;td&gt;API level 21&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KitKat&lt;/td&gt;
+&lt;td&gt;4.4 - 4.4.4&lt;/td&gt;
+&lt;td&gt;API level 19&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Jelly Bean&lt;/td&gt;
+&lt;td&gt;4.3.x&lt;/td&gt;
+&lt;td&gt;API level 18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Jelly Bean&lt;/td&gt;
+&lt;td&gt;4.2.x&lt;/td&gt;
+&lt;td&gt;API level 17&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Jelly Bean&lt;/td&gt;
+&lt;td&gt;4.1.x&lt;/td&gt;
+&lt;td&gt;API level 16&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ice Cream Sandwich&lt;/td&gt;
+&lt;td&gt;4.0.3 - 4.0.4&lt;/td&gt;
+&lt;td&gt;API level 15, NDK 8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ice Cream Sandwich&lt;/td&gt;
+&lt;td&gt;4.0.1 - 4.0.2&lt;/td&gt;
+&lt;td&gt;API level 14, NDK 7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Honeycomb&lt;/td&gt;
+&lt;td&gt;3.2.x&lt;/td&gt;
+&lt;td&gt;API level 13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Honeycomb&lt;/td&gt;
+&lt;td&gt;3.1&lt;/td&gt;
+&lt;td&gt;API level 12, NDK 6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Honeycomb&lt;/td&gt;
+&lt;td&gt;3.0&lt;/td&gt;
+&lt;td&gt;API level 11&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gingerbread&lt;/td&gt;
+&lt;td&gt;2.3.3 - 2.3.7&lt;/td&gt;
+&lt;td&gt;API level 10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gingerbread&lt;/td&gt;
+&lt;td&gt;2.3 - 2.3.2&lt;/td&gt;
+&lt;td&gt;API level 9, NDK 5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Froyo&lt;/td&gt;
+&lt;td&gt;2.2.x&lt;/td&gt;
+&lt;td&gt;API level 8, NDK 4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Eclair&lt;/td&gt;
+&lt;td&gt;2.1&lt;/td&gt;
+&lt;td&gt;API level 7, NDK 3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Eclair&lt;/td&gt;
+&lt;td&gt;2.0.1&lt;/td&gt;
+&lt;td&gt;API level 6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Eclair&lt;/td&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;API level 5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Donut&lt;/td&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;API level 4, NDK 2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cupcake&lt;/td&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;API level 3, NDK 1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(no code name)&lt;/td&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;API level 2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(no code name)&lt;/td&gt;
+&lt;td&gt;1.0&lt;/td&gt;
+&lt;td&gt;API level 1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;安装repo&lt;br&gt;repo是Google开发的一个脚本,在git上进行封装,用来简化git下载Android源码的过程.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ mkdir ~/bin    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ PATH=~/bin:$PATH   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ curl https://storage.googleapis.com/git-repo-downloads/repo &amp;gt; ~/bin/repo   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ chmod a+x ~/bin/repo&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;repo下载源码:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ git config --global user.name &amp;quot;Your Name&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git config --global user.email &amp;quot;you@example.com&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ mkdir WORKING_DIRECTORY&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ cd WORKING_DIRECTORY&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;默认下载master分支&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ repo init -u https://android.googlesource.com/platform/manifest&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;或者指定分支下载,&lt;a href=&quot;https://source.android.com/source/build-numbers.html#source-code-tags-and-builds&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;查看branch list&lt;/a&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ repo init -u https://android.googlesource.com/platform/manifest -b android-7.1.1_r1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;下载&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ repo sync -j8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt; Kernel源码下载:   &lt;/strong&gt;&lt;br&gt;虽然Android源码是通用的,但是每个平台kernel源码都有较大的差异,同时Android源码跟Kernel源码也是分开管理的.kernel源码可以通过一下命令获取.&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/common.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/hikey-linaro&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/x86_64.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/exynos.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/goldfish.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/msm.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/omap.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/samsung.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ git clone https://android.googlesource.com/kernel/tegra.git&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;其中goldfish.git是qemu虚拟机的内核代码库.下面是Google设备型号,kernel位置及源码仓库对应表  &lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Device&lt;/th&gt;
+&lt;th&gt;Binarry location&lt;/th&gt;
+&lt;th&gt;Source location&lt;/th&gt;
+&lt;th&gt;Build configuration&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;hikey&lt;/td&gt;
+&lt;td&gt;device/linaro/hikey-kernel&lt;/td&gt;
+&lt;td&gt;kernel/hikey-linaro&lt;/td&gt;
+&lt;td&gt;hikey_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;angler&lt;/td&gt;
+&lt;td&gt;device/huawei/angler-kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;angler_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;bullhead&lt;/td&gt;
+&lt;td&gt;device/lge/bullhead-kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;bullhead_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;shamu&lt;/td&gt;
+&lt;td&gt;device/moto/shamu-kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;shamu_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;fugu&lt;/td&gt;
+&lt;td&gt;device/asus/fugu-kernel&lt;/td&gt;
+&lt;td&gt;kernel/x86_64&lt;/td&gt;
+&lt;td&gt;fugu_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;volantis&lt;/td&gt;
+&lt;td&gt;device/htc/flounder-kernel&lt;/td&gt;
+&lt;td&gt;kernel/tegra&lt;/td&gt;
+&lt;td&gt;flounder_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hammerhead&lt;/td&gt;
+&lt;td&gt;device/lge/hammerhead-kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;hammerhead_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;flo&lt;/td&gt;
+&lt;td&gt;device/asus/flo-kernel/kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;flo_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;deb&lt;/td&gt;
+&lt;td&gt;device/asus/flo-kernel/kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;flo_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;manta&lt;/td&gt;
+&lt;td&gt;device/samsung/manta/kernel&lt;/td&gt;
+&lt;td&gt;kernel/exynos&lt;/td&gt;
+&lt;td&gt;manta_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;mako&lt;/td&gt;
+&lt;td&gt;device/lge/mako-kernel/kernel&lt;/td&gt;
+&lt;td&gt;kernel/msm&lt;/td&gt;
+&lt;td&gt;mako_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;grouper&lt;/td&gt;
+&lt;td&gt;device/asus/grouper/kernel&lt;/td&gt;
+&lt;td&gt;kernel/tegra&lt;/td&gt;
+&lt;td&gt;tegra3_android_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;tilapia&lt;/td&gt;
+&lt;td&gt;device/asus/grouper/kernel&lt;/td&gt;
+&lt;td&gt;kernel/tegra&lt;/td&gt;
+&lt;td&gt;tegra3_android_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;maguro&lt;/td&gt;
+&lt;td&gt;device/samsung/tuna/kernel&lt;/td&gt;
+&lt;td&gt;kernel/omap&lt;/td&gt;
+&lt;td&gt;tuna_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;toro&lt;/td&gt;
+&lt;td&gt;device/samsung/tuna/kernel&lt;/td&gt;
+&lt;td&gt;kernel/omap&lt;/td&gt;
+&lt;td&gt;tuna_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;panda&lt;/td&gt;
+&lt;td&gt;device/ti/panda/kernel&lt;/td&gt;
+&lt;td&gt;kernel/omap&lt;/td&gt;
+&lt;td&gt;panda_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;stingray&lt;/td&gt;
+&lt;td&gt;device/moto/wingray/kernel&lt;/td&gt;
+&lt;td&gt;kernel/tegra&lt;/td&gt;
+&lt;td&gt;stingray_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;wingray&lt;/td&gt;
+&lt;td&gt;device/moto/wingray/kernel&lt;/td&gt;
+&lt;td&gt;kernel/tegra&lt;/td&gt;
+&lt;td&gt;stingray_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;crespo&lt;/td&gt;
+&lt;td&gt;device/samsung/crespo/kernel&lt;/td&gt;
+&lt;td&gt;kernel/samsung&lt;/td&gt;
+&lt;td&gt;herring_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;crespo4g&lt;/td&gt;
+&lt;td&gt;device/samsung/crespo/kernel&lt;/td&gt;
+&lt;td&gt;kernel/samsung&lt;/td&gt;
+&lt;td&gt;herring_defconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&quot;源码编译&quot;&gt;&lt;a href=&quot;#源码编译&quot; class=&quot;headerlink&quot; title=&quot;源码编译&quot;&gt;&lt;/a&gt;源码编译&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;$ source build/envsetup.sh&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ lunch aosp_arm-eng&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ make -j8 2&amp;gt;&amp;amp;1 | tee build.log&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Android Studio导入源码：&lt;br&gt;&lt;code&gt;$ make idegen &amp;amp;&amp;amp; development/tools/idegen/idegen.sh&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://source.android.com/source/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;The Android Source Code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.androiddevtools.cn/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndroidDevTools&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;h1 id=&quot;系统安装&quot;&gt;&lt;a href=&quot;#系统安装&quot; class=&quot;headerlink&quot; title=&quot;系统安装&quot;&gt;&lt;/a&gt;系统安装&lt;/h1&gt;&lt;p&gt;Google推荐使用64位Ubuntu操作系统开发Android，针对不同的Android版本，推荐使用相对应的U
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://robinheztto.com/tags/Android/"/>
     
   </entry>
   

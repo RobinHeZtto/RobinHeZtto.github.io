@@ -205,44 +205,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[android-binder-7]]></title>
-      <url>http://robinheztto.com/2016/11/23/android-binder-7/</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[android-binder-6]]></title>
-      <url>http://robinheztto.com/2016/11/23/android-binder-6/</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[android-binder-5]]></title>
-      <url>http://robinheztto.com/2016/10/03/android-binder-5/</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[android-binder-4]]></title>
-      <url>http://robinheztto.com/2016/09/30/android-binder-4/</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Android之Gradle]]></title>
-      <url>http://robinheztto.com/2016/08/06/android-tools-build-gradle/</url>
-      <content type="html"><![CDATA[<h1 id="Building-the-Android-Gradle-Plugin"><a href="#Building-the-Android-Gradle-Plugin" class="headerlink" title="Building the Android Gradle Plugin"></a>Building the Android Gradle Plugin</h1><p><a href="http://tools.android.com/build" target="_blank" rel="external">http://tools.android.com/build</a></p>
-<p>$ mkdir studio-master-dev<br>$ cd studio-master-dev<br>$ repo init -u <a href="https://android.googlesource.com/platform/manifest" target="_blank" rel="external">https://android.googlesource.com/platform/manifest</a> -b studio-master-dev<br>$ repo sync</p>
-<p>sudo add-apt-repository ppa:openjdk-r/ppa<br>sudo apt-get update<br>sudo apt-get install openjdk-8-jdk<br>sudo update-alternatives –config java<br>sudo update-alternatives –config javac</p>
-<p>$ cd tools<br>$ ./gradlew init<br>$ ./gradlew assemble<br>$ ./gradlew publishLocal</p>
-<p>关于String 定义msgid后字符串重名的问题，由于不是标准Application做法，gradle不支持<br>代码见sdk-common/src/main/java/com/android/ide/common/res2/ValueResourceParser2.java<br>checkDuplicate() -&gt;<br>else if (set.contains(name) &amp;&amp; resource.getType() != ResourceType.PUBLIC) {<br>                System.out.println(“checkDuplicate ——&gt; “ + resource.getType());<br>                throw MergingException.withMessage(<br>                        “Found item %s/%s more than one time”,<br>                        resource.getType().getDisplayName(), name).withFile(from).build();<br>            }</p>
-<p>关于Gradle vs. Make for AOSP build，参考<a href="https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI" target="_blank" rel="external">https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI</a>　<br>关于Gradle参考<a href="http://tools.android.com/tech-docs" target="_blank" rel="external">http://tools.android.com/tech-docs</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Android之消息机制]]></title>
-      <url>http://robinheztto.com/2016/04/15/android-handler/</url>
+      <url>http://robinheztto.com/2016/11/24/android-handler/</url>
       <content type="html"><![CDATA[<hr>
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.</p>
 <p>Android的消息队列是线程相关的,每启动一个线程,都可以在内部创建一个消息队列,然后在消息队列中不断循环检查是否有新的消息需要处理,如果有,则对该消息进行处理,如果没有,线程就进入休眠状态直到有新的消息需要处理为止.</p>
@@ -338,6 +302,30 @@
 <h3 id="线程消息的处理"><a href="#线程消息的处理" class="headerlink" title="线程消息的处理"></a>线程消息的处理</h3><p>从前面的分析可以知道,当线程没有消息需要处理时,会在c++层Looper对象的pollInner中进入睡眠等待,当有新消息唤醒该目标线程时或这延时时间到,执行流程将沿着pollInner调用路径一直返回,直到java层Looper类的loop.<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/hand_message.jpg?raw=true" alt="消息处理流程"><br>loop中将调用msg.target.dispatchMessage(msg)处理消息,这里的msg.target就是上面enqueueMessage中所赋值的handler,即进入handler的dispatchMessage处理消息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</span><br><span class="line">          handleCallback(msg);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">              <span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</span><br><span class="line">                  <span class="keyword">return</span>;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          handleMessage(msg);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>dispatchMessage进行消息处理,先检查是否有设置msg.callback,如果有则执行msg.callback处理消息,如果没有则继续判断mCallback的执行,最后才是handleMessage处理.</p>
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android-binder-7]]></title>
+      <url>http://robinheztto.com/2016/11/23/android-binder-7/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android-binder-6]]></title>
+      <url>http://robinheztto.com/2016/11/23/android-binder-6/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android-binder-5]]></title>
+      <url>http://robinheztto.com/2016/10/03/android-binder-5/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[android-binder-4]]></title>
+      <url>http://robinheztto.com/2016/09/30/android-binder-4/</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
@@ -1422,40 +1410,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Java语言基础]]></title>
-      <url>http://robinheztto.com/2013/01/21/java-basics/</url>
-      <content type="html"><![CDATA[<ul>
-<li>数据类型</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>数据类型</th>
-<th style="text-align:center">长度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[C语言基础]]></title>
       <url>http://robinheztto.com/2013/01/21/c-basics/</url>
       <content type="html"><![CDATA[<p>＃ 变量/常量</p>
@@ -1528,6 +1482,40 @@
 <li>《链接器和加载器》</li>
 <li>《C专家编程》</li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java语言基础]]></title>
+      <url>http://robinheztto.com/2013/01/21/java-basics/</url>
+      <content type="html"><![CDATA[<ul>
+<li>数据类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th style="text-align:center">长度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col 3 is</td>
+<td style="text-align:center">right-aligned</td>
+<td style="text-align:right">$1600</td>
+</tr>
+<tr>
+<td>col 2 is</td>
+<td style="text-align:center">centered</td>
+<td style="text-align:right">$12</td>
+</tr>
+<tr>
+<td>zebra stripes</td>
+<td style="text-align:center">are neat</td>
+<td style="text-align:right">$1</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     </entry>
     
