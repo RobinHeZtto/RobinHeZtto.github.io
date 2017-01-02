@@ -104,7 +104,7 @@ Android init.rc语法Android init.rc包含四种类型的声明，分别是 Acti
 init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，并且以”#”开头进行行注释。
 
 Actions和Service">
-<meta property="og:updated_time" content="2016-12-25T09:32:10.000Z">
+<meta property="og:updated_time" content="2016-12-31T08:22:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之Init.rc语法">
 <meta name="twitter:description" content="译自system/core/init/readme.txt
@@ -369,6 +369,7 @@ Actions和Service">
 <li>oneshot<br>定义oneshot的service，退出后不再重启</li>
 <li>class &lt;name&gt;<br>为服务指定所属class，属于同一class的服务可以同时启动或停止.默认为default</li>
 <li>onrestart<br>服务重启时,执行一条命令</li>
+<li>default<br>默认disabled=false，oneshot=false，critical=false</li>
 </ul>
 <h2 id="Triggers"><a href="#Triggers" class="headerlink" title="Triggers"></a>Triggers</h2><p>Triggers是on后面的字符串，匹配某类事件的发生来执行action。</p>
 <ul>
@@ -688,7 +689,7 @@ Actions和Service">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -698,7 +699,7 @@ Actions和Service">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -753,7 +754,7 @@ Actions和Service">
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

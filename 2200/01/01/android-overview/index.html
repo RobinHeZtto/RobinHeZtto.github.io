@@ -106,12 +106,10 @@ Android之Init.rc语法
 Android之Init
 
 
-Recovery
 Binder
-HAL/Native
-Frameworks
-Application
-Build">
+Android Binder之概述
+Android Binder之Binder Driver
+A">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android#Overview">
 <meta property="og:url" content="http://robinheztto.com/2200/01/01/android-overview/index.html">
@@ -136,14 +134,12 @@ Android之Init.rc语法
 Android之Init
 
 
-Recovery
 Binder
-HAL/Native
-Frameworks
-Application
-Build">
+Android Binder之概述
+Android Binder之Binder Driver
+A">
 <meta property="og:image" content="https://source.android.com/images/android_framework_details.png">
-<meta property="og:updated_time" content="2016-12-31T06:14:33.000Z">
+<meta property="og:updated_time" content="2017-01-02T11:49:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android#Overview">
 <meta name="twitter:description" content="Android学习提纲．从底至上．循序渐进．RTFSC．
@@ -166,12 +162,10 @@ Android之Init.rc语法
 Android之Init
 
 
-Recovery
 Binder
-HAL/Native
-Frameworks
-Application
-Build">
+Android Binder之概述
+Android Binder之Binder Driver
+A">
 <meta name="twitter:image" content="https://source.android.com/images/android_framework_details.png">
 
 
@@ -421,12 +415,28 @@ Build">
 <li><a href="http://www.robinheztto.com/2016/02/02/android-init/" target="_blank" rel="external">Android之Init</a></li>
 </ul>
 <hr>
-<h1 id="Recovery"><a href="#Recovery" class="headerlink" title="Recovery"></a>Recovery</h1><hr>
-<h1 id="Binder"><a href="#Binder" class="headerlink" title="Binder"></a>Binder</h1><hr>
-<h1 id="HAL-Native"><a href="#HAL-Native" class="headerlink" title="HAL/Native"></a>HAL/Native</h1><hr>
-<h1 id="Frameworks"><a href="#Frameworks" class="headerlink" title="Frameworks"></a>Frameworks</h1><hr>
-<h1 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h1><hr>
-<h1 id="Build-System"><a href="#Build-System" class="headerlink" title="Build System"></a>Build System</h1><hr>
+<h1 id="Binder"><a href="#Binder" class="headerlink" title="Binder"></a>Binder</h1><ul>
+<li><a href="http://www.robinheztto.com/2016/02/01/android-init-language/" target="_blank" rel="external">Android Binder之概述</a></li>
+<li><a href="http://www.robinheztto.com/2016/02/01/android-init-language/" target="_blank" rel="external">Android Binder之Binder Driver</a></li>
+<li><a href="http://www.robinheztto.com/2016/02/01/android-init-language/" target="_blank" rel="external">Android Binder之Service Manager</a></li>
+<li><a href="http://www.robinheztto.com/2016/02/01/android-init-language/" target="_blank" rel="external">Android Binder之defaultServiceManager</a></li>
+</ul>
+<hr>
+<h1 id="HAL-Native"><a href="#HAL-Native" class="headerlink" title="HAL/Native"></a>HAL/Native</h1><p> TODO…</p>
+<hr>
+<h1 id="Frameworks"><a href="#Frameworks" class="headerlink" title="Frameworks"></a>Frameworks</h1><ul>
+<li><a href="http://www.robinheztto.com/2016/01/01/android-env/" target="_blank" rel="external">Android之Zygote-启动流程</a></li>
+<li><a href="http://www.robinheztto.com/2016/01/01/android-env/" target="_blank" rel="external">Android之Zygote-应用进程创建</a></li>
+<li><a href="http://www.robinheztto.com/2016/02/02/android-init/" target="_blank" rel="external">Android之SystemServer启动(上)</a></li>
+<li><a href="http://www.robinheztto.com/2016/02/02/android-init/" target="_blank" rel="external">Android之SystemServer启动(下)</a></li>
+</ul>
+<hr>
+<h1 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h1><p> TODO…</p>
+<hr>
+<h1 id="Recovery"><a href="#Recovery" class="headerlink" title="Recovery"></a>Recovery</h1><p> TODO…</p>
+<hr>
+<h1 id="Build-System"><a href="#Build-System" class="headerlink" title="Build System"></a>Build System</h1><p> TODO…</p>
+<hr>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
 <li><a href="http://free-electrons.com/pub/conferences/2012/captronic/android/android-captronic.pdf" target="_blank" rel="external">android-captronic</a></li>
 </ol>
@@ -557,7 +567,7 @@ Build">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -567,7 +577,7 @@ Build">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -603,7 +613,7 @@ Build">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Environment-Tools"><span class="nav-number">1.</span> <span class="nav-text">Environment/Tools</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bootloader"><span class="nav-number">2.</span> <span class="nav-text">Bootloader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kernel"><span class="nav-number">3.</span> <span class="nav-text">Kernel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recovery"><span class="nav-number">4.</span> <span class="nav-text">Recovery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder"><span class="nav-number">5.</span> <span class="nav-text">Binder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HAL-Native"><span class="nav-number">6.</span> <span class="nav-text">HAL/Native</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Frameworks"><span class="nav-number">7.</span> <span class="nav-text">Frameworks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Application"><span class="nav-number">8.</span> <span class="nav-text">Application</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-System"><span class="nav-number">9.</span> <span class="nav-text">Build System</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">10.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Environment-Tools"><span class="nav-number">1.</span> <span class="nav-text">Environment/Tools</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bootloader"><span class="nav-number">2.</span> <span class="nav-text">Bootloader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kernel"><span class="nav-number">3.</span> <span class="nav-text">Kernel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder"><span class="nav-number">4.</span> <span class="nav-text">Binder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HAL-Native"><span class="nav-number">5.</span> <span class="nav-text">HAL/Native</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Frameworks"><span class="nav-number">6.</span> <span class="nav-text">Frameworks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Application"><span class="nav-number">7.</span> <span class="nav-text">Application</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recovery"><span class="nav-number">8.</span> <span class="nav-text">Recovery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-System"><span class="nav-number">9.</span> <span class="nav-text">Build System</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">10.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
         </section>
@@ -622,7 +632,7 @@ Build">
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
