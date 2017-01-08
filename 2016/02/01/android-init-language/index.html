@@ -90,9 +90,9 @@
 
 Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
 
-init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，并且以”#”开头进行行注释。
+init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，类似shell脚本以”#”进行行注释。
 
-Actions和Service">
+Actions和Se">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android之Init.rc语法">
 <meta property="og:url" content="http://robinheztto.com/2016/02/01/android-init-language/index.html">
@@ -101,19 +101,19 @@ Actions和Service">
 
 Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
 
-init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，并且以”#”开头进行行注释。
+init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，类似shell脚本以”#”进行行注释。
 
-Actions和Service">
-<meta property="og:updated_time" content="2016-12-31T08:22:20.000Z">
+Actions和Se">
+<meta property="og:updated_time" content="2017-01-07T06:55:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之Init.rc语法">
 <meta name="twitter:description" content="译自system/core/init/readme.txt
 
 Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
 
-init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，并且以”#”开头进行行注释。
+init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，类似shell脚本以”#”进行行注释。
 
-Actions和Service">
+Actions和Se">
 
 
 
@@ -346,30 +346,29 @@ Actions和Service">
 </blockquote>
 <h1 id="Android-init-rc语法"><a href="#Android-init-rc语法" class="headerlink" title="Android init.rc语法"></a>Android init.rc语法</h1><p>Android init.rc包含四种类型的声明，分别是 <strong>Actions</strong>，<strong>Commands</strong>，<strong>Services</strong>，和 <strong>Options</strong>。<br>其语法规则如下：</p>
 <ul>
-<li><p>init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，并且以”#”开头进行行注释。</p>
+<li><p>init.rc所有的语句都是以行为单位，行间使用空格分隔符号，类似C语言，使用”\”续行，类似shell脚本以”#”进行行注释。</p>
 </li>
-<li><p>Actions和Services默认声明了一个新的section，所有该section下的command与options都属于它，在section前申明的command和options将会被其忽略。</p>
+<li><p>Actions和Services默认声明一个新的section，所有该section下的command与options都属于它，在section前申明的command和options将会被其忽略。</p>
 </li>
-<li><p>Actions与Services的命名是唯一的,后面的重复定义被视为无效。</p>
+<li><p>Actions与Services的命名是唯一的,重复的定义被视为无效。</p>
 </li>
 </ul>
-<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><p>Action由一系列命令组成,通过trigger来决定什么时候执行,”on”后面跟的字符串即为ation的trigger.当trigger事件发生时，如果action不在to-be-executed中，将被加入到to-be-executed的队尾等待执行。</p>
+<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><p>Action是由一系列命令组成并由”on”开头的语句,通过trigger来决定什么时候执行(“on”后面跟的字符串即为ation的trigger).当trigger事件发生时，如果action不在to-be-executed中，将被加入到to-be-executed的队尾等待执行。</p>
 <p>在to-be-executed队列中的每个action按FIFO顺序执行，同样action中的command也是按定义的先后顺序依次执行。init除了执行action的command，还负责设备节点的创建及销毁，属性设置，进程重启等工作。</p>
 <p>Actions的格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">on &lt;trigger&gt;</span><br><span class="line">   &lt;command&gt;</span><br><span class="line">   &lt;command&gt;</span><br><span class="line">   &lt;command&gt;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h2><p>Services由init启动并且可以在退出时重启(可选)，Services的格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service &lt;name&gt; &lt;pathname&gt; [ &lt;argument&gt; ]*</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure></p>
-<h2 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h2><p>Options用来描述Services，它决定service的执行行为.</p>
+<h2 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h2><p>services,以“service”字符串开头，由init进程启动并且可以在退出时重启(可选)，services的格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service &lt;name&gt; &lt;pathname&gt; [ &lt;argument&gt; ]*</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   &lt;option&gt;</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure></p>
+<h2 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h2><p>options是services的可选项，它决定service的执行行为.</p>
 <ul>
-<li>critical<br>表示关键的service，如果service4分钟内异常退出4次将会重启进入recovery模式。</li>
-<li>disabled<br>指定disable的service，不会随class service启动，只有通过<code>start service_name</code>启动时才能启动</li>
+<li>critical<br>表示关键的service，如果service 4分钟内异常退出4次将会重启进入recovery模式。</li>
+<li>disabled<br>指定disable的service，不能通过class service(class_start)启动，只有通过<code>start service_name</code>启动时才能启动</li>
 <li>setenv &lt;&lt;name&gt; &lt;value&gt;<br>service启动时设置环境变量值</li>
 <li>socket &lt;name&gt; &lt;type&gt; &lt;perm&gt; [ &lt;user&gt; [ &lt;group&gt; [ &lt;seclabel&gt; ] ] ]<br>为要启动的进程创建名为/dev/socket/&lt;name&gt;的socket,&lt;type&gt;可选”dgram”或”stream”,&lt;user&gt; [ &lt;group&gt;默认为0.</li>
 <li>user &lt;username&gt;<br>在service启动时为其设置user，默认为root</li>
 <li>group &lt;groupname&gt; [ &lt;groupname&gt; ]*<br>在service启动时为其设置group，默认为root</li>
 <li>seclabel &lt;seclabel&gt;<br>SELinux security context</li>
 <li>oneshot<br>定义oneshot的service，退出后不再重启</li>
-<li>class &lt;name&gt;<br>为服务指定所属class，属于同一class的服务可以同时启动或停止.默认为default</li>
-<li>onrestart<br>服务重启时,执行一条命令</li>
-<li>default<br>默认disabled=false，oneshot=false，critical=false</li>
+<li>class &lt;name&gt;<br>指服务所属的class，同一class的服务可以同时启动或停止.默认为default</li>
+<li>onrestart<br>服务重启时执行命令</li>
 </ul>
 <h2 id="Triggers"><a href="#Triggers" class="headerlink" title="Triggers"></a>Triggers</h2><p>Triggers是on后面的字符串，匹配某类事件的发生来执行action。</p>
 <ul>
@@ -378,7 +377,7 @@ Actions和Service">
 <li><p>&lt;name&gt;=&lt;value&gt;<br>设置属性值时触发Trigger</p>
 </li>
 </ul>
-<h2 id="Commands"><a href="#Commands" class="headerlink" title="Commands"></a>Commands</h2><p>Commands即Action或services onrestart中所执行的命令,</p>
+<h2 id="Commands"><a href="#Commands" class="headerlink" title="Commands"></a>Commands</h2><p>Commands即Action或Services onrestart中所执行的命令,下面是常用的命令。</p>
 <ul>
 <li><p>bootchart_init<br> 启动bootcharting</p>
 </li>
@@ -689,7 +688,7 @@ Actions和Service">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -699,7 +698,7 @@ Actions和Service">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

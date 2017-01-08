@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android,Debug," />
 
 
 
@@ -86,15 +86,39 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="生活不止眼前的代码">
-<meta property="og:url" content="http://robinheztto.com/archives/2016/10/index.html">
+<meta name="description" content="Debug:系统启动问题
+
+Boot FlowAndroid Boot Flow如下图示：
+
+Boot DebugBootRomLK抓取Uart logLK执行时间的计算需借助Trace32并在start of kernel设置断点计算执行时间。
+Android Boot
+Catch log:开机后执行以下命令抓取log。
+12345adb wait-for-device rootadb wai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Debug之系统启动">
+<meta property="og:url" content="http://robinheztto.com/2016/11/05/android-debug-boot/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description">
+<meta property="og:description" content="Debug:系统启动问题
+
+Boot FlowAndroid Boot Flow如下图示：
+
+Boot DebugBootRomLK抓取Uart logLK执行时间的计算需借助Trace32并在start of kernel设置断点计算执行时间。
+Android Boot
+Catch log:开机后执行以下命令抓取log。
+12345adb wait-for-device rootadb wai">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-debug-boot.jpg?raw=true">
+<meta property="og:updated_time" content="2017-01-07T06:55:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="生活不止眼前的代码">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Android Debug之系统启动">
+<meta name="twitter:description" content="Debug:系统启动问题
+
+Boot FlowAndroid Boot Flow如下图示：
+
+Boot DebugBootRomLK抓取Uart logLK执行时间的计算需借助Trace32并在start of kernel设置断点计算执行时间。
+Android Boot
+Catch log:开机后执行以下命令抓取log。
+12345adb wait-for-device rootadb wai">
+<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-debug-boot.jpg?raw=true">
 
 
 
@@ -112,7 +136,7 @@
   };
 </script>
 
-  <title> 归档 | 生活不止眼前的代码 </title>
+  <title> Android Debug之系统启动 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -143,7 +167,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -254,65 +278,174 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-       
-      
-      OK! 目前共计 31 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
 
-      
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Debug之系统启动
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-05T10:29:45+08:00" content="2016-11-05">
+              2016-11-05
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/05/android-debug-boot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/android-debug-boot/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
+        <blockquote>
+<p>Debug:系统启动问题</p>
+</blockquote>
+<h1 id="Boot-Flow"><a href="#Boot-Flow" class="headerlink" title="Boot Flow"></a>Boot Flow</h1><p>Android Boot Flow如下图示：</p>
+<p><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-debug-boot.jpg?raw=true" alt="Android Boot Flow"><br></div></p>
+<h1 id="Boot-Debug"><a href="#Boot-Debug" class="headerlink" title="Boot Debug"></a>Boot Debug</h1><h2 id="BootRom"><a href="#BootRom" class="headerlink" title="BootRom"></a>BootRom</h2><h2 id="LK"><a href="#LK" class="headerlink" title="LK"></a>LK</h2><p>抓取Uart log<br>LK执行时间的计算需借助Trace32并在<code>start of kernel</code>设置断点计算执行时间。</p>
+<h2 id="Android-Boot"><a href="#Android-Boot" class="headerlink" title="Android Boot"></a>Android Boot</h2><ol>
+<li><p>Catch log:<br>开机后执行以下命令抓取log。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">adb wait-for-device root</span><br><span class="line">adb wait-for-device</span><br><span class="line">adb shell dmesg &gt; dmesg.txt</span><br><span class="line">adb logcat -b events -d &gt; logcat_events.txt</span><br><span class="line">adb logcat -v time thread -d &gt; logcat.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Log analysis:<br>根据关键的event log进行分析，正常启动的events log中应该包含如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">01-08 11:46:10.253   760   760 I boot_progress_start: 27961</span><br><span class="line">//Zygote64 begin to start</span><br><span class="line">01-08 11:46:11.828   760   760 I boot_progress_preload_start: 29537</span><br><span class="line">//Zygote32 begin to start</span><br><span class="line">01-08 11:46:12.185   761   761 I boot_progress_preload_start: 29892</span><br><span class="line">//Zygote64 end</span><br><span class="line">01-08 11:46:14.595   760   760 I boot_progress_preload_end: 32303</span><br><span class="line">//Zygote32 end</span><br><span class="line">01-08 11:46:14.774   761   761 I boot_progress_preload_end: 32483</span><br><span class="line">//System ready</span><br><span class="line">01-08 11:46:14.956  1429  1429 I boot_progress_system_run: 32664</span><br><span class="line">// package scan begin</span><br><span class="line">01-08 11:46:15.496  1429  1429 I boot_progress_pms_start: 33204</span><br><span class="line">//scan system folder</span><br><span class="line">01-08 11:46:16.069  1429  1429 I boot_progress_pms_system_scan_start: 33777</span><br><span class="line">//scan data folder</span><br><span class="line">01-08 11:46:17.757  1429  1429 I boot_progress_pms_data_scan_start: 35466</span><br><span class="line">//scan end</span><br><span class="line">01-08 11:46:17.868  1429  1429 I boot_progress_pms_scan_end: 35577</span><br><span class="line">//PMS ready</span><br><span class="line">01-08 11:46:18.401  1429  1429 I boot_progress_pms_ready: 36109</span><br><span class="line">//AMS ready</span><br><span class="line">01-08 11:46:20.632  1429  1429 I boot_progress_ams_ready: 38341</span><br><span class="line">//Home activiy start</span><br><span class="line">01-08 11:46:22.081  1429  1464 I boot_progress_enable_screen: 39789</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>根据以上log可以清楚的计算出每个步骤所用时间：</p>
+<ul>
+<li>Kernel part : boot_progress_start</li>
+<li>Zygote time : boot_progress_preload_end - boot_progress_preload_start</li>
+<li>/system Scan time : boot_progress_pms_data_scan_start - boot_progress_pms_system_scan_start</li>
+<li>/data Scan time : boot_progress_pms_scan_end- boot_progress_pms_data_scan_start</li>
+<li>Home activity start time : boot_progress_enable_screen- boot_progress_ams_ready</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Debug/" rel="tag">#Debug</a>
+          
         </div>
       
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/02/android-zygote-2/" rel="next" title="Android之Zygote-应用进程创建">
+                <i class="fa fa-chevron-left"></i> Android之Zygote-应用进程创建
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/23/android-binder-7/" rel="prev" title="android-binder-7">
+                android-binder-7 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/03/android-binder-5/" itemprop="url">
-              
-                <span itemprop="name">android-binder-5</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-03T15:53:17+08:00"
-              content="2016-10-03" >
-          10-03
-        </time>
-      </div>
-
-    </header>
+      
+    </footer>
   </article>
 
 
 
-    
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/11/05/android-debug-boot/"
+     data-title="Android Debug之系统启动"
+     data-content=""
+     data-url="http://robinheztto.com/2016/11/05/android-debug-boot/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
 
-  </section>
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
 
-  
-
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
 
 
           </div>
@@ -320,6 +453,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/05/android-debug-boot/"
+           data-title="Android Debug之系统启动" data-url="http://robinheztto.com/2016/11/05/android-debug-boot/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -339,8 +480,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -351,7 +501,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -361,7 +511,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -390,6 +540,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Boot-Flow"><span class="nav-number">1.</span> <span class="nav-text">Boot Flow</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Boot-Debug"><span class="nav-number">2.</span> <span class="nav-text">Boot Debug</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BootRom"><span class="nav-number">2.1.</span> <span class="nav-text">BootRom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LK"><span class="nav-number">2.2.</span> <span class="nav-text">LK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-Boot"><span class="nav-number">2.3.</span> <span class="nav-text">Android Boot</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -475,11 +636,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   

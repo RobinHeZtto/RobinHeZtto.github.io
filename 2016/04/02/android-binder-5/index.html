@@ -1,0 +1,790 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Binder," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="service组件在Server进程启动时会将service注册到Service Manager中。本篇以MediaPlayerService为例分析Service注册的过程。相关代码在以下文件中：frameworks/av/media/mediaserver/main_mediaserver.cppframeworks/av/media/libmediaplayerservice/MediaP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Binder之注册Service">
+<meta property="og:url" content="http://robinheztto.com/2016/04/02/android-binder-5/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="service组件在Server进程启动时会将service注册到Service Manager中。本篇以MediaPlayerService为例分析Service注册的过程。相关代码在以下文件中：frameworks/av/media/mediaserver/main_mediaserver.cppframeworks/av/media/libmediaplayerservice/MediaP">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-binder-addservice.jpg?raw=true">
+<meta property="og:updated_time" content="2017-01-07T06:55:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Binder之注册Service">
+<meta name="twitter:description" content="service组件在Server进程启动时会将service注册到Service Manager中。本篇以MediaPlayerService为例分析Service注册的过程。相关代码在以下文件中：frameworks/av/media/mediaserver/main_mediaserver.cppframeworks/av/media/libmediaplayerservice/MediaP">
+<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-binder-addservice.jpg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android Binder之注册Service | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Binder之注册Service
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-02T17:53:07+08:00" content="2016-04-02">
+              2016-04-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/02/android-binder-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/02/android-binder-5/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>service组件在Server进程启动时会将service注册到Service Manager中。本篇以MediaPlayerService为例分析Service注册的过程。<br>相关代码在以下文件中：<br>frameworks/av/media/mediaserver/main_mediaserver.cpp<br>frameworks/av/media/libmediaplayerservice/MediaPlayerService.cpp<br>frameworks/native/libs/binder/IServiceManager.cpp</p>
+</blockquote>
+<div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-binder-addservice.jpg?raw=true" alt=""><br></div>
+
+<p>mediadrmserver进程的执行入口为frameworks/av/media/mediaserver/main_mediaserver.cpp的main()，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc __unused, char **argv __unused)</span><br><span class="line">&#123;</span><br><span class="line">    ......</span><br><span class="line">    sp&lt;ProcessState&gt; proc(ProcessState::self());</span><br><span class="line">    sp&lt;IServiceManager&gt; sm(defaultServiceManager());</span><br><span class="line">    .....</span><br><span class="line">    MediaPlayerService::instantiate();</span><br><span class="line">    ......</span><br><span class="line">    ProcessState::self()-&gt;startThreadPool();</span><br><span class="line">    IPCThreadState::self()-&gt;joinThreadPool();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先获取ProcessState对象和ServiceManager的代理对象，此流程在上篇博客中已有分析。先分析MediaPlayerService::instantiate()的过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void MediaPlayerService::instantiate() &#123;</span><br><span class="line">    defaultServiceManager()-&gt;addService(</span><br><span class="line">            String16(&quot;media.player&quot;), new MediaPlayerService());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>defaultServiceManager返回的是ServiceManager的代理对象BpServiceManager，通过BpServiceManager将新创建的MediaPlayerService的服务添加到ServiceManager。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IServiceManager.cpp</span><br><span class="line"></span><br><span class="line">class BpServiceManager : public BpInterface&lt;IServiceManager&gt;</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    ......</span><br><span class="line">    virtual status_t addService(const String16&amp; name, const sp&lt;IBinder&gt;&amp; service,</span><br><span class="line">            bool allowIsolated)</span><br><span class="line">    &#123;</span><br><span class="line">        Parcel data, reply;</span><br><span class="line">        data.writeInterfaceToken(IServiceManager::getInterfaceDescriptor());</span><br><span class="line">        data.writeString16(name);</span><br><span class="line">        data.writeStrongBinder(service);</span><br><span class="line">        data.writeInt32(allowIsolated ? 1 : 0);</span><br><span class="line">        status_t err = remote()-&gt;transact(ADD_SERVICE_TRANSACTION, data, &amp;reply);</span><br><span class="line">        return err == NO_ERROR ? reply.readExceptionCode() : err;</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>addService()中首先将进程间通信数据封装成Parcel数据，然后调用remote()-&gt;transact()将数据发送给驱动，remote()即BpBinder，下面看BpBinder::transact()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/BpBinder.cpp</span><br><span class="line"></span><br><span class="line">status_t BpBinder::transact(</span><br><span class="line">    uint32_t code, const Parcel&amp; data, Parcel* reply, uint32_t flags)</span><br><span class="line">&#123;</span><br><span class="line">    // Once a binder has died, it will never come back to life.</span><br><span class="line">    if (mAlive) &#123;</span><br><span class="line">        status_t status = IPCThreadState::self()-&gt;transact(</span><br><span class="line">            mHandle, code, data, reply, flags);</span><br><span class="line">        if (status == DEAD_OBJECT) mAlive = 0;</span><br><span class="line">        return status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return DEAD_OBJECT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IPCThreadState.cpp</span><br><span class="line"></span><br><span class="line">status_t IPCThreadState::transact(int32_t handle,</span><br><span class="line">                                  uint32_t code, const Parcel&amp; data,</span><br><span class="line">                                  Parcel* reply, uint32_t flags)</span><br><span class="line">&#123;</span><br><span class="line">    status_t err = data.errorCheck();</span><br><span class="line"></span><br><span class="line">    flags |= TF_ACCEPT_FDS;</span><br><span class="line">    ......</span><br><span class="line">    if (err == NO_ERROR) &#123;</span><br><span class="line">        ......</span><br><span class="line">        err = writeTransactionData(BC_TRANSACTION, flags, handle, code, data, NULL);</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">    if ((flags &amp; TF_ONE_WAY) == 0) &#123;</span><br><span class="line">        if (reply) &#123;</span><br><span class="line">            err = waitForResponse(reply);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            Parcel fakeReply;</span><br><span class="line">            err = waitForResponse(&amp;fakeReply);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        err = waitForResponse(NULL, NULL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return err;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先检查Parcel对象中的进程数据是否正确，设置参数TF_ACCEPT_FDS位，即允许server在返回结果中携带文件描述符。然后通过writeTransactionData()向驱动程序发送BC_TRANSACTION命令的数据，flag TF_ONE_WAY位为0，表示是一个同步的进程间通信请求，需等待返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IPCThreadState.cpp</span><br><span class="line"></span><br><span class="line">status_t IPCThreadState::writeTransactionData(int32_t cmd, uint32_t binderFlags,</span><br><span class="line">    int32_t handle, uint32_t code, const Parcel&amp; data, status_t* statusBuffer)</span><br><span class="line">&#123;</span><br><span class="line">    binder_transaction_data tr;</span><br><span class="line"></span><br><span class="line">    tr.target.ptr = 0; /* Don&apos;t pass uninitialized stack data to a remote process */</span><br><span class="line">    tr.target.handle = handle;</span><br><span class="line">    tr.code = code;</span><br><span class="line">    tr.flags = binderFlags;</span><br><span class="line">    tr.cookie = 0;</span><br><span class="line">    tr.sender_pid = 0;</span><br><span class="line">    tr.sender_euid = 0;</span><br><span class="line"></span><br><span class="line">    const status_t err = data.errorCheck();</span><br><span class="line">    if (err == NO_ERROR) &#123;</span><br><span class="line">        tr.data_size = data.ipcDataSize();</span><br><span class="line">        tr.data.ptr.buffer = data.ipcData();</span><br><span class="line">        tr.offsets_size = data.ipcObjectsCount()*sizeof(binder_size_t);</span><br><span class="line">        tr.data.ptr.offsets = data.ipcObjects();</span><br><span class="line">    &#125; else if (statusBuffer) &#123;</span><br><span class="line">        tr.flags |= TF_STATUS_CODE;</span><br><span class="line">        *statusBuffer = err;</span><br><span class="line">        tr.data_size = sizeof(status_t);</span><br><span class="line">        tr.data.ptr.buffer = reinterpret_cast&lt;uintptr_t&gt;(statusBuffer);</span><br><span class="line">        tr.offsets_size = 0;</span><br><span class="line">        tr.data.ptr.offsets = 0;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return (mLastError = err);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mOut.writeInt32(cmd);</span><br><span class="line">    mOut.write(&amp;tr, sizeof(tr));</span><br><span class="line"></span><br><span class="line">    return NO_ERROR;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>writeTransactionData()将Parcel数据封装成binder_transaction_data并写入mOut缓存中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IPCThreadState.cpp</span><br><span class="line"></span><br><span class="line">status_t IPCThreadState::waitForResponse(Parcel *reply, status_t *acquireResult)</span><br><span class="line">&#123;</span><br><span class="line">    uint32_t cmd;</span><br><span class="line">    int32_t err;</span><br><span class="line"></span><br><span class="line">    while (1) &#123;</span><br><span class="line">        if ((err=talkWithDriver()) &lt; NO_ERROR) break;</span><br><span class="line">        err = mIn.errorCheck();</span><br><span class="line">        if (err &lt; NO_ERROR) break;</span><br><span class="line">        if (mIn.dataAvail() == 0) continue;</span><br><span class="line"></span><br><span class="line">        cmd = (uint32_t)mIn.readInt32();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        switch (cmd) &#123;</span><br><span class="line">        case BR_TRANSACTION_COMPLETE:</span><br><span class="line">            if (!reply &amp;&amp; !acquireResult) goto finish;</span><br><span class="line">            break;</span><br><span class="line"></span><br><span class="line">        case BR_DEAD_REPLY:</span><br><span class="line">            err = DEAD_OBJECT;</span><br><span class="line">            goto finish;</span><br><span class="line"></span><br><span class="line">        case BR_FAILED_REPLY:</span><br><span class="line">            err = FAILED_TRANSACTION;</span><br><span class="line">            goto finish;</span><br><span class="line"></span><br><span class="line">        case BR_ACQUIRE_RESULT:</span><br><span class="line">            &#123;</span><br><span class="line">                ALOG_ASSERT(acquireResult != NULL, &quot;Unexpected brACQUIRE_RESULT&quot;);</span><br><span class="line">                const int32_t result = mIn.readInt32();</span><br><span class="line">                if (!acquireResult) continue;</span><br><span class="line">                *acquireResult = result ? NO_ERROR : INVALID_OPERATION;</span><br><span class="line">            &#125;</span><br><span class="line">            goto finish;</span><br><span class="line"></span><br><span class="line">        case BR_REPLY:</span><br><span class="line">            &#123;</span><br><span class="line">                binder_transaction_data tr;</span><br><span class="line">                err = mIn.read(&amp;tr, sizeof(tr));</span><br><span class="line">                ALOG_ASSERT(err == NO_ERROR, &quot;Not enough command data for brREPLY&quot;);</span><br><span class="line">                if (err != NO_ERROR) goto finish;</span><br><span class="line"></span><br><span class="line">                if (reply) &#123;</span><br><span class="line">                    if ((tr.flags &amp; TF_STATUS_CODE) == 0) &#123;</span><br><span class="line">                        reply-&gt;ipcSetDataReference(</span><br><span class="line">                            reinterpret_cast&lt;const uint8_t*&gt;(tr.data.ptr.buffer),</span><br><span class="line">                            tr.data_size,</span><br><span class="line">                            reinterpret_cast&lt;const binder_size_t*&gt;(tr.data.ptr.offsets),</span><br><span class="line">                            tr.offsets_size/sizeof(binder_size_t),</span><br><span class="line">                            freeBuffer, this);</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        err = *reinterpret_cast&lt;const status_t*&gt;(tr.data.ptr.buffer);</span><br><span class="line">                        freeBuffer(NULL,</span><br><span class="line">                            reinterpret_cast&lt;const uint8_t*&gt;(tr.data.ptr.buffer),</span><br><span class="line">                            tr.data_size,</span><br><span class="line">                            reinterpret_cast&lt;const binder_size_t*&gt;(tr.data.ptr.offsets),</span><br><span class="line">                            tr.offsets_size/sizeof(binder_size_t), this);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    freeBuffer(NULL,</span><br><span class="line">                        reinterpret_cast&lt;const uint8_t*&gt;(tr.data.ptr.buffer),</span><br><span class="line">                        tr.data_size,</span><br><span class="line">                        reinterpret_cast&lt;const binder_size_t*&gt;(tr.data.ptr.offsets),</span><br><span class="line">                        tr.offsets_size/sizeof(binder_size_t), this);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            goto finish;</span><br><span class="line"></span><br><span class="line">        default:</span><br><span class="line">            err = executeCommand(cmd);</span><br><span class="line">            if (err != NO_ERROR) goto finish;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">finish:</span><br><span class="line">    if (err != NO_ERROR) &#123;</span><br><span class="line">        if (acquireResult) *acquireResult = err;</span><br><span class="line">        if (reply) reply-&gt;setError(err);</span><br><span class="line">        mLastError = err;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return err;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IPCThreadState.cpp</span><br><span class="line"></span><br><span class="line">status_t IPCThreadState::talkWithDriver(bool doReceive)</span><br><span class="line">&#123;</span><br><span class="line">    if (mProcess-&gt;mDriverFD &lt;= 0) &#123;</span><br><span class="line">        return -EBADF;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    binder_write_read bwr;</span><br><span class="line"></span><br><span class="line">    // Is the read buffer empty?</span><br><span class="line">    const bool needRead = mIn.dataPosition() &gt;= mIn.dataSize();</span><br><span class="line"></span><br><span class="line">    // We don&apos;t want to write anything if we are still reading</span><br><span class="line">    // from data left in the input buffer and the caller</span><br><span class="line">    // has requested to read the next data.</span><br><span class="line">    const size_t outAvail = (!doReceive || needRead) ? mOut.dataSize() : 0;</span><br><span class="line"></span><br><span class="line">    bwr.write_size = outAvail;</span><br><span class="line">    bwr.write_buffer = (uintptr_t)mOut.data();</span><br><span class="line"></span><br><span class="line">    // This is what we&apos;ll read.</span><br><span class="line">    if (doReceive &amp;&amp; needRead) &#123;</span><br><span class="line">        bwr.read_size = mIn.dataCapacity();</span><br><span class="line">        bwr.read_buffer = (uintptr_t)mIn.data();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bwr.read_size = 0;</span><br><span class="line">        bwr.read_buffer = 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IF_LOG_COMMANDS() &#123;</span><br><span class="line">        TextOutput::Bundle _b(alog);</span><br><span class="line">        if (outAvail != 0) &#123;</span><br><span class="line">            alog &lt;&lt; &quot;Sending commands to driver: &quot; &lt;&lt; indent;</span><br><span class="line">            const void* cmds = (const void*)bwr.write_buffer;</span><br><span class="line">            const void* end = ((const uint8_t*)cmds)+bwr.write_size;</span><br><span class="line">            alog &lt;&lt; HexDump(cmds, bwr.write_size) &lt;&lt; endl;</span><br><span class="line">            while (cmds &lt; end) cmds = printCommand(alog, cmds);</span><br><span class="line">            alog &lt;&lt; dedent;</span><br><span class="line">        &#125;</span><br><span class="line">        alog &lt;&lt; &quot;Size of receive buffer: &quot; &lt;&lt; bwr.read_size</span><br><span class="line">            &lt;&lt; &quot;, needRead: &quot; &lt;&lt; needRead &lt;&lt; &quot;, doReceive: &quot; &lt;&lt; doReceive &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Return immediately if there is nothing to do.</span><br><span class="line">    if ((bwr.write_size == 0) &amp;&amp; (bwr.read_size == 0)) return NO_ERROR;</span><br><span class="line"></span><br><span class="line">    bwr.write_consumed = 0;</span><br><span class="line">    bwr.read_consumed = 0;</span><br><span class="line">    status_t err;</span><br><span class="line">    do &#123;</span><br><span class="line">        IF_LOG_COMMANDS() &#123;</span><br><span class="line">            alog &lt;&lt; &quot;About to read/write, write size = &quot; &lt;&lt; mOut.dataSize() &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">#if defined(__ANDROID__)</span><br><span class="line">        if (ioctl(mProcess-&gt;mDriverFD, BINDER_WRITE_READ, &amp;bwr) &gt;= 0)</span><br><span class="line">            err = NO_ERROR;</span><br><span class="line">        else</span><br><span class="line">            err = -errno;</span><br><span class="line">#else</span><br><span class="line">        err = INVALID_OPERATION;</span><br><span class="line">#endif</span><br><span class="line">        if (mProcess-&gt;mDriverFD &lt;= 0) &#123;</span><br><span class="line">            err = -EBADF;</span><br><span class="line">        &#125;</span><br><span class="line">        IF_LOG_COMMANDS() &#123;</span><br><span class="line">            alog &lt;&lt; &quot;Finished read/write, write size = &quot; &lt;&lt; mOut.dataSize() &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; while (err == -EINTR);</span><br><span class="line"></span><br><span class="line">    IF_LOG_COMMANDS() &#123;</span><br><span class="line">        alog &lt;&lt; &quot;Our err: &quot; &lt;&lt; (void*)(intptr_t)err &lt;&lt; &quot;, write consumed: &quot;</span><br><span class="line">            &lt;&lt; bwr.write_consumed &lt;&lt; &quot; (of &quot; &lt;&lt; mOut.dataSize()</span><br><span class="line">                        &lt;&lt; &quot;), read consumed: &quot; &lt;&lt; bwr.read_consumed &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (err &gt;= NO_ERROR) &#123;</span><br><span class="line">        if (bwr.write_consumed &gt; 0) &#123;</span><br><span class="line">            if (bwr.write_consumed &lt; mOut.dataSize())</span><br><span class="line">                mOut.remove(0, bwr.write_consumed);</span><br><span class="line">            else</span><br><span class="line">                mOut.setDataSize(0);</span><br><span class="line">        &#125;</span><br><span class="line">        if (bwr.read_consumed &gt; 0) &#123;</span><br><span class="line">            mIn.setDataSize(bwr.read_consumed);</span><br><span class="line">            mIn.setDataPosition(0);</span><br><span class="line">        &#125;</span><br><span class="line">        IF_LOG_COMMANDS() &#123;</span><br><span class="line">            TextOutput::Bundle _b(alog);</span><br><span class="line">            alog &lt;&lt; &quot;Remaining data size: &quot; &lt;&lt; mOut.dataSize() &lt;&lt; endl;</span><br><span class="line">            alog &lt;&lt; &quot;Received commands from driver: &quot; &lt;&lt; indent;</span><br><span class="line">            const void* cmds = mIn.data();</span><br><span class="line">            const void* end = mIn.data() + mIn.dataSize();</span><br><span class="line">            alog &lt;&lt; HexDump(cmds, mIn.dataSize()) &lt;&lt; endl;</span><br><span class="line">            while (cmds &lt; end) cmds = printReturnCommand(alog, cmds);</span><br><span class="line">            alog &lt;&lt; dedent;</span><br><span class="line">        &#125;</span><br><span class="line">        return NO_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return err;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Binder/" rel="tag">#Binder</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/28/android-binder-4/" rel="next" title="Android Binder之Service Manager代理对象">
+                <i class="fa fa-chevron-left"></i> Android Binder之Service Manager代理对象
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/18/android-binder-6/" rel="prev" title="Android Binder之获取Service">
+                Android Binder之获取Service <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/02/android-binder-5/"
+     data-title="Android Binder之注册Service"
+     data-content=""
+     data-url="http://robinheztto.com/2016/04/02/android-binder-5/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/02/android-binder-5/"
+           data-title="Android Binder之注册Service" data-url="http://robinheztto.com/2016/04/02/android-binder-5/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

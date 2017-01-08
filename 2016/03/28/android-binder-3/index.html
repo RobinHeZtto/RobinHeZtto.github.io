@@ -86,16 +86,22 @@
 
 
 
-<meta name="description">
+<meta name="description" content="为了方便对Binder驱动的操作及上层调用，Binder通信的细节及与驱动交互的过程都被封装到了libbinder库中。libbinder相关的源码位于frameworks/native/libs/binder下，本篇分析libbinder库中的基础类。
+
+RefBaseRefBase在system/core/include/utils/RefBase.h中定义，它是一个公共父类，声明了引用计数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Binder之defaultServiceManager">
+<meta property="og:title" content="Android Binder之进程间通信库">
 <meta property="og:url" content="http://robinheztto.com/2016/03/28/android-binder-3/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description">
-<meta property="og:updated_time" content="2017-01-02T09:58:31.000Z">
+<meta property="og:description" content="为了方便对Binder驱动的操作及上层调用，Binder通信的细节及与驱动交互的过程都被封装到了libbinder库中。libbinder相关的源码位于frameworks/native/libs/binder下，本篇分析libbinder库中的基础类。
+
+RefBaseRefBase在system/core/include/utils/RefBase.h中定义，它是一个公共父类，声明了引用计数">
+<meta property="og:updated_time" content="2017-01-08T07:20:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Binder之defaultServiceManager">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Android Binder之进程间通信库">
+<meta name="twitter:description" content="为了方便对Binder驱动的操作及上层调用，Binder通信的细节及与驱动交互的过程都被封装到了libbinder库中。libbinder相关的源码位于frameworks/native/libs/binder下，本篇分析libbinder库中的基础类。
+
+RefBaseRefBase在system/core/include/utils/RefBase.h中定义，它是一个公共父类，声明了引用计数">
 
 
 
@@ -113,7 +119,7 @@
   };
 </script>
 
-  <title> Android Binder之defaultServiceManager | 生活不止眼前的代码 </title>
+  <title> Android Binder之进程间通信库 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -276,7 +282,7 @@
             
             
               
-                Android Binder之defaultServiceManager
+                Android Binder之进程间通信库
               
             
           </h1>
@@ -323,7 +329,20 @@
       
 
       
-        
+        <blockquote>
+<p>为了方便对Binder驱动的操作及上层调用，Binder通信的细节及与驱动交互的过程都被封装到了libbinder库中。libbinder相关的源码位于frameworks/native/libs/binder下，本篇分析libbinder库中的基础类。</p>
+</blockquote>
+<h1 id="RefBase"><a href="#RefBase" class="headerlink" title="RefBase"></a>RefBase</h1><p>RefBase在system/core/include/utils/RefBase.h中定义，它是一个公共父类，声明了引用计数操作相关的接口。继承RefBase的子类能通过强指针与弱指针维护它们的生命周期。</p>
+<h1 id="ProcessState"><a href="#ProcessState" class="headerlink" title="ProcessState"></a>ProcessState</h1><p>每个进程间通信的进程都有一个ProcessState对象，它负责与binder驱动建立联系。ProcessState对象通过静态成员函数self()来获取，mDriverFD保存了打开设备文件/dev/binder的句柄值，mVMStart保存映射的内核缓冲区对应用户空间的起始地址。其中mHandleToObject是一个Vector矢量数组，保存着server的句柄即及其对应的BpBinder对象(server的句柄即Server在Binder驱动中的Binder引用的描述，0对应Service Manager，BpBinder即binder的代理类)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/ProcessState.h</span><br><span class="line"></span><br><span class="line">class ProcessState : public virtual RefBase</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    static  sp&lt;ProcessState&gt;    self();</span><br><span class="line">            ......</span><br><span class="line">            sp&lt;IBinder&gt;         getContextObject(const sp&lt;IBinder&gt;&amp; caller);</span><br><span class="line">            ......</span><br><span class="line">            sp&lt;IBinder&gt;         getContextObject(const String16&amp; name,</span><br><span class="line">                                                 const sp&lt;IBinder&gt;&amp; caller);</span><br><span class="line">            void                startThreadPool();</span><br><span class="line">            ......</span><br><span class="line">private:</span><br><span class="line">            ......</span><br><span class="line">            struct handle_entry &#123;</span><br><span class="line">                IBinder* binder;</span><br><span class="line">                RefBase::weakref_type* refs;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            handle_entry*       lookupHandleLocked(int32_t handle);</span><br><span class="line"></span><br><span class="line">            int                 mDriverFD;</span><br><span class="line">            void*               mVMStart;</span><br><span class="line">            ......</span><br><span class="line">            size_t              mMaxThreads;</span><br><span class="line">            ......</span><br><span class="line">            Vector&lt;handle_entry&gt;mHandleToObject;</span><br><span class="line">            ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="IPCThreadState"><a href="#IPCThreadState" class="headerlink" title="IPCThreadState"></a>IPCThreadState</h1><p>每个Binder通信的进程都有一个binder线程池，每个线程都对应一个IPCThreadState对象，它负责与驱动的交互，收发进程间通信数据。IPCThreadState对象通过静态成员函数self()获取，mProcess指向ProcessState对象(每个进程中只存在一个ProcessState对象)。transact()函数负责向驱动发送进程间通信数据，最后通过talkWithDriver()与驱动交互。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IPCThreadState.h</span><br><span class="line"></span><br><span class="line">class IPCThreadState</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    static  IPCThreadState*     self();</span><br><span class="line">            ......</span><br><span class="line">            status_t            transact(int32_t handle,</span><br><span class="line">                                         uint32_t code, const Parcel&amp; data,</span><br><span class="line">                                         Parcel* reply, uint32_t flags);</span><br><span class="line">            ......</span><br><span class="line">private:</span><br><span class="line">            ......</span><br><span class="line">            status_t            talkWithDriver(bool doReceive=true);</span><br><span class="line">            ......</span><br><span class="line">            const   sp&lt;ProcessState&gt;    mProcess;</span><br><span class="line">            const   pid_t               mMyThreadId;</span><br><span class="line">            Parcel              mIn;</span><br><span class="line">            Parcel              mOut;</span><br><span class="line">            ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="IBinder"><a href="#IBinder" class="headerlink" title="IBinder"></a>IBinder</h1><p>IBinder是一个基础类，BpBinder与BBinder都继承于它，其中成员函数remoteBinder()用于获取远程Binder BpBinder，localBinder()用于获取本地Binder BBinder。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IBinder.h</span><br><span class="line"></span><br><span class="line">class IBinder : public virtual RefBase</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual sp&lt;IInterface&gt;  queryLocalInterface(const String16&amp; descriptor);</span><br><span class="line">    ......</span><br><span class="line">    ......</span><br><span class="line">    virtual status_t        transact(   uint32_t code,</span><br><span class="line">                                        const Parcel&amp; data,</span><br><span class="line">                                        Parcel* reply,</span><br><span class="line">                                        uint32_t flags = 0) = 0;</span><br><span class="line">    ......</span><br><span class="line">    virtual BBinder*        localBinder();</span><br><span class="line">    virtual BpBinder*       remoteBinder();</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="BBinder"><a href="#BBinder" class="headerlink" title="BBinder"></a>BBinder</h1><p>BBinder，本地Binder，它有一个非常重要的成员函数onTransact()，Server收到进程间通信请求后，会调用onTransact()进行分发处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/Binder.h</span><br><span class="line"></span><br><span class="line">class BBinder : public IBinder</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    ......</span><br><span class="line">    virtual BBinder*    localBinder();</span><br><span class="line">protected:</span><br><span class="line">    virtual status_t    onTransact( uint32_t code,</span><br><span class="line">                                    const Parcel&amp; data,</span><br><span class="line">                                    Parcel* reply,</span><br><span class="line">                                    uint32_t flags = 0);</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="BpBinder"><a href="#BpBinder" class="headerlink" title="BpBinder"></a>BpBinder</h1><p>BpBinder，远程Binder，它也有一个非常重要的成员函数transact()，BpBinder的transact()会调用IPCThreadState的transact()进行处理。BpBinder中有一成员mHandle，用于保存Server在Binder驱动中的Binder引用的句柄，通过这个句柄就可以与驱动中的binder引用建立联系，其中0代表ServiceManager的binder引用的句柄。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/BpBinder.h</span><br><span class="line"></span><br><span class="line">class BpBinder : public IBinder</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">                        BpBinder(int32_t handle);</span><br><span class="line">    inline  int32_t     handle() const &#123; return mHandle; &#125;</span><br><span class="line">    ......</span><br><span class="line">    virtual status_t    transact(   uint32_t code,</span><br><span class="line">                                    const Parcel&amp; data,</span><br><span class="line">                                    Parcel* reply,</span><br><span class="line">                                    uint32_t flags = 0);</span><br><span class="line">    ......</span><br><span class="line">private:</span><br><span class="line">    const   int32_t             mHandle;</span><br><span class="line">    .....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="BpRefBase"><a href="#BpRefBase" class="headerlink" title="BpRefBase"></a>BpRefBase</h1><p>BpRefBase中有一重要的成员mRemote，它指向BpBinder对象，并可通过成员函数remote()获取。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/Binder.h</span><br><span class="line"></span><br><span class="line">class BpRefBase : public virtual RefBase</span><br><span class="line">&#123;</span><br><span class="line">protected:</span><br><span class="line">                            BpRefBase(const sp&lt;IBinder&gt;&amp; o);</span><br><span class="line">    ......</span><br><span class="line">    inline  IBinder*        remote()                &#123; return mRemote; &#125;</span><br><span class="line">    inline  IBinder*        remote() const          &#123; return mRemote; &#125;</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line">    ......</span><br><span class="line">    IBinder* const          mRemote;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="IInterface"><a href="#IInterface" class="headerlink" title="IInterface"></a>IInterface</h1><p>IInterface在frameworks/native/include/binder/IInterface.h中定义，它也是一个公共父类。</p>
+<h1 id="BnInterface"><a href="#BnInterface" class="headerlink" title="BnInterface"></a>BnInterface</h1><p>BnInterface是一个模板类，同时继承了BBinder和INTERFACE，本地服务通过继承BpInterface来实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IInterface.h</span><br><span class="line"></span><br><span class="line">template&lt;typename INTERFACE&gt;</span><br><span class="line">class BnInterface : public INTERFACE, public BBinder</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual sp&lt;IInterface&gt;      queryLocalInterface(const String16&amp; _descriptor);</span><br><span class="line">    virtual const String16&amp;     getInterfaceDescriptor() const;</span><br><span class="line"></span><br><span class="line">protected:</span><br><span class="line">    virtual IBinder*            onAsBinder();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="BpInterface"><a href="#BpInterface" class="headerlink" title="BpInterface"></a>BpInterface</h1><p>BpInterface也是一个模板类，同时继承了BpRefBase和INTERFACE，服务代理通过继承BpInterface来实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IInterface.h</span><br><span class="line"></span><br><span class="line">template&lt;typename INTERFACE&gt;</span><br><span class="line">class BpInterface : public INTERFACE, public BpRefBase</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">                                BpInterface(const sp&lt;IBinder&gt;&amp; remote);</span><br><span class="line"></span><br><span class="line">protected:</span><br><span class="line">    virtual IBinder*            onAsBinder();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -363,8 +382,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/09/30/android-binder-4/" rel="prev" title="android-binder-4">
-                android-binder-4 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/03/28/android-binder-4/" rel="prev" title="Android Binder之Service Manager代理对象">
+                Android Binder之Service Manager代理对象 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -381,7 +400,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2016/03/28/android-binder-3/"
-     data-title="Android Binder之defaultServiceManager"
+     data-title="Android Binder之进程间通信库"
      data-content=""
      data-url="http://robinheztto.com/2016/03/28/android-binder-3/">
   <div class="ds-share-inline">
@@ -411,7 +430,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/03/28/android-binder-3/"
-           data-title="Android Binder之defaultServiceManager" data-url="http://robinheztto.com/2016/03/28/android-binder-3/">
+           data-title="Android Binder之进程间通信库" data-url="http://robinheztto.com/2016/03/28/android-binder-3/">
       </div>
     
   </div>
@@ -456,7 +475,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -466,7 +485,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -502,7 +521,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RefBase"><span class="nav-number">1.</span> <span class="nav-text">RefBase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ProcessState"><span class="nav-number">2.</span> <span class="nav-text">ProcessState</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPCThreadState"><span class="nav-number">3.</span> <span class="nav-text">IPCThreadState</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IBinder"><span class="nav-number">4.</span> <span class="nav-text">IBinder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BBinder"><span class="nav-number">5.</span> <span class="nav-text">BBinder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BpBinder"><span class="nav-number">6.</span> <span class="nav-text">BpBinder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BpRefBase"><span class="nav-number">7.</span> <span class="nav-text">BpRefBase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IInterface"><span class="nav-number">8.</span> <span class="nav-text">IInterface</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BnInterface"><span class="nav-number">9.</span> <span class="nav-text">BnInterface</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BpInterface"><span class="nav-number">10.</span> <span class="nav-text">BpInterface</span></a></li></ol></div>
             
           </div>
         </section>

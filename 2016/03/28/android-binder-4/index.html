@@ -1,0 +1,796 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Binder," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Service组件在启动时需要将自己注册到Server Manager，Client组件在使用Service的服务前需要从Service Manager获取到Service的代理对象，所以Server Manager以一个特殊的service形式存在。Service Manager运行在一个独立的进程当中，Client组件或Service组件在请求Service Manager服务前，首先得获取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Binder之Service Manager代理对象">
+<meta property="og:url" content="http://robinheztto.com/2016/03/28/android-binder-4/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="Service组件在启动时需要将自己注册到Server Manager，Client组件在使用Service的服务前需要从Service Manager获取到Service的代理对象，所以Server Manager以一个特殊的service形式存在。Service Manager运行在一个独立的进程当中，Client组件或Service组件在请求Service Manager服务前，首先得获取">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-defaultServiceManager.jpg?raw=true">
+<meta property="og:updated_time" content="2017-01-08T07:22:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Binder之Service Manager代理对象">
+<meta name="twitter:description" content="Service组件在启动时需要将自己注册到Server Manager，Client组件在使用Service的服务前需要从Service Manager获取到Service的代理对象，所以Server Manager以一个特殊的service形式存在。Service Manager运行在一个独立的进程当中，Client组件或Service组件在请求Service Manager服务前，首先得获取">
+<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-defaultServiceManager.jpg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android Binder之Service Manager代理对象 | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Binder之Service Manager代理对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-28T15:53:07+08:00" content="2016-03-28">
+              2016-03-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/28/android-binder-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/28/android-binder-4/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Service组件在启动时需要将自己注册到Server Manager，Client组件在使用Service的服务前需要从Service Manager获取到Service的代理对象，所以Server Manager以一个特殊的service形式存在。Service Manager运行在一个独立的进程当中，Client组件或Service组件在请求Service Manager服务前，首先得获取到Service Manager的代理对象，本篇主要分析Service Manager代理对象获取的流程。</p>
+<p>相关的源码在以下文件中：<br>frameworks/native/include/binder/IServiceManager.h<br>frameworks/native/libs/binder/IServiceManager.cpp<br>frameworks/native/libs/binder/Static.cpp<br>frameworks/native/libs/binder/ProcessState.cpp<br>frameworks/native/libs/binder/BpBinder.cpp<br>frameworks/native/libs/binder/IPCThreadState.cpp<br>frameworks/native/include/binder/IInterface.h</p>
+</blockquote>
+<p>Frameworks层libbinder提供defaultServiceManager接口用来获取Service Manager代理对象。下图是defaultServiceManager的执行流程。<br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-defaultServiceManager.jpg?raw=true" alt="defaultServiceManager执行流程"><br>接下来按照上图的流程进行分析。首先看一下IServiceManager的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IServiceManager.h</span><br><span class="line"></span><br><span class="line">class IServiceManager : public IInterface</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    DECLARE_META_INTERFACE(ServiceManager);</span><br><span class="line"></span><br><span class="line">    virtual sp&lt;IBinder&gt;         getService( const String16&amp; name) const = 0;</span><br><span class="line"></span><br><span class="line">    virtual sp&lt;IBinder&gt;         checkService( const String16&amp; name) const = 0;</span><br><span class="line"></span><br><span class="line">    virtual status_t            addService( const String16&amp; name,</span><br><span class="line">                                            const sp&lt;IBinder&gt;&amp; service,</span><br><span class="line">                                            bool allowIsolated = false) = 0;</span><br><span class="line"></span><br><span class="line">    virtual Vector&lt;String16&gt;    listServices() = 0;</span><br><span class="line"></span><br><span class="line">    enum &#123;</span><br><span class="line">        GET_SERVICE_TRANSACTION = IBinder::FIRST_CALL_TRANSACTION,</span><br><span class="line">        CHECK_SERVICE_TRANSACTION,</span><br><span class="line">        ADD_SERVICE_TRANSACTION,</span><br><span class="line">        LIST_SERVICES_TRANSACTION,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>IServiceManager中定义了getService，checkService，addService，listServices四个成员函数，即Service Manager提供给client用来获取/注册服务的的接口，client获取到Service Manager代理对象后，就能通过这些接口获取注册到Service Manager中服务的信息。下面开始分析如何通过defaultServiceManager()获取Service Manager代理对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; defaultServiceManager()在frameworks/native/libs/binder/IServiceManager.cpp</span><br><span class="line"></span><br><span class="line">sp&lt;IServiceManager&gt; defaultServiceManager()</span><br><span class="line">&#123;</span><br><span class="line">    if (gDefaultServiceManager != NULL) return gDefaultServiceManager;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        AutoMutex _l(gDefaultServiceManagerLock);</span><br><span class="line">        while (gDefaultServiceManager == NULL) &#123;</span><br><span class="line">            gDefaultServiceManager = interface_cast&lt;IServiceManager&gt;(</span><br><span class="line">                ProcessState::self()-&gt;getContextObject(NULL));</span><br><span class="line">            if (gDefaultServiceManager == NULL)</span><br><span class="line">                sleep(1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return gDefaultServiceManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>gDefaultServiceManager是指向Service Manager代理对象BpServiceManager的强指针，一个进程只存在一个BpServiceManager代理对象，defaultServiceManager()中通过gDefaultServiceManager判断是否已经创建过Service Manager代理对象，如果已经创建过，则直接返回其指针gDefaultServiceManager，否则为获取当前进程的Service Manager代理对象并保存在gDefaultServiceManager中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/Static.cpp</span><br><span class="line"></span><br><span class="line">Mutex gDefaultServiceManagerLock;</span><br><span class="line">sp&lt;IServiceManager&gt; gDefaultServiceManager;</span><br></pre></td></tr></table></figure></p>
+<p>defaultServiceManager()中的gDefaultServiceManager的获取即：<br><code>gDefaultServiceManager = interface_cast&lt;IServiceManager&gt;(ProcessState::self()-&gt;getContextObject(NULL));</code><br>首先看ProcessState::self()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/ProcessState.cpp</span><br><span class="line"></span><br><span class="line">sp&lt;ProcessState&gt; ProcessState::self()</span><br><span class="line">&#123;</span><br><span class="line">    Mutex::Autolock _l(gProcessMutex);</span><br><span class="line">    if (gProcess != NULL) &#123;</span><br><span class="line">        return gProcess;</span><br><span class="line">    &#125;</span><br><span class="line">    gProcess = new ProcessState;</span><br><span class="line">    return gProcess;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ProcessState::self()即返回ProcessState的对象，每个进程只存在一个ProcessState对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/Static.cpp</span><br><span class="line"></span><br><span class="line">Mutex gProcessMutex;</span><br><span class="line">sp&lt;ProcessState&gt; gProcess;</span><br></pre></td></tr></table></figure></p>
+<p>继续看new ProcessState的过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/ProcessState.cpp</span><br><span class="line"></span><br><span class="line">#define BINDER_VM_SIZE ((1*1024*1024) - (4096 *2))</span><br><span class="line">#define DEFAULT_MAX_BINDER_THREADS 15</span><br><span class="line"></span><br><span class="line">ProcessState::ProcessState()</span><br><span class="line">    : mDriverFD(open_driver())</span><br><span class="line">    , mVMStart(MAP_FAILED)</span><br><span class="line">    , mThreadCountLock(PTHREAD_MUTEX_INITIALIZER)</span><br><span class="line">    , mThreadCountDecrement(PTHREAD_COND_INITIALIZER)</span><br><span class="line">    , mExecutingThreadsCount(0)</span><br><span class="line">    , mMaxThreads(DEFAULT_MAX_BINDER_THREADS)</span><br><span class="line">    , mStarvationStartTimeMs(0)</span><br><span class="line">    , mManagesContexts(false)</span><br><span class="line">    , mBinderContextCheckFunc(NULL)</span><br><span class="line">    , mBinderContextUserData(NULL)</span><br><span class="line">    , mThreadPoolStarted(false)</span><br><span class="line">    , mThreadPoolSeq(1)</span><br><span class="line">&#123;</span><br><span class="line">    if (mDriverFD &gt;= 0) &#123;</span><br><span class="line">        // mmap the binder, providing a chunk of virtual address space to receive transactions.</span><br><span class="line">        mVMStart = mmap(0, BINDER_VM_SIZE, PROT_READ, MAP_PRIVATE | MAP_NORESERVE, mDriverFD, 0);</span><br><span class="line">        if (mVMStart == MAP_FAILED) &#123;</span><br><span class="line">            // *sigh*</span><br><span class="line">            ALOGE(&quot;Using /dev/binder failed: unable to mmap transaction memory.\n&quot;);</span><br><span class="line">            close(mDriverFD);</span><br><span class="line">            mDriverFD = -1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int open_driver()</span><br><span class="line">&#123;</span><br><span class="line">    int fd = open(&quot;/dev/binder&quot;, O_RDWR | O_CLOEXEC);</span><br><span class="line">    if (fd &gt;= 0) &#123;</span><br><span class="line">        int vers = 0;</span><br><span class="line">        status_t result = ioctl(fd, BINDER_VERSION, &amp;vers);</span><br><span class="line">        if (result == -1) &#123;</span><br><span class="line">            ALOGE(&quot;Binder ioctl to obtain version failed: %s&quot;, strerror(errno));</span><br><span class="line">            close(fd);</span><br><span class="line">            fd = -1;</span><br><span class="line">        &#125;</span><br><span class="line">        if (result != 0 || vers != BINDER_CURRENT_PROTOCOL_VERSION) &#123;</span><br><span class="line">            ALOGE(&quot;Binder driver protocol does not match user space protocol!&quot;);</span><br><span class="line">            close(fd);</span><br><span class="line">            fd = -1;</span><br><span class="line">        &#125;</span><br><span class="line">        size_t maxThreads = DEFAULT_MAX_BINDER_THREADS;</span><br><span class="line">        result = ioctl(fd, BINDER_SET_MAX_THREADS, &amp;maxThreads);</span><br><span class="line">        if (result == -1) &#123;</span><br><span class="line">            ALOGE(&quot;Binder ioctl to set max threads failed: %s&quot;, strerror(errno));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        ALOGW(&quot;Opening &apos;/dev/binder&apos; failed: %s\n&quot;, strerror(errno));</span><br><span class="line">    &#125;</span><br><span class="line">    return fd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ProcessState()的构造函数中主要执行的是对/dev/binder的操作，打开/dev/binder并将fd保存在mDriverFD中，通过ioctl设置binder通信线程池最大线程数为BINDER_SET_MAX_THREADS 15个，mmap映射BINDER_VM_SIZE 1016kb大小缓冲区。open，mmap在驱动章节已分析过，下面是ioctl BINDER_SET_MAX_THREADS的流程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/drivers/staging/android/binder.c</span><br><span class="line"></span><br><span class="line">static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">	int ret;</span><br><span class="line">	struct binder_proc *proc = filp-&gt;private_data;</span><br><span class="line">	struct binder_thread *thread;</span><br><span class="line">	unsigned int size = _IOC_SIZE(cmd);</span><br><span class="line">	void __user *ubuf = (void __user *)arg;</span><br><span class="line">    ......</span><br><span class="line">	binder_lock(__func__);</span><br><span class="line">	thread = binder_get_thread(proc);</span><br><span class="line">	if (thread == NULL) &#123;</span><br><span class="line">		ret = -ENOMEM;</span><br><span class="line">		goto err;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	switch (cmd) &#123;</span><br><span class="line">    ......</span><br><span class="line">	case BINDER_SET_MAX_THREADS:</span><br><span class="line">		if (copy_from_user(&amp;proc-&gt;max_threads, ubuf, sizeof(proc-&gt;max_threads))) &#123;</span><br><span class="line">			ret = -EINVAL;</span><br><span class="line">			goto err;</span><br><span class="line">		&#125;</span><br><span class="line">		break;</span><br><span class="line">    .....</span><br><span class="line">	return ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>binder_ioctl BINDER_SET_MAX_THREADS即设置proc-&gt;max_threads。继续看ProcessState::self()-&gt;getContextObject(NULL)的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/ProcessState.cpp</span><br><span class="line"></span><br><span class="line">sp&lt;IBinder&gt; ProcessState::getContextObject(const sp&lt;IBinder&gt;&amp; /*caller*/)</span><br><span class="line">&#123;</span><br><span class="line">    return getStrongProxyForHandle(0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>getContextObject返回的是sp<ibinder>对象，即返回的是Service Manager的BpBinder对象，直接通过getStrongProxyForHandle(0)实现，Service Manager作为一个特殊的Service组件，它对应的句柄值是０。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/ProcessState.cpp</span><br><span class="line"></span><br><span class="line">sp&lt;IBinder&gt; ProcessState::getStrongProxyForHandle(int32_t handle)</span><br><span class="line">&#123;</span><br><span class="line">    sp&lt;IBinder&gt; result;</span><br><span class="line"></span><br><span class="line">    AutoMutex _l(mLock);</span><br><span class="line"></span><br><span class="line">    handle_entry* e = lookupHandleLocked(handle);</span><br><span class="line"></span><br><span class="line">    if (e != NULL) &#123;</span><br><span class="line">        IBinder* b = e-&gt;binder;</span><br><span class="line">        if (b == NULL || !e-&gt;refs-&gt;attemptIncWeak(this)) &#123;</span><br><span class="line">            if (handle == 0) &#123;</span><br><span class="line">                Parcel data;</span><br><span class="line">                status_t status = IPCThreadState::self()-&gt;transact(</span><br><span class="line">                        0, IBinder::PING_TRANSACTION, data, NULL, 0);</span><br><span class="line">                if (status == DEAD_OBJECT)</span><br><span class="line">                   return NULL;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            b = new BpBinder(handle);</span><br><span class="line">            e-&gt;binder = b;</span><br><span class="line">            if (b) e-&gt;refs = b-&gt;getWeakRefs();</span><br><span class="line">            result = b;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            result.force_set(b);</span><br><span class="line">            e-&gt;refs-&gt;decWeak(this);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></ibinder></p>
+<p>每个ProcessState中都维护一个了handle_entry类型的BpBinder代理对象列表，以句柄值为索引<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class ProcessState : public virtual RefBase</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line">            ......</span><br><span class="line"></span><br><span class="line">            struct handle_entry &#123;</span><br><span class="line">                IBinder* binder;</span><br><span class="line">                RefBase::weakref_type* refs;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            handle_entry*       lookupHandleLocked(int32_t handle);</span><br><span class="line"></span><br><span class="line">            ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>getStrongProxyForHandle()通过lookupHandleLocked()根据句柄值在mHandleToObject中查找对应的handle_entry，如果不存在，则新建handle_entry并保存在mHandleToObject中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ProcessState::handle_entry* ProcessState::lookupHandleLocked(int32_t handle)</span><br><span class="line">&#123;</span><br><span class="line">    const size_t N=mHandleToObject.size();</span><br><span class="line">    if (N &lt;= (size_t)handle) &#123;</span><br><span class="line">        handle_entry e;</span><br><span class="line">        e.binder = NULL;</span><br><span class="line">        e.refs = NULL;</span><br><span class="line">        status_t err = mHandleToObject.insertAt(e, N, handle+1-N);</span><br><span class="line">        if (err &lt; NO_ERROR) return NULL;</span><br><span class="line">    &#125;</span><br><span class="line">    return &amp;mHandleToObject.editItemAt(handle);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>找到handle_entry后判断handle_entry-&gt;binder是否存在，如果不存在，则根据句柄值handle创建新的BpBinder对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/BpBinder.cpp</span><br><span class="line"></span><br><span class="line">BpBinder::BpBinder(int32_t handle)</span><br><span class="line">    : mHandle(handle)</span><br><span class="line">    , mAlive(1)</span><br><span class="line">    , mObitsSent(0)</span><br><span class="line">    , mObituaries(NULL)</span><br><span class="line">&#123;</span><br><span class="line">    extendObjectLifetime(OBJECT_LIFETIME_WEAK);</span><br><span class="line">    IPCThreadState::self()-&gt;incWeakHandle(handle);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将句柄handle保存到私有成员mHandle中，并通过IPCThreadState增加Service Manager实体的引用计数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IPCThreadState.cpp</span><br><span class="line"></span><br><span class="line">IPCThreadState* IPCThreadState::self()</span><br><span class="line">&#123;</span><br><span class="line">    if (gHaveTLS) &#123;</span><br><span class="line">restart:</span><br><span class="line">        const pthread_key_t k = gTLS;</span><br><span class="line">        IPCThreadState* st = (IPCThreadState*)pthread_getspecific(k);</span><br><span class="line">        if (st) return st;</span><br><span class="line">        return new IPCThreadState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (gShutdown) &#123;</span><br><span class="line">        ALOGW(&quot;Calling IPCThreadState::self() during shutdown is dangerous, expect a crash.\n&quot;);</span><br><span class="line">        return NULL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pthread_mutex_lock(&amp;gTLSMutex);</span><br><span class="line">    if (!gHaveTLS) &#123;</span><br><span class="line">        int key_create_value = pthread_key_create(&amp;gTLS, threadDestructor);</span><br><span class="line">        if (key_create_value != 0) &#123;</span><br><span class="line">            pthread_mutex_unlock(&amp;gTLSMutex);</span><br><span class="line">            ALOGW(&quot;IPCThreadState::self() unable to create TLS key, expect a crash: %s\n&quot;,</span><br><span class="line">                    strerror(key_create_value));</span><br><span class="line">            return NULL;</span><br><span class="line">        &#125;</span><br><span class="line">        gHaveTLS = true;</span><br><span class="line">    &#125;</span><br><span class="line">    pthread_mutex_unlock(&amp;gTLSMutex);</span><br><span class="line">    goto restart;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>IPCThreadState::self中获取IPCThreadState对象。若该对象已经存在，则直接返回，否则新建IPCThreadState对象。<br>至此，<code>ProcessState::self()-&gt;getContextObject(NULL))</code>执行完成，它返回的是Service Manager的Bpbinder对象，即<code>gDefaultServiceManager = interface_cast&lt;IServiceManager&gt;(Bpbinder(0))</code>，继续看interface_cast<iservicemanager>()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IInterface.h</span><br><span class="line"></span><br><span class="line">template&lt;typename INTERFACE&gt;</span><br><span class="line">inline sp&lt;INTERFACE&gt; interface_cast(const sp&lt;IBinder&gt;&amp; obj)</span><br><span class="line">&#123;</span><br><span class="line">    return INTERFACE::asInterface(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></iservicemanager></p>
+<p>即IServiceManager::asInterface(Bpbinder(0))，但asInterface并未直接在IServiceManager中定义，而是通过宏 <strong>DECLARE_META_INTERFACE(ServiceManager)</strong>, <strong>IMPLEMENT_META_INTERFACE(ServiceManager, “android.os.IServiceManager”)</strong> 来实现的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IInterface.h</span><br><span class="line"></span><br><span class="line">#define DECLARE_META_INTERFACE(INTERFACE)                               \</span><br><span class="line">    static const android::String16 descriptor;                          \</span><br><span class="line">    static android::sp&lt;I##INTERFACE&gt; asInterface(                       \</span><br><span class="line">            const android::sp&lt;android::IBinder&gt;&amp; obj);                  \</span><br><span class="line">    virtual const android::String16&amp; getInterfaceDescriptor() const;    \</span><br><span class="line">    I##INTERFACE();                                                     \</span><br><span class="line">    virtual ~I##INTERFACE();                                            \</span><br><span class="line"></span><br><span class="line">#define IMPLEMENT_META_INTERFACE(INTERFACE, NAME)                       \</span><br><span class="line">    const android::String16 I##INTERFACE::descriptor(NAME);             \</span><br><span class="line">    const android::String16&amp;                                            \</span><br><span class="line">            I##INTERFACE::getInterfaceDescriptor() const &#123;              \</span><br><span class="line">        return I##INTERFACE::descriptor;                                \</span><br><span class="line">    &#125;                                                                   \</span><br><span class="line">    android::sp&lt;I##INTERFACE&gt; I##INTERFACE::asInterface(                \</span><br><span class="line">            const android::sp&lt;android::IBinder&gt;&amp; obj)                   \</span><br><span class="line">    &#123;                                                                   \</span><br><span class="line">        android::sp&lt;I##INTERFACE&gt; intr;                                 \</span><br><span class="line">        if (obj != NULL) &#123;                                              \</span><br><span class="line">            intr = static_cast&lt;I##INTERFACE*&gt;(                          \</span><br><span class="line">                obj-&gt;queryLocalInterface(                               \</span><br><span class="line">                        I##INTERFACE::descriptor).get());               \</span><br><span class="line">            if (intr == NULL) &#123;                                         \</span><br><span class="line">                intr = new Bp##INTERFACE(obj);                          \</span><br><span class="line">            &#125;                                                           \</span><br><span class="line">        &#125;                                                               \</span><br><span class="line">        return intr;                                                    \</span><br><span class="line">    &#125;                                                                   \</span><br><span class="line">    I##INTERFACE::I##INTERFACE() &#123; &#125;                                    \</span><br><span class="line">    I##INTERFACE::~I##INTERFACE() &#123; &#125;                                   \</span><br></pre></td></tr></table></figure></p>
+<p>将INTERFACE以ServiceManager替换展开如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#define DECLARE_META_INTERFACE(ServiceManager)                               \</span><br><span class="line">    static const android::String16 descriptor;                          \</span><br><span class="line">    static android::sp&lt;IServiceManager&gt; asInterface(                       \</span><br><span class="line">            const android::sp&lt;android::IBinder&gt;&amp; obj);                  \</span><br><span class="line">    virtual const android::String16&amp; getInterfaceDescriptor() const;    \</span><br><span class="line">    IServiceManager;                                                     \</span><br><span class="line">    virtual ~IServiceManager();                                            \</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#define IMPLEMENT_META_INTERFACE(ServiceManager, &quot;android.os.IServiceManager&quot;)                       \</span><br><span class="line">    const android::String16 IServiceManager::descriptor(&quot;android.os.IServiceManager&quot;);             \</span><br><span class="line">    const android::String16&amp;                                            \</span><br><span class="line">            IServiceManager::getInterfaceDescriptor() const &#123;              \</span><br><span class="line">        return IServiceManager::descriptor;                                \</span><br><span class="line">    &#125;                                                                   \</span><br><span class="line">    android::sp&lt;IServiceManager&gt; IServiceManager::asInterface(                \</span><br><span class="line">            const android::sp&lt;android::IBinder&gt;&amp; obj)                   \</span><br><span class="line">    &#123;                                                                   \</span><br><span class="line">        android::sp&lt;IServiceManager&gt; intr;                                 \</span><br><span class="line">        if (obj != NULL) &#123;                                              \</span><br><span class="line">            intr = static_cast&lt;IServiceManager*&gt;(                          \</span><br><span class="line">                obj-&gt;queryLocalInterface(                               \</span><br><span class="line">                        IServiceManager::descriptor).get());               \</span><br><span class="line">            if (intr == NULL) &#123;                                         \</span><br><span class="line">                intr = new BpServiceManager(obj);                          \</span><br><span class="line">            &#125;                                                           \</span><br><span class="line">        &#125;                                                               \</span><br><span class="line">        return intr;                                                    \</span><br><span class="line">    &#125;                                                                   \</span><br><span class="line">    IServiceManager::IServiceManager() &#123; &#125;                                    \</span><br><span class="line">    IServiceManager::~IServiceManager() &#123; &#125;                                   \</span><br></pre></td></tr></table></figure></p>
+<p>IServiceManager::asInterface()的实现如下，asInterface()即根据Bpbinder对象获取IServiceManager。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">android::sp&lt;IServiceManager&gt; IServiceManager::asInterface(const android::sp&lt;android::IBinder&gt;&amp; obj)              </span><br><span class="line">&#123;                                                                </span><br><span class="line">    android::sp&lt;IServiceManager&gt; intr;                                </span><br><span class="line">    if (obj != NULL) &#123;                                              </span><br><span class="line">        intr = static_cast&lt;IServiceManager*&gt;(                          </span><br><span class="line">            obj-&gt;queryLocalInterface(                               </span><br><span class="line">                    IServiceManager::descriptor).get());               </span><br><span class="line">        if (intr == NULL) &#123;                                         </span><br><span class="line">            intr = new BpServiceManager(obj);                          </span><br><span class="line">        &#125;                                                           </span><br><span class="line">    &#125;                                                               </span><br><span class="line">    return intr;                                                    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> 参数obj即BpBinder(0)，obj-&gt;queryLocalInterface(“android.os.IServiceManager”)查找名称为”android.os.IServiceManager”的本地接口，queryLocalInterface()的实现在BpBinder的父类IBinder中，现在IServiceManager接口还没创建，intr=NULL，根据BpBinder创建一个BpServiceManager，即gDefaultServiceManager = new BpServiceManager(new BpBinder(0))。<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IServiceManager.cpp</span><br><span class="line"></span><br><span class="line"> BpServiceManager(const sp&lt;IBinder&gt;&amp; impl)</span><br><span class="line">    : BpInterface&lt;IServiceManager&gt;(impl)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/IInterface.h</span><br><span class="line"></span><br><span class="line">template&lt;typename INTERFACE&gt;</span><br><span class="line">inline BpInterface&lt;INTERFACE&gt;::BpInterface(const sp&lt;IBinder&gt;&amp; remote)</span><br><span class="line">    : BpRefBase(remote)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; frameworks/native/include/binder/Binder.h</span><br><span class="line"></span><br><span class="line">class BpRefBase : public virtual RefBase</span><br><span class="line">&#123;</span><br><span class="line">    ......</span><br><span class="line">private:</span><br><span class="line">    ......</span><br><span class="line">    IBinder* const          mRemote;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p> 由上可知BpServiceManager继承于BpInterface，而BpInterface又继承于BpRefBase，最后BpBinder(0)即mRemote对象。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Binder/" rel="tag">#Binder</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/28/android-binder-3/" rel="next" title="Android Binder之进程间通信库">
+                <i class="fa fa-chevron-left"></i> Android Binder之进程间通信库
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/02/android-binder-5/" rel="prev" title="Android Binder之注册Service">
+                Android Binder之注册Service <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/03/28/android-binder-4/"
+     data-title="Android Binder之Service Manager代理对象"
+     data-content=""
+     data-url="http://robinheztto.com/2016/03/28/android-binder-4/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/28/android-binder-4/"
+           data-title="Android Binder之Service Manager代理对象" data-url="http://robinheztto.com/2016/03/28/android-binder-4/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

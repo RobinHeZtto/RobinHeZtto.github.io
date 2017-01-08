@@ -86,30 +86,30 @@
 
 
 
-<meta name="description" content="Zygote是Android系统中非常关键的一个进程，它孵化了Android中所有的上层java应用程序。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
+<meta name="description" content="Zygote是Android系统中的进程孵化器，它孵化了Android中运行系统核心服务的system_server进程及所有的应用程序进程。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
 
+system/core/init/service.cpp
 frameworks/base/cmds/app_process/app_main.cpp
-frameworks/base/core/jni/AndroidRuntime.cpp
-frameworks/base/core/">
+frameworks/base/co">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android之Zygote-启动流程">
-<meta property="og:url" content="http://robinheztto.com/2016/11/28/android-zygote-1/index.html">
+<meta property="og:url" content="http://robinheztto.com/2016/07/01/android-zygote-1/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="Zygote是Android系统中非常关键的一个进程，它孵化了Android中所有的上层java应用程序。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
+<meta property="og:description" content="Zygote是Android系统中的进程孵化器，它孵化了Android中运行系统核心服务的system_server进程及所有的应用程序进程。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
 
+system/core/init/service.cpp
 frameworks/base/cmds/app_process/app_main.cpp
-frameworks/base/core/jni/AndroidRuntime.cpp
-frameworks/base/core/">
+frameworks/base/co">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/android_zygote.jpg?raw=true">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/android-zygote-proload.jpg?raw=true">
-<meta property="og:updated_time" content="2016-12-31T13:03:05.000Z">
+<meta property="og:updated_time" content="2017-01-07T06:55:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之Zygote-启动流程">
-<meta name="twitter:description" content="Zygote是Android系统中非常关键的一个进程，它孵化了Android中所有的上层java应用程序。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
+<meta name="twitter:description" content="Zygote是Android系统中的进程孵化器，它孵化了Android中运行系统核心服务的system_server进程及所有的应用程序进程。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
 
+system/core/init/service.cpp
 frameworks/base/cmds/app_process/app_main.cpp
-frameworks/base/core/jni/AndroidRuntime.cpp
-frameworks/base/core/">
+frameworks/base/co">
 <meta name="twitter:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/android_zygote.jpg?raw=true">
 
 
@@ -303,8 +303,8 @@ frameworks/base/core/">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-28T15:09:08+08:00" content="2016-11-28">
-              2016-11-28
+            <time itemprop="dateCreated" datetime="2016-07-01T15:09:08+08:00" content="2016-07-01">
+              2016-07-01
             </time>
           </span>
 
@@ -314,8 +314,8 @@ frameworks/base/core/">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/28/android-zygote-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/android-zygote-1/" itemprop="commentsCount"></span>
+                <a href="/2016/07/01/android-zygote-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/01/android-zygote-1/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -339,8 +339,9 @@ frameworks/base/core/">
 
       
         <blockquote>
-<p>Zygote是Android系统中非常关键的一个进程，它孵化了Android中所有的上层java应用程序。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：</p>
+<p>Zygote是Android系统中的进程孵化器，它孵化了Android中运行系统核心服务的system_server进程及所有的应用程序进程。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：</p>
 <ul>
+<li>system/core/init/service.cpp</li>
 <li>frameworks/base/cmds/app_process/app_main.cpp</li>
 <li>frameworks/base/core/jni/AndroidRuntime.cpp</li>
 <li>frameworks/base/core/java/com/android/internal/os/ZygoteInit.java</li>
@@ -348,9 +349,9 @@ frameworks/base/core/">
 </blockquote>
 <div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/android_zygote.jpg?raw=true" alt="android_zygote_init_flow"><br></div>
 
-<h1 id="init-ro-zygote-rc"><a href="#init-ro-zygote-rc" class="headerlink" title="init.${ro.zygote}.rc"></a>init.${ro.zygote}.rc</h1><p>Zygote以服务的形式定义在init.${ro.zygote}.rc文件中，然后通过<code>import /init.${ro.zygote}.rc</code>的形式包含到/init.rc文件，其中ro.zygote是用来区分32与64位版本的属性值，一般可取的值有”zygote32”，”zygote32_64”，”zygote64”，”zygote64_32”。下面是init.zygote64_32.rc(即ro.zygote等于zygote64_32)的定义:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">service zygote /system/bin/app_process64 -Xzygote /system/bin --zygote --start-system-server --socket-name=zygote</span><br><span class="line">    class main</span><br><span class="line">    socket zygote stream 660 root system</span><br><span class="line">    onrestart write /sys/android_power/request_state wake</span><br><span class="line">    onrestart write /sys/power/state on</span><br><span class="line">    onrestart restart audioserver</span><br><span class="line">    onrestart restart cameraserver</span><br><span class="line">    onrestart restart media</span><br><span class="line">    onrestart restart netd</span><br><span class="line">    writepid /dev/cpuset/foreground/tasks /sys/fs/cgroup/stune/foreground/tasks</span><br><span class="line"></span><br><span class="line">service zygote_secondary /system/bin/app_process32 -Xzygote /system/bin --zygote --socket-name=zygote_secondary</span><br><span class="line">    class main</span><br><span class="line">    socket zygote_secondary stream 660 root system</span><br><span class="line">    onrestart restart zygote</span><br><span class="line">    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks</span><br><span class="line"></span><br><span class="line">//对应生成二个zygote进程</span><br><span class="line">root:/ $ ps | grep zygote</span><br><span class="line">root      754   1     2237660 82604 poll_sched 0000000000 S zygote64</span><br><span class="line">root      755   1     1668956 69200 poll_sched 0000000000 S zygote</span><br></pre></td></tr></table></figure></p>
-<p>init.zygote64_32.rc文件中定义了zygote与zygote_secondary二个service，分别对应app_process64与app_process32，系统启动后可以看到运行了zygote64与zygote二个进程，即通过/system/bin/下的app_process64/app_process32启动的。</p>
-<h1 id="app-process"><a href="#app-process" class="headerlink" title="app_process"></a>app_process</h1><p>app_process64/app_process32是system/bin下的可执行文件，对应源码路径frameworks/base/cmds/app_process/，app_process不仅可以启动Zygote进程或普通应用进程还可以用来执行系统中的某个类(/system/bin/am就是通过app_process来实现的)。它的的Usage如下：</p>
+<h1 id="init-ro-zygote-rc"><a href="#init-ro-zygote-rc" class="headerlink" title="init.${ro.zygote}.rc"></a>init.${ro.zygote}.rc</h1><p>Zygote以服务的形式定义在init.${ro.zygote}.rc文件中，通过<code>import /init.${ro.zygote}.rc</code>的形式包含到/init.rc文件，其中ro.zygote是用来区分32与64位版本的属性值，一般可取的值有”zygote32”，”zygote32_64”，”zygote64”，”zygote64_32”。下面是init.zygote64_32.rc(即ro.zygote等于zygote64_32)相关的定义:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">service zygote /system/bin/app_process64 -Xzygote /system/bin --zygote --start-system-server --socket-name=zygote</span><br><span class="line">    class main</span><br><span class="line">    socket zygote stream 660 root system</span><br><span class="line">    onrestart write /sys/android_power/request_state wake</span><br><span class="line">    onrestart write /sys/power/state on</span><br><span class="line">    onrestart restart audioserver</span><br><span class="line">    onrestart restart cameraserver</span><br><span class="line">    onrestart restart media</span><br><span class="line">    onrestart restart netd</span><br><span class="line">    writepid /dev/cpuset/foreground/tasks /sys/fs/cgroup/stune/foreground/tasks</span><br><span class="line"></span><br><span class="line">service zygote_secondary /system/bin/app_process32 -Xzygote /system/bin --zygote --socket-name=zygote_secondary</span><br><span class="line">    class main</span><br><span class="line">    socket zygote_secondary stream 660 root system</span><br><span class="line">    onrestart restart zygote</span><br><span class="line">    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//根据以上的定义对应生成二个zygote进程</span><br><span class="line">root:/ $ ps | grep zygote</span><br><span class="line">root      754   1     2237660 82604 poll_sched 0000000000 S zygote64</span><br><span class="line">root      755   1     1668956 69200 poll_sched 0000000000 S zygote</span><br></pre></td></tr></table></figure></p>
+<p>init.zygote64_32.rc文件中定义了zygote与zygote_secondary二个service，系统启动后可以看到存在zygote64与zygote二个进程，即分别通过/system/bin/下的app_process64与app_process32启动。<code>class main</code>定义zygote服务属于class main，通过<code>class_start main</code>启动，并为其创建名为”zygote”的socket用于进程间通信，在zygote重启后会重新启动audioserver，cameraserver，media，netd进程。下面是init进程启动zygote服务的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">system/core/init/service.cpp</span><br><span class="line">bool Service::Start() &#123;</span><br><span class="line">    ......</span><br><span class="line">    pid_t pid = fork();</span><br><span class="line">    if (pid == 0) &#123;</span><br><span class="line">        // 创建/dev/socket/zygote</span><br><span class="line">        for (const auto&amp; si : sockets_) &#123;</span><br><span class="line">            int socket_type = ((si.type == &quot;stream&quot; ? SOCK_STREAM :</span><br><span class="line">                                (si.type == &quot;dgram&quot; ? SOCK_DGRAM :</span><br><span class="line">                                 SOCK_SEQPACKET)));</span><br><span class="line">            const char* socketcon =</span><br><span class="line">                !si.socketcon.empty() ? si.socketcon.c_str() : scon.c_str();</span><br><span class="line"></span><br><span class="line">            int s = create_socket(si.name.c_str(), socket_type, si.perm,</span><br><span class="line">                                  si.uid, si.gid, socketcon);</span><br><span class="line">            if (s &gt;= 0) &#123;</span><br><span class="line">                // 把socket的fd保存在环境变量ANDROID_SOCKET_zygote中</span><br><span class="line">                PublishSocket(si.name, s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ......</span><br><span class="line"></span><br><span class="line">        setpgid(0, getpid());</span><br><span class="line"></span><br><span class="line">        // As requested, set our gid, supplemental gids, and uid.</span><br><span class="line">        if (gid_) &#123;</span><br><span class="line">            if (setgid(gid_) != 0) &#123;</span><br><span class="line">                ERROR(&quot;setgid failed: %s\n&quot;, strerror(errno));</span><br><span class="line">                _exit(127);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (!supp_gids_.empty()) &#123;</span><br><span class="line">            if (setgroups(supp_gids_.size(), &amp;supp_gids_[0]) != 0) &#123;</span><br><span class="line">                ERROR(&quot;setgroups failed: %s\n&quot;, strerror(errno));</span><br><span class="line">                _exit(127);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (uid_) &#123;</span><br><span class="line">            if (setuid(uid_) != 0) &#123;</span><br><span class="line">                ERROR(&quot;setuid failed: %s\n&quot;, strerror(errno));</span><br><span class="line">                _exit(127);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (!seclabel_.empty()) &#123;</span><br><span class="line">            if (setexeccon(seclabel_.c_str()) &lt; 0) &#123;</span><br><span class="line">                ERROR(&quot;cannot setexeccon(&apos;%s&apos;): %s\n&quot;,</span><br><span class="line">                      seclabel_.c_str(), strerror(errno));</span><br><span class="line">                _exit(127);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        std::vector&lt;char*&gt; strs;</span><br><span class="line">        for (const auto&amp; s : args_) &#123;</span><br><span class="line">            strs.push_back(const_cast&lt;char*&gt;(s.c_str()));</span><br><span class="line">        &#125;</span><br><span class="line">        strs.push_back(nullptr);</span><br><span class="line">        // 执行app_process启动zygote</span><br><span class="line">        if (execve(args_[0].c_str(), (char**) &amp;strs[0], (char**) ENV) &lt; 0) &#123;</span><br><span class="line">            ERROR(&quot;cannot execve(&apos;%s&apos;): %s\n&quot;, args_[0].c_str(), strerror(errno));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        _exit(127);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="app-process"><a href="#app-process" class="headerlink" title="app_process"></a>app_process</h1><p>app_process64/app_process32是system/bin下的可执行文件，对应frameworks/base/cmds/app_process/下的源码，app_process不仅可以用来启动Zygote进程还可以用来执行系统中的某个类(/system/bin/am就是通过app_process来实现的)。它的的Usage如下：</p>
 <blockquote>
 <p>app_process [java-options] cmd-dir start-class-name [options]<br>java-options: 以”-“开头，启动虚拟机时传递给虚拟机的参数。<br>cmd-dir: cmd的目录，/system/bin。<br>start-class-name: 需要启动的java类，需包含静态main()方法。<br>options: “--zygote”表示启动zygote进程，”--application”表示启动应用程序进程。</p>
 </blockquote>
@@ -361,6 +362,7 @@ frameworks/base/core/">
 <h1 id="ZygoteInit"><a href="#ZygoteInit" class="headerlink" title="ZygoteInit"></a>ZygoteInit</h1><p>加载虚拟机后将调用到ZygoteInit的静态main方法对Zygote java层的初始化，下面继续分析ZygoteInit.main()的执行流程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String argv[]) &#123;</span><br><span class="line">    ......</span><br><span class="line">    try &#123;</span><br><span class="line">        ......</span><br><span class="line">        // 解析参数，根据参数决定是否启动SystemServer，获取abiList及socketName</span><br><span class="line">        boolean startSystemServer = false;</span><br><span class="line">        String socketName = &quot;zygote&quot;;</span><br><span class="line">        String abiList = null;</span><br><span class="line">        for (int i = 1; i &lt; argv.length; i++) &#123;</span><br><span class="line">            if (&quot;start-system-server&quot;.equals(argv[i])) &#123;</span><br><span class="line">                startSystemServer = true;</span><br><span class="line">            &#125; else if (argv[i].startsWith(ABI_LIST_ARG)) &#123;</span><br><span class="line">                abiList = argv[i].substring(ABI_LIST_ARG.length());</span><br><span class="line">            &#125; else if (argv[i].startsWith(SOCKET_NAME_ARG)) &#123;</span><br><span class="line">                socketName = argv[i].substring(SOCKET_NAME_ARG.length());</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                throw new RuntimeException(&quot;Unknown command line argument: &quot; + argv[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (abiList == null) &#123;</span><br><span class="line">            throw new RuntimeException(&quot;No ABI list supplied.&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        // 注册zygote socket监听端口</span><br><span class="line">        registerZygoteSocket(socketName);</span><br><span class="line"></span><br><span class="line">        // 加载系统资源。zygote fork的子进程将继承zygote的虚拟机和加载的资源，以加快应用启动的速度。</span><br><span class="line">        preload();</span><br><span class="line">        ......</span><br><span class="line">        // 启动SystemServer进程</span><br><span class="line">        if (startSystemServer) &#123;</span><br><span class="line">            startSystemServer(abiList, socketName);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 循环监听socket消息</span><br><span class="line">        Log.i(TAG, &quot;Accepting command socket connections&quot;);</span><br><span class="line">        runSelectLoop(abiList);</span><br><span class="line"></span><br><span class="line">        closeServerSocket();</span><br><span class="line">    &#125; catch (MethodAndArgsCaller caller) &#123;</span><br><span class="line">        caller.run();</span><br><span class="line">    &#125; catch (RuntimeException ex) &#123;</span><br><span class="line">        Log.e(TAG, &quot;Zygote died with exception&quot;, ex);</span><br><span class="line">        closeServerSocket();</span><br><span class="line">        throw ex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>ZygoteInit.main()主要工作是预加载系统类与资源，启动systemServer，注册并监听socket连接消息。其中注册并监听socket连接消息内容在 <strong>Android之Zygote-应用进程创建</strong> 分析，启动systemServer流程在 <strong>Android之SystemServer启动</strong> 中分析，下面分析preload预加载系统类与资源的过程。</p>
 <p><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/android-zygote-proload.jpg?raw=true" alt="进程共享资源图解"><br></div><br>Linux中的进程通过系统调用fork产生后，其父子进程的内存映像(代码段，数据段，堆/栈)是共享的，只有子进程改写这些区域时才为子进程分配新的page(Copy On Write机制)，另外zygote fork子进程后并没有调用exec，即未替换掉zygote进程的代码段，数据段，堆栈，这样zygote fork出的子进程就可以共享它预加载的资源及类库了。<br>在preload中，zygote预加载系统常用类库及资源，以减短应用启动的时间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">static void preload() &#123;</span><br><span class="line">    ......</span><br><span class="line">    // 根据frameworks/base/preloaded-classes加载java类</span><br><span class="line">    preloadClasses();</span><br><span class="line">    ......</span><br><span class="line">    // 根据frameworks/base/core/res/res/values/array.xml中</span><br><span class="line">    // 的preloaded_drawables及preloaded_color_state_lists标签加载drawable及color资源</span><br><span class="line">    preloadResources();</span><br><span class="line">    ......</span><br><span class="line">    preloadOpenGL();</span><br><span class="line">    ......</span><br><span class="line">    // 加载libandroid.so，libcompiler_rt.so，libjnigraphics.so</span><br><span class="line">    preloadSharedLibraries();</span><br><span class="line">    preloadTextResources();</span><br><span class="line">    ......</span><br><span class="line">    WebViewFactory.prepareWebViewInZygote();</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>SystemServer进程的启动，及应用程序的创建在后面的博客中单独分析。</p>
 
       
     </div>
@@ -393,15 +395,15 @@ frameworks/base/core/">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/24/android-handler/" rel="next" title="Android之消息机制">
-                <i class="fa fa-chevron-left"></i> Android之消息机制
+              <a href="/2016/04/18/android-binder-6/" rel="next" title="Android Binder之获取Service">
+                <i class="fa fa-chevron-left"></i> Android Binder之获取Service
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/11/28/android-zygote-2/" rel="prev" title="Android之Zygote-应用进程创建">
+              <a href="/2016/07/02/android-zygote-2/" rel="prev" title="Android之Zygote-应用进程创建">
                 Android之Zygote-应用进程创建 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -418,10 +420,10 @@ frameworks/base/core/">
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/11/28/android-zygote-1/"
+        <div class="ds-share flat" data-thread-key="2016/07/01/android-zygote-1/"
      data-title="Android之Zygote-启动流程"
      data-content=""
-     data-url="http://robinheztto.com/2016/11/28/android-zygote-1/">
+     data-url="http://robinheztto.com/2016/07/01/android-zygote-1/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -448,8 +450,8 @@ frameworks/base/core/">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/11/28/android-zygote-1/"
-           data-title="Android之Zygote-启动流程" data-url="http://robinheztto.com/2016/11/28/android-zygote-1/">
+      <div class="ds-thread" data-thread-key="2016/07/01/android-zygote-1/"
+           data-title="Android之Zygote-启动流程" data-url="http://robinheztto.com/2016/07/01/android-zygote-1/">
       </div>
     
   </div>
@@ -494,7 +496,7 @@ frameworks/base/core/">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -504,7 +506,7 @@ frameworks/base/core/">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
