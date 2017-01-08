@@ -279,7 +279,7 @@
               
                 
                 <a class="post-title-link" href="/2016/04/18/android-binder-6/" itemprop="url">
-                  Android Binder之获取Service
+                  Android Binder之Service代理获取
                 </a>
               
             
@@ -385,7 +385,7 @@
               
                 
                 <a class="post-title-link" href="/2016/04/02/android-binder-5/" itemprop="url">
-                  Android Binder之注册Service
+                  Android Binder之Service注册
                 </a>
               
             
@@ -436,7 +436,7 @@
         
           
           
-service组件在Server进程启动时会将service注册到Service Manager中。本篇以MediaPlayerService为例分析Service注册的过程。相关代码在以下文件中：frameworks/av/media/mediaserver/main_mediaserver.c
+Service组件在Server进程启动时需要将service注册到Service Manager中，本篇以MediaPlayerService为例分析Service注册的过程。相关代码在以下文件中：frameworks/av/media/mediaserver/main_mediaserver.
           ...
 
           <div class="post-more-link text-center">
