@@ -278,8 +278,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/11/24/android-handler/" itemprop="url">
-                  Android之消息机制
+                <a class="post-title-link" href="/2016/04/18/android-binder-6/" itemprop="url">
+                  Android Binder之Service代理获取
                 </a>
               
             
@@ -292,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-24T15:53:07+08:00" content="2016-11-24">
-              2016-11-24
+            <time itemprop="dateCreated" datetime="2016-04-18T22:30:07+08:00" content="2016-04-18">
+              2016-04-18
             </time>
           </span>
 
@@ -303,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/24/android-handler/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/24/android-handler/" itemprop="commentsCount"></span>
+                <a href="/2016/04/18/android-binder-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/18/android-binder-6/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -330,12 +330,11 @@
         
           
           
-简介消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.
-Android的消息队列是线程相关的,每启动一个线程,都可以在内部创
+Service组件注册到Service Manager后，就在Server进程中等待Client的请求，而在Client请求之前，必须得先通过ServiceManager获取到Service的代理，才能与Service进行通信。本篇继续以MediaPlayerService为例，分析获取Media
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/24/android-handler/#more" rel="contents">
+            <a class="btn" href="/2016/04/18/android-binder-6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -386,8 +385,8 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
             
               
                 
-                <a class="post-title-link" href="/2016/11/05/android-debug-boot/" itemprop="url">
-                  Android Debug之系统启动
+                <a class="post-title-link" href="/2016/04/02/android-binder-5/" itemprop="url">
+                  Android Binder之Service启动
                 </a>
               
             
@@ -400,8 +399,8 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-05T10:29:45+08:00" content="2016-11-05">
-              2016-11-05
+            <time itemprop="dateCreated" datetime="2016-04-02T17:53:07+08:00" content="2016-04-02">
+              2016-04-02
             </time>
           </span>
 
@@ -411,8 +410,8 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/05/android-debug-boot/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/android-debug-boot/" itemprop="commentsCount"></span>
+                <a href="/2016/04/02/android-binder-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/02/android-binder-5/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -438,17 +437,11 @@ Android的消息队列是线程相关的,每启动一个线程,都可以在内�
         
           
           
-Debug:系统启动问题
-
-Boot FlowAndroid Boot Flow如下图示：
-
-Boot DebugBootRomLK抓取Uart logLK执行时间的计算需借助Trace32并在start of kernel设置断点计算执行时间。
-Android Boot
-Catch log:开机
+Service组件在Server进程启动时会将Service注册到Service Manager中，然后启动Binder线程池等待和处理Client的请求，本篇以MediaPlayerService为例分析Service的启动过程。相关代码在以下文件中：frameworks/av/media/me
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/05/android-debug-boot/#more" rel="contents">
+            <a class="btn" href="/2016/04/02/android-binder-5/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -499,8 +492,8 @@ Catch log:开机
             
               
                 
-                <a class="post-title-link" href="/2016/07/02/android-zygote-2/" itemprop="url">
-                  Android之Zygote-应用进程创建
+                <a class="post-title-link" href="/2016/03/28/android-binder-4/" itemprop="url">
+                  Android Binder之Service Manager代理对象
                 </a>
               
             
@@ -513,8 +506,8 @@ Catch log:开机
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-02T17:19:08+08:00" content="2016-07-02">
-              2016-07-02
+            <time itemprop="dateCreated" datetime="2016-03-28T15:53:07+08:00" content="2016-03-28">
+              2016-03-28
             </time>
           </span>
 
@@ -524,8 +517,8 @@ Catch log:开机
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/02/android-zygote-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/02/android-zygote-2/" itemprop="commentsCount"></span>
+                <a href="/2016/03/28/android-binder-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/28/android-binder-4/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -551,11 +544,11 @@ Catch log:开机
         
           
           
-Android上的应用程序由各种组件(activity,service,broadcastReceiver,contentProvider)组合，在启动应用的某个组件之前，必须先向zygote请求创建该应用的进程，以充当运行这些组件的容器。此篇博客主要分析Zygote创建应用进程的过程。相关源码在
+Service组件在启动时需要将自己注册到Server Manager，Client组件在使用Service的服务前也需要从Service Manager获取到Service的代理对象，但由于Service Manager运行在一个独立的进程当中，Client组件或Service组件在请求Serv
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/02/android-zygote-2/#more" rel="contents">
+            <a class="btn" href="/2016/03/28/android-binder-4/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -606,8 +599,8 @@ Android上的应用程序由各种组件(activity,service,broadcastReceiver,cont
             
               
                 
-                <a class="post-title-link" href="/2016/07/01/android-zygote-1/" itemprop="url">
-                  Android之Zygote-启动流程
+                <a class="post-title-link" href="/2016/03/28/android-binder-3/" itemprop="url">
+                  Android Binder之进程间通信库
                 </a>
               
             
@@ -620,8 +613,8 @@ Android上的应用程序由各种组件(activity,service,broadcastReceiver,cont
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-01T15:09:08+08:00" content="2016-07-01">
-              2016-07-01
+            <time itemprop="dateCreated" datetime="2016-03-28T15:53:07+08:00" content="2016-03-28">
+              2016-03-28
             </time>
           </span>
 
@@ -631,8 +624,8 @@ Android上的应用程序由各种组件(activity,service,broadcastReceiver,cont
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/01/android-zygote-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/01/android-zygote-1/" itemprop="commentsCount"></span>
+                <a href="/2016/03/28/android-binder-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/28/android-binder-3/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -658,14 +651,13 @@ Android上的应用程序由各种组件(activity,service,broadcastReceiver,cont
         
           
           
-Zygote是Android系统中的进程孵化器，它孵化了Android中运行系统核心服务的system_server进程及所有的应用程序进程。此篇博客主要分析Zygote进程的启动流程。相关源码在以下文件中：
+为了方便对Binder驱动的操作及上层调用，Binder通信的细节及与驱动交互的过程都被封装到了libbinder库中。libbinder相关的源码位于frameworks/native/libs/binder下，本篇分析libbinder库中的基础类。
 
-system/core/init/service.cpp
-frameworks/bas
+RefBaseRefBase在syste
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/01/android-zygote-1/#more" rel="contents">
+            <a class="btn" href="/2016/03/28/android-binder-3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -716,8 +708,8 @@ frameworks/bas
             
               
                 
-                <a class="post-title-link" href="/2016/04/23/android-binder-7/" itemprop="url">
-                  Android Binder之Java应用
+                <a class="post-title-link" href="/2016/03/25/android-binder-2/" itemprop="url">
+                  Android Binder之Service Manager
                 </a>
               
             
@@ -730,8 +722,8 @@ frameworks/bas
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-23T15:07:26+08:00" content="2016-04-23">
-              2016-04-23
+            <time itemprop="dateCreated" datetime="2016-03-25T23:43:14+08:00" content="2016-03-25">
+              2016-03-25
             </time>
           </span>
 
@@ -741,8 +733,8 @@ frameworks/bas
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/04/23/android-binder-7/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/23/android-binder-7/" itemprop="commentsCount"></span>
+                <a href="/2016/03/25/android-binder-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/25/android-binder-2/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -768,10 +760,553 @@ frameworks/bas
         
           
           
+ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象。ServiceManager运行在独立的进程中，Service或Client组件也需要与ServiceManager进行进程间通信，所以ServiceManag
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/25/android-binder-2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/20/android-binder-1/" itemprop="url">
+                  Android Binder之Binder Driver
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-20T23:40:21+08:00" content="2016-03-20">
+              2016-03-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/20/android-binder-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/20/android-binder-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Binder驱动源码位于kernel/drivers/staging/android/目录下，包括binder.c与uapi/binder.h，主要负责通信数据传递等底层实现。
+
+数据结构在分析驱动之前，首先熟悉Binder驱动相关的主要数据结构。数据结构可以分成二类看，一类是在驱动内部使用的，在
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/20/android-binder-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/19/android-binder-0/" itemprop="url">
+                  Android Binder之概述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-19T23:40:27+08:00" content="2016-03-19">
+              2016-03-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/19/android-binder-0/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/19/android-binder-0/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Binder简介在Android系统中，应用程序是由组件(Acyiviy/Service/Broadcast Receiver/Content Provider)组成的，组件可以运行在一个进程中，也可以分别运行在不同进程中。同样，在Android系统中的各类系统服务也可以运行在一个进程或多个进程中，
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/19/android-binder-0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/02/android-init/" itemprop="url">
+                  Android之Init
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-02T15:09:08+08:00" content="2016-02-02">
+              2016-02-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/02/android-init/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/02/android-init/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述Init进程是Kernel启动后在用户空间创建的第一个用户级进程，它的pid为1。其他所有的用户进程都是由其直接或间接fork产生的.
+Init调用流程如下图示,从汇编代码kernel/arch/arm/kernel/head-common.S b    start_kernel进入到C环境ke
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/02/android-init/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/01/android-init-language/" itemprop="url">
+                  Android之Init.rc语法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-01T15:09:08+08:00" content="2016-02-01">
+              2016-02-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/01/android-init-language/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/android-init-language/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+译自system/core/init/readme.txt
+
+Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
+
+init.rc所有的语句都是以行为单位，行间使用空格
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/01/android-init-language/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/25/android-recovery/" itemprop="url">
+                  Android之Recovery
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-25T19:44:54+08:00" content="2016-01-25">
+              2016-01-25
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/25/android-recovery/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/25/android-recovery/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Android Recovery模式主要用于系统升级，恢复出厂设置等操作。
+
+
           
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/23/android-binder-7/#more" rel="contents">
+            <a class="btn" href="/2016/01/25/android-recovery/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -805,7 +1340,7 @@ frameworks/bas
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -846,7 +1381,7 @@ frameworks/bas
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -856,7 +1391,7 @@ frameworks/bas
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

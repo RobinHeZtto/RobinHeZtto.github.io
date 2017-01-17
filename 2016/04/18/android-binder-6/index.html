@@ -86,16 +86,16 @@
 
 
 
-<meta name="description">
+<meta name="description" content="Service组件注册到Service Manager后，就在Server进程中等待Client的请求，而在Client请求之前，必须得先通过ServiceManager获取到Service的代理，才能与Service进行通信。本篇继续以MediaPlayerService为例，分析获取MediaPlayerService的代理对象的流程。相关代码在以下文件中:frameworks/av/med">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Binder之Service代理获取">
 <meta property="og:url" content="http://robinheztto.com/2016/04/18/android-binder-6/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description">
-<meta property="og:updated_time" content="2017-01-08T08:34:13.000Z">
+<meta property="og:description" content="Service组件注册到Service Manager后，就在Server进程中等待Client的请求，而在Client请求之前，必须得先通过ServiceManager获取到Service的代理，才能与Service进行通信。本篇继续以MediaPlayerService为例，分析获取MediaPlayerService的代理对象的流程。相关代码在以下文件中:frameworks/av/med">
+<meta property="og:updated_time" content="2017-01-17T11:26:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Binder之Service代理获取">
-<meta name="twitter:description">
+<meta name="twitter:description" content="Service组件注册到Service Manager后，就在Server进程中等待Client的请求，而在Client请求之前，必须得先通过ServiceManager获取到Service的代理，才能与Service进行通信。本篇继续以MediaPlayerService为例，分析获取MediaPlayerService的代理对象的流程。相关代码在以下文件中:frameworks/av/med">
 
 
 
@@ -323,7 +323,13 @@
       
 
       
-        
+        <blockquote>
+<p>Service组件注册到Service Manager后，就在Server进程中等待Client的请求，而在Client请求之前，必须得先通过ServiceManager获取到Service的代理，才能与Service进行通信。本篇继续以MediaPlayerService为例，分析获取MediaPlayerService的代理对象的流程。<br>相关代码在以下文件中:<br>frameworks/av/media/libmedia/IMediaDeathNotifier.cpp<br>frameworks/native/libs/binder/IServiceManager.cpp</p>
+</blockquote>
+<p>根据前面Binder的分析，获取MediaPlayerService的代理对象，首先需要从驱动中拿到MediaPlayerService对应的binder_ref的句柄值，根据句柄值创建Binder代理对象BpBinder，然后根据BpBinder封装成BpMediaPlayerService。下面从MediaPlayer的getService入口开始分析。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/av/media/libmedia/IMediaDeathNotifier.cpp</span><br><span class="line"></span><br><span class="line">sp&lt;IMediaPlayerService&gt; IMediaDeathNotifier::sMediaPlayerService;</span><br><span class="line"></span><br><span class="line">IMediaDeathNotifier::getMediaPlayerService()</span><br><span class="line">&#123;</span><br><span class="line">    Mutex::Autolock _l(sServiceLock);</span><br><span class="line">    if (sMediaPlayerService == 0) &#123;</span><br><span class="line">        sp&lt;IServiceManager&gt; sm = defaultServiceManager();</span><br><span class="line">        sp&lt;IBinder&gt; binder;</span><br><span class="line">        do &#123;</span><br><span class="line">            binder = sm-&gt;getService(String16(&quot;media.player&quot;));</span><br><span class="line">            if (binder != 0) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            usleep(500000); // 0.5 s</span><br><span class="line">        &#125; while (true);</span><br><span class="line"></span><br><span class="line">        if (sDeathNotifier == NULL) &#123;</span><br><span class="line">            sDeathNotifier = new DeathNotifier();</span><br><span class="line">        &#125;</span><br><span class="line">        binder-&gt;linkToDeath(sDeathNotifier);</span><br><span class="line">        sMediaPlayerService = interface_cast&lt;IMediaPlayerService&gt;(binder);</span><br><span class="line">    &#125;</span><br><span class="line">    return sMediaPlayerService;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先通过defaultServiceManager()获取到ServiceManager的代理，然后通过ServiceManager代理的成员方法getService获取MediaPlayerService的Bpbinder对象，通过interface_cast将BpBinder封装成BpMediaPlayerService并获取其IMediaPlayerService接口。defaultServiceManager()-&gt;getService的实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/native/libs/binder/IServiceManager.cpp</span><br><span class="line"></span><br><span class="line">virtual sp&lt;IBinder&gt; getService(const String16&amp; name) const</span><br><span class="line">&#123;</span><br><span class="line">    unsigned n;</span><br><span class="line">    for (n = 0; n &lt; 5; n++)&#123;</span><br><span class="line">        sp&lt;IBinder&gt; svc = checkService(name);</span><br><span class="line">        if (svc != NULL) return svc;</span><br><span class="line">        ALOGI(&quot;Waiting for service %s...\n&quot;, String8(name).string());</span><br><span class="line">        sleep(1);</span><br><span class="line">    &#125;</span><br><span class="line">    return NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">virtual sp&lt;IBinder&gt; checkService( const String16&amp; name) const</span><br><span class="line">&#123;</span><br><span class="line">    Parcel data, reply;</span><br><span class="line">    data.writeInterfaceToken(IServiceManager::getInterfaceDescriptor());</span><br><span class="line">    data.writeString16(name);</span><br><span class="line">    remote()-&gt;transact(CHECK_SERVICE_TRANSACTION, data, &amp;reply);</span><br><span class="line">    return reply.readStrongBinder();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>getService()中通过checkService获取name为”media.player”的BpBinder对象，获取失败则休眠1s再次循环获取，循环超过5次则获取失败退出。checkService的操作与前篇分析的addService操作类似，将进程间通信数据封装成Parcel对象并调用remote()-&gt;transact()将数据发送给驱动，接下来的数据发送的过程与前篇addService流程一致。</p>
+
       
     </div>
 
@@ -355,16 +361,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/02/android-binder-5/" rel="next" title="Android Binder之Service注册">
-                <i class="fa fa-chevron-left"></i> Android Binder之Service注册
+              <a href="/2016/04/02/android-binder-5/" rel="next" title="Android Binder之Service启动">
+                <i class="fa fa-chevron-left"></i> Android Binder之Service启动
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/04/23/android-binder-7/" rel="prev" title="Android Binder之Java应用">
-                Android Binder之Java应用 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/04/23/android-binder-7/" rel="prev" title="Android Binder之Java接口">
+                Android Binder之Java接口 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -456,7 +462,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -466,7 +472,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
