@@ -760,7 +760,7 @@ RefBaseRefBase在syste
         
           
           
-ServiceManager是Binder进程间通信的核心组件之一，负责管理Service组件并向Client提供Service代理对象。ServiceManager运行在独立的进程中，Service或Client组件也需要与ServiceManager进行进程间通信，所以ServiceManag
+ServiceManager是Binder进程间通信的核心组件，负责管理Service组件并向Client提供Service代理对象。ServiceManager运行在独立的进程中，Service或Client组件也需要与ServiceManager进行进程间通信，所以ServiceManager
           ...
 
           <div class="post-more-link text-center">
@@ -869,7 +869,8 @@ ServiceManager是Binder进程间通信的核心组件之一，负责管理Servic
           
 Binder驱动源码位于kernel/drivers/staging/android/目录下，包括binder.c与uapi/binder.h，主要负责通信数据传递等底层实现。
 
-数据结构在分析驱动之前，首先熟悉Binder驱动相关的主要数据结构。数据结构可以分成二类看，一类是在驱动内部使用的，在
+数据结构在分析驱动代码之前，首先需要熟悉Binder驱动相关的数据结构。
+binder_nodebinder_node
           ...
 
           <div class="post-more-link text-center">
@@ -975,7 +976,7 @@ Binder驱动源码位于kernel/drivers/staging/android/目录下，包括binder.
       
         
           
-          Binder简介在Android系统中，应用程序是由组件(Acyiviy/Service/Broadcast Receiver/Content Provider)组成的，组件可以运行在一个进程中，也可以分别运行在不同进程中。同样，在Android系统中的各类系统服务也可以运行在一个进程或多个进程中，
+          Binder简介在Android系统中，应用程序是由组件(Acyiviy/Service/Broadcast Receiver/Content Provider)组成的，组件可以运行在一个进程中，也可以分别运行在不同进程中。同样，在Android系统中的各类系统服务也可以运行在一个或多个进程中，运行
           ...
 
           <div class="post-more-link text-center">
