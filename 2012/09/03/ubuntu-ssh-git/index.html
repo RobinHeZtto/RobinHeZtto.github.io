@@ -86,40 +86,58 @@
 
 
 
-<meta name="description" content="下载安装git 和 ssh
+<meta name="description" content="安装git与ssh
 
-　　$ sudo apt-get install git-core
-　　$ sudo apt-get install openssh-server
-　　$ sudo apt-get install openssh-client
 
-下载安装python setuptools
+$ sudo apt-get install git-core
+$ sudo apt-get install openssh-server
+$ sudo apt-get install openssh-client
 
-　　$ sudo apt-get install python-setuptools">
+
+安装python setuptools
+
+
+$ sudo apt-get install python-setuptools
+
+
+下载安装gitosis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu ssh git服务搭建">
 <meta property="og:url" content="http://robinheztto.com/2012/09/03/ubuntu-ssh-git/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="下载安装git 和 ssh
+<meta property="og:description" content="安装git与ssh
 
-　　$ sudo apt-get install git-core
-　　$ sudo apt-get install openssh-server
-　　$ sudo apt-get install openssh-client
 
-下载安装python setuptools
+$ sudo apt-get install git-core
+$ sudo apt-get install openssh-server
+$ sudo apt-get install openssh-client
 
-　　$ sudo apt-get install python-setuptools">
-<meta property="og:updated_time" content="2016-12-25T02:52:20.000Z">
+
+安装python setuptools
+
+
+$ sudo apt-get install python-setuptools
+
+
+下载安装gitosis">
+<meta property="og:updated_time" content="2017-12-12T14:11:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu ssh git服务搭建">
-<meta name="twitter:description" content="下载安装git 和 ssh
+<meta name="twitter:description" content="安装git与ssh
 
-　　$ sudo apt-get install git-core
-　　$ sudo apt-get install openssh-server
-　　$ sudo apt-get install openssh-client
 
-下载安装python setuptools
+$ sudo apt-get install git-core
+$ sudo apt-get install openssh-server
+$ sudo apt-get install openssh-client
 
-　　$ sudo apt-get install python-setuptools">
+
+安装python setuptools
+
+
+$ sudo apt-get install python-setuptools
+
+
+下载安装gitosis">
 
 
 
@@ -348,46 +366,67 @@
 
       
         <ul>
-<li>下载安装git 和 ssh</li>
+<li>安装git与ssh</li>
 </ul>
-<p>　　$ sudo apt-get install git-core</p>
-<p>　　$ sudo apt-get install openssh-server</p>
-<p>　　$ sudo apt-get install openssh-client</p>
+<ol>
+<li><code>$ sudo apt-get install git-core</code></li>
+<li><code>$ sudo apt-get install openssh-server</code></li>
+<li><code>$ sudo apt-get install openssh-client</code></li>
+</ol>
 <ul>
-<li>下载安装python setuptools</li>
+<li>安装python setuptools</li>
 </ul>
-<p>　　$ sudo apt-get install python-setuptools</p>
-<p>　　</p>
+<ol>
+<li><code>$ sudo apt-get install python-setuptools</code></li>
+</ol>
 <ul>
 <li>下载安装gitosis</li>
 </ul>
-<p>　　$ git clone <a href="https://github.com/res0nat0r/gitosis.git" target="_blank" rel="external">https://github.com/res0nat0r/gitosis.git</a></p>
-<p>　　$ cd gitosis/</p>
-<p>　　$ sudo python setup.py install</p>
+<ol>
+<li><code>$ git clone https://github.com/res0nat0r/gitosis.git</code></li>
+<li><code>$ cd gitosis/</code></li>
+<li><code>$ sudo python setup.py install</code></li>
+</ol>
 <ul>
-<li>添加git用户</li>
+<li><p>添加git账户<br><code>$ sudo adduser \
+　　--system \
+　　--shell /bin/sh \
+　　--gecos &#39;git version control&#39; \
+　　--group \
+　　--disabled-password \
+　　--home /home/git \
+　　git</code></p>
+</li>
+<li><p>生成rsa密钥（已有~/.ssh/id_rsa.pub略过此步）</p>
+</li>
 </ul>
-<p>　　$ sudo adduser \<br>　　&gt; –system \<br>　　&gt; –shell /bin/sh \<br>　　&gt; –gecos ‘git version control’ \<br>　　&gt; –group \<br>　　&gt; –disabled-password \<br>　　&gt; –home /home/git \<br>　　&gt; git</p>
+<ol>
+<li><code>$ ssh-keygen -t rsa</code></li>
+</ol>
 <ul>
-<li>生成rsa密钥（已有~/.ssh/id_rsa.pub略过此步）</li>
+<li>上传管理账户公钥到服务器（可直接copy至server）</li>
 </ul>
-<p>　　$ ssh-keygen -t rsa</p>
-<ul>
-<li>上传密钥（可直接copy至server）</li>
-</ul>
-<p>　　$ scp ~/.ssh/id_rsa.pub git@127.0.0.1:/tmp   （scp ~/.ssh/id_rsa.pub 用户名@主机:/tmp）</p>
+<ol>
+<li><code>$ scp ~/.ssh/id_rsa.pub git@127.0.0.1:/tmp</code>   （scp ~/.ssh/id_rsa.pub 用户名@主机:/tmp）</li>
+</ol>
 <ul>
 <li>初使化gitosis</li>
 </ul>
-<p>　　$ sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub</p>
+<ol>
+<li><code>$ sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub</code></li>
+</ol>
 <ul>
-<li>修改post-update权限<br>　　$ sudo chmod 755 /home/git/repositories/gitosis-admin.git/hooks/post-update</li>
+<li>修改post-update权限</li>
 </ul>
-<p>　</p>
+<ol>
+<li><code>$ sudo chmod 755 /home/git/repositories/gitosis-admin.git/hooks/post-update</code></li>
+</ol>
 <ul>
 <li>clone gitosis管理平台</li>
 </ul>
-<p>　　$ git clone git@127.0.0.1:gitosis-admin.git  （git clone git@主机名:gitosis-admin.git）</p>
+<ol>
+<li><code>$ git clone git@127.0.0.1:gitosis-admin.git</code>  （git clone git@主机名:gitosis-admin.git）</li>
+</ol>
 <ul>
 <li>安装完成<br>　　通过修改gitosis-admin管理gitosis用户权限，添加公密到keydir，添加用户，修改完后commit，push到中服务器即可完成仓库权限的相关操作。</li>
 </ul>
@@ -522,7 +561,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -532,7 +571,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -587,7 +626,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

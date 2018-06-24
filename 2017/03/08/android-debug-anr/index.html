@@ -1,0 +1,808 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Debug,ANR," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="ANR(Application Not Responding)，即应用程序未响应。AMS与WMS会监控应用程序的执行情况，如果出现长时间未处理的情况，系统就会显示ANR对话框提示用户对应的应用处于无响应状态，提示用户继续等待或强行停止。
+
+ANR的类型
+Input Dispatching Timeout按键或触摸事件在特定时间内(5s)无响应
+Broadcast TimeoutBroadcast">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Debug之ANR">
+<meta property="og:url" content="http://robinheztto.com/2017/03/08/android-debug-anr/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="ANR(Application Not Responding)，即应用程序未响应。AMS与WMS会监控应用程序的执行情况，如果出现长时间未处理的情况，系统就会显示ANR对话框提示用户对应的应用处于无响应状态，提示用户继续等待或强行停止。
+
+ANR的类型
+Input Dispatching Timeout按键或触摸事件在特定时间内(5s)无响应
+Broadcast TimeoutBroadcast">
+<meta property="og:updated_time" content="2017-12-12T14:11:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Debug之ANR">
+<meta name="twitter:description" content="ANR(Application Not Responding)，即应用程序未响应。AMS与WMS会监控应用程序的执行情况，如果出现长时间未处理的情况，系统就会显示ANR对话框提示用户对应的应用处于无响应状态，提示用户继续等待或强行停止。
+
+ANR的类型
+Input Dispatching Timeout按键或触摸事件在特定时间内(5s)无响应
+Broadcast TimeoutBroadcast">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android Debug之ANR | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Debug之ANR
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-08T09:40:57+08:00" content="2017-03-08">
+              2017-03-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/08/android-debug-anr/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/08/android-debug-anr/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>ANR(Application Not Responding)，即应用程序未响应。AMS与WMS会监控应用程序的执行情况，如果出现长时间未处理的情况，系统就会显示ANR对话框提示用户对应的应用处于无响应状态，提示用户继续等待或强行停止。</p>
+</blockquote>
+<h1 id="ANR的类型"><a href="#ANR的类型" class="headerlink" title="ANR的类型"></a>ANR的类型</h1><ul>
+<li>Input Dispatching Timeout<br>按键或触摸事件在特定时间内(5s)无响应</li>
+<li>Broadcast Timeout<br>Broadcast在特定的时间内(10s)无法处理完成</li>
+<li>Service Timeout<br>Service在特定的时间内(前台线程20s，后台线程200s)无法处理完成</li>
+</ul>
+<h1 id="Debug流程"><a href="#Debug流程" class="headerlink" title="Debug流程"></a>Debug流程</h1><blockquote>
+<p>ANR发生，对应的应用会收到SIGQUIT异常终止信号，虚拟机会自动在/data/anr/目录下生成trace.txt文件，该文件记录了在发生ANR时刻系统各个线程的执行状态</p>
+</blockquote>
+<ol>
+<li><p>首先根据event log与main log判断确定ANR发生的时间，进程，类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">Event log搜索关键字&quot;am_anr&quot;</span><br><span class="line">可以发现PID为12618的com.protruly.music在11-25 16:26:50.248时间点出现了Input dispatching timed out类型的ANR</span><br><span class="line">11-25 16:26:50.248  3544  3572 I am_anr  : [0,12618,com.protruly.music,950582884,Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)]</span><br><span class="line"></span><br><span class="line">Main log中搜索关键字&quot;ANR in&quot;</span><br><span class="line">可以发现Event log中同样的信息，并且可以看到ANR发生时CPU的负载信息，查看user，kernel，iowait的CPU占用是否出现异常导致ANR</span><br><span class="line">11-25 16:26:53.530  3544  3572 I Process : Sending signal. PID: 13582 SIG: 3</span><br><span class="line">11-25 16:26:53.531 13582 13588 I art     : Thread[3,tid=13588,WaitingInMainSignalCatcherLoop,Thread*=0xe52c0800,peer=0x12c48af0,&quot;Signal Catcher&quot;]: reacting to signal 3</span><br><span class="line">11-25 16:26:53.531 13582 13588 I art     :</span><br><span class="line">11-25 16:26:53.713 13582 13588 I art     : Wrote stack traces to &apos;/data/anr/traces.txt&apos;</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager: ANR in com.protruly.music (com.protruly.music/.ui.HBPlayerActivity)</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager: PID: 12618</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager: Reason: Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager: Load: 6.56 / 6.01 / 5.65</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager: CPU usage from 42413ms to 0ms ago (2017-11-25 16:26:07.788 to 2017-11-25 16:26:50.201):</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   23% 709/surfaceflinger: 12% user + 11% kernel / faults: 6408 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   12% 2792/media.codec: 3.4% user + 9% kernel / faults: 2980 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   10% 3544/system_server: 7.2% user + 3.5% kernel / faults: 5379 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   9.3% 576/logd: 3.9% user + 5.4% kernel / faults: 8 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   9.2% 4541/com.android.systemui: 6.8% user + 2.4% kernel / faults: 24806 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   7.3% 2787/audioserver: 3.7% user + 3.6% kernel / faults: 1178 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   4.9% 5264/com.android.incallui: 3% user + 1.8% kernel / faults: 271 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   3.4% 13380/screenrecord: 1.4% user + 1.9% kernel / faults: 1119 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   2.9% 2795/mediaserver: 1.8% user + 1.1% kernel / faults: 2955 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   2.8% 361/irq/329-fts_ts: 0% user + 2.8% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   2.5% 7288/kworker/u16:31: 0% user + 2.5% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   2.2% 10709/kworker/u16:17: 0% user + 2.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   2.1% 10712/kworker/u16:18: 0% user + 2.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   1.6% 77/lpass_smem_glin: 0% user + 1.6% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   1.6% 10707/kworker/u16:16: 0% user + 1.6% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   1.4% 13264/logcat: 0.6% user + 0.7% kernel / faults: 5 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   1.4% 13277/logcat: 0.6% user + 0.7% kernel / faults: 5 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   1% 12342/mdss_fb0: 0% user + 1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.9% 7664/kworker/0:5: 0% user + 0.9% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 13864/kworker/u16:14: 0% user + 0.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.8% 532/msm-core:sampli: 0% user + 0.8% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.8% 9905/kworker/2:4: 0% user + 0.8% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.7% 76/smem_native_lpa: 0% user + 0.7% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.6% 2794/media.extractor: 0.3% user + 0.3% kernel / faults: 539 minor 1 major</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.6% 10963/kworker/1:5: 0% user + 0.6% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.6% 11053/kworker/3:2: 0% user + 0.6% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.5% 5250/com.android.nfc: 0.2% user + 0.3% kernel / faults: 358 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.5% 12618/com.protruly.music: 0.3% user + 0.2% kernel / faults: 1037 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.5% 4854/com.android.phone: 0.4% user + 0% kernel / faults: 363 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.4% 80/smem_native_rpm: 0% user + 0.4% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.4% 13269/inputlog: 0.2% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.4% 302/irq/497-i2c_pmi: 0% user + 0.4% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.3% 461/cfinteractive: 0% user + 0.3% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 2899/wtemonitor: 0% user + 0% kernel / faults: 42 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.3% 5955/com.android.dlauncher: 0.3% user + 0% kernel / faults: 1655 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.3% 13788/com.android.bluetooth: 0.1% user + 0.2% kernel / faults: 94 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 6562/com.wingtech.logupload: 0% user + 0% kernel / faults: 389 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 7/rcu_preempt: 0% user + 0.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 5776/com.hb.netmanage: 0.2% user + 0% kernel / faults: 549 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 20490/kworker/0:2: 0% user + 0.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 96/system: 0% user + 0.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 3/ksoftirqd/0: 0% user + 0.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.2% 13287/lognode: 0% user + 0.2% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 708/servicemanager: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 4435/cds_mc_thread: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 4838/.dataservices: 0.1% user + 0% kernel / faults: 261 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 8/rcu_sched: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 10/rcuop/0: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 14389/wcnss_filter: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 25/rcuop/2: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 4465/com.hmb.manager: 0% user + 0% kernel / faults: 248 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 10713/kworker/u16:20: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 22/ksoftirqd/2: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 29/ksoftirqd/3: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 5236/com.wing.safemgr: 0% user + 0% kernel / faults: 237 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 5278/com.protruly.powermanager: 0% user + 0% kernel / faults: 249 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 10877/kworker/u16:23: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 11698/com.moji.daling: 0% user + 0% kernel / faults: 378 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0.1% 29229/kworker/3:3: 0% user + 0.1% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 499/irq/746-ima-rdy: 0% user + 0% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 614/debuggerd64: 0% user + 0% kernel / faults: 64 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 2766/jbd2/dm-1-8: 0% user + 0% kernel</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 5319/com.quicinc.wbcserviceapp: 0% user + 0% kernel / faults: 237 minor</span><br><span class="line">11-25 16:26:53.715  3544  3572 E ActivityManager:   0% 5334/com.qualcomm.qti.services.secureui:sui_service: 0% user + 0%</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析/data/anr/trace.txt文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在trace.txt文件中，最上面二行标志这pid为12618的com.protruly.music出现ANR，在该进程中出现ANR的概率比较大(但也可能受到其他问题的影响)</span><br><span class="line"></span><br><span class="line">----- pid 12618 at 2017-11-25 16:26:50 -----</span><br><span class="line">Cmd line: com.protruly.music</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>一般在主线程中出现ANR的概率较大，callstack</p>
+<ol>
+<li>如果trace.txt中不能定位问题，继续分析mainlog与eventlog，过滤pid信息，跟踪ANR时间点前进程的活动。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Debug/" rel="tag">#Debug</a>
+          
+            <a href="/tags/ANR/" rel="tag">#ANR</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/05/android-ams-process/" rel="next" title="Android AMS系列之进程管理">
+                <i class="fa fa-chevron-left"></i> Android AMS系列之进程管理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/10/android-alarm-1/" rel="prev" title="Android之AlarmManagerService(一)">
+                Android之AlarmManagerService(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/03/08/android-debug-anr/"
+     data-title="Android Debug之ANR"
+     data-content=""
+     data-url="http://robinheztto.com/2017/03/08/android-debug-anr/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/08/android-debug-anr/"
+           data-title="Android Debug之ANR" data-url="http://robinheztto.com/2017/03/08/android-debug-anr/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ANR的类型"><span class="nav-number">1.</span> <span class="nav-text">ANR的类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Debug流程"><span class="nav-number">2.</span> <span class="nav-text">Debug流程</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

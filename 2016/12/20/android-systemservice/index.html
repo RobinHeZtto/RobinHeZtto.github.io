@@ -1,0 +1,785 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,SystemService," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Android系统中，大部分的系统服务都运行在SystemServer中，且基本上都继承于SystemService(除AMS,PMS等特例外)，本篇具体分析SystemService。相关代码在以下文件中：frameworks/base/services/core/java/com/android/server/SystemService.javaframeworks/base/service">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之SystemService">
+<meta property="og:url" content="http://robinheztto.com/2016/12/20/android-systemservice/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="Android系统中，大部分的系统服务都运行在SystemServer中，且基本上都继承于SystemService(除AMS,PMS等特例外)，本篇具体分析SystemService。相关代码在以下文件中：frameworks/base/services/core/java/com/android/server/SystemService.javaframeworks/base/service">
+<meta property="og:updated_time" content="2017-12-12T14:11:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android之SystemService">
+<meta name="twitter:description" content="Android系统中，大部分的系统服务都运行在SystemServer中，且基本上都继承于SystemService(除AMS,PMS等特例外)，本篇具体分析SystemService。相关代码在以下文件中：frameworks/base/services/core/java/com/android/server/SystemService.javaframeworks/base/service">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android之SystemService | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android之SystemService
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-20T09:37:22+08:00" content="2016-12-20">
+              2016-12-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/20/android-systemservice/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/20/android-systemservice/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Android系统中，大部分的系统服务都运行在SystemServer中，且基本上都继承于SystemService(除AMS,PMS等特例外)，本篇具体分析SystemService。相关代码在以下文件中：<br>frameworks/base/services/core/java/com/android/server/SystemService.java<br>frameworks/base/services/core/java/com/android/server/SystemServiceManager.java<br>frameworks/base/core/java/com/android/server/LocalServices.java<br>frameworks/base/services/java/com/android/server/SystemServer.java<br>frameworks/base/core/java/android/app/SystemServiceRegistry.java<br>frameworks/base/core/java/android/content/Context.java<br>frameworks/base/core/java/android/app/ContextImpl.java</p>
+</blockquote>
+<h1 id="SystemService"><a href="#SystemService" class="headerlink" title="SystemService"></a>SystemService</h1><p>SystemService是一个抽象类，具体的系统服务继承并实现其抽象方法，在SystemService中定义了<code>Boot Phases</code>启动阶段及系统服务启动与事件的回调。下面首先看一下<code>Boot Phases</code>的定义：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/SystemService.java</span><br><span class="line"></span><br><span class="line">public abstract class SystemService &#123;</span><br><span class="line">  /**</span><br><span class="line">   * 创建ActivityManagerService，PowerManagerService，LightsService，</span><br><span class="line">   * DisplayManagerService之后，PackageManagerService之前.</span><br><span class="line">   */  </span><br><span class="line">  public static final int PHASE_WAIT_FOR_DEFAULT_DISPLAY = 100;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * 创建PackageManagerService，WindowManagerService等等诸多服务.</span><br><span class="line">   */</span><br><span class="line">  public static final int PHASE_LOCK_SETTINGS_READY = 480;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * PHASE_LOCK_SETTINGS_READY到PHASE_SYSTEM_SERVICES_READY之间无任何操作，PHASE_SYSTEM_SERVICES_READY之后，</span><br><span class="line">   *　系统服务（例如PowerManager，PackageManager等等）能够被调用.</span><br><span class="line">   */</span><br><span class="line">  public static final int PHASE_SYSTEM_SERVICES_READY = 500;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * ActivityManagerService ready.</span><br><span class="line">   */</span><br><span class="line">  public static final int PHASE_ACTIVITY_MANAGER_READY = 550;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * 启动SystemUI，Watchdog，services能够start/bind三方应用，App能够通过Binder调用系统服务.</span><br><span class="line">   */</span><br><span class="line">  public static final int PHASE_THIRD_PARTY_APPS_CAN_START = 600;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * 启动完成，系统服务执行PHASE_BOOT_COMPLETED回调比注册ACTION_BOOT_COMPLETED广播能减低延迟.</span><br><span class="line">   */</span><br><span class="line">  public static final int PHASE_BOOT_COMPLETED = 1000;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面继续看SystemService中定义的方法，主要是系统服务生命周期/系统事件的回调。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 构造方法，初始化system server context.</span><br><span class="line"> *</span><br><span class="line"> * @param context The system server context.</span><br><span class="line"> */</span><br><span class="line">public SystemService(Context context) &#123;</span><br><span class="line">    mContext = context;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 获取system context.</span><br><span class="line"> */</span><br><span class="line">public final Context getContext() &#123;</span><br><span class="line">    return mContext;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 是否是安全模式.</span><br><span class="line"> */</span><br><span class="line">public final boolean isSafeMode() &#123;</span><br><span class="line">    return getManager().isSafeMode();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 在构造方法后调用.</span><br><span class="line"> */</span><br><span class="line">public abstract void onStart();</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 不同BootPhase阶段的回调.</span><br><span class="line"> */</span><br><span class="line">public void onBootPhase(int phase) &#123;&#125;</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Publish the service到ServiceManager，对其他进程提供binder服务.</span><br><span class="line"> */</span><br><span class="line">protected final void publishBinderService(String name, IBinder service) &#123;</span><br><span class="line">    publishBinderService(name, service, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Publish the service到ServiceManager，对其他进程提供binder服务.</span><br><span class="line"> */</span><br><span class="line">protected final void publishBinderService(String name, IBinder service,</span><br><span class="line">        boolean allowIsolated) &#123;</span><br><span class="line">    ServiceManager.addService(name, service, allowIsolated);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 通过服务名获取binder服务.</span><br><span class="line"> */</span><br><span class="line">protected final IBinder getBinderService(String name) &#123;</span><br><span class="line">    return ServiceManager.getService(name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Publish service到LocalServices，以供SystemServer进程中的其他服务调用.</span><br><span class="line"> */</span><br><span class="line">protected final &lt;T&gt; void publishLocalService(Class&lt;T&gt; type, T service) &#123;</span><br><span class="line">    LocalServices.addService(type, service);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 通过Class Type从LocalServices中获取服务.</span><br><span class="line"> */</span><br><span class="line">protected final &lt;T&gt; T getLocalService(Class&lt;T&gt; type) &#123;</span><br><span class="line">    return LocalServices.getService(type);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 从LocalServices中获取SystemServiceManager（SystemServiceManager也被注册到了从LocalServices）.</span><br><span class="line"> */</span><br><span class="line">private SystemServiceManager getManager() &#123;</span><br><span class="line">    return LocalServices.getService(SystemServiceManager.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="SystemServiceManager"><a href="#SystemServiceManager" class="headerlink" title="SystemServiceManager"></a>SystemServiceManager</h1><p>SystemServiceManager用来管理系统服务的生命周期，事件回调等。在SystemServer启动过程中创建SystemServiceManager，并通过SystemServiceManager启动系统服务并根据事件回调其方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/java/com/android/server/SystemServer.java</span><br><span class="line"></span><br><span class="line">private void run() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        ......</span><br><span class="line">        // 在启动系统服务之前，先创建SystemServiceManager并注册到LocalServices中.</span><br><span class="line">        mSystemServiceManager = new SystemServiceManager(mSystemContext);</span><br><span class="line">        LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Start services.</span><br><span class="line">    try &#123;</span><br><span class="line">        startBootstrapServices();</span><br><span class="line">        startCoreServices();</span><br><span class="line">        startOtherServices();</span><br><span class="line">    &#125; catch (Throwable ex) &#123;</span><br><span class="line">      ......</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">      ......</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>SystemServiceManag它的实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/SystemServiceManager.java</span><br><span class="line"></span><br><span class="line">public class SystemServiceManager &#123;</span><br><span class="line">    private final Context mContext;</span><br><span class="line">    private boolean mSafeMode;</span><br><span class="line"></span><br><span class="line">    // 系统服务列表.</span><br><span class="line">    private final ArrayList&lt;SystemService&gt; mServices = new ArrayList&lt;SystemService&gt;();</span><br><span class="line"></span><br><span class="line">    private int mCurrentPhase = -1;</span><br><span class="line"></span><br><span class="line">    public SystemServiceManager(Context context) &#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 通过className启动系统服务.</span><br><span class="line">     *</span><br><span class="line">     * @return The service instance.</span><br><span class="line">     */</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    public SystemService startService(String className) &#123;</span><br><span class="line">        final Class&lt;SystemService&gt; serviceClass;</span><br><span class="line">        try &#123;</span><br><span class="line">            serviceClass = (Class&lt;SystemService&gt;)Class.forName(className);</span><br><span class="line">        &#125; catch (ClassNotFoundException ex) &#123;</span><br><span class="line">          ......</span><br><span class="line">        &#125;</span><br><span class="line">        return startService(serviceClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 创建系统服务实例并返回，同时调用其onStart()方法.</span><br><span class="line">     */</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    public &lt;T extends SystemService&gt; T startService(Class&lt;T&gt; serviceClass) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            final String name = serviceClass.getName();</span><br><span class="line">            // Create the service.</span><br><span class="line">            if (!SystemService.class.isAssignableFrom(serviceClass)) &#123;</span><br><span class="line">                throw new RuntimeException(&quot;Failed to create &quot; + name</span><br><span class="line">                        + &quot;: service must extend &quot; + SystemService.class.getName());</span><br><span class="line">            &#125;</span><br><span class="line">            final T service;</span><br><span class="line">            try &#123;</span><br><span class="line">                Constructor&lt;T&gt; constructor = serviceClass.getConstructor(Context.class);</span><br><span class="line">                service = constructor.newInstance(mContext);</span><br><span class="line">            &#125; catch (......) &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // Register it.</span><br><span class="line">            mServices.add(service);</span><br><span class="line"></span><br><span class="line">            // Start it.</span><br><span class="line">            try &#123;</span><br><span class="line">                service.onStart();</span><br><span class="line">            &#125; catch (RuntimeException ex) &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125;</span><br><span class="line">            return service;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">              ......</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *　根据boot phase不同阶段，回调系统服务中的onBootPhase()方法．</span><br><span class="line">     * @param phase The boot phase to start.</span><br><span class="line">     */</span><br><span class="line">    public void startBootPhase(final int phase) &#123;</span><br><span class="line">        if (phase &lt;= mCurrentPhase) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;Next phase must be larger than previous&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        mCurrentPhase = phase;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            final int serviceLen = mServices.size();</span><br><span class="line">            for (int i = 0; i &lt; serviceLen; i++) &#123;</span><br><span class="line">                final SystemService service = mServices.get(i);</span><br><span class="line">                try &#123;</span><br><span class="line">                    service.onBootPhase(mCurrentPhase);</span><br><span class="line">                &#125; catch (Exception ex) &#123;</span><br><span class="line">                  ......</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">              ......</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    /** 设置安全模式供系统服务查询. */</span><br><span class="line">    public void setSafeMode(boolean safeMode) &#123;</span><br><span class="line">        mSafeMode = safeMode;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 返回当前是否是安全模式启动.</span><br><span class="line">     * @return safe mode flag</span><br><span class="line">     */</span><br><span class="line">    public boolean isSafeMode() &#123;</span><br><span class="line">        return mSafeMode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="LocalServices"><a href="#LocalServices" class="headerlink" title="LocalServices"></a>LocalServices</h1><p>LocalServices的作用与SystemServiceManager类似，不过LocalService的主要目的是提供系统服务的查询，注册，以供<code>SystemServer进程内部</code>的其他服务调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/com/android/server/LocalServices.java</span><br><span class="line"></span><br><span class="line">public final class LocalServices &#123;</span><br><span class="line">    private LocalServices() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    // 保存所有系统服务，包过SystemServiceManager    </span><br><span class="line">    private static final ArrayMap&lt;Class&lt;?&gt;, Object&gt; sLocalServiceObjects =</span><br><span class="line">            new ArrayMap&lt;Class&lt;?&gt;, Object&gt;();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取服务</span><br><span class="line">     *</span><br><span class="line">     * @param type The type of service.</span><br><span class="line">     * @return The service object.</span><br><span class="line">     */</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    public static &lt;T&gt; T getService(Class&lt;T&gt; type) &#123;</span><br><span class="line">        synchronized (sLocalServiceObjects) &#123;</span><br><span class="line">            return (T) sLocalServiceObjects.get(type);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注册服务</span><br><span class="line">     */</span><br><span class="line">    public static &lt;T&gt; void addService(Class&lt;T&gt; type, T service) &#123;</span><br><span class="line">        synchronized (sLocalServiceObjects) &#123;</span><br><span class="line">            if (sLocalServiceObjects.containsKey(type)) &#123;</span><br><span class="line">                throw new IllegalStateException(&quot;Overriding service registration&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            sLocalServiceObjects.put(type, service);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Context-getSystemService"><a href="#Context-getSystemService" class="headerlink" title="Context.getSystemService"></a>Context.getSystemService</h1><p>系统服务运行在SystemServer进程中，App使用系统服务首先得通过Context.getSystemService()获取系统服务的代理，下面继续看Context.getSystemService()的过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/content/Context.java</span><br><span class="line"></span><br><span class="line">public abstract class Context &#123;</span><br><span class="line">    ......</span><br><span class="line">    public abstract Object getSystemService(@ServiceName @NonNull String name);</span><br><span class="line"></span><br><span class="line">    public final &lt;T&gt; T getSystemService(Class&lt;T&gt; serviceClass) &#123;</span><br><span class="line">    String serviceName = getSystemServiceName(serviceClass);</span><br><span class="line">    return serviceName != null ? (T)getSystemService(serviceName) : null;</span><br><span class="line">    &#125;</span><br><span class="line">    ......        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Context.getSystemService()在ContextImpl中具体实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/app/ContextImpl.java</span><br><span class="line"></span><br><span class="line">class ContextImpl extends Context &#123;</span><br><span class="line">  ......</span><br><span class="line">  @Override</span><br><span class="line">  public Object getSystemService(String name) &#123;</span><br><span class="line">      return SystemServiceRegistry.getSystemService(this, name);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @Override</span><br><span class="line">  public String getSystemServiceName(Class&lt;?&gt; serviceClass) &#123;</span><br><span class="line">      return SystemServiceRegistry.getSystemServiceName(serviceClass);</span><br><span class="line">  &#125;</span><br><span class="line">  ......</span><br><span class="line">｝</span><br></pre></td></tr></table></figure></p>
+<p>ContextImpl中是直接调用SystemServiceRegistry.getSystemService()来获取系统服务。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/app/SystemServiceRegistry.java</span><br><span class="line"></span><br><span class="line">private static final HashMap&lt;String, ServiceFetcher&lt;?&gt;&gt; SYSTEM_SERVICE_FETCHERS =</span><br><span class="line">        new HashMap&lt;String, ServiceFetcher&lt;?&gt;&gt;();</span><br><span class="line"></span><br><span class="line">public static Object getSystemService(ContextImpl ctx, String name) &#123;</span><br><span class="line">    ServiceFetcher&lt;?&gt; fetcher = SYSTEM_SERVICE_FETCHERS.get(name);</span><br><span class="line">    return fetcher != null ? fetcher.getService(ctx) : null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>根据服务名从SYSTEM_SERVICE_FETCHERS找到服务对应的ServiceFetcher，并通过ServiceFetcher.getService()获取到对应的服务。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/app/SystemServiceRegistry.java</span><br><span class="line"></span><br><span class="line">static &#123;</span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,</span><br><span class="line">            new CachedServiceFetcher&lt;ActivityManager&gt;() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public ActivityManager createService(ContextImpl ctx) &#123;</span><br><span class="line">            return new ActivityManager(ctx.getOuterContext(), ctx.mMainThread.getHandler());</span><br><span class="line">        &#125;&#125;);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static &lt;T&gt; void registerService(String serviceName, Class&lt;T&gt; serviceClass,</span><br><span class="line">        ServiceFetcher&lt;T&gt; serviceFetcher) &#123;</span><br><span class="line">    SYSTEM_SERVICE_NAMES.put(serviceClass, serviceName);</span><br><span class="line">    SYSTEM_SERVICE_FETCHERS.put(serviceName, serviceFetcher);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在SystemServiceRegistry中的静态区域中完成了系统服务的注册，serviceName，serviceClass，serviceFetcher保存到SYSTEM_SERVICE_NAMES与SYSTEM_SERVICE_FETCHERS中。下面接着看fetcher.getService(ctx)的过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/app/SystemServiceRegistry.java</span><br><span class="line"></span><br><span class="line">static abstract interface ServiceFetcher&lt;T&gt; &#123;</span><br><span class="line">    T getService(ContextImpl ctx);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static abstract class CachedServiceFetcher&lt;T&gt; implements ServiceFetcher&lt;T&gt; &#123;</span><br><span class="line">    private final int mCacheIndex;</span><br><span class="line"></span><br><span class="line">    public CachedServiceFetcher() &#123;</span><br><span class="line">        mCacheIndex = sServiceCacheSize++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    public final T getService(ContextImpl ctx) &#123;</span><br><span class="line">        final Object[] cache = ctx.mServiceCache;</span><br><span class="line">        synchronized (cache) &#123;</span><br><span class="line">            // Fetch or create the service.</span><br><span class="line">            Object service = cache[mCacheIndex];</span><br><span class="line">            if (service == null) &#123;</span><br><span class="line">                service = createService(ctx);</span><br><span class="line">                cache[mCacheIndex] = service;</span><br><span class="line">            &#125;</span><br><span class="line">            return (T)service;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public abstract T createService(ContextImpl ctx);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>根据前面静态区域注册服务代码可知，注册服务时创建CachedServiceFetcher并实现了其createService方法，当通过fetcher.getService(ctx)获取服务时，首先判断cache中是否存在缓存的对象，如果没有，则调用createService()创建服务代理对象并返回，至此，APP就获取到了系统服务代理对象，通过该代理就可以调用各种系统服务了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/SystemService/" rel="tag">#SystemService</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/28/android-systemserver-2/" rel="next" title="Android之SystemServer启动(下)">
+                <i class="fa fa-chevron-left"></i> Android之SystemServer启动(下)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/05/android-ams-process/" rel="prev" title="Android AMS系列之进程管理">
+                Android AMS系列之进程管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/12/20/android-systemservice/"
+     data-title="Android之SystemService"
+     data-content=""
+     data-url="http://robinheztto.com/2016/12/20/android-systemservice/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/20/android-systemservice/"
+           data-title="Android之SystemService" data-url="http://robinheztto.com/2016/12/20/android-systemservice/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SystemService"><span class="nav-number">1.</span> <span class="nav-text">SystemService</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SystemServiceManager"><span class="nav-number">2.</span> <span class="nav-text">SystemServiceManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LocalServices"><span class="nav-number">3.</span> <span class="nav-text">LocalServices</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Context-getSystemService"><span class="nav-number">4.</span> <span class="nav-text">Context.getSystemService</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

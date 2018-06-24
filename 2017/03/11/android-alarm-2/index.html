@@ -1,0 +1,786 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,AlarmManagerService," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇继续分析Alarm设置及触发的流程。
+相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/services/core/java/com/android/server/AlarmManagerService.javaframeworks/base/services/core/jni">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之AlarmManagerService(二)">
+<meta property="og:url" content="http://robinheztto.com/2017/03/11/android-alarm-2/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="本篇继续分析Alarm设置及触发的流程。
+相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/services/core/java/com/android/server/AlarmManagerService.javaframeworks/base/services/core/jni">
+<meta property="og:updated_time" content="2018-01-07T04:07:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android之AlarmManagerService(二)">
+<meta name="twitter:description" content="本篇继续分析Alarm设置及触发的流程。
+相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/services/core/java/com/android/server/AlarmManagerService.javaframeworks/base/services/core/jni">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android之AlarmManagerService(二) | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android之AlarmManagerService(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-11T09:16:08+08:00" content="2017-03-11">
+              2017-03-11
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/11/android-alarm-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/11/android-alarm-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇继续分析Alarm设置及触发的流程。</p>
+<p>相关源码位于以下文件中:<br>frameworks/base/core/java/android/app/AlarmManager.java<br>frameworks/base/services/core/java/com/android/server/AlarmManagerService.java<br>frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</p>
+</blockquote>
+<h1 id="Alarm-set"><a href="#Alarm-set" class="headerlink" title="Alarm set"></a>Alarm set</h1><p>下面从AlarmManagerService中的set方法开始分析Alarm set的实现过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">private final IBinder mService = new IAlarmManager.Stub() &#123;</span><br><span class="line">  ......</span><br><span class="line">  public void set(String callingPackage,</span><br><span class="line">          int type, long triggerAtTime, long windowLength, long interval, int flags,</span><br><span class="line">          PendingIntent operation, IAlarmListener directReceiver, String listenerTag,</span><br><span class="line">          WorkSource workSource, AlarmManager.AlarmClockInfo alarmClock) &#123;</span><br><span class="line">      final int callingUid = Binder.getCallingUid();</span><br><span class="line"></span><br><span class="line">      // make sure the caller is not lying about which package should be blamed for</span><br><span class="line">      // wakelock time spent in alarm delivery</span><br><span class="line">      mAppOps.checkPackage(callingUid, callingPackage);</span><br><span class="line"></span><br><span class="line">      // Repeating alarms必须使用PendingIntent，不能使用AlarmListener</span><br><span class="line">      if (interval != 0) &#123;</span><br><span class="line">          if (directReceiver != null) &#123;</span><br><span class="line">              throw new IllegalArgumentException(&quot;Repeating alarms cannot use AlarmReceivers&quot;);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      if (workSource != null) &#123;</span><br><span class="line">          getContext().enforcePermission(</span><br><span class="line">                  android.Manifest.permission.UPDATE_DEVICE_STATS,</span><br><span class="line">                  Binder.getCallingPid(), callingUid, &quot;AlarmManager.set&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 清除callers的flag:WAKE_FROM_IDLE或FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED(需根据具体条件设置)</span><br><span class="line">      flags &amp;= ~(AlarmManager.FLAG_WAKE_FROM_IDLE</span><br><span class="line">              | AlarmManager.FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED);</span><br><span class="line"></span><br><span class="line">      // 只有DeviceIdleController可设置FLAG_IDLE_UNTIL,以进入Doze Idle状态</span><br><span class="line">      if (callingUid != Process.SYSTEM_UID) &#123;</span><br><span class="line">          flags &amp;= ~AlarmManager.FLAG_IDLE_UNTIL;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 如果是请求设置精确alarm，设置FLAG_STANDALONE，标志不对其进行batch批处理</span><br><span class="line">      if (windowLength == AlarmManager.WINDOW_EXACT) &#123;</span><br><span class="line">          flags |= AlarmManager.FLAG_STANDALONE;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 如果是alarmClock，设置FLAG_WAKE_FROM_IDLE可从idle唤醒，FLAG_STANDALONE不对其进行batch批处理</span><br><span class="line">      if (alarmClock != null) &#123;</span><br><span class="line">          flags |= AlarmManager.FLAG_WAKE_FROM_IDLE | AlarmManager.FLAG_STANDALONE;</span><br><span class="line"></span><br><span class="line">      // 如果caller是系统/用户设置mDeviceIdleUserWhitelist白名单，设置FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED标志</span><br><span class="line">      // 即在Doze Idle模式下精准时间，不受影响</span><br><span class="line">      &#125; else if (workSource == null &amp;&amp; (callingUid &lt; Process.FIRST_APPLICATION_UID</span><br><span class="line">              || Arrays.binarySearch(mDeviceIdleUserWhitelist,</span><br><span class="line">                      UserHandle.getAppId(callingUid)) &gt;= 0)) &#123;</span><br><span class="line">          flags |= AlarmManager.FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED;</span><br><span class="line">          flags &amp;= ~AlarmManager.FLAG_ALLOW_WHILE_IDLE;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      setImpl(type, triggerAtTime, windowLength, interval, operation, directReceiver,</span><br><span class="line">              listenerTag, flags, workSource, alarmClock, callingUid, callingPackage);</span><br><span class="line">  &#125;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>set()中对请求的参数进行了初步处理，然后继续调用setImpl()。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">void setImpl(int type, long triggerAtTime, long windowLength, long interval,</span><br><span class="line">        PendingIntent operation, IAlarmListener directReceiver, String listenerTag,</span><br><span class="line">        int flags, WorkSource workSource, AlarmManager.AlarmClockInfo alarmClock,</span><br><span class="line">        int callingUid, String callingPackage) &#123;</span><br><span class="line">    // PendingIntent与AlarmListener不能同时设置或同时为空</span><br><span class="line">    if ((operation == null &amp;&amp; directReceiver == null)</span><br><span class="line">            || (operation != null &amp;&amp; directReceiver != null)) &#123;</span><br><span class="line">        Slog.w(TAG, &quot;Alarms must either supply a PendingIntent or an AlarmReceiver&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // windowLength时间大于INTERVAL_HALF_DAY时，设置为INTERVAL_HOUR</span><br><span class="line">    if (windowLength &gt; AlarmManager.INTERVAL_HALF_DAY) &#123;</span><br><span class="line">        Slog.w(TAG, &quot;Window length &quot; + windowLength</span><br><span class="line">                + &quot;ms suspiciously long; limiting to 1 hour&quot;);</span><br><span class="line">        windowLength = AlarmManager.INTERVAL_HOUR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Repeating alarm的Repeat周期时间最短为MIN_INTERVAL即1s</span><br><span class="line">    final long minInterval = mConstants.MIN_INTERVAL;</span><br><span class="line">    if (interval &gt; 0 &amp;&amp; interval &lt; minInterval) &#123;</span><br><span class="line">        Slog.w(TAG, &quot;Suspiciously short interval &quot; + interval</span><br><span class="line">                + &quot; millis; expanding to &quot; + (minInterval/1000)</span><br><span class="line">                + &quot; seconds&quot;);</span><br><span class="line">        interval = minInterval;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 检查定时器类型的合法性</span><br><span class="line">    if (type &lt; RTC_WAKEUP || type &gt; RTC_POWEROFF_WAKEUP) &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;Invalid alarm type &quot; + type);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 检查triggerAtTime触发时间的合法性</span><br><span class="line">    if (triggerAtTime &lt; 0) &#123;</span><br><span class="line">        final long what = Binder.getCallingPid();</span><br><span class="line">        Slog.w(TAG, &quot;Invalid alarm trigger time! &quot; + triggerAtTime + &quot; from uid=&quot; + callingUid</span><br><span class="line">                + &quot; pid=&quot; + what);</span><br><span class="line">        triggerAtTime = 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final long nowElapsed = SystemClock.elapsedRealtime();</span><br><span class="line">    // 将触发绝对时间转化为相对时间</span><br><span class="line">    final long nominalTrigger = convertToElapsed(triggerAtTime, type);</span><br><span class="line">    // 为了防止定时器滥用，最小触发时间设置为当前时间之后5s</span><br><span class="line">    final long minTrigger = nowElapsed + mConstants.MIN_FUTURITY;</span><br><span class="line">    // 计算触发时间，当传入的触发时间大于最小触发时间时，使用传入触发时间，否则使用最小触发时间</span><br><span class="line">    final long triggerElapsed = (nominalTrigger &gt; minTrigger) ? nominalTrigger : minTrigger;</span><br><span class="line"></span><br><span class="line">    final long maxElapsed;</span><br><span class="line">    if (windowLength == AlarmManager.WINDOW_EXACT) &#123;</span><br><span class="line">        // 精确alarm，最大触发时间即为上面计算的触发时间</span><br><span class="line">        maxElapsed = triggerElapsed;</span><br><span class="line">    &#125; else if (windowLength &lt; 0) &#123;</span><br><span class="line">        // 非精准alarm，计算最大触发时间</span><br><span class="line">        maxElapsed = maxTriggerTime(nowElapsed, triggerElapsed, interval);</span><br><span class="line">        // 根据最大触发时间修正alarm的时间窗时间</span><br><span class="line">        windowLength = maxElapsed - triggerElapsed;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 如果时间窗口&gt;0，最大触发时间设置为触发时间加时间窗口</span><br><span class="line">        maxElapsed = triggerElapsed + windowLength;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        setImplLocked(type, triggerAtTime, triggerElapsed, windowLength, maxElapsed,</span><br><span class="line">                interval, operation, directReceiver, listenerTag, flags, true, workSource,</span><br><span class="line">                alarmClock, callingUid, callingPackage);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 非精准alarm，计算最大触发时间</span><br><span class="line">static final long MIN_FUZZABLE_INTERVAL = 10000;</span><br><span class="line">static long maxTriggerTime(long now, long triggerAtTime, long interval) &#123;</span><br><span class="line">    long futurity = (interval == 0)</span><br><span class="line">            ? (triggerAtTime - now)</span><br><span class="line">            : interval;</span><br><span class="line">    // 如果下一次触发的时间小于10秒，最大触发时间即为当前触发时间        </span><br><span class="line">    if (futurity &lt; MIN_FUZZABLE_INTERVAL) &#123;</span><br><span class="line">        futurity = 0;</span><br><span class="line">    &#125;</span><br><span class="line">    // 下一次触发的时间大于10秒，把0.75倍的下次触发时间+当前触发时间作为alarm的最大触发时间maxElapsed</span><br><span class="line">    return triggerAtTime + (long)(.75 * futurity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>setImpl中进一步对参数进行检查，然后调用setImplLocked()。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">private void setImplLocked(int type, long when, long whenElapsed, long windowLength,</span><br><span class="line">        long maxWhen, long interval, PendingIntent operation, IAlarmListener directReceiver,</span><br><span class="line">        String listenerTag, int flags, boolean doValidate, WorkSource workSource,</span><br><span class="line">        AlarmManager.AlarmClockInfo alarmClock, int callingUid, String callingPackage) &#123;</span><br><span class="line">    // 将请求参数全部封装到Alarm对象中</span><br><span class="line">    Alarm a = new Alarm(type, when, whenElapsed, windowLength, maxWhen, interval,</span><br><span class="line">            operation, directReceiver, listenerTag, workSource, flags, alarmClock,</span><br><span class="line">            callingUid, callingPackage);</span><br><span class="line">    try &#123;</span><br><span class="line">        if (ActivityManagerNative.getDefault().getAppStartMode(callingUid, callingPackage)</span><br><span class="line">                == ActivityManager.APP_START_MODE_DISABLED) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (RemoteException e) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    // set Alarm之前先移除前面设置的alarm</span><br><span class="line">    removeLocked(operation, directReceiver);</span><br><span class="line">    // 继续调用setImplLocked设置Alarm</span><br><span class="line">    setImplLocked(a, false, doValidate);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>setImplLocked将请求参数封装到Alarm后继续设置Alarm。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">private void setImplLocked(Alarm a, boolean rebatching, boolean doValidate) &#123;</span><br><span class="line">    // FLAG_IDLE_UNTIL该定时器是Doze Idle定时器</span><br><span class="line">    if ((a.flags&amp;AlarmManager.FLAG_IDLE_UNTIL) != 0) &#123;</span><br><span class="line">        // 如果有设置FLAG_WAKE_FROM_IDLE的Alarm mNextWakeFromIdle(第一次为null)且IDLE_UNTIL触发时间比它要长</span><br><span class="line">        // 设置IDLE_UNTIL Alarm的触发时间为mNextWakeFromIdle触发时间</span><br><span class="line">        if (mNextWakeFromIdle != null &amp;&amp; a.whenElapsed &gt; mNextWakeFromIdle.whenElapsed) &#123;</span><br><span class="line">            a.when = a.whenElapsed = a.maxWhenElapsed = mNextWakeFromIdle.whenElapsed;</span><br><span class="line">        &#125;</span><br><span class="line">        // 将IDLE_UNTIL的触发时间随机提前一点触发</span><br><span class="line">        final long nowElapsed = SystemClock.elapsedRealtime();</span><br><span class="line">        // 计算fuzz然后取随机值</span><br><span class="line">        final int fuzz = fuzzForDuration(a.whenElapsed-nowElapsed);</span><br><span class="line">        if (fuzz &gt; 0) &#123;</span><br><span class="line">            if (mRandom == null) &#123;</span><br><span class="line">                mRandom = new Random();</span><br><span class="line">            &#125;</span><br><span class="line">            final int delta = mRandom.nextInt(fuzz);</span><br><span class="line">            // 提前delta时间触发</span><br><span class="line">            a.whenElapsed -= delta;</span><br><span class="line">            a.when = a.maxWhenElapsed = a.whenElapsed;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; else if (mPendingIdleUntil != null) &#123;</span><br><span class="line">        // 当前已经处于Doze Idle状态，除了带FLAG_ALLOW_WHILE_IDLE，FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED</span><br><span class="line">        // FLAG_WAKE_FROM_IDLE flag的Alarm可以设置外，其他的Alarm被加入到mPendingWhileIdleAlarms后退出</span><br><span class="line">        if ((a.flags&amp;(AlarmManager.FLAG_ALLOW_WHILE_IDLE</span><br><span class="line">                | AlarmManager.FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED</span><br><span class="line">                | AlarmManager.FLAG_WAKE_FROM_IDLE))</span><br><span class="line">                == 0) &#123;</span><br><span class="line">            mPendingWhileIdleAlarms.add(a);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // FLAG_STANDALONE标志放到单独batch中，非FLAG_STANDALONE的在mAlarmBatches中查找合适的batch</span><br><span class="line">    int whichBatch = ((a.flags&amp;AlarmManager.FLAG_STANDALONE) != 0)</span><br><span class="line">            ? -1 : attemptCoalesceLocked(a.whenElapsed, a.maxWhenElapsed);</span><br><span class="line">    //　没有找到合适的batch，新建batch并加入到mAlarmBatches           </span><br><span class="line">    if (whichBatch &lt; 0) &#123;</span><br><span class="line">        Batch batch = new Batch(a);</span><br><span class="line">        addBatchLocked(mAlarmBatches, batch);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 找到了合适的batch，添加到batch中         </span><br><span class="line">        Batch batch = mAlarmBatches.get(whichBatch);</span><br><span class="line">        // 添加alarm，并更新了batch触发时间，需要对mAlarmBatches里面的所有batch进行排序</span><br><span class="line">        if (batch.add(a)) &#123;</span><br><span class="line">            mAlarmBatches.remove(whichBatch);</span><br><span class="line">            addBatchLocked(mAlarmBatches, batch);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (a.alarmClock != null) &#123;</span><br><span class="line">        mNextAlarmClockMayChange = true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    boolean needRebatch = false;</span><br><span class="line"></span><br><span class="line">    if ((a.flags&amp;AlarmManager.FLAG_IDLE_UNTIL) != 0) &#123;</span><br><span class="line">        // 设置mPendingIdleUntil，即代表进入Doze Idle       </span><br><span class="line">        mPendingIdleUntil = a;　</span><br><span class="line">        mConstants.updateAllowWhileIdleMinTimeLocked();</span><br><span class="line">        // 需要重新rebatch所有的alarm</span><br><span class="line">        needRebatch = true;</span><br><span class="line">    &#125; else if ((a.flags&amp;AlarmManager.FLAG_WAKE_FROM_IDLE) != 0) &#123;</span><br><span class="line">        // 更新mNextWakeFromIdle</span><br><span class="line">        if (mNextWakeFromIdle == null || mNextWakeFromIdle.whenElapsed &gt; a.whenElapsed) &#123;</span><br><span class="line">            mNextWakeFromIdle = a;</span><br><span class="line">            if (mPendingIdleUntil != null) &#123;</span><br><span class="line">                needRebatch = true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (!rebatching) &#123;</span><br><span class="line">        // 对所有的Alarm重新进行batch操作</span><br><span class="line">        if (needRebatch) &#123;</span><br><span class="line">            rebatchAllAlarmsLocked(false);</span><br><span class="line">        &#125;</span><br><span class="line">        // 重新设置几个核心alarm</span><br><span class="line">        rescheduleKernelAlarmsLocked();</span><br><span class="line">        // 更新下一个alarm的alarmClock  </span><br><span class="line">        updateNextAlarmClockLocked();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int fuzzForDuration(long duration) &#123;</span><br><span class="line">    if (duration &lt; 15*60*1000) &#123;</span><br><span class="line">        // 小于15分钟，返回实际时间</span><br><span class="line">        return (int)duration;</span><br><span class="line">    &#125; else if (duration &lt; 90*60*1000) &#123;</span><br><span class="line">        // 小于90分钟，最多提前15分钟</span><br><span class="line">        return 15*60*1000;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 90分钟以上，最多提前半小时</span><br><span class="line">        return 30*60*1000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 根据触发时间与最长触发时间从mAlarmBatches中找合适的batch，找到则返回index，否则返回-1</span><br><span class="line">int attemptCoalesceLocked(long whenElapsed, long maxWhen) &#123;</span><br><span class="line">    final int N = mAlarmBatches.size();</span><br><span class="line">    for (int i = 0; i &lt; N; i++) &#123;</span><br><span class="line">        Batch b = mAlarmBatches.get(i);</span><br><span class="line">        if ((b.flags&amp;AlarmManager.FLAG_STANDALONE) == 0 &amp;&amp; b.canHold(whenElapsed, maxWhen)) &#123;</span><br><span class="line">            return i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Batch &#123;</span><br><span class="line">    long start;</span><br><span class="line">    long end;</span><br><span class="line">    ......</span><br><span class="line">    // 根据Alarm的触发时间及最大触发时间，与batch的触发时间与最大触发时间是否有重合，有重合即可以合入该batch</span><br><span class="line">    boolean canHold(long whenElapsed, long maxWhen) &#123;</span><br><span class="line">        return (end &gt;= whenElapsed) &amp;&amp; (start &lt;= maxWhen);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 添加Alarm，并根据Alarm的触发时间判断是否需要更新batch时间，如果更新了batch时间则返回true，对batch重新排序</span><br><span class="line">    boolean add(Alarm alarm) &#123;</span><br><span class="line">        boolean newStart = false;</span><br><span class="line">        // narrows the batch if necessary; presumes that canHold(alarm) is true</span><br><span class="line">        int index = Collections.binarySearch(alarms, alarm, sIncreasingTimeOrder);</span><br><span class="line">        if (index &lt; 0) &#123;</span><br><span class="line">            index = 0 - index - 1;</span><br><span class="line">        &#125;</span><br><span class="line">        alarms.add(index, alarm);</span><br><span class="line">        // 如果Alarm的触发时间比batch的触发时间要早，则更新整个batch的触发时间</span><br><span class="line">        if (alarm.whenElapsed &gt; start) &#123;</span><br><span class="line">            start = alarm.whenElapsed;</span><br><span class="line">            newStart = true;</span><br><span class="line">        &#125;</span><br><span class="line">        if (alarm.maxWhenElapsed &lt; end) &#123;</span><br><span class="line">            end = alarm.maxWhenElapsed;</span><br><span class="line">        &#125;</span><br><span class="line">        flags |= alarm.flags;</span><br><span class="line">        return newStart;</span><br><span class="line">    &#125;    </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//将mAlarmBatches按照升序排序</span><br><span class="line">static boolean addBatchLocked(ArrayList&lt;Batch&gt; list, Batch newBatch) &#123;</span><br><span class="line">    int index = Collections.binarySearch(list, newBatch, sBatchOrder);</span><br><span class="line">    if (index &lt; 0) &#123;</span><br><span class="line">        index = 0 - index - 1;</span><br><span class="line">    &#125;</span><br><span class="line">    list.add(index, newBatch);</span><br><span class="line">    return (index == 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>setImplLocked中首先对FLAG_IDLE_UNTIL的alarm进行处理，然后根据mPendingIdleUntil是否null判断当前是否是Doze Idle模式，Doze Idle模式下会pending所有非FLAG_ALLOW_WHILE_IDLE，FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED，FLAG_WAKE_FROM_IDLE flag的alarm，然后添加alarm合适的batch中，最后调度设置alarm到kernel中。当涉及到FLAG_IDLE_UNTIL进入Doze Idle，或FLAG_WAKE_FROM_IDLE Doze下更新Alarm时，需重新进行rebatch操作，下面分析rebatchAllAlarmsLocked()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">void rebatchAllAlarms() &#123;</span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        rebatchAllAlarmsLocked(true);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void rebatchAllAlarmsLocked(boolean doValidate) &#123;</span><br><span class="line">    // 备份mAlarmBatches，mPendingIdleUntil</span><br><span class="line">    ArrayList&lt;Batch&gt; oldSet = (ArrayList&lt;Batch&gt;) mAlarmBatches.clone();</span><br><span class="line">    mAlarmBatches.clear();</span><br><span class="line">    Alarm oldPendingIdleUntil = mPendingIdleUntil;</span><br><span class="line">    final long nowElapsed = SystemClock.elapsedRealtime();</span><br><span class="line">    final int oldBatches = oldSet.size();</span><br><span class="line">    for (int batchNum = 0; batchNum &lt; oldBatches; batchNum++) &#123;</span><br><span class="line">        Batch batch = oldSet.get(batchNum);</span><br><span class="line">        final int N = batch.size();</span><br><span class="line">        for (int i = 0; i &lt; N; i++) &#123;</span><br><span class="line">            // 重新添加alarm</span><br><span class="line">            reAddAlarmLocked(batch.get(i), nowElapsed, doValidate);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (oldPendingIdleUntil != null &amp;&amp; oldPendingIdleUntil != mPendingIdleUntil) &#123;</span><br><span class="line">        Slog.wtf(TAG, &quot;Rebatching: idle until changed from &quot; + oldPendingIdleUntil</span><br><span class="line">                + &quot; to &quot; + mPendingIdleUntil);</span><br><span class="line">        if (mPendingIdleUntil == null) &#123;</span><br><span class="line">            // Somehow we lost this...  we need to restore all of the pending alarms.</span><br><span class="line">            restorePendingWhileIdleAlarmsLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    rescheduleKernelAlarmsLocked();</span><br><span class="line">    updateNextAlarmClockLocked();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>rebatchAllAlarmsLocked中主要是对Alarm进行重新set及batch的操作。继续看rescheduleKernelAlarmsLocked()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">void rescheduleKernelAlarmsLocked() &#123;</span><br><span class="line">    // Schedule the next upcoming wakeup alarm.  If there is a deliverable batch</span><br><span class="line">    // prior to that which contains no wakeups, we schedule that as well.</span><br><span class="line">    long nextNonWakeup = 0;</span><br><span class="line">    if (mAlarmBatches.size() &gt; 0) &#123;</span><br><span class="line">        // 获取第一个wakeup的batch</span><br><span class="line">        final Batch firstWakeup = findFirstWakeupBatchLocked();</span><br><span class="line">        // 获取第一个batch</span><br><span class="line">        final Batch firstBatch = mAlarmBatches.get(0);</span><br><span class="line">        // 获取第一个RtcPowerOff的batch</span><br><span class="line">        final Batch firstRtcWakeup = findFirstRtcWakeupBatchLocked();</span><br><span class="line">        // 更新mNextWakeup并调用native方法设置alarm</span><br><span class="line">        if (firstWakeup != null &amp;&amp; mNextWakeup != firstWakeup.start) &#123;</span><br><span class="line">            mNextWakeup = firstWakeup.start;</span><br><span class="line">            mLastWakeupSet = SystemClock.elapsedRealtime();</span><br><span class="line">            setLocked(ELAPSED_REALTIME_WAKEUP, firstWakeup.start);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //　设置RTC_POWEROFF类型的alarm到kernel</span><br><span class="line">        if (firstRtcWakeup != null &amp;&amp; mNextRtcWakeup != firstRtcWakeup.start) &#123;</span><br><span class="line">            mNextRtcWakeup = firstRtcWakeup.start;</span><br><span class="line">            Alarm alarm = firstRtcWakeup.getAlarmByElapsedTime(mNextRtcWakeup);</span><br><span class="line">            if (alarm != null) &#123;</span><br><span class="line">                // use packageName to check if the alarm is set from deskclock app</span><br><span class="line">                // (power off alarm)</span><br><span class="line">                String packageName = alarm.packageName;</span><br><span class="line">                if (DESKCLOCK_PACKAGE_NAME.equals(packageName)) &#123;</span><br><span class="line">                    mIsPowerOffAlarmSet = true;</span><br><span class="line">                    AlarmManager.writePowerOffAlarmFile(AlarmManager.POWER_OFF_ALARM_SET_FILE,</span><br><span class="line">                            AlarmManager.POWER_OFF_ALARM_SET);</span><br><span class="line">                    if (!mIsEncryptStatus) &#123;</span><br><span class="line">                        AlarmManager.writePowerOffAlarmFile(</span><br><span class="line">                                AlarmManager.POWER_OFF_ALARM_INSTANCE_FILE, &quot;&quot; + alarm.when);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else if (mIsPowerOffAlarmSet)&#123;</span><br><span class="line">                    mIsPowerOffAlarmSet = false;</span><br><span class="line">                    AlarmManager.writePowerOffAlarmFile(AlarmManager.POWER_OFF_ALARM_SET_FILE,</span><br><span class="line">                            AlarmManager.POWER_OFF_ALARM_NOT_SET);</span><br><span class="line">                &#125;</span><br><span class="line">                setLocked(RTC_POWEROFF_WAKEUP, alarm.when);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else if (firstRtcWakeup == null &amp;&amp; mIsPowerOffAlarmSet)&#123;</span><br><span class="line">            mIsPowerOffAlarmSet = false;</span><br><span class="line">            AlarmManager.writePowerOffAlarmFile(AlarmManager.POWER_OFF_ALARM_SET_FILE,</span><br><span class="line">                    AlarmManager.POWER_OFF_ALARM_NOT_SET);</span><br><span class="line">        &#125;</span><br><span class="line">        // 如果firstBatch没有wakeup类型的alarm，更新nextNonWakeup</span><br><span class="line">        if (firstBatch != firstWakeup) &#123;</span><br><span class="line">            nextNonWakeup = firstBatch.start;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (mPendingNonWakeupAlarms.size() &gt; 0) &#123;</span><br><span class="line">        if (nextNonWakeup == 0 || mNextNonWakeupDeliveryTime &lt; nextNonWakeup) &#123;</span><br><span class="line">            nextNonWakeup = mNextNonWakeupDeliveryTime;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 更新nextNonWakeup并设置到kernel</span><br><span class="line">    if (nextNonWakeup != 0 &amp;&amp; mNextNonWakeup != nextNonWakeup) &#123;</span><br><span class="line">        mNextNonWakeup = nextNonWakeup;</span><br><span class="line">        setLocked(ELAPSED_REALTIME, nextNonWakeup);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Alarm-trigger"><a href="#Alarm-trigger" class="headerlink" title="Alarm trigger"></a>Alarm trigger</h1><p>在AlarmManagerService的启动时，创建并启动了AlarmThread线程，AlarmThread线程中循环等待Alarm的触发。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">private class AlarmThread extends Thread</span><br><span class="line">&#123;</span><br><span class="line">    public AlarmThread()</span><br><span class="line">    &#123;</span><br><span class="line">        super(&quot;AlarmManager&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void run()</span><br><span class="line">    &#123;</span><br><span class="line">        ArrayList&lt;Alarm&gt; triggerList = new ArrayList&lt;Alarm&gt;();</span><br><span class="line"></span><br><span class="line">        while (true)</span><br><span class="line">        &#123;</span><br><span class="line">            // 在waitForAlarm中阻塞等待Alarm的触发</span><br><span class="line">            int result = waitForAlarm(mNativeData);</span><br><span class="line">            // 记录触发时间mLastWakeup</span><br><span class="line">            mLastWakeup = SystemClock.elapsedRealtime();</span><br><span class="line">            // 清空triggerList</span><br><span class="line">            triggerList.clear();</span><br><span class="line">            // 获取当前绝对时间</span><br><span class="line">            final long nowRTC = System.currentTimeMillis();</span><br><span class="line">            // 获取当前相对时间</span><br><span class="line">            final long nowELAPSED = SystemClock.elapsedRealtime();</span><br><span class="line">            // 首先判断是否是时间改变事件</span><br><span class="line">            if ((result &amp; TIME_CHANGED_MASK) != 0) &#123;</span><br><span class="line">                // The kernel can give us spurious time change notifications due to</span><br><span class="line">                // small adjustments it makes internally; we want to filter those out.</span><br><span class="line">                final long lastTimeChangeClockTime;</span><br><span class="line">                final long expectedClockTime;</span><br><span class="line">                synchronized (mLock) &#123;</span><br><span class="line">                    lastTimeChangeClockTime = mLastTimeChangeClockTime;</span><br><span class="line">                    expectedClockTime = lastTimeChangeClockTime</span><br><span class="line">                            + (nowELAPSED - mLastTimeChangeRealtime);</span><br><span class="line">                &#125;</span><br><span class="line">                // 时间变化至少是 +/- 500 ms或者是第一次改变才进行处理</span><br><span class="line">                if (lastTimeChangeClockTime == 0 || nowRTC &lt; (expectedClockTime-500)</span><br><span class="line">                        || nowRTC &gt; (expectedClockTime+500)) &#123;</span><br><span class="line">                    // 由于时间变化，所以要重新批处理所有的alarm</span><br><span class="line">                    removeImpl(mTimeTickSender);</span><br><span class="line">                    removeImpl(mDateChangeSender);</span><br><span class="line">                    rebatchAllAlarms();</span><br><span class="line">                    mClockReceiver.scheduleTimeTickEvent();</span><br><span class="line">                    mClockReceiver.scheduleDateChangedEvent();</span><br><span class="line">                    synchronized (mLock) &#123;</span><br><span class="line">                        mNumTimeChanged++;</span><br><span class="line">                        mLastTimeChangeClockTime = nowRTC;</span><br><span class="line">                        mLastTimeChangeRealtime = nowELAPSED;</span><br><span class="line">                    &#125;</span><br><span class="line">                    Intent intent = new Intent(Intent.ACTION_TIME_CHANGED);</span><br><span class="line">                    intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING</span><br><span class="line">                            | Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);</span><br><span class="line">                    getContext().sendBroadcastAsUser(intent, UserHandle.ALL);</span><br><span class="line"></span><br><span class="line">                    // The world has changed on us, so we need to re-evaluate alarms</span><br><span class="line">                    // regardless of whether the kernel has told us one went off.</span><br><span class="line">                    result |= IS_WAKEUP_MASK;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (result != TIME_CHANGED_MASK) &#123;</span><br><span class="line">                synchronized (mLock) &#123;</span><br><span class="line">                    // 从mAlarmBatches中获取触发的batch的alarm并加入到triggerList中，返回是否有wakeup的alarm</span><br><span class="line">                    boolean hasWakeup = triggerAlarmsLocked(triggerList, nowELAPSED, nowRTC);</span><br><span class="line">                    // 没有wakeup类型的alarm，在灭屏情况下加入到mPendingNonWakeupAlarms延迟执行</span><br><span class="line">                    if (!hasWakeup &amp;&amp; checkAllowNonWakeupDelayLocked(nowELAPSED)) &#123;</span><br><span class="line">                        if (mPendingNonWakeupAlarms.size() == 0) &#123;</span><br><span class="line">                            mStartCurrentDelayTime = nowELAPSED;</span><br><span class="line">                            mNextNonWakeupDeliveryTime = nowELAPSED</span><br><span class="line">                                    + ((currentNonWakeupFuzzLocked(nowELAPSED)*3)/2);</span><br><span class="line">                        &#125;</span><br><span class="line">                        mPendingNonWakeupAlarms.addAll(triggerList);</span><br><span class="line">                        mNumDelayedAlarms += triggerList.size();</span><br><span class="line">                        rescheduleKernelAlarmsLocked();</span><br><span class="line">                        updateNextAlarmClockLocked();</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        // 如果有wakeup类型的alarm，将mPendingNonWakeupAlarms加入到triggerList</span><br><span class="line">                        rescheduleKernelAlarmsLocked();</span><br><span class="line">                        updateNextAlarmClockLocked();</span><br><span class="line">                        if (mPendingNonWakeupAlarms.size() &gt; 0) &#123;</span><br><span class="line">                            calculateDeliveryPriorities(mPendingNonWakeupAlarms);</span><br><span class="line">                            triggerList.addAll(mPendingNonWakeupAlarms);</span><br><span class="line">                            Collections.sort(triggerList, mAlarmDispatchComparator);</span><br><span class="line">                            final long thisDelayTime = nowELAPSED - mStartCurrentDelayTime;</span><br><span class="line">                            mTotalDelayTime += thisDelayTime;</span><br><span class="line">                            if (mMaxDelayTime &lt; thisDelayTime) &#123;</span><br><span class="line">                                mMaxDelayTime = thisDelayTime;</span><br><span class="line">                            &#125;</span><br><span class="line">                            mPendingNonWakeupAlarms.clear();</span><br><span class="line">                        &#125;</span><br><span class="line">                        // 执行alarm</span><br><span class="line">                        deliverAlarmsLocked(triggerList, nowELAPSED);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                synchronized (mLock) &#123;</span><br><span class="line">                    rescheduleKernelAlarmsLocked();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>AlarmThread线程通过waitForAlarm阻塞等待定时器触发，如果是时间改变事件，则发送时间改变通知并重新设置定时器。如果不是时间改变，则将mAlarmBatches中的首个batch的alarm加入到triggerList中，如果触发的alarm中没有wakeup类型，加入到mPendingNonWakeupAlarms中等下次执行，如果有wakeup类型的alarm，则调用deliverAlarmsLocked执行。继续看triggerAlarmsLocked的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;　frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">boolean triggerAlarmsLocked(ArrayList&lt;Alarm&gt; triggerList, final long nowELAPSED,</span><br><span class="line">        final long nowRTC) &#123;</span><br><span class="line">    boolean hasWakeup = false;</span><br><span class="line">    while (mAlarmBatches.size() &gt; 0) &#123;</span><br><span class="line">        // 触发时间最快的alarm排在最前，取第一个batch</span><br><span class="line">        Batch batch = mAlarmBatches.get(0);</span><br><span class="line">        if (batch.start &gt; nowELAPSED) &#123;</span><br><span class="line">            // 定时时间未到，先返回</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mAlarmBatches.remove(0);</span><br><span class="line"></span><br><span class="line">        final int N = batch.size();</span><br><span class="line">        for (int i = 0; i &lt; N; i++) &#123;</span><br><span class="line">            Alarm alarm = batch.get(i);</span><br><span class="line"></span><br><span class="line">            if ((alarm.flags&amp;AlarmManager.FLAG_ALLOW_WHILE_IDLE) != 0) &#123;</span><br><span class="line">                // 如果时FLAG_ALLOW_WHILE_IDLE类型定时器，需要至少mAllowWhileIdleMinTime的时间间隔触发</span><br><span class="line">                long lastTime = mLastAllowWhileIdleDispatch.get(alarm.uid, 0);</span><br><span class="line">                long minTime = lastTime + mAllowWhileIdleMinTime;</span><br><span class="line">                if (nowELAPSED &lt; minTime) &#123;</span><br><span class="line">                    alarm.whenElapsed = minTime;</span><br><span class="line">                    if (alarm.maxWhenElapsed &lt; minTime) &#123;</span><br><span class="line">                        alarm.maxWhenElapsed = minTime;</span><br><span class="line">                    &#125;</span><br><span class="line">                    setImplLocked(alarm, true, false);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            alarm.count = 1;</span><br><span class="line">            // 加入到triggerList</span><br><span class="line">            triggerList.add(alarm);</span><br><span class="line">            if ((alarm.flags&amp;AlarmManager.FLAG_WAKE_FROM_IDLE) != 0) &#123;</span><br><span class="line">                EventLogTags.writeDeviceIdleWakeFromIdle(mPendingIdleUntil != null ? 1 : 0,</span><br><span class="line">                        alarm.statsTag);</span><br><span class="line">            &#125;</span><br><span class="line">            // 如果时mPendingIdleUntil触发，说明是Doze Idle状态时间到期</span><br><span class="line">            if (mPendingIdleUntil == alarm) &#123;</span><br><span class="line">                mPendingIdleUntil = null;</span><br><span class="line">                rebatchAllAlarmsLocked(false);</span><br><span class="line">                // 恢复pending的alarm</span><br><span class="line">                restorePendingWhileIdleAlarmsLocked();</span><br><span class="line">            &#125;</span><br><span class="line">            if (mNextWakeFromIdle == alarm) &#123;</span><br><span class="line">                mNextWakeFromIdle = null;</span><br><span class="line">                rebatchAllAlarmsLocked(false);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 如果是周期性alarm，设置下一个alarm触发</span><br><span class="line">            if (alarm.repeatInterval &gt; 0) &#123;</span><br><span class="line">                // this adjustment will be zero if we&apos;re late by</span><br><span class="line">                // less than one full repeat interval</span><br><span class="line">                alarm.count += (nowELAPSED - alarm.whenElapsed) / alarm.repeatInterval;</span><br><span class="line"></span><br><span class="line">                // Also schedule its next recurrence</span><br><span class="line">                final long delta = alarm.count * alarm.repeatInterval;</span><br><span class="line">                final long nextElapsed = alarm.whenElapsed + delta;</span><br><span class="line">                setImplLocked(alarm.type, alarm.when + delta, nextElapsed, alarm.windowLength,</span><br><span class="line">                        maxTriggerTime(nowELAPSED, nextElapsed, alarm.repeatInterval),</span><br><span class="line">                        alarm.repeatInterval, alarm.operation, null, null, alarm.flags, true,</span><br><span class="line">                        alarm.workSource, alarm.alarmClock, alarm.uid, alarm.packageName);</span><br><span class="line">            &#125;</span><br><span class="line">            // 如果该alarm是wakeup类型，设置hasWakeup为true</span><br><span class="line">            if (alarm.wakeup) &#123;</span><br><span class="line">                hasWakeup = true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // We removed an alarm clock. Let the caller recompute the next alarm clock.</span><br><span class="line">            if (alarm.alarmClock != null) &#123;</span><br><span class="line">                mNextAlarmClockMayChange = true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // This is a new alarm delivery set; bump the sequence number to indicate that</span><br><span class="line">    // all apps&apos; alarm delivery classes should be recalculated.</span><br><span class="line">    mCurrentSeq++;</span><br><span class="line">    calculateDeliveryPriorities(triggerList);</span><br><span class="line">    Collections.sort(triggerList, mAlarmDispatchComparator);</span><br><span class="line"></span><br><span class="line">    return hasWakeup;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/AlarmManagerService/" rel="tag">#AlarmManagerService</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/10/android-alarm-1/" rel="next" title="Android之AlarmManagerService(一)">
+                <i class="fa fa-chevron-left"></i> Android之AlarmManagerService(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/12/android-alarm-3/" rel="prev" title="Android之AlarmManagerService(三)">
+                Android之AlarmManagerService(三) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/03/11/android-alarm-2/"
+     data-title="Android之AlarmManagerService(二)"
+     data-content=""
+     data-url="http://robinheztto.com/2017/03/11/android-alarm-2/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/11/android-alarm-2/"
+           data-title="Android之AlarmManagerService(二)" data-url="http://robinheztto.com/2017/03/11/android-alarm-2/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Alarm-set"><span class="nav-number">1.</span> <span class="nav-text">Alarm set</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Alarm-trigger"><span class="nav-number">2.</span> <span class="nav-text">Alarm trigger</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

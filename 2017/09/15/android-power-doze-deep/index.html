@@ -1,0 +1,786 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Power Management,Doze," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="STATE_ACTIVE -&amp;gt; STATE_INACTIVE如上文所述，当Screen off或者unplug事件触发时，进入becomeInactiveIfAppropriateLocked执行。12345678910111213141516171819202122void becomeInactiveIfAppropriateLocked() &amp;#123;    // 灭屏且未充电">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android电源管理系列之Deep Doze">
+<meta property="og:url" content="http://robinheztto.com/2017/09/15/android-power-doze-deep/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="STATE_ACTIVE -&amp;gt; STATE_INACTIVE如上文所述，当Screen off或者unplug事件触发时，进入becomeInactiveIfAppropriateLocked执行。12345678910111213141516171819202122void becomeInactiveIfAppropriateLocked() &amp;#123;    // 灭屏且未充电">
+<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android电源管理系列之Deep Doze">
+<meta name="twitter:description" content="STATE_ACTIVE -&amp;gt; STATE_INACTIVE如上文所述，当Screen off或者unplug事件触发时，进入becomeInactiveIfAppropriateLocked执行。12345678910111213141516171819202122void becomeInactiveIfAppropriateLocked() &amp;#123;    // 灭屏且未充电">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android电源管理系列之Deep Doze | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android电源管理系列之Deep Doze
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-15T10:36:15+08:00" content="2017-09-15">
+              2017-09-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/15/android-power-doze-deep/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/15/android-power-doze-deep/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="STATE-ACTIVE-gt-STATE-INACTIVE"><a href="#STATE-ACTIVE-gt-STATE-INACTIVE" class="headerlink" title="STATE_ACTIVE -&gt; STATE_INACTIVE"></a>STATE_ACTIVE -&gt; STATE_INACTIVE</h1><p>如上文所述，当Screen off或者unplug事件触发时，进入becomeInactiveIfAppropriateLocked执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void becomeInactiveIfAppropriateLocked() &#123;</span><br><span class="line">    // 灭屏且未充电  </span><br><span class="line">    if ((!mScreenOn &amp;&amp; !mCharging) || mForceIdle) &#123;</span><br><span class="line">        // 进入deep模式状态机轮转</span><br><span class="line">        if (mState == STATE_ACTIVE &amp;&amp; mDeepEnabled) &#123;</span><br><span class="line">            // 切换到STATE_INACTIVE状态</span><br><span class="line">            mState = STATE_INACTIVE;</span><br><span class="line">            // 重置状态值，定时器等</span><br><span class="line">            resetIdleManagementLocked();</span><br><span class="line">            // 启动Deep定时器，进入deep状态轮转</span><br><span class="line">            scheduleAlarmLocked(mInactiveTimeout, false);</span><br><span class="line">            EventLogTags.writeDeviceIdle(mState, &quot;no activity&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        // 当前模式是LIGHT_STATE_ACTIVE，且mLightEnabled开关打开(上篇博客已分析)</span><br><span class="line">        if (mLightState == LIGHT_STATE_ACTIVE &amp;&amp; mLightEnabled) &#123;</span><br><span class="line">            mLightState = LIGHT_STATE_INACTIVE;</span><br><span class="line">            resetLightIdleManagementLocked();</span><br><span class="line">            scheduleLightAlarmLocked(mConstants.LIGHT_IDLE_AFTER_INACTIVE_TIMEOUT);</span><br><span class="line">            EventLogTags.writeDeviceIdleLight(mLightState, &quot;no activity&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>灭屏且未充电状态或mForceIdle状态满足时，STATE_ACTIVE切换到STATE_INACTIVE，并且启动定时器轮转状态机。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// inactiveTimeoutDefaul默认值为30min</span><br><span class="line">long inactiveTimeoutDefault = (mHasWatch ? 15 : 30) * 60 * 1000L;</span><br><span class="line">INACTIVE_TIMEOUT = mParser.getLong(KEY_INACTIVE_TIMEOUT,</span><br><span class="line">        !COMPRESS_TIME ? inactiveTimeoutDefault : (inactiveTimeoutDefault / 10));</span><br><span class="line"></span><br><span class="line">void scheduleAlarmLocked(long delay, boolean idleUntil) &#123;</span><br><span class="line">    if (mMotionSensor == null) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    mNextAlarmTime = SystemClock.elapsedRealtime() + delay;</span><br><span class="line">    if (idleUntil) &#123;</span><br><span class="line">        mAlarmManager.setIdleUntil(AlarmManager.ELAPSED_REALTIME_WAKEUP,</span><br><span class="line">                mNextAlarmTime, &quot;DeviceIdleController.deep&quot;, mDeepAlarmListener, mHandler);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,</span><br><span class="line">                mNextAlarmTime, &quot;DeviceIdleController.deep&quot;, mDeepAlarmListener, mHandler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>scheduleAlarmLocked调度定时器，时间mInactiveTimeout为Constants.INACTIVE_TIMEOUT，即inactive_to，默认为30min。</p>
+<h1 id="STATE-INACTIVE-gt-STATE-IDLE-PENDING"><a href="#STATE-INACTIVE-gt-STATE-IDLE-PENDING" class="headerlink" title="STATE_INACTIVE -&gt; STATE_IDLE_PENDING"></a>STATE_INACTIVE -&gt; STATE_IDLE_PENDING</h1><p>在过mInactiveTimeout时间的定时后，进入mDeepAlarmListener中处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private final AlarmManager.OnAlarmListener mDeepAlarmListener</span><br><span class="line">        = new AlarmManager.OnAlarmListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onAlarm() &#123;</span><br><span class="line">        synchronized (DeviceIdleController.this) &#123;</span><br><span class="line">            stepIdleStateLocked(&quot;s:alarm&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>继续看stepIdleStateLocked的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">MIN_TIME_TO_ALARM = mParser.getLong(KEY_MIN_TIME_TO_ALARM,</span><br><span class="line">        !COMPRESS_TIME ? 60 * 60 * 1000L : 6 * 60 * 1000L);</span><br><span class="line"></span><br><span class="line">void stepIdleStateLocked(String reason) &#123;</span><br><span class="line">    final long now = SystemClock.elapsedRealtime();</span><br><span class="line">    // 如果60分钟内有可以从Deep Idle唤醒的定时器触发，暂时先退出状态机轮转</span><br><span class="line">    if ((now+mConstants.MIN_TIME_TO_ALARM) &gt; mAlarmManager.getNextWakeFromIdleTime()) &#123;</span><br><span class="line">        //　重置为STATE_ACTIVE状态</span><br><span class="line">        if (mState != STATE_ACTIVE) &#123;</span><br><span class="line">            becomeActiveLocked(&quot;alarm&quot;, Process.myUid());</span><br><span class="line">            becomeInactiveIfAppropriateLocked();</span><br><span class="line">        &#125;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    switch (mState) &#123;</span><br><span class="line">        case STATE_INACTIVE:</span><br><span class="line">            // 启动motion sensor监听</span><br><span class="line">            startMonitoringMotionLocked();</span><br><span class="line">            // 调度STATE_IDLE_PENDING状态的定时器，即idle_after_inactive_to，默认30min</span><br><span class="line">            scheduleAlarmLocked(mConstants.IDLE_AFTER_INACTIVE_TIMEOUT, false);</span><br><span class="line">            // mNextIdlePendingDelay设置为idle_pending_to即5min</span><br><span class="line">            mNextIdlePendingDelay = mConstants.IDLE_PENDING_TIMEOUT;</span><br><span class="line">            mNextIdleDelay = mConstants.IDLE_TIMEOUT;</span><br><span class="line">            // 切换状态为STATE_IDLE_PENDING</span><br><span class="line">            mState = STATE_IDLE_PENDING;</span><br><span class="line">            EventLogTags.writeDeviceIdle(mState, reason);</span><br><span class="line">            break;</span><br><span class="line">        case STATE_IDLE_PENDING:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_SENSING:</span><br><span class="line">            ......</span><br><span class="line">        case STATE_LOCATING:</span><br><span class="line">            ......</span><br><span class="line">        case STATE_IDLE_MAINTENANCE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_IDLE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当进入STATE_IDLE_PENDING时，通过startMonitoringMotionLocked启动了motion sensor监听。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">private final MotionListener mMotionListener = new MotionListener();</span><br><span class="line"></span><br><span class="line">void startMonitoringMotionLocked() &#123;</span><br><span class="line">    if (mMotionSensor != null &amp;&amp; !mMotionListener.active) &#123;</span><br><span class="line">        // 注册mMotionSensor监听</span><br><span class="line">        mMotionListener.registerLocked();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private final class MotionListener extends TriggerEventListener</span><br><span class="line">        implements SensorEventListener &#123;</span><br><span class="line"></span><br><span class="line">    boolean active = false;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onTrigger(TriggerEvent event) &#123;</span><br><span class="line">        synchronized (DeviceIdleController.this) &#123;</span><br><span class="line">            active = false;</span><br><span class="line">            // MotionSensor事件触发时，执行motionLocked</span><br><span class="line">            motionLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onSensorChanged(SensorEvent event) &#123;</span><br><span class="line">        synchronized (DeviceIdleController.this) &#123;</span><br><span class="line">            mSensorManager.unregisterListener(this, mMotionSensor);</span><br><span class="line">            active = false;</span><br><span class="line">            motionLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onAccuracyChanged(Sensor sensor, int accuracy) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    // 注册MotionSensor监听</span><br><span class="line">    public boolean registerLocked() &#123;</span><br><span class="line">        boolean success;</span><br><span class="line">        if (mMotionSensor.getReportingMode() == Sensor.REPORTING_MODE_ONE_SHOT) &#123;</span><br><span class="line">            success = mSensorManager.requestTriggerSensor(mMotionListener, mMotionSensor);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            success = mSensorManager.registerListener(</span><br><span class="line">                    mMotionListener, mMotionSensor, SensorManager.SENSOR_DELAY_NORMAL);</span><br><span class="line">        &#125;</span><br><span class="line">        if (success) &#123;</span><br><span class="line">            active = true;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            Slog.e(TAG, &quot;Unable to register for &quot; + mMotionSensor);</span><br><span class="line">        &#125;</span><br><span class="line">        return success;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void unregisterLocked() &#123;</span><br><span class="line">        if (mMotionSensor.getReportingMode() == Sensor.REPORTING_MODE_ONE_SHOT) &#123;</span><br><span class="line">            mSensorManager.cancelTriggerSensor(mMotionListener, mMotionSensor);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            mSensorManager.unregisterListener(mMotionListener);</span><br><span class="line">        &#125;</span><br><span class="line">        active = false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当mMotionSensor事件触发时，motionLocked被调动执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">void motionLocked() &#123;</span><br><span class="line">    handleMotionDetectedLocked(mConstants.MOTION_INACTIVE_TIMEOUT, &quot;motion&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// handleMotionDetectedLocked中重置状态为STATE_ACTIVE，并重新设置mInactiveTimeout为</span><br><span class="line">// mConstants.MOTION_INACTIVE_TIMEOUT，即motion_inactive_to，默认是10分钟</span><br><span class="line">// 即如果由于MotionSensor检测到的动作而退出了INACTIVE状态，再次从INACTIVE切换</span><br><span class="line">// 到IDLE_PENDING的时间就从原先的30分钟缩短到了10分钟。</span><br><span class="line">void handleMotionDetectedLocked(long timeout, String type) &#123;</span><br><span class="line">    boolean becomeInactive = false;</span><br><span class="line">    if (mState != STATE_ACTIVE) &#123;</span><br><span class="line">        scheduleReportActiveLocked(type, Process.myUid());</span><br><span class="line">        mState = STATE_ACTIVE;</span><br><span class="line">        mInactiveTimeout = timeout;</span><br><span class="line">        mCurIdleBudget = 0;</span><br><span class="line">        mMaintenanceStartTime = 0;</span><br><span class="line">        EventLogTags.writeDeviceIdle(mState, type);</span><br><span class="line">        addEvent(EVENT_NORMAL);</span><br><span class="line">        becomeInactive = true;</span><br><span class="line">    &#125;</span><br><span class="line">    if (mLightState == LIGHT_STATE_OVERRIDE) &#123;</span><br><span class="line">        // We went out of light idle mode because we had started deep idle mode...  let&apos;s</span><br><span class="line">        // now go back and reset things so we resume light idling if appropriate.</span><br><span class="line">        mLightState = STATE_ACTIVE;</span><br><span class="line">        EventLogTags.writeDeviceIdleLight(mLightState, type);</span><br><span class="line">        becomeInactive = true;</span><br><span class="line">    &#125;</span><br><span class="line">    if (becomeInactive) &#123;</span><br><span class="line">        becomeInactiveIfAppropriateLocked();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="STATE-IDLE-PENDING-gt-STATE-SENSING"><a href="#STATE-IDLE-PENDING-gt-STATE-SENSING" class="headerlink" title="STATE_IDLE_PENDING -&gt; STATE_SENSING"></a>STATE_IDLE_PENDING -&gt; STATE_SENSING</h1><p>当STATE_IDLE_PENDING定时时间到后，继续进入到stepIdleStateLocked中处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">void stepIdleStateLocked(String reason) &#123;</span><br><span class="line">    ......</span><br><span class="line">    switch (mState) &#123;</span><br><span class="line">        case STATE_INACTIVE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_IDLE_PENDING:</span><br><span class="line">            // 切换状态到STATE_SENSING</span><br><span class="line">            mState = STATE_SENSING;</span><br><span class="line">            EventLogTags.writeDeviceIdle(mState, reason);</span><br><span class="line">            // 调度STATE_SENSING状态定时器，SENSING_TIMEOUT即sensing_to，默认4min，正常情况下该定时器不会被触发</span><br><span class="line">            scheduleSensingTimeoutAlarmLocked(mConstants.SENSING_TIMEOUT);</span><br><span class="line">            cancelLocatingLocked();</span><br><span class="line">            mNotMoving = false;</span><br><span class="line">            mLocated = false;</span><br><span class="line">            mLastGenericLocation = null;</span><br><span class="line">            mLastGpsLocation = null;</span><br><span class="line">            // 启动AnyMotionDetector，利用加速度传感器监测是否有方向的变化</span><br><span class="line">            mAnyMotionDetector.checkForAnyMotion();</span><br><span class="line">            break;</span><br><span class="line">        case STATE_SENSING:</span><br><span class="line">            ......</span><br><span class="line">        case STATE_LOCATING:</span><br><span class="line">            ......</span><br><span class="line">        case STATE_IDLE_MAINTENANCE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_IDLE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>stepIdleStateLocked对STATE_SENSING的处理同样是启动一个定时器，但是该定时器不会被触发，也就是STATE_SENSING状态的轮转不依靠定时器进行，而是在mAnyMotionDetector的监测结果的回调onAnyMotionResult()中进行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public void onAnyMotionResult(int result) &#123;</span><br><span class="line">    if (result != AnyMotionDetector.RESULT_UNKNOWN) &#123;</span><br><span class="line">        synchronized (this) &#123;</span><br><span class="line">            // 取消STATE_SENSING的定时器</span><br><span class="line">            cancelSensingTimeoutAlarmLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if ((result == AnyMotionDetector.RESULT_MOVED) ||</span><br><span class="line">        (result == AnyMotionDetector.RESULT_UNKNOWN)) &#123;</span><br><span class="line">        synchronized (this) &#123;</span><br><span class="line">            handleMotionDetectedLocked(mConstants.INACTIVE_TIMEOUT, &quot;non_stationary&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else if (result == AnyMotionDetector.RESULT_STATIONARY) &#123;</span><br><span class="line">        if (mState == STATE_SENSING) &#123;</span><br><span class="line">            // If we are currently sensing, it is time to move to locating.</span><br><span class="line">            synchronized (this) &#123;</span><br><span class="line">                mNotMoving = true;</span><br><span class="line">                stepIdleStateLocked(&quot;s:stationary&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else if (mState == STATE_LOCATING) &#123;</span><br><span class="line">            // If we are currently locating, note that we are not moving and step</span><br><span class="line">            // if we have located the position.</span><br><span class="line">            synchronized (this) &#123;</span><br><span class="line">                mNotMoving = true;</span><br><span class="line">                if (mLocated) &#123;</span><br><span class="line">                    stepIdleStateLocked(&quot;s:stationary&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当检测结果为MOVED时，调用handleMotionDetectedLocked重置状态为ACTIVE，如果结果为RESULT_STATIONARY，当前状态为SENSING时，调用stopIdleStateLocked轮转到下一个状态，也就是进入到LOCATING状态，那么如果当前为LOCATING时，需要另外对mLocated变量进行判断才决定是否进行下一次切换。</p>
+<h1 id="STATE-SENSING-gt-STATE-LOCATING"><a href="#STATE-SENSING-gt-STATE-LOCATING" class="headerlink" title="STATE_SENSING -&gt; STATE_LOCATING"></a>STATE_SENSING -&gt; STATE_LOCATING</h1><p>stepIdleStateLocked对STATE_LOCATING状态的处理同样是启动一个定时器，并通过LocationManager请求对位置的监听。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">void stepIdleStateLocked(String reason) &#123;</span><br><span class="line">    ......</span><br><span class="line">    switch (mState) &#123;</span><br><span class="line">        case STATE_INACTIVE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_IDLE_PENDING:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_SENSING:</span><br><span class="line">            cancelSensingTimeoutAlarmLocked();</span><br><span class="line">            mState = STATE_LOCATING;</span><br><span class="line">            EventLogTags.writeDeviceIdle(mState, reason);</span><br><span class="line">            // 调度STATE_LOCATING状态定时器，LOCATING_TIMEOUT即locating_to，默认30s</span><br><span class="line">            scheduleAlarmLocked(mConstants.LOCATING_TIMEOUT, false);</span><br><span class="line">            // 通过LocationManager请求位置监听</span><br><span class="line">            if (mLocationManager != null</span><br><span class="line">                    &amp;&amp; mLocationManager.getProvider(LocationManager.NETWORK_PROVIDER) != null) &#123;</span><br><span class="line">                mLocationManager.requestLocationUpdates(mLocationRequest,</span><br><span class="line">                        mGenericLocationListener, mHandler.getLooper());</span><br><span class="line">                mLocating = true;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                mHasNetworkLocation = false;</span><br><span class="line">            &#125;</span><br><span class="line">            if (mLocationManager != null</span><br><span class="line">                    &amp;&amp; mLocationManager.getProvider(LocationManager.GPS_PROVIDER) != null) &#123;</span><br><span class="line">                mHasGps = true;</span><br><span class="line">                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5,</span><br><span class="line">                        mGpsLocationListener, mHandler.getLooper());</span><br><span class="line">                mLocating = true;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                mHasGps = false;</span><br><span class="line">            &#125;</span><br><span class="line">            // 如果没有location provider,将通过listeners回调轮状状态</span><br><span class="line">            if (mLocating) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        case STATE_LOCATING:</span><br><span class="line">            ......</span><br><span class="line">        case STATE_IDLE_MAINTENANCE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case STATE_IDLE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>STATE_LOCATING的状态在mGenericLocationListener/mGpsLocationListener中进行轮转。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">private final LocationListener mGenericLocationListener = new LocationListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onLocationChanged(Location location) &#123;</span><br><span class="line">        synchronized (DeviceIdleController.this) &#123;</span><br><span class="line">            receivedGenericLocationLocked(location);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">private final LocationListener mGpsLocationListener = new LocationListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onLocationChanged(Location location) &#123;</span><br><span class="line">        synchronized (DeviceIdleController.this) &#123;</span><br><span class="line">            receivedGpsLocationLocked(location);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void receivedGenericLocationLocked(Location location) &#123;</span><br><span class="line">    if (mState != STATE_LOCATING) &#123;</span><br><span class="line">        cancelLocatingLocked();</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    if (DEBUG) Slog.d(TAG, &quot;Generic location: &quot; + location);</span><br><span class="line">    mLastGenericLocation = new Location(location);</span><br><span class="line">    if (location.getAccuracy() &gt; mConstants.LOCATION_ACCURACY &amp;&amp; mHasGps) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    mLocated = true;</span><br><span class="line">    if (mNotMoving) &#123;</span><br><span class="line">        stepIdleStateLocked(&quot;s:location&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void receivedGpsLocationLocked(Location location) &#123;</span><br><span class="line">    if (mState != STATE_LOCATING) &#123;</span><br><span class="line">        cancelLocatingLocked();</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    if (DEBUG) Slog.d(TAG, &quot;GPS location: &quot; + location);</span><br><span class="line">    mLastGpsLocation = new Location(location);</span><br><span class="line">    if (location.getAccuracy() &gt; mConstants.LOCATION_ACCURACY) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    mLocated = true;</span><br><span class="line">    if (mNotMoving) &#123;</span><br><span class="line">        stepIdleStateLocked(&quot;s:gps&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果开启了Gps的定位监测，并且精度大于LOCATION_ACCURACY，那么这里的监测就忽略，如果监测数据为Not move，那么就调用StepIdleStateLocked来进行下一步。</p>
+<h1 id="STATE-LOCATING-gt-STATE-IDLE"><a href="#STATE-LOCATING-gt-STATE-IDLE" class="headerlink" title="STATE_LOCATING -&gt; STATE_IDLE"></a>STATE_LOCATING -&gt; STATE_IDLE</h1><h1 id="STATE-IDLE-MAINTENANCE-gt-STATE-IDLE"><a href="#STATE-IDLE-MAINTENANCE-gt-STATE-IDLE" class="headerlink" title="STATE_IDLE_MAINTENANCE -&gt; STATE_IDLE"></a>STATE_IDLE_MAINTENANCE -&gt; STATE_IDLE</h1><h1 id="STATE-LOCATING-gt-STATE-IDLE-MAINTENANCE"><a href="#STATE-LOCATING-gt-STATE-IDLE-MAINTENANCE" class="headerlink" title="STATE_LOCATING -&gt; STATE_IDLE_MAINTENANCE"></a>STATE_LOCATING -&gt; STATE_IDLE_MAINTENANCE</h1>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Power-Management/" rel="tag">#Power Management</a>
+          
+            <a href="/tags/Doze/" rel="tag">#Doze</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/13/android-power-doze-light/" rel="next" title="Android电源管理系列之Light Doze">
+                <i class="fa fa-chevron-left"></i> Android电源管理系列之Light Doze
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/03/android-ci-jenkins/" rel="prev" title="Android持续集成之Jenkins">
+                Android持续集成之Jenkins <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/09/15/android-power-doze-deep/"
+     data-title="Android电源管理系列之Deep Doze"
+     data-content=""
+     data-url="http://robinheztto.com/2017/09/15/android-power-doze-deep/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/15/android-power-doze-deep/"
+           data-title="Android电源管理系列之Deep Doze" data-url="http://robinheztto.com/2017/09/15/android-power-doze-deep/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-ACTIVE-gt-STATE-INACTIVE"><span class="nav-number">1.</span> <span class="nav-text">STATE_ACTIVE -> STATE_INACTIVE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-INACTIVE-gt-STATE-IDLE-PENDING"><span class="nav-number">2.</span> <span class="nav-text">STATE_INACTIVE -> STATE_IDLE_PENDING</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-IDLE-PENDING-gt-STATE-SENSING"><span class="nav-number">3.</span> <span class="nav-text">STATE_IDLE_PENDING -> STATE_SENSING</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-SENSING-gt-STATE-LOCATING"><span class="nav-number">4.</span> <span class="nav-text">STATE_SENSING -> STATE_LOCATING</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-LOCATING-gt-STATE-IDLE"><span class="nav-number">5.</span> <span class="nav-text">STATE_LOCATING -> STATE_IDLE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-IDLE-MAINTENANCE-gt-STATE-IDLE"><span class="nav-number">6.</span> <span class="nav-text">STATE_IDLE_MAINTENANCE -> STATE_IDLE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STATE-LOCATING-gt-STATE-IDLE-MAINTENANCE"><span class="nav-number">7.</span> <span class="nav-text">STATE_LOCATING -> STATE_IDLE_MAINTENANCE</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

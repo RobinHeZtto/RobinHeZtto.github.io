@@ -1,0 +1,790 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,PowerManagement," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/msm-4.4/kernel/power/process.ckernel/msm-4.4/kernel/power/console.ckernel/msm-4.4/kernel/power/power.hkernel/msm-4.4/incl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android电源管理系列之Suspend">
+<meta property="og:url" content="http://robinheztto.com/2017/05/05/android-power-suspend/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/msm-4.4/kernel/power/process.ckernel/msm-4.4/kernel/power/console.ckernel/msm-4.4/kernel/power/power.hkernel/msm-4.4/incl">
+<meta property="og:updated_time" content="2018-01-07T04:07:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android电源管理系列之Suspend">
+<meta name="twitter:description" content="kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/msm-4.4/kernel/power/process.ckernel/msm-4.4/kernel/power/console.ckernel/msm-4.4/kernel/power/power.hkernel/msm-4.4/incl">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android电源管理系列之Suspend | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android电源管理系列之Suspend
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-05T15:46:56+08:00" content="2017-05-05">
+              2017-05-05
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/05/android-power-suspend/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/05/android-power-suspend/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>kernel/msm-4.4/kernel/power/main.c<br>kernel/msm-4.4/kernel/power/suspend.c<br>kernel/msm-4.4/kernel/power/process.c<br>kernel/msm-4.4/kernel/power/console.c<br>kernel/msm-4.4/kernel/power/power.h<br>kernel/msm-4.4/include/linux/suspend.h<br>kernel-x.xx/drivers/misc/mediatek/base/power/spm_v2/mt_sleep.c</p>
+</blockquote>
+<p>Linux kernel提供Freeze，Standby，STR(Supend to RAM)三种Suspend机制，当用户空间向”/sys/power/state”文件分别写”freeze”，”standby”，”mem”时即触发对应的suspend流程。关于PM_SUSPEND的定义如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/include/linux/suspend.h</span><br><span class="line"></span><br><span class="line">#define PM_SUSPEND_ON		((__force suspend_state_t) 0)</span><br><span class="line">#define PM_SUSPEND_FREEZE	((__force suspend_state_t) 1)</span><br><span class="line">#define PM_SUSPEND_STANDBY	((__force suspend_state_t) 2)</span><br><span class="line">#define PM_SUSPEND_MEM		((__force suspend_state_t) 3)</span><br><span class="line">#define PM_SUSPEND_MIN		PM_SUSPEND_FREEZE</span><br><span class="line">#define PM_SUSPEND_MAX		((__force suspend_state_t) 4)</span><br></pre></td></tr></table></figure></p>
+<p>下面先从/sys/power/下属性文件的创建开始分析。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/main.c</span><br><span class="line"></span><br><span class="line">static int __init pm_init(void)</span><br><span class="line">&#123;</span><br><span class="line">	int error = pm_start_workqueue();</span><br><span class="line">	if (error)</span><br><span class="line">		return error;</span><br><span class="line">	hibernate_image_size_init();</span><br><span class="line">	hibernate_reserved_size_init();</span><br><span class="line">	power_kobj = kobject_create_and_add(&quot;power&quot;, NULL);</span><br><span class="line">	if (!power_kobj)</span><br><span class="line">		return -ENOMEM;</span><br><span class="line">	error = sysfs_create_group(power_kobj, &amp;attr_group);</span><br><span class="line">	if (error)</span><br><span class="line">		return error;</span><br><span class="line">	pm_print_times_init();</span><br><span class="line">	return pm_autosleep_init();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">core_initcall(pm_init);</span><br></pre></td></tr></table></figure></p>
+<p>pm_init中创建了/sys/power目录，并且根据attr_group的定义创建对应的属性文件，attr_group的定义如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/main.c</span><br><span class="line"></span><br><span class="line">static struct attribute * g[] = &#123;</span><br><span class="line">	&amp;state_attr.attr,</span><br><span class="line">#ifdef CONFIG_PM_TRACE</span><br><span class="line">	&amp;pm_trace_attr.attr,</span><br><span class="line">	&amp;pm_trace_dev_match_attr.attr,</span><br><span class="line">#endif</span><br><span class="line">#ifdef CONFIG_PM_SLEEP</span><br><span class="line">	&amp;pm_async_attr.attr,</span><br><span class="line">	&amp;wakeup_count_attr.attr,</span><br><span class="line">#ifdef CONFIG_PM_AUTOSLEEP</span><br><span class="line">	&amp;autosleep_attr.attr,</span><br><span class="line">#endif</span><br><span class="line">#ifdef CONFIG_PM_WAKELOCKS</span><br><span class="line">	&amp;wake_lock_attr.attr,</span><br><span class="line">	&amp;wake_unlock_attr.attr,</span><br><span class="line">#endif</span><br><span class="line">#ifdef CONFIG_PM_DEBUG</span><br><span class="line">	&amp;pm_test_attr.attr,</span><br><span class="line">#endif</span><br><span class="line">#ifdef CONFIG_PM_SLEEP_DEBUG</span><br><span class="line">	&amp;pm_print_times_attr.attr,</span><br><span class="line">	&amp;pm_wakeup_irq_attr.attr,</span><br><span class="line">#endif</span><br><span class="line">#endif</span><br><span class="line">#ifdef CONFIG_FREEZER</span><br><span class="line">	&amp;pm_freeze_timeout_attr.attr,</span><br><span class="line">#endif</span><br><span class="line">	NULL,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static struct attribute_group attr_group = &#123;</span><br><span class="line">	.attrs = g,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>attribute_group中定义了state_attr，pm_async_attr，wakeup_count_attr，wake_lock_attr，wake_unlock_attr等attribute，对应生成/sys/power/state，/sys/power/pm_async，/sys/power/wakeup_count，/sys/power/wake_lock，/sys/power/wake_unlock等属性文件。state_attr等attribute的show，sotre通过宏power_attr来定义的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/power.h</span><br><span class="line"></span><br><span class="line">#define power_attr(_name) \</span><br><span class="line">static struct kobj_attribute _name##_attr = &#123;	\</span><br><span class="line">	.attr	= &#123;				\</span><br><span class="line">		.name = __stringify(_name),	\</span><br><span class="line">		.mode = 0644,			\</span><br><span class="line">	&#125;,					\</span><br><span class="line">	.show	= _name##_show,			\</span><br><span class="line">	.store	= _name##_store,		\</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/main.c</span><br><span class="line"></span><br><span class="line">power_attr(pm_async);</span><br><span class="line">power_attr(state);</span><br><span class="line">power_attr(wake_unlock);</span><br><span class="line">power_attr(wake_lock);</span><br><span class="line">power_attr(wakeup_count);</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<p>下面首先看/sys/power/state的读取方法state_show的实现，即显平台所支持的Suspend机制(通过<code>cat /sys/power/state</code>可查询)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/main.c</span><br><span class="line"></span><br><span class="line">const char *pm_states[PM_SUSPEND_MAX];</span><br><span class="line"></span><br><span class="line">static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,</span><br><span class="line">			  char *buf)</span><br><span class="line">&#123;</span><br><span class="line">	char *s = buf;</span><br><span class="line">#ifdef CONFIG_SUSPEND</span><br><span class="line">	suspend_state_t i;</span><br><span class="line"></span><br><span class="line">	for (i = PM_SUSPEND_MIN; i &lt; PM_SUSPEND_MAX; i++)</span><br><span class="line">		if (pm_states[i])</span><br><span class="line">			s += sprintf(s,&quot;%s &quot;, pm_states[i]);</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line">	if (hibernation_available())</span><br><span class="line">		s += sprintf(s, &quot;disk &quot;);</span><br><span class="line">	if (s != buf)</span><br><span class="line">		/* convert the last space to a newline */</span><br><span class="line">		*(s-1) = &apos;\n&apos;;</span><br><span class="line">	return (s - buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>state_show实际上显示的是pm_states中的值，pm_states时在suspend_set_ops中初始化赋值的，后面再详细描述。继续看state_store即suspend的流程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/main.c</span><br><span class="line"></span><br><span class="line">static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,</span><br><span class="line">			   const char *buf, size_t n)</span><br><span class="line">&#123;</span><br><span class="line">	suspend_state_t state;</span><br><span class="line">	int error;</span><br><span class="line"></span><br><span class="line">	error = pm_autosleep_lock();</span><br><span class="line">	if (error)</span><br><span class="line">		return error;</span><br><span class="line"></span><br><span class="line">	if (pm_autosleep_state() &gt; PM_SUSPEND_ON) &#123;</span><br><span class="line">		error = -EBUSY;</span><br><span class="line">		goto out;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	state = decode_state(buf, n);</span><br><span class="line">	if (state &lt; PM_SUSPEND_MAX)</span><br><span class="line">		error = pm_suspend(state);</span><br><span class="line">	else if (state == PM_SUSPEND_MAX)</span><br><span class="line">		error = hibernate();</span><br><span class="line">	else</span><br><span class="line">		error = -EINVAL;</span><br><span class="line"></span><br><span class="line"> out:</span><br><span class="line">	pm_autosleep_unlock();</span><br><span class="line">	return error ? error : n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">power_attr(state);</span><br></pre></td></tr></table></figure></p>
+<p>state_store中首先解析从用户空间传入的buffer(freeze、standby or mem)，转换成state参数，然后调用pm_suspend()继续处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">int pm_suspend(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	int error;</span><br><span class="line"></span><br><span class="line">	if (state &lt;= PM_SUSPEND_ON || state &gt;= PM_SUSPEND_MAX)</span><br><span class="line">		return -EINVAL;</span><br><span class="line"></span><br><span class="line">	pm_suspend_marker(&quot;entry&quot;);</span><br><span class="line">	error = enter_state(state);</span><br><span class="line">	if (error) &#123;</span><br><span class="line">		suspend_stats.fail++;</span><br><span class="line">		dpm_save_failed_errno(error);</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		suspend_stats.success++;</span><br><span class="line">	&#125;</span><br><span class="line">	pm_suspend_marker(&quot;exit&quot;);</span><br><span class="line">	return error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>pm_suspend中首先对参数state进行判断是否合法，然后继续调用enter_state。由pm_suspend_marker可以看到，”entry”与”exit”都是在pm_suspend中，enter_state函数进入休眠直到唤醒时才返回。另外debug时，可根据pm_suspend_marker确定进入与退出suspend的时间，如下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">static void pm_suspend_marker(char *annotation)</span><br><span class="line">&#123;</span><br><span class="line">	struct timespec ts;</span><br><span class="line">	struct rtc_time tm;</span><br><span class="line"></span><br><span class="line">	getnstimeofday(&amp;ts);</span><br><span class="line">	rtc_time_to_tm(ts.tv_sec, &amp;tm);</span><br><span class="line">	pr_info(&quot;PM: suspend %s %d-%02d-%02d %02d:%02d:%02d.%09lu UTC\n&quot;,</span><br><span class="line">		annotation, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,</span><br><span class="line">		tm.tm_hour, tm.tm_min, tm.tm_sec, ts.tv_nsec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>继续看enter_state的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">static int enter_state(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	int error;</span><br><span class="line"></span><br><span class="line">	trace_suspend_resume(TPS(&quot;suspend_enter&quot;), state, true);</span><br><span class="line">	if (state == PM_SUSPEND_FREEZE) &#123;</span><br><span class="line">#ifdef CONFIG_PM_DEBUG</span><br><span class="line">		if (pm_test_level != TEST_NONE &amp;&amp; pm_test_level &lt;= TEST_CPUS) &#123;</span><br><span class="line">			pr_warning(&quot;PM: Unsupported test mode for suspend to idle,&quot;</span><br><span class="line">				   &quot;please choose none/freezer/devices/platform.\n&quot;);</span><br><span class="line">			return -EAGAIN;</span><br><span class="line">		&#125;</span><br><span class="line">#endif</span><br><span class="line">	// 判断是否支持请求的状态state</span><br><span class="line">	&#125; else if (!valid_state(state)) &#123;</span><br><span class="line">		return -EINVAL;</span><br><span class="line">	&#125;</span><br><span class="line">	// 互斥锁，只允许同时处理一个suspend流程</span><br><span class="line">	if (!mutex_trylock(&amp;pm_mutex))</span><br><span class="line">		return -EBUSY;</span><br><span class="line">	// 请求进入freeze，调用freeze_begin流程</span><br><span class="line">	if (state == PM_SUSPEND_FREEZE)</span><br><span class="line">		freeze_begin();</span><br><span class="line"></span><br><span class="line">	// state为standby或mem则进入一下流程处理，首先sync文件系统</span><br><span class="line">#ifndef CONFIG_SUSPEND_SKIP_SYNC</span><br><span class="line">	trace_suspend_resume(TPS(&quot;sync_filesystems&quot;), 0, true);</span><br><span class="line">	printk(KERN_INFO &quot;PM: Syncing filesystems ... &quot;);</span><br><span class="line">	sys_sync();</span><br><span class="line">	printk(&quot;done.\n&quot;);</span><br><span class="line">	trace_suspend_resume(TPS(&quot;sync_filesystems&quot;), 0, false);</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">	pr_debug(&quot;PM: Preparing system for sleep (%s)\n&quot;, pm_states[state]);</span><br><span class="line">	pm_suspend_clear_flags();</span><br><span class="line">	// 调用suspend_prepare进行suspend前的准备工作</span><br><span class="line">	error = suspend_prepare(state);</span><br><span class="line">	if (error)</span><br><span class="line">		goto Unlock;</span><br><span class="line"></span><br><span class="line">	if (suspend_test(TEST_FREEZER))</span><br><span class="line">		goto Finish;</span><br><span class="line"></span><br><span class="line">	trace_suspend_resume(TPS(&quot;suspend_enter&quot;), state, false);</span><br><span class="line">	pr_debug(&quot;PM: Suspending system (%s)\n&quot;, pm_states[state]);</span><br><span class="line">	pm_restrict_gfp_mask();</span><br><span class="line">	// 进入suspend流程</span><br><span class="line">	error = suspend_devices_and_enter(state);</span><br><span class="line">	pm_restore_gfp_mask();</span><br><span class="line"></span><br><span class="line"> Finish:</span><br><span class="line">	pr_debug(&quot;PM: Finishing wakeup.\n&quot;);</span><br><span class="line">	// 退出suspend,恢复suspend前的状态</span><br><span class="line">	suspend_finish();</span><br><span class="line"> Unlock:</span><br><span class="line">	mutex_unlock(&amp;pm_mutex);</span><br><span class="line">	return error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>enter_state中根据state判断，如果是freeze，则进入freeze_begin()处理，如果是standby或mem，则首先同步文件系统，然后调用suspend_prepare进行suspend前的准备工作，最后在suspend_devices_and_enter中进入suspend，当系统唤醒时，在suspend_finish中进行恢复操作。下面详细分析该流程，首先看valid_state的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/include/linux/suspend.h</span><br><span class="line"></span><br><span class="line">struct platform_suspend_ops &#123;</span><br><span class="line">	int (*valid)(suspend_state_t state);</span><br><span class="line">	int (*begin)(suspend_state_t state);</span><br><span class="line">	int (*prepare)(void);</span><br><span class="line">	int (*prepare_late)(void);</span><br><span class="line">	int (*enter)(suspend_state_t state);</span><br><span class="line">	void (*wake)(void);</span><br><span class="line">	void (*finish)(void);</span><br><span class="line">	bool (*suspend_again)(void);</span><br><span class="line">	void (*end)(void);</span><br><span class="line">	void (*recover)(void);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">static const struct platform_suspend_ops *suspend_ops;</span><br><span class="line"></span><br><span class="line">static bool valid_state(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	/*</span><br><span class="line">	 * PM_SUSPEND_STANDBY and PM_SUSPEND_MEM states need low level</span><br><span class="line">	 * support and need to be valid to the low level</span><br><span class="line">	 * implementation, no valid callback implies that none are valid.</span><br><span class="line">	 */</span><br><span class="line">	return suspend_ops &amp;&amp; suspend_ops-&gt;valid &amp;&amp; suspend_ops-&gt;valid(state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>valid_state中调用的是suspend_ops-&gt;valid，(注释可以看到PM_SUSPEND_STANDBY和PM_SUSPEND_MEM是需要底层支持)，即在平台代码中实现。下面以MTK平台为例，看platform_suspend_ops的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel-x.xx/drivers/misc/mediatek/base/power/spm_v2/mt_sleep.c</span><br><span class="line"></span><br><span class="line">static int slp_suspend_ops_valid(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	return state == PM_SUSPEND_MEM;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int slp_suspend_ops_begin(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	/* legacy log */</span><br><span class="line">	slp_notice(&quot;@@@@@@@@@@@@@@@@@@@@\tChip_pm_begin(%u)(%u)\t@@@@@@@@@@@@@@@@@@@@\n&quot;,</span><br><span class="line">			is_cpu_pdn(slp_spm_flags), is_infra_pdn(slp_spm_flags));</span><br><span class="line"></span><br><span class="line">	slp_wake_reason = WR_NONE;</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void __attribute__((weak)) mt_power_gs_dump_suspend(void)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int slp_suspend_ops_prepare(void)</span><br><span class="line">&#123;</span><br><span class="line">	/* legacy log */</span><br><span class="line">	slp_crit2(&quot;@@@@@@@@@@@@@@@@@@@@\tChip_pm_prepare\t@@@@@@@@@@@@@@@@@@@@\n&quot;);</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#ifdef CONFIG_MTKPASR</span><br><span class="line">/* PASR/DPD Preliminary operations */</span><br><span class="line">static int slp_suspend_ops_prepare_late(void)</span><br><span class="line">&#123;</span><br><span class="line">	slp_notice(&quot;[%s]\n&quot;, __func__);</span><br><span class="line">	mtkpasr_phaseone_ops();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void slp_suspend_ops_wake(void)</span><br><span class="line">&#123;</span><br><span class="line">	slp_notice(&quot;[%s]\n&quot;, __func__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int slp_suspend_ops_enter(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void slp_suspend_ops_finish(void)</span><br><span class="line">&#123;</span><br><span class="line">	/* legacy log */</span><br><span class="line">	slp_crit2(&quot;@@@@@@@@@@@@@@@@@@@@\tChip_pm_finish\t@@@@@@@@@@@@@@@@@@@@\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void slp_suspend_ops_end(void)</span><br><span class="line">&#123;</span><br><span class="line">	/* legacy log */</span><br><span class="line">	slp_notice(&quot;@@@@@@@@@@@@@@@@@@@@\tChip_pm_end\t@@@@@@@@@@@@@@@@@@@@\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static const struct platform_suspend_ops slp_suspend_ops = &#123;</span><br><span class="line">	.valid = slp_suspend_ops_valid,</span><br><span class="line">	.begin = slp_suspend_ops_begin,</span><br><span class="line">	.prepare = slp_suspend_ops_prepare,</span><br><span class="line">	.enter = slp_suspend_ops_enter,</span><br><span class="line">	.finish = slp_suspend_ops_finish,</span><br><span class="line">	.end = slp_suspend_ops_end,</span><br><span class="line">#ifdef CONFIG_MTKPASR</span><br><span class="line">	.prepare_late = slp_suspend_ops_prepare_late,</span><br><span class="line">	.wake = slp_suspend_ops_wake,</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<p>mt_sleep.c中定义了platform_suspend_ops的实现，这里的slp_suspend_ops_valid支持的是PM_SUSPEND_MEM。接下来继续回到enter_state函数中分析suspend_prepare的流程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">static int suspend_prepare(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	int error;</span><br><span class="line"></span><br><span class="line">	// 检查是否支持该state，PM_SUSPEND_FREEZE或者有实现suspend_ops-&gt;enter</span><br><span class="line">	if (!sleep_state_supported(state))</span><br><span class="line">		return -EPERM;</span><br><span class="line"></span><br><span class="line">	// 将当前console切换到一个虚拟console并重定向内核的kmsg  </span><br><span class="line">	pm_prepare_console();</span><br><span class="line"></span><br><span class="line">  // 发送PM_SUSPEND_PREPARE消息  </span><br><span class="line">	error = pm_notifier_call_chain(PM_SUSPEND_PREPARE);</span><br><span class="line">	if (error)</span><br><span class="line">		goto Finish;</span><br><span class="line"></span><br><span class="line">	trace_suspend_resume(TPS(&quot;freeze_processes&quot;), 0, true);</span><br><span class="line">  // freeze用户空间进程和内核线程</span><br><span class="line">	error = suspend_freeze_processes();</span><br><span class="line">	trace_suspend_resume(TPS(&quot;freeze_processes&quot;), 0, false);</span><br><span class="line">	if (!error)</span><br><span class="line">		return 0;</span><br><span class="line"></span><br><span class="line">	suspend_stats.failed_freeze++;</span><br><span class="line">	dpm_save_failed_step(SUSPEND_FREEZE);</span><br><span class="line"> Finish:</span><br><span class="line">	// 如果freeze失败，则恢复console的操作</span><br><span class="line">	pm_notifier_call_chain(PM_POST_SUSPEND);</span><br><span class="line">	pm_restore_console();</span><br><span class="line">	return error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>suspend_prepare主要是处理console并冻结用户进程与内核线程，在suspend_prepare准备工作之后，调用suspend_devices_and_enter开始进入suspend状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">int suspend_devices_and_enter(suspend_state_t state)</span><br><span class="line">&#123;</span><br><span class="line">	int error;</span><br><span class="line">	bool wakeup = false;</span><br><span class="line"></span><br><span class="line">	// 再次检查是否支持该state，PM_SUSPEND_FREEZE或者有实现suspend_ops-&gt;enter</span><br><span class="line">	if (!sleep_state_supported(state))</span><br><span class="line">		return -ENOSYS;</span><br><span class="line"></span><br><span class="line">	//调用平台实现suspend_ops-&gt;begin()</span><br><span class="line">	error = platform_suspend_begin(state);</span><br><span class="line">	if (error)</span><br><span class="line">		goto Close;</span><br><span class="line"></span><br><span class="line">	//挂起console</span><br><span class="line">	suspend_console();</span><br><span class="line">	suspend_test_start();</span><br><span class="line">	//调用所有设备的-&gt;prepare和-&gt;suspend回调函数，注意suspend device可能失败，会跳至Recover_platform，执行recover操作（suspend_ops-&gt;recover）</span><br><span class="line">	error = dpm_suspend_start(PMSG_SUSPEND);</span><br><span class="line">	if (error) &#123;</span><br><span class="line">		pr_err(&quot;PM: Some devices failed to suspend, or early wake event detected\n&quot;);</span><br><span class="line">		log_suspend_abort_reason(&quot;Some devices failed to suspend, or early wake event detected&quot;);</span><br><span class="line">		goto Recover_platform;</span><br><span class="line">	&#125;</span><br><span class="line">	suspend_test_finish(&quot;suspend devices&quot;);</span><br><span class="line">	if (suspend_test(TEST_DEVICES))</span><br><span class="line">		goto Recover_platform;</span><br><span class="line"></span><br><span class="line">	do &#123;</span><br><span class="line">		// 最终，在suspend_enter中进入suspend状态</span><br><span class="line">		error = suspend_enter(state, &amp;wakeup);</span><br><span class="line">	&#125; while (!error &amp;&amp; !wakeup &amp;&amp; platform_suspend_again(state));</span><br><span class="line"></span><br><span class="line"> Resume_devices:</span><br><span class="line">	suspend_test_start();</span><br><span class="line">	dpm_resume_end(PMSG_RESUME);</span><br><span class="line">	suspend_test_finish(&quot;resume devices&quot;);</span><br><span class="line">	trace_suspend_resume(TPS(&quot;resume_console&quot;), state, true);</span><br><span class="line">	resume_console();</span><br><span class="line">	trace_suspend_resume(TPS(&quot;resume_console&quot;), state, false);</span><br><span class="line"></span><br><span class="line"> Close:</span><br><span class="line">	platform_resume_end(state);</span><br><span class="line">	return error;</span><br><span class="line"></span><br><span class="line"> Recover_platform:</span><br><span class="line">	platform_recover(state);</span><br><span class="line">	goto Resume_devices;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>suspend_devices_and_enter中会挂起console，并执行设备驱动的-&gt;prepare和-&gt;suspend回调函数，然后在suspend_enter中进入休眠状态，通过返回值告知是否enter成功，同时通过wakeup指针，告知调用者，是否有wakeup事件发生，导致进入休眠失败。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/kernel/power/suspend.c</span><br><span class="line"></span><br><span class="line">static int suspend_enter(suspend_state_t state, bool *wakeup)</span><br><span class="line">&#123;</span><br><span class="line">	char suspend_abort[MAX_SUSPEND_ABORT_LEN];</span><br><span class="line">	int error, last_dev;</span><br><span class="line">	// 调用suspend_ops-&gt;prepare()</span><br><span class="line">	error = platform_suspend_prepare(state);</span><br><span class="line">	if (error)</span><br><span class="line">		goto Platform_finish;</span><br><span class="line">	// 调用所有设备的-&gt;suspend_late和-&gt;suspend_noirq回调函数</span><br><span class="line">	error = dpm_suspend_late(PMSG_SUSPEND);</span><br><span class="line">	if (error) &#123;</span><br><span class="line">		last_dev = suspend_stats.last_failed_dev + REC_FAILED_NUM - 1;</span><br><span class="line">		last_dev %= REC_FAILED_NUM;</span><br><span class="line">		printk(KERN_ERR &quot;PM: late suspend of devices failed\n&quot;);</span><br><span class="line">		log_suspend_abort_reason(&quot;%s device failed to power down&quot;,</span><br><span class="line">			suspend_stats.failed_devs[last_dev]);</span><br><span class="line">		goto Platform_finish;</span><br><span class="line">	&#125;</span><br><span class="line">	// 调用suspend_ops的prepare_late回调</span><br><span class="line">	error = platform_suspend_prepare_late(state);</span><br><span class="line">	if (error)</span><br><span class="line">		goto Devices_early_resume;</span><br><span class="line"></span><br><span class="line">	error = dpm_suspend_noirq(PMSG_SUSPEND);</span><br><span class="line">	if (error) &#123;</span><br><span class="line">		last_dev = suspend_stats.last_failed_dev + REC_FAILED_NUM - 1;</span><br><span class="line">		last_dev %= REC_FAILED_NUM;</span><br><span class="line">		printk(KERN_ERR &quot;PM: noirq suspend of devices failed\n&quot;);</span><br><span class="line">		log_suspend_abort_reason(&quot;noirq suspend of %s device failed&quot;,</span><br><span class="line">			suspend_stats.failed_devs[last_dev]);</span><br><span class="line">		goto Platform_early_resume;</span><br><span class="line">	&#125;</span><br><span class="line">	error = platform_suspend_prepare_noirq(state);</span><br><span class="line">	if (error)</span><br><span class="line">		goto Platform_wake;</span><br><span class="line"></span><br><span class="line">	if (suspend_test(TEST_PLATFORM))</span><br><span class="line">		goto Platform_wake;</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	 * 如果是suspend to freeze，执行相应的操作，包括冻结进程</span><br><span class="line">	 * suspended devices（参数为PM_SUSPEND_FREEZE）、cpu进入idle。</span><br><span class="line">	 * 如果有任何事件使CPU从idle状态退出，跳至Platform_wake处，执行wake操作。</span><br><span class="line">	 */</span><br><span class="line">	if (state == PM_SUSPEND_FREEZE) &#123;</span><br><span class="line">		trace_suspend_resume(TPS(&quot;machine_suspend&quot;), state, true);</span><br><span class="line">		freeze_enter();</span><br><span class="line">		trace_suspend_resume(TPS(&quot;machine_suspend&quot;), state, false);</span><br><span class="line">		goto Platform_wake;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 禁止所有的非boot cpu</span><br><span class="line">	error = disable_nonboot_cpus();</span><br><span class="line">	if (error || suspend_test(TEST_CPUS)) &#123;</span><br><span class="line">		log_suspend_abort_reason(&quot;Disabling non-boot cpus failed&quot;);</span><br><span class="line">		goto Enable_cpus;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//关全局中断</span><br><span class="line">	arch_suspend_disable_irqs();</span><br><span class="line">	BUG_ON(!irqs_disabled());</span><br><span class="line"></span><br><span class="line">	// 调用syscore_suspend，suspend system core</span><br><span class="line">	error = syscore_suspend();</span><br><span class="line">	if (!error) &#123;</span><br><span class="line">		// 检查一下suspend执行这段时间内，是否有唤醒事件发生</span><br><span class="line">		*wakeup = pm_wakeup_pending();</span><br><span class="line">		if (!(suspend_test(TEST_CORE) || *wakeup)) &#123;</span><br><span class="line">			trace_suspend_resume(TPS(&quot;machine_suspend&quot;),</span><br><span class="line">				state, true);</span><br><span class="line">			// 调用suspend_ops-&gt;enter进入休眠状态  </span><br><span class="line">			error = suspend_ops-&gt;enter(state);</span><br><span class="line">			trace_suspend_resume(TPS(&quot;machine_suspend&quot;),</span><br><span class="line">				state, false);</span><br><span class="line">			events_check_enabled = false;</span><br><span class="line">		&#125; else if (*wakeup) &#123;</span><br><span class="line">			pm_get_active_wakeup_sources(suspend_abort,</span><br><span class="line">				MAX_SUSPEND_ABORT_LEN);</span><br><span class="line">			log_suspend_abort_reason(suspend_abort);</span><br><span class="line">			error = -EBUSY;</span><br><span class="line">		&#125;</span><br><span class="line">		syscore_resume();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	arch_suspend_enable_irqs();</span><br><span class="line">	BUG_ON(irqs_disabled());</span><br><span class="line"></span><br><span class="line"> Enable_cpus:</span><br><span class="line">	enable_nonboot_cpus();</span><br><span class="line"></span><br><span class="line"> Platform_wake:</span><br><span class="line">	platform_resume_noirq(state);</span><br><span class="line">	dpm_resume_noirq(PMSG_RESUME);</span><br><span class="line">suspend_ops-&gt;enter</span><br><span class="line"> Platform_early_resume:</span><br><span class="line">	platform_resume_early(state);</span><br><span class="line"></span><br><span class="line"> Devices_early_resume:</span><br><span class="line">	dpm_resume_early(PMSG_RESUME);</span><br><span class="line"></span><br><span class="line"> Platform_finish:</span><br><span class="line">	platform_resume_finish(state);</span><br><span class="line">	return error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>suspend_enter中经过一系列的处理，最终在suspend_ops-&gt;enter中进入休眠状态，当唤醒事件发生，系统唤醒，该函数接着执行resume动作，并最终返回，resume动作基本上是suspend的反动作。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/PowerManagement/" rel="tag">#PowerManagement</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/01/android-power-system-wakeup-events-framework/" rel="next" title="Android电源管理系列之System wakeup events framework">
+                <i class="fa fa-chevron-left"></i> Android电源管理系列之System wakeup events framework
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/20/android-power-libsuspend/" rel="prev" title="Android电源管理系列之libsuspend">
+                Android电源管理系列之libsuspend <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/05/05/android-power-suspend/"
+     data-title="Android电源管理系列之Suspend"
+     data-content=""
+     data-url="http://robinheztto.com/2017/05/05/android-power-suspend/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/05/android-power-suspend/"
+           data-title="Android电源管理系列之Suspend" data-url="http://robinheztto.com/2017/05/05/android-power-suspend/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Power Management,Doze," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Light Doze的状态切换如下图示：
+
+LIGHT_STATE_ACTIVE -&amp;gt; LIGHT_STATE_INACTIVEDeviceIdleController服务启动过程中注册了DisplayListener，BATTERY_CHANGED Receiver监听屏幕亮灭与充电状态事件。1234567891011121314151617181920212223242526272829">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android电源管理系列之Light Doze">
+<meta property="og:url" content="http://robinheztto.com/2017/09/13/android-power-doze-light/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="Light Doze的状态切换如下图示：
+
+LIGHT_STATE_ACTIVE -&amp;gt; LIGHT_STATE_INACTIVEDeviceIdleController服务启动过程中注册了DisplayListener，BATTERY_CHANGED Receiver监听屏幕亮灭与充电状态事件。1234567891011121314151617181920212223242526272829">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/light_doze.png?raw=true">
+<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android电源管理系列之Light Doze">
+<meta name="twitter:description" content="Light Doze的状态切换如下图示：
+
+LIGHT_STATE_ACTIVE -&amp;gt; LIGHT_STATE_INACTIVEDeviceIdleController服务启动过程中注册了DisplayListener，BATTERY_CHANGED Receiver监听屏幕亮灭与充电状态事件。1234567891011121314151617181920212223242526272829">
+<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/light_doze.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android电源管理系列之Light Doze | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android电源管理系列之Light Doze
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-13T10:36:15+08:00" content="2017-09-13">
+              2017-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/13/android-power-doze-light/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/13/android-power-doze-light/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Light Doze的状态切换如下图示：</p>
+<p><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/light_doze.png?raw=true" alt="light doze machine state"><br></div></p>
+<h2 id="LIGHT-STATE-ACTIVE-gt-LIGHT-STATE-INACTIVE"><a href="#LIGHT-STATE-ACTIVE-gt-LIGHT-STATE-INACTIVE" class="headerlink" title="LIGHT_STATE_ACTIVE -&gt; LIGHT_STATE_INACTIVE"></a>LIGHT_STATE_ACTIVE -&gt; LIGHT_STATE_INACTIVE</h2><p>DeviceIdleController服务启动过程中注册了DisplayListener，BATTERY_CHANGED Receiver监听屏幕亮灭与充电状态事件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">void updateDisplayLocked() &#123;</span><br><span class="line">    // 获取default Display  </span><br><span class="line">    mCurDisplay = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY);</span><br><span class="line">    boolean screenOn = mCurDisplay.getState() == Display.STATE_ON;</span><br><span class="line">    // 灭屏</span><br><span class="line">    if (!screenOn &amp;&amp; mScreenOn) &#123;</span><br><span class="line">        mScreenOn = false;</span><br><span class="line">        if (!mForceIdle) &#123;</span><br><span class="line">            becomeInactiveIfAppropriateLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    // 亮屏</span><br><span class="line">    &#125; else if (screenOn) &#123;</span><br><span class="line">        mScreenOn = true;</span><br><span class="line">        if (!mForceIdle) &#123;</span><br><span class="line">            becomeActiveLocked(&quot;screen&quot;, Process.myUid());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void updateChargingLocked(boolean charging) &#123;</span><br><span class="line">    // 未充电状态</span><br><span class="line">    if (!charging &amp;&amp; mCharging) &#123;</span><br><span class="line">        mCharging = false;</span><br><span class="line">        if (!mForceIdle) &#123;</span><br><span class="line">            becomeInactiveIfAppropriateLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    // 充电状态</span><br><span class="line">    &#125; else if (charging) &#123;</span><br><span class="line">        mCharging = charging;</span><br><span class="line">        if (!mForceIdle) &#123;</span><br><span class="line">            becomeActiveLocked(&quot;charging&quot;, Process.myUid());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当灭屏或未充电状态事件触发时，调用becomeInactiveIfAppropriateLocked进行状态处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">void becomeInactiveIfAppropriateLocked() &#123;</span><br><span class="line">    // 灭屏且未充电  </span><br><span class="line">    if ((!mScreenOn &amp;&amp; !mCharging) || mForceIdle) &#123;</span><br><span class="line">        // 进入deep模式，在下篇博客中分析</span><br><span class="line">        if (mState == STATE_ACTIVE &amp;&amp; mDeepEnabled) &#123;</span><br><span class="line">            mState = STATE_INACTIVE;</span><br><span class="line">            resetIdleManagementLocked();</span><br><span class="line">            scheduleAlarmLocked(mInactiveTimeout, false);</span><br><span class="line">            EventLogTags.writeDeviceIdle(mState, &quot;no activity&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        // 当前模式是LIGHT_STATE_ACTIVE，且mLightEnabled开关打开(上篇博客已分析)</span><br><span class="line">        if (mLightState == LIGHT_STATE_ACTIVE &amp;&amp; mLightEnabled) &#123;</span><br><span class="line">            // 切换当前light状态为LIGHT_STATE_INACTIVE</span><br><span class="line">            mLightState = LIGHT_STATE_INACTIVE;</span><br><span class="line">            // 取消Light定时器</span><br><span class="line">            resetLightIdleManagementLocked();</span><br><span class="line">            // 启动Light定时器，进入Light状态机轮转</span><br><span class="line">            scheduleLightAlarmLocked(mConstants.LIGHT_IDLE_AFTER_INACTIVE_TIMEOUT);</span><br><span class="line">            EventLogTags.writeDeviceIdleLight(mLightState, &quot;no activity&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void scheduleLightAlarmLocked(long delay) &#123;</span><br><span class="line">    mNextLightAlarmTime = SystemClock.elapsedRealtime() + delay;</span><br><span class="line">    // 定时时间到后，mLightAlarmListener将在mHandler关联的BackgroundThread线程中执行</span><br><span class="line">    mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,</span><br><span class="line">            mNextLightAlarmTime, &quot;DeviceIdleController.light&quot;, mLightAlarmListener, mHandler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>灭屏且未充电状态或打开强制Idle状态满足时，LIGHT_STATE_ACTIVE切换到LIGHT_STATE_INACTIVE，并且启动定时器轮转状态机。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LIGHT_IDLE_AFTER_INACTIVE_TIMEOUT = mParser.getLong(</span><br><span class="line">        KEY_LIGHT_IDLE_AFTER_INACTIVE_TIMEOUT,</span><br><span class="line">        !COMPRESS_TIME ? 5 * 60 * 1000L : 15 * 1000L);</span><br></pre></td></tr></table></figure></p>
+<p>定时器定时时间LIGHT_IDLE_AFTER_INACTIVE_TIMEOUT即light_idle_to默认为5min。</p>
+<h2 id="LIGHT-STATE-INACTIVE-gt-LIGHT-STATE-PRE-IDLE"><a href="#LIGHT-STATE-INACTIVE-gt-LIGHT-STATE-PRE-IDLE" class="headerlink" title="LIGHT_STATE_INACTIVE -&gt; LIGHT_STATE_PRE_IDLE"></a>LIGHT_STATE_INACTIVE -&gt; LIGHT_STATE_PRE_IDLE</h2><p>在过LIGHT_IDLE_AFTER_INACTIVE_TIMEOUT时间的定时后，进入mLightAlarmListener中处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private final AlarmManager.OnAlarmListener mLightAlarmListener</span><br><span class="line">        = new AlarmManager.OnAlarmListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onAlarm() &#123;</span><br><span class="line">        synchronized (DeviceIdleController.this) &#123;</span><br><span class="line">            stepLightIdleStateLocked(&quot;s:alarm&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>继续看stepLightIdleStateLocked的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">// LIGHT_STATE_IDLE_MAINTENANCE最短时间，默认为1min</span><br><span class="line">LIGHT_IDLE_MAINTENANCE_MIN_BUDGET = mParser.getLong(</span><br><span class="line">        KEY_LIGHT_IDLE_MAINTENANCE_MIN_BUDGET,</span><br><span class="line">        !COMPRESS_TIME ? 1 * 60 * 1000L : 15 * 1000L);</span><br><span class="line"></span><br><span class="line">// LIGHT_IDLE_TIMEOUT默认值为5min</span><br><span class="line">LIGHT_IDLE_TIMEOUT = mParser.getLong(KEY_LIGHT_IDLE_TIMEOUT,</span><br><span class="line">        !COMPRESS_TIME ? 5 * 60 * 1000L : 15 * 1000L);  </span><br><span class="line"></span><br><span class="line">// LIGHT_STATE_PRE_IDLE时间，默认为10min</span><br><span class="line">LIGHT_PRE_IDLE_TIMEOUT = mParser.getLong(KEY_LIGHT_PRE_IDLE_TIMEOUT,</span><br><span class="line">        !COMPRESS_TIME ? 10 * 60 * 1000L : 30 * 1000L);              </span><br><span class="line"></span><br><span class="line">void stepLightIdleStateLocked(String reason) &#123;</span><br><span class="line">    // 如果处于Deep mode的IDLE状态，Light Mode将会被忽略</span><br><span class="line">    if (mLightState == LIGHT_STATE_OVERRIDE) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 当前mLightState处于LIGHT_STATE_INACTIVE状态</span><br><span class="line">    switch (mLightState) &#123;</span><br><span class="line">        case LIGHT_STATE_INACTIVE:</span><br><span class="line">            // LIGHT_STATE_IDLE_MAINTENANCE最短时间，默认为1min</span><br><span class="line">            mCurIdleBudget = mConstants.LIGHT_IDLE_MAINTENANCE_MIN_BUDGET;</span><br><span class="line">            // Idle时间初始值为LIGHT_IDLE_TIMEOUT，5min</span><br><span class="line">            mNextLightIdleDelay = mConstants.LIGHT_IDLE_TIMEOUT;</span><br><span class="line">            mMaintenanceStartTime = 0;</span><br><span class="line">            //　当前有Alarm或job等active ops，先进入LIGHT_STATE_PRE_IDLE状态等待完成，否则直接进入LIGHT_STATE_PRE_IDLE</span><br><span class="line">            if (!isOpsInactiveLocked()) &#123;</span><br><span class="line">                mLightState = LIGHT_STATE_PRE_IDLE;</span><br><span class="line">                EventLogTags.writeDeviceIdleLight(mLightState, reason);</span><br><span class="line">                // 设置LIGHT_STATE_PRE_IDLE时间，默认为10min</span><br><span class="line">                scheduleLightAlarmLocked(mConstants.LIGHT_PRE_IDLE_TIMEOUT);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        case LIGHT_STATE_PRE_IDLE:</span><br><span class="line">        case LIGHT_STATE_IDLE_MAINTENANCE:</span><br><span class="line">            .......</span><br><span class="line">            break;</span><br><span class="line">        case LIGHT_STATE_IDLE:</span><br><span class="line">        case LIGHT_STATE_WAITING_FOR_NETWORK:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>stepLightIdleStateLocked中LIGHT_STATE_INACTIVE的处理，当首次进入存在active ops时，将会进入LIGHT_STATE_PRE_IDLE状态，等待当前处理完成，mConstants.LIGHT_PRE_IDLE_TIMEOUT即light_pre_idle_to时间到后，再次进入stepLightIdleStateLocked中进行处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boolean isOpsInactiveLocked() &#123;</span><br><span class="line">    return mActiveIdleOpCount &lt;= 0 &amp;&amp; !mJobsActive &amp;&amp; !mAlarmsActive;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="LIGHT-STATE-PRE-IDLE-gt-LIGHT-STATE-IDLE"><a href="#LIGHT-STATE-PRE-IDLE-gt-LIGHT-STATE-IDLE" class="headerlink" title="LIGHT_STATE_PRE_IDLE -&gt; LIGHT_STATE_IDLE"></a>LIGHT_STATE_PRE_IDLE -&gt; LIGHT_STATE_IDLE</h2><p>当LIGHT_STATE_PRE_IDLE定时时间到后，继续进入到stepLightIdleStateLocked中处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">void stepLightIdleStateLocked(String reason) &#123;</span><br><span class="line">    if (mLightState == LIGHT_STATE_OVERRIDE) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 当前mLightState处于LIGHT_STATE_PRE_IDLE状态</span><br><span class="line">    switch (mLightState) &#123;</span><br><span class="line">        case LIGHT_STATE_INACTIVE:</span><br><span class="line">            ......</span><br><span class="line">        case LIGHT_STATE_PRE_IDLE:</span><br><span class="line">        case LIGHT_STATE_IDLE_MAINTENANCE:</span><br><span class="line">            // 当前mMaintenanceStartTime=0</span><br><span class="line">            if (mMaintenanceStartTime != 0) &#123;</span><br><span class="line">                long duration = SystemClock.elapsedRealtime() - mMaintenanceStartTime;</span><br><span class="line">                if (duration &lt; mConstants.LIGHT_IDLE_MAINTENANCE_MIN_BUDGET) &#123;</span><br><span class="line">                    // We didn&apos;t use up all of our minimum budget; add this to the reserve.</span><br><span class="line">                    mCurIdleBudget += (mConstants.LIGHT_IDLE_MAINTENANCE_MIN_BUDGET-duration);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    // We used more than our minimum budget; this comes out of the reserve.</span><br><span class="line">                    mCurIdleBudget -= (duration-mConstants.LIGHT_IDLE_MAINTENANCE_MIN_BUDGET);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            mMaintenanceStartTime = 0;</span><br><span class="line">            // 设置IDLE时间，初始值为LIGHT_IDLE_TIMEOUT，5min</span><br><span class="line">            scheduleLightAlarmLocked(mNextLightIdleDelay);</span><br><span class="line">            // 设置下次IDLE的时间，5*2^min</span><br><span class="line">            // 最长LIGHT_MAX_IDLE_TIMEOUT，15min，最短LIGHT_IDLE_TIMEOUT,5min</span><br><span class="line">            mNextLightIdleDelay = Math.min(mConstants.LIGHT_MAX_IDLE_TIMEOUT,</span><br><span class="line">                    (long)(mNextLightIdleDelay * mConstants.LIGHT_IDLE_FACTOR));</span><br><span class="line">            if (mNextLightIdleDelay &lt; mConstants.LIGHT_IDLE_TIMEOUT) &#123;</span><br><span class="line">                mNextLightIdleDelay = mConstants.LIGHT_IDLE_TIMEOUT;</span><br><span class="line">            &#125;</span><br><span class="line">            if (DEBUG) Slog.d(TAG, &quot;Moved to LIGHT_STATE_IDLE.&quot;);</span><br><span class="line">            // 进入LIGHT_STATE_IDLE模式</span><br><span class="line">            mLightState = LIGHT_STATE_IDLE;</span><br><span class="line">            EventLogTags.writeDeviceIdleLight(mLightState, reason);</span><br><span class="line">            addEvent(EVENT_LIGHT_IDLE);</span><br><span class="line">            // 发送消息，进行LIGHT_STATE_IDLE状态相关的处理</span><br><span class="line">            mHandler.sendEmptyMessage(MSG_REPORT_IDLE_ON_LIGHT);</span><br><span class="line">            break;</span><br><span class="line">        case LIGHT_STATE_IDLE:</span><br><span class="line">        case LIGHT_STATE_WAITING_FOR_NETWORK:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>stepLightIdleStateLocked中对LIGHT_STATE_PRE_IDLE状态的处理，进入LIGHT_STATE_IDLE状态并设置时间，然后发送消息进行状态切换相关的处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">final class MyHandler extends Handler &#123;</span><br><span class="line">    ......</span><br><span class="line">    @Override public void handleMessage(Message msg) &#123;</span><br><span class="line">        if (DEBUG) Slog.d(TAG, &quot;handleMessage(&quot; + msg.what + &quot;)&quot;);</span><br><span class="line">        switch (msg.what) &#123;</span><br><span class="line">            case MSG_WRITE_CONFIG: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_IDLE_ON:</span><br><span class="line">            case MSG_REPORT_IDLE_ON_LIGHT: &#123;</span><br><span class="line">                final boolean deepChanged;</span><br><span class="line">                final boolean lightChanged;</span><br><span class="line">                if (msg.what == MSG_REPORT_IDLE_ON) &#123;</span><br><span class="line">                    ......</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    // LocalPowerManager设置LightDeviceIdle模式</span><br><span class="line">                    deepChanged = mLocalPowerManager.setDeviceIdleMode(false);</span><br><span class="line">                    lightChanged = mLocalPowerManager.setLightDeviceIdleMode(true);</span><br><span class="line">                &#125;</span><br><span class="line">                try &#123;</span><br><span class="line">                    // NetworkPolicyManager设置DeviceIdle模式，禁止非白名单应用联网</span><br><span class="line">                    mNetworkPolicyManager.setDeviceIdleMode(true);</span><br><span class="line">                    mBatteryStats.noteDeviceIdleMode(msg.what == MSG_REPORT_IDLE_ON</span><br><span class="line">                            ? BatteryStats.DEVICE_IDLE_MODE_DEEP</span><br><span class="line">                            : BatteryStats.DEVICE_IDLE_MODE_LIGHT, null, Process.myUid());</span><br><span class="line">                &#125; catch (RemoteException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">                ......</span><br><span class="line">                // 发送LightIdle模式切换广播</span><br><span class="line">                if (lightChanged) &#123;</span><br><span class="line">                    getContext().sendBroadcastAsUser(mLightIdleIntent, UserHandle.ALL);</span><br><span class="line">                &#125;</span><br><span class="line">                EventLogTags.writeDeviceIdleOnComplete();</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_IDLE_OFF: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_ACTIVE: &#123;</span><br><span class="line">              ......              </span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_TEMP_APP_WHITELIST_TIMEOUT: &#123;</span><br><span class="line">              ......              </span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_MAINTENANCE_ACTIVITY: &#123;</span><br><span class="line">              ......              </span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_FINISH_IDLE_OP: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在MyHandler中会对MSG_REPORT_IDLE_ON_LIGHT消息进行一系列的处理通知各个模块对LightDeviceId进行处理，包括禁止网络，推迟SyncManager，jobsheduler等。</p>
+<h2 id="LIGHT-STATE-IDLE-gt-LIGHT-STATE-IDLE-MAINTENANCE"><a href="#LIGHT-STATE-IDLE-gt-LIGHT-STATE-IDLE-MAINTENANCE" class="headerlink" title="LIGHT_STATE_IDLE -&gt; LIGHT_STATE_IDLE_MAINTENANCE"></a>LIGHT_STATE_IDLE -&gt; LIGHT_STATE_IDLE_MAINTENANCE</h2><h2 id="LIGHT-STATE-IDLE-gt-LIGHT-STATE-WAITING-FOR-NETWORK"><a href="#LIGHT-STATE-IDLE-gt-LIGHT-STATE-WAITING-FOR-NETWORK" class="headerlink" title="LIGHT_STATE_IDLE -&gt; LIGHT_STATE_WAITING_FOR_NETWORK"></a>LIGHT_STATE_IDLE -&gt; LIGHT_STATE_WAITING_FOR_NETWORK</h2><p>当LIGHT_STATE_IDLE定时时间到后，继续进入到stepLightIdleStateLocked中进行处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">LIGHT_IDLE_MAINTENANCE时间默认最短1min，最长5min</span><br><span class="line">LIGHT_IDLE_MAINTENANCE_MIN_BUDGET = mParser.getLong(</span><br><span class="line">        KEY_LIGHT_IDLE_MAINTENANCE_MIN_BUDGET,</span><br><span class="line">        !COMPRESS_TIME ? 1 * 60 * 1000L : 15 * 1000L);</span><br><span class="line">LIGHT_IDLE_MAINTENANCE_MAX_BUDGET = mParser.getLong(</span><br><span class="line">        KEY_LIGHT_IDLE_MAINTENANCE_MAX_BUDGET,</span><br><span class="line">        !COMPRESS_TIME ? 5 * 60 * 1000L : 30 * 1000L);</span><br><span class="line"></span><br><span class="line">void stepLightIdleStateLocked(String reason) &#123;</span><br><span class="line">    ......</span><br><span class="line">    // 当前状态mLightState为LIGHT_STATE_IDLE</span><br><span class="line">    switch (mLightState) &#123;</span><br><span class="line">        case LIGHT_STATE_INACTIVE:</span><br><span class="line">            ......</span><br><span class="line">        case LIGHT_STATE_PRE_IDLE:</span><br><span class="line">        case LIGHT_STATE_IDLE_MAINTENANCE:</span><br><span class="line">            ......</span><br><span class="line">            break;</span><br><span class="line">        case LIGHT_STATE_IDLE:</span><br><span class="line">        case LIGHT_STATE_WAITING_FOR_NETWORK:</span><br><span class="line">            // 当前有网络连接时或为LIGHT_STATE_WAITING_FOR_NETWORK状态时，直接进入LIGHT_STATE_IDLE_MAINTENANCE状态</span><br><span class="line">            if (mNetworkConnected || mLightState == LIGHT_STATE_WAITING_FOR_NETWORK) &#123;</span><br><span class="line">                // 设置mActiveIdleOpCount初始值为1</span><br><span class="line">                mActiveIdleOpCount = 1;</span><br><span class="line">                // mActiveIdleWakeLock防止系统进入休眠</span><br><span class="line">                mActiveIdleWakeLock.acquire();</span><br><span class="line">                // mCurIdleBudget即mMaintenance windows时间最短1min最长5min</span><br><span class="line">                mMaintenanceStartTime = SystemClock.elapsedRealtime();</span><br><span class="line">                if (mCurIdleBudget &lt; mConstants.LIGHT_IDLE_MAINTENANCE_MIN_BUDGET) &#123;</span><br><span class="line">                    mCurIdleBudget = mConstants.LIGHT_IDLE_MAINTENANCE_MIN_BUDGET;</span><br><span class="line">                &#125; else if (mCurIdleBudget &gt; mConstants.LIGHT_IDLE_MAINTENANCE_MAX_BUDGET) &#123;</span><br><span class="line">                    mCurIdleBudget = mConstants.LIGHT_IDLE_MAINTENANCE_MAX_BUDGET;</span><br><span class="line">                &#125;</span><br><span class="line">                // 进入LIGHT_STATE_IDLE_MAINTENANCE状态并设置定时器</span><br><span class="line">                scheduleLightAlarmLocked(mCurIdleBudget);</span><br><span class="line">                if (DEBUG) Slog.d(TAG,</span><br><span class="line">                        &quot;Moved from LIGHT_STATE_IDLE to LIGHT_STATE_IDLE_MAINTENANCE.&quot;);</span><br><span class="line">                mLightState = LIGHT_STATE_IDLE_MAINTENANCE;</span><br><span class="line">                EventLogTags.writeDeviceIdleLight(mLightState, reason);</span><br><span class="line">                addEvent(EVENT_LIGHT_MAINTENANCE);</span><br><span class="line">                // 发送消息，对LIGHT_STATE_IDLE_MAINTENANCE状态进行处理</span><br><span class="line">                mHandler.sendEmptyMessage(MSG_REPORT_IDLE_OFF);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                // 当前没有网络连接，先进入LIGHT_STATE_WAITING_FOR_NETWORK等待一个idle的周期</span><br><span class="line">                scheduleLightAlarmLocked(mNextLightIdleDelay);</span><br><span class="line">                if (DEBUG) Slog.d(TAG, &quot;Moved to LIGHT_WAITING_FOR_NETWORK.&quot;);</span><br><span class="line">                mLightState = LIGHT_STATE_WAITING_FOR_NETWORK;</span><br><span class="line">                EventLogTags.writeDeviceIdleLight(mLightState, reason);</span><br><span class="line">            &#125;</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当退出LIGHT_STATE_IDLE状态时，如当前有网络连接或者为LIGHT_STATE_WAITING_FOR_NETWORK状态，则直接进入LIGHT_STATE_IDLE_MAINTENANCE，并发送MSG_REPORT_IDLE_OFF消息处理该状态的切换。如当前没有网络连接时，则先进入LIGHT_STATE_WAITING_FOR_NETWORK等待一个idle的周期等待网络连接。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">final class MyHandler extends Handler &#123;</span><br><span class="line">    @Override public void handleMessage(Message msg) &#123;</span><br><span class="line">        if (DEBUG) Slog.d(TAG, &quot;handleMessage(&quot; + msg.what + &quot;)&quot;);</span><br><span class="line">        switch (msg.what) &#123;</span><br><span class="line">            case MSG_WRITE_CONFIG: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_IDLE_ON:</span><br><span class="line">            case MSG_REPORT_IDLE_ON_LIGHT: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            // MSG_REPORT_IDLE_OFF即执行MSG_REPORT_IDLE_ON_LIGHT中的反操作，恢复LIGH_IDLE的限制操作</span><br><span class="line">            case MSG_REPORT_IDLE_OFF: &#123;</span><br><span class="line">                EventLogTags.writeDeviceIdleOffStart(&quot;unknown&quot;);</span><br><span class="line">                final boolean deepChanged = mLocalPowerManager.setDeviceIdleMode(false);</span><br><span class="line">                final boolean lightChanged = mLocalPowerManager.setLightDeviceIdleMode(false);</span><br><span class="line">                try &#123;</span><br><span class="line">                    mNetworkPolicyManager.setDeviceIdleMode(false);</span><br><span class="line">                    mBatteryStats.noteDeviceIdleMode(BatteryStats.DEVICE_IDLE_MODE_OFF,</span><br><span class="line">                            null, Process.myUid());</span><br><span class="line">                &#125; catch (RemoteException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">                if (deepChanged) &#123;</span><br><span class="line">                  ......</span><br><span class="line">                &#125;</span><br><span class="line">                if (lightChanged) &#123;</span><br><span class="line">                  　// 曾加mActiveIdleOpCount计数</span><br><span class="line">                    incActiveIdleOps();</span><br><span class="line">                    // 发送广播，最后执行mIdleStartedDoneReceiver</span><br><span class="line">                    getContext().sendOrderedBroadcastAsUser(mLightIdleIntent, UserHandle.ALL,</span><br><span class="line">                            null, mIdleStartedDoneReceiver, null, 0, null, null);</span><br><span class="line">                &#125;</span><br><span class="line">                // 减少mActiveIdleOpCount计数</span><br><span class="line">                decActiveIdleOps();</span><br><span class="line">                EventLogTags.writeDeviceIdleOffComplete();</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_ACTIVE: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_TEMP_APP_WHITELIST_TIMEOUT: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_REPORT_MAINTENANCE_ACTIVITY: &#123;</span><br><span class="line">              ......</span><br><span class="line">            &#125; break;</span><br><span class="line">            case MSG_FINISH_IDLE_OP: &#123;</span><br><span class="line">              decActiveIdleOps();</span><br><span class="line">            &#125; break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>MyHandler中处理MSG_REPORT_IDLE_OFF消息主要是恢复MSG_REPORT_IDLE_ON时所做的限制操作，恢复网络，SyncManager，jobsheduler的执行。</p>
+<h2 id="LIGHT-STATE-IDLE-MAINTENANCE-gt-LIGHT-STATE-IDLE"><a href="#LIGHT-STATE-IDLE-MAINTENANCE-gt-LIGHT-STATE-IDLE" class="headerlink" title="LIGHT_STATE_IDLE_MAINTENANCE -&gt; LIGHT_STATE_IDLE"></a>LIGHT_STATE_IDLE_MAINTENANCE -&gt; LIGHT_STATE_IDLE</h2><p>LIGHT_STATE_IDLE_MAINTENANCE状态恢复操作处理时，最后执行最后decActiveIdleOps()，同时发送的OrderedBroadcast也会执行mIdleStartedDoneReceiver最后也是调用decActiveIdleOps()处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private final BroadcastReceiver mIdleStartedDoneReceiver = new BroadcastReceiver() &#123;</span><br><span class="line">    @Override public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">        if (PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED.equals(intent.getAction())) &#123;</span><br><span class="line">            ......</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            mHandler.sendEmptyMessageDelayed(MSG_FINISH_IDLE_OP,</span><br><span class="line">                    mConstants.MIN_LIGHT_MAINTENANCE_TIME);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>mIdleStartedDoneReceiver中发送MSG_FINISH_IDLE_OP消息，进入decActiveIdleOps()中处理，检查当前是否有active的操作(Alarm，Job)，如果没有则无需等定时器到期提前退出Maintenance windows。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">void decActiveIdleOps() &#123;</span><br><span class="line">    synchronized (this) &#123;</span><br><span class="line">        mActiveIdleOpCount--;</span><br><span class="line">        // 当前activie操作小于等于0，说明当前没有执行的操作，可以以前退出Maintenance windows     </span><br><span class="line">        if (mActiveIdleOpCount &lt;= 0) &#123;</span><br><span class="line">            exitMaintenanceEarlyIfNeededLocked();</span><br><span class="line">            mActiveIdleWakeLock.release();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void exitMaintenanceEarlyIfNeededLocked() &#123;</span><br><span class="line">    if (mState == STATE_IDLE_MAINTENANCE || mLightState == LIGHT_STATE_IDLE_MAINTENANCE</span><br><span class="line">            || mLightState == LIGHT_STATE_PRE_IDLE) &#123;</span><br><span class="line">        // 当前是否有activie ops操作</span><br><span class="line">        if (isOpsInactiveLocked()) &#123;</span><br><span class="line">            final long now = SystemClock.elapsedRealtime();</span><br><span class="line">            if (mState == STATE_IDLE_MAINTENANCE) &#123;</span><br><span class="line">                stepIdleStateLocked(&quot;s:early&quot;);</span><br><span class="line">            &#125; else if (mLightState == LIGHT_STATE_PRE_IDLE) &#123;</span><br><span class="line">                stepLightIdleStateLocked(&quot;s:predone&quot;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                stepLightIdleStateLocked(&quot;s:early&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>后续stepLightIdleStateLocked中的处理跟LIGHT_STATE_PRE_IDLE到LIGHT_STATE_IDLE状态切换一致。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Power-Management/" rel="tag">#Power Management</a>
+          
+            <a href="/tags/Doze/" rel="tag">#Doze</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/11/android-power-doze-overview/" rel="next" title="Android电源管理系列之Doze">
+                <i class="fa fa-chevron-left"></i> Android电源管理系列之Doze
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/15/android-power-doze-deep/" rel="prev" title="Android电源管理系列之Deep Doze">
+                Android电源管理系列之Deep Doze <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/09/13/android-power-doze-light/"
+     data-title="Android电源管理系列之Light Doze"
+     data-content=""
+     data-url="http://robinheztto.com/2017/09/13/android-power-doze-light/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/13/android-power-doze-light/"
+           data-title="Android电源管理系列之Light Doze" data-url="http://robinheztto.com/2017/09/13/android-power-doze-light/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LIGHT-STATE-ACTIVE-gt-LIGHT-STATE-INACTIVE"><span class="nav-number">1.</span> <span class="nav-text">LIGHT_STATE_ACTIVE -> LIGHT_STATE_INACTIVE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LIGHT-STATE-INACTIVE-gt-LIGHT-STATE-PRE-IDLE"><span class="nav-number">2.</span> <span class="nav-text">LIGHT_STATE_INACTIVE -> LIGHT_STATE_PRE_IDLE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LIGHT-STATE-PRE-IDLE-gt-LIGHT-STATE-IDLE"><span class="nav-number">3.</span> <span class="nav-text">LIGHT_STATE_PRE_IDLE -> LIGHT_STATE_IDLE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LIGHT-STATE-IDLE-gt-LIGHT-STATE-IDLE-MAINTENANCE"><span class="nav-number">4.</span> <span class="nav-text">LIGHT_STATE_IDLE -> LIGHT_STATE_IDLE_MAINTENANCE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LIGHT-STATE-IDLE-gt-LIGHT-STATE-WAITING-FOR-NETWORK"><span class="nav-number">5.</span> <span class="nav-text">LIGHT_STATE_IDLE -> LIGHT_STATE_WAITING_FOR_NETWORK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LIGHT-STATE-IDLE-MAINTENANCE-gt-LIGHT-STATE-IDLE"><span class="nav-number">6.</span> <span class="nav-text">LIGHT_STATE_IDLE_MAINTENANCE -> LIGHT_STATE_IDLE</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

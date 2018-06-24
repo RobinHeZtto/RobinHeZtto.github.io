@@ -95,7 +95,7 @@
 <meta property="og:description" content="Binder简介在Android系统中，应用程序是由组件(Acyiviy/Service/Broadcast Receiver/Content Provider)组成的，组件可以运行在一个进程中，也可以分别运行在不同进程中。同样，在Android系统中的各类系统服务也可以运行在一个或多个进程中，运行在不同进程的应用程序组件或系统服务之间的通信都是通过Binder来进行的。
 由于Android是基于">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true">
-<meta property="og:updated_time" content="2017-02-07T02:54:41.000Z">
+<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Binder之概述">
 <meta name="twitter:description" content="Binder简介在Android系统中，应用程序是由组件(Acyiviy/Service/Broadcast Receiver/Content Provider)组成的，组件可以运行在一个进程中，也可以分别运行在不同进程中。同样，在Android系统中的各类系统服务也可以运行在一个或多个进程中，运行在不同进程的应用程序组件或系统服务之间的通信都是通过Binder来进行的。
@@ -329,7 +329,7 @@
 
       
         <h1 id="Binder简介"><a href="#Binder简介" class="headerlink" title="Binder简介"></a>Binder简介</h1><p>在Android系统中，应用程序是由组件(Acyiviy/Service/Broadcast Receiver/Content Provider)组成的，组件可以运行在一个进程中，也可以分别运行在不同进程中。同样，在Android系统中的各类系统服务也可以运行在一个或多个进程中，运行在不同进程的应用程序组件或系统服务之间的通信都是通过Binder来进行的。</p>
-<p>由于Android是基于Linux内核开发的，在Linux系统中传统的IPC机制有Pipe，ShareMemory，Singal，Message，Socket等，但Android并未完全采用这些传统的进程间通信机制，而是引入了Binder作为其主要的IPC机制。Binder是在<a href="http://www.angryredplanet.com/~hackbod/openbinder/docs/html/BinderIPCMechanism.html" target="_blank" rel="external">OpebBinder</a>的基础上实现的，OpenBinder是一套开源的系统IPC机制，最初是由Be Inc开发，后来由Palm, Inc公司负责开发，Google对其改造后应用到了Android系统上。</p>
+<p>由于Android是基于Linux内核开发的，在Linux系统中传统的IPC机制有Pipe，ShareMemory，Singal，Message，Socket等，但Android并未完全采用这些传统的进程间通信机制，而是引入了Binder作为其主要的IPC机制。Binder是在<a href="http://www.angryredplanet.com/~hackbod/openbinder/docs/html/BinderIPCMechanism.html" target="_blank" rel="external">OpenBinder</a>的基础上实现的，OpenBinder是一套开源的系统IPC机制，最初是由Be Inc开发，后来由Palm, Inc公司负责开发，Google对其改造后应用到了Android系统上。</p>
 <p>Binder相比其他的IPC机制有什么优势?</p>
 <ol>
 <li>基于Client-Server的通信方式。APP通过调用Service接口就可以非常方便的完成很多功能。</li>
@@ -338,7 +338,7 @@
 <li>安全性。Android为每个安装的应用程序分配了UID，Binder能依据调用进程的UID/PID来进行权限控制，而传统IPC需要上层协议来验证权限保证安全性。</li>
 </ol>
 <h1 id="Binder机制"><a href="#Binder机制" class="headerlink" title="Binder机制"></a>Binder机制</h1><p>Binder采用的是CS通信方式，对于提供服务的进程即Server进程，请求服务的进程即Client进程。同一个Server进程可能存在多个Service组件，同时同一个Clent进程可以请求多个Service组件。<br>如下图所示，Binder的通信涉及到4个角色，分别是Client，Service，Service Mananger与Binder Driver。</p>
-<p><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true" alt="Binder进程间通信机制"><br></div><br>Client，Service，Service Mananger都运行在用户空间独立的进程中，由于用户进程地址空间是独立且不能相互访问，而内核空间却是是全局共享，所以可以通过内核空间的缓冲区进行数据的中转。如下图示Client，Service，Service Mananger通过SystemCall(open,mmap,ioctl)访问/dev/binder，通过Binder driver间接建立与用户空间其他进程的通信通道。</p>
+<p><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/Binder-model.jpg?raw=true" alt="Binder进程间通信机制"><br></div><br>Client，Service，Service Mananger都运行在用户空间独立的进程中，由于用户进程地址空间是独立且不能相互访问，而内核空间却是是全局共享，所以可以通过内核空间的缓冲区进行数据的中转。如下图示Client，Service，Service Mananger通过SystemCall(open，mmap，ioctl)访问/dev/binder，通过Binder driver间接建立与用户空间其他进程的通信通道。</p>
 <h1 id="Binder分析"><a href="#Binder分析" class="headerlink" title="Binder分析"></a>Binder分析</h1><ul>
 <li><a href="http://www.robinheztto.com/2016/03/19/android-binder-0/" target="_blank" rel="external">Android Binder之概述</a></li>
 <li><a href="http://www.robinheztto.com/2016/03/20/android-binder-1/" target="_blank" rel="external">Android Binder之Binder Driver</a></li>
@@ -486,7 +486,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -496,7 +496,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -551,7 +551,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

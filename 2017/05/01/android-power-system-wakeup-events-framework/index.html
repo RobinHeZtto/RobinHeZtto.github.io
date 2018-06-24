@@ -1,0 +1,810 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,PowerManagement," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup.hkernel/msm-4.4/include/linux/pm.hkernel/msm-4.4/include/linux/device.h
+
+背景Android以Linux kernel为系统内核，其电源管理也是基于Linux电源管">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android电源管理系列之System wakeup events framework">
+<meta property="og:url" content="http://robinheztto.com/2017/05/01/android-power-system-wakeup-events-framework/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup.hkernel/msm-4.4/include/linux/pm.hkernel/msm-4.4/include/linux/device.h
+
+背景Android以Linux kernel为系统内核，其电源管理也是基于Linux电源管">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/wakeup-events-framework-arch.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/sys_kernel_debug_wakeup_sources.png?raw=true">
+<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android电源管理系列之System wakeup events framework">
+<meta name="twitter:description" content="kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup.hkernel/msm-4.4/include/linux/pm.hkernel/msm-4.4/include/linux/device.h
+
+背景Android以Linux kernel为系统内核，其电源管理也是基于Linux电源管">
+<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/wakeup-events-framework-arch.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android电源管理系列之System wakeup events framework | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android电源管理系列之System wakeup events framework
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-01T15:46:56+08:00" content="2017-05-01">
+              2017-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/01/android-power-system-wakeup-events-framework/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/01/android-power-system-wakeup-events-framework/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>kernel/msm-4.4/drivers/base/power/wakeup.c<br>kernel/msm-4.4/include/linux/pm_wakeup.h<br>kernel/msm-4.4/include/linux/pm.h<br>kernel/msm-4.4/include/linux/device.h</p>
+</blockquote>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Android以Linux kernel为系统内核，其电源管理也是基于Linux电源管理子系统的，但是由于传统的Linux系统主要针对PC而非移动设备，对于PC系统，Linux默认是在用户不再使用时才再触发系统进入休眠(STR、Standby、Hibernate)，但是对于移动设备的使用特点而言，并没有明确的不再使用设备的时候，用户随时随地都可能需要使用设备，于是在Android上就有提出了“Opportunistic suspend”的概念，即逮到机会就睡直到下次被唤醒，以适应移动设备的使用特点。</p>
+<p>早期，Android为解决该问题，在标准Linux的基础上增加了Early Suspend和Late Resume机制，Early suspend是在熄屏后，提前将一些不会用到的设备(比如背光、重力感应器和触摸屏等设备)关闭，但此时系统仍能持有wake lock后台运行。该方案将Linux原来suspend的流程改变，并增加了Android自己的处理函数，与kernel的流程与机制相冲突，另外一个问题就是存在suspend和wakeup events之间的同步问题，比如当系统进入suspend流程中，会进行freeze process，device prepared，device suspend，disabled irq等操作，如果在suspend流程中有wakeup events产生，而此时系统无法从suspend过程中唤醒。</p>
+<p>后来Linux加入wakeup events framework，包括wake lock、wakeup count、autosleep等机制。用来解决system suspend和system wakeup events之间的同步问题。同时在Android4.4中，Android中也去掉了之前的”wakelocks”机制，利用wakeup events framework重新设计了wakelocks，并且维持上层API不变。</p>
+<p>system suspend和system wakeup events之间的同步问题:</p>
+<ul>
+<li>内核空间的同步:<br>wakeup events产生后，通常是以中断的形式通知device driver。driver会处理events，处理的过程中，系统不能suspend。</li>
+<li>用户空间的同步:<br>一般情况下，driver对wakeup events处理后，会交给用户空间程序继续处理，处理的过程，也不允许suspend。这又可以分为两种情况：<ol>
+<li>进行后续处理的用户进程，根本没有机会被调度，即该wakeup events无法上报到用户空间。</li>
+<li>进行后续处理的用户进程被调度，处理的过程中（以及处理结束后，决定终止suspend操作），系统不能suspend。(wake lock功能)</li>
+</ol>
+</li>
+</ul>
+<p>wakeup events framework主要解决上述三个同步问题，内核空间的同步(framework的核心功能)，用户空间的同步情形1(wakeup count功能)，用户空间的同步情形2(wake lock功能)。  </p>
+<h1 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h1><p>下面是wakeup events framework的architecture图(来自<a href="http://www.wowotech.net" target="_blank" rel="external">蜗窝科技</a>)</p>
+<div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/wakeup-events-framework-arch.jpeg?raw=true" alt="wakeup events framework architecture"><br></div><br>wakeup events framework sysfs将设备的wakeup信息，以sysfs的形式提供到用户空间，供用户空间访问(在drivers/base/power/sysfs.c中实现)。<br><br>## wakeup source<br>在kernel中，只有设备才能唤醒系统，但并不是所有设备都具备唤醒系统的能力，具备唤醒能力的设备即“wakeup source”，会在设备结构体struce device中标志该设备具有唤醒能力。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; kernel/msm-4.4/include/linux/device.h</span><br><span class="line"></span><br><span class="line">struct device &#123;  </span><br><span class="line">    ...  </span><br><span class="line">    struct dev_pm_info  power;   </span><br><span class="line">    struct dev_pm_domain    *pm_domain;  </span><br><span class="line">    ...  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; kernel/msm-4.4/include/linux/pm_wakeup.h</span><br><span class="line"></span><br><span class="line">static inline bool device_can_wakeup(struct device *dev)</span><br><span class="line">&#123;</span><br><span class="line">	return dev-&gt;power.can_wakeup;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static inline bool device_may_wakeup(struct device *dev)</span><br><span class="line">&#123;</span><br><span class="line">	return dev-&gt;power.can_wakeup &amp;&amp; !!dev-&gt;power.wakeup;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br>由device_can_wakeup()函数可知，通过dev-&gt;power.can_wakeup来判断该设备是否能唤醒系统，struct dev_pm_info的定义如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/include/linux/pm.h</span><br><span class="line"></span><br><span class="line">struct dev_pm_info &#123;</span><br><span class="line">  ......</span><br><span class="line">	unsigned int		can_wakeup:1;</span><br><span class="line">  ......</span><br><span class="line">#ifdef CONFIG_PM_SLEEP</span><br><span class="line">  ......</span><br><span class="line">	struct wakeup_source	*wakeup;</span><br><span class="line">  ......</span><br><span class="line">#else</span><br><span class="line">	unsigned int		should_wakeup:1;</span><br><span class="line">#endif</span><br><span class="line">  ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br><br>struct dev_pm_info中的can_wakeup标识该设备是否具有唤醒能力。具备唤醒能力的设备在sys/devices/xxx/下存在power相关目录，用于提供所有的wakeup信息，这些信息是以struct wakeup_source的结构组织，即struct dev_pm_info中的wakeup指针。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/include/linux/pm_wakeup.h</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * struct wakeup_source - Representation of wakeup sources</span><br><span class="line"> *</span><br><span class="line"> * @name: 唤醒源的名字</span><br><span class="line"> * @entry: 用来将唤醒源挂到链表上，用于管理</span><br><span class="line"> * @lock: 同步机制，用于访问链表时使用</span><br><span class="line"> * @wakeirq:Optional device specific wakeirq</span><br><span class="line"> * @timer: 定时器，用于设置该唤醒源的超时时间</span><br><span class="line"> * @timer_expires:  定时器的超时时间</span><br><span class="line"> * @total_time:  wakeup source处于active状态的总时间，可指示该wakeup source对应的设备的繁忙程度、耗电等级</span><br><span class="line"> * @max_time: wakeup source处于active状态的最长时间（越长越不合理）</span><br><span class="line"> * @last_time: wakeup source处于active状态的上次时间</span><br><span class="line"> * @prevent_sleep_time: wakeup source阻止系统自动休眠的总时间</span><br><span class="line"> * @event_count:  wakeup source上报wakeup event的个数</span><br><span class="line"> * @active_count: wakeup source处于active状态的次数</span><br><span class="line"> * @relax_count: wakeup source处于deactive状态的次数</span><br><span class="line"> * @expire_count: wakeup source timeout次数</span><br><span class="line"> * @wakeup_count: wakeup source abort睡眠的次数</span><br><span class="line"> * @active: wakeup source的状态</span><br><span class="line"> * @has_timeout: The wakeup source has been activated with a timeout.</span><br><span class="line"> */</span><br><span class="line">struct wakeup_source &#123;</span><br><span class="line">	const char 		*name;</span><br><span class="line">	struct list_head	entry;</span><br><span class="line">	spinlock_t		lock;</span><br><span class="line">	struct wake_irq		*wakeirq;</span><br><span class="line">	struct timer_list	timer;</span><br><span class="line">	unsigned long		timer_expires;</span><br><span class="line">	ktime_t total_time;</span><br><span class="line">	ktime_t max_time;</span><br><span class="line">	ktime_t last_time;</span><br><span class="line">	ktime_t start_prevent_time;</span><br><span class="line">	ktime_t prevent_sleep_time;</span><br><span class="line">	unsigned long		event_count;</span><br><span class="line">	unsigned long		active_count;</span><br><span class="line">	unsigned long		relax_count;</span><br><span class="line">	unsigned long		expire_count;</span><br><span class="line">	unsigned long		wakeup_count;</span><br><span class="line">	bool			active:1;</span><br><span class="line">	bool			autosleep_enabled:1;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br><br>wakeup source代表一个具有唤醒能力的设备，该设备产生的可以唤醒系统的事件，就称作wakeup event。当wakeup source产生wakeup event时，需要将wakeup source切换为activate状态；当wakeup event处理完毕后，要切换为deactivate状态。当wakeup source产生wakeup event时，需要切换到activate状态，但并不是每次都需要切换，因此有可能已经处于activate状态了。因此active_count可能小于event_count，换句话说，很有可能在前一个wakeup event没被处理完时，又产生了一个，这从一定程度上反映了wakeup source所代表的设备的繁忙程度。wakeup source在suspend过程中产生wakeup event的话，就会终止suspend过程，wakeup_count记录了wakeup source终止suspend过程的次数（如果发现系统总是suspend失败，检查一下各个wakeup source的该变量，就可以知道问题出在谁身上了）。<br>为了方便查看系统的wakeup sources的信息，linux系统在/sys/kernel/debug下创建了一个”wakeup_sources”文件，此文件记录了系统的唤醒源的详细信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/drivers/base/power/wakeup.c</span><br><span class="line"></span><br><span class="line">static int wakeup_sources_stats_show(struct seq_file *m, void *unused)</span><br><span class="line">&#123;</span><br><span class="line">	struct wakeup_source *ws;</span><br><span class="line"></span><br><span class="line">	seq_puts(m, &quot;name\t\tactive_count\tevent_count\twakeup_count\t&quot;</span><br><span class="line">		&quot;expire_count\tactive_since\ttotal_time\tmax_time\t&quot;</span><br><span class="line">		&quot;last_change\tprevent_suspend_time\n&quot;);</span><br><span class="line"></span><br><span class="line">	rcu_read_lock();</span><br><span class="line">	list_for_each_entry_rcu(ws, &amp;wakeup_sources, entry)</span><br><span class="line">		print_wakeup_source_stats(m, ws);</span><br><span class="line">	rcu_read_unlock();</span><br><span class="line"></span><br><span class="line">	print_wakeup_source_stats(m, &amp;deleted_ws);</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int wakeup_sources_stats_open(struct inode *inode, struct file *file)</span><br><span class="line">&#123;</span><br><span class="line">	return single_open(file, wakeup_sources_stats_show, NULL);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static const struct file_operations wakeup_sources_stats_fops = &#123;</span><br><span class="line">	.owner = THIS_MODULE,</span><br><span class="line">	.open = wakeup_sources_stats_open,</span><br><span class="line">	.read = seq_read,</span><br><span class="line">	.llseek = seq_lseek,</span><br><span class="line">	.release = single_release,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static int __init wakeup_sources_debugfs_init(void)</span><br><span class="line">&#123;</span><br><span class="line">	wakeup_sources_stats_dentry = debugfs_create_file(&quot;wakeup_sources&quot;,</span><br><span class="line">			S_IRUGO, NULL, NULL, &amp;wakeup_sources_stats_fops);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">postcore_initcall(wakeup_sources_debugfs_init);</span><br></pre></td></tr></table></figure><br><br>如下图示，通过<code>cat /sys/kernel/debug/wakeup_sources</code>获取wakeup_sources信息：<br><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/sys_kernel_debug_wakeup_sources.png?raw=true" alt="sys_kernel_debug_wakeup_sources"><br></div>
+
+<h2 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h2><p>wakeup events framework中抽象了wakeup source和wakeup event的概念，向各个device driver提供wakeup source的注册、使能等及wakeup event的上报、停止等接口，同时也向上层提供wakeup event的查询接口，以判断是否可以suspend或者是否需要终止正在进行的suspend。</p>
+<h3 id="pm-stay-awake"><a href="#pm-stay-awake" class="headerlink" title="pm_stay_awake()"></a>pm_stay_awake()</h3><p>当设备有wakeup event正在处理时，需要调用该接口通知PM core，该接口的实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/drivers/base/power/wakeup.c</span><br><span class="line"></span><br><span class="line">void pm_stay_awake(struct device *dev)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned long flags;</span><br><span class="line"></span><br><span class="line">	if (!dev)</span><br><span class="line">		return;</span><br><span class="line"></span><br><span class="line">	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);</span><br><span class="line">	__pm_stay_awake(dev-&gt;power.wakeup);</span><br><span class="line">	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void __pm_stay_awake(struct wakeup_source *ws)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned long flags;</span><br><span class="line"></span><br><span class="line">	if (!ws)</span><br><span class="line">		return;</span><br><span class="line"></span><br><span class="line">	spin_lock_irqsave(&amp;ws-&gt;lock, flags);</span><br><span class="line"></span><br><span class="line">	wakeup_source_report_event(ws);</span><br><span class="line">	del_timer(&amp;ws-&gt;timer);</span><br><span class="line">	ws-&gt;timer_expires = 0;</span><br><span class="line"></span><br><span class="line">	spin_unlock_irqrestore(&amp;ws-&gt;lock, flags);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void wakeup_source_report_event(struct wakeup_source *ws)</span><br><span class="line">&#123;</span><br><span class="line">	ws-&gt;event_count++;</span><br><span class="line">	/* This is racy, but the counter is approximate anyway. */</span><br><span class="line">	if (events_check_enabled)</span><br><span class="line">		ws-&gt;wakeup_count++;</span><br><span class="line"></span><br><span class="line">	if (!ws-&gt;active)</span><br><span class="line">		wakeup_source_activate(ws);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>pm_stay_awake中直接调用<strong>pm_stay_awake，\</strong>pm_stay_awake直接调用wakeup_source_report_event。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/drivers/base/power/wakeup.c</span><br><span class="line"></span><br><span class="line">static void wakeup_source_report_event(struct wakeup_source *ws)</span><br><span class="line">&#123;</span><br><span class="line">	ws-&gt;event_count++;</span><br><span class="line">	/* This is racy, but the counter is approximate anyway. */</span><br><span class="line">	if (events_check_enabled)</span><br><span class="line">		ws-&gt;wakeup_count++;</span><br><span class="line"></span><br><span class="line">	if (!ws-&gt;active)</span><br><span class="line">		wakeup_source_activate(ws);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>wakeup_source_report_event中增加wakeup source的event_count次数，即表示该source又产生了一个event。然后根据events_check_enabled变量的状态，增加wakeup_count。如果wakeup source没有active，则调用wakeup_source_activate进行activate操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/drivers/base/power/wakeup.c</span><br><span class="line"></span><br><span class="line">static void wakeup_source_activate(struct wakeup_source *ws)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned int cec;</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	 * active wakeup source should bring the system</span><br><span class="line">	 * out of PM_SUSPEND_FREEZE state</span><br><span class="line">	 */</span><br><span class="line">	freeze_wake();</span><br><span class="line"></span><br><span class="line">	ws-&gt;active = true;</span><br><span class="line">	ws-&gt;active_count++;</span><br><span class="line">	ws-&gt;last_time = ktime_get();</span><br><span class="line">	if (ws-&gt;autosleep_enabled)</span><br><span class="line">		ws-&gt;start_prevent_time = ws-&gt;last_time;</span><br><span class="line"></span><br><span class="line">	/* Increment the counter of events in progress. */</span><br><span class="line">	cec = atomic_inc_return(&amp;combined_event_count);</span><br><span class="line"></span><br><span class="line">	trace_wakeup_source_activate(ws-&gt;name, cec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>wakeup_source_activate中首先调用freeze_wake，将系统从suspend to freeze状态下唤醒，然后设置active标志，增加active_count，更新last_time。如果使能了autosleep，更新start_prevent_time，此刻该wakeup source会开始阻止系统auto sleep。增加“wakeup events in progress”计数，增加该计数意味着系统正在处理的wakeup event数目不为零，即系统不能suspend。</p>
+<h2 id="pm-relax"><a href="#pm-relax" class="headerlink" title="pm_relax()"></a>pm_relax()</h2><p>pm_relax和pm_stay_awake成对出现，用于在wakeup event处理结束后通知PM core，其实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/drivers/base/power/wakeup.c</span><br><span class="line"></span><br><span class="line">void pm_relax(struct device *dev)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned long flags;</span><br><span class="line"></span><br><span class="line">	if (!dev)</span><br><span class="line">		return;</span><br><span class="line"></span><br><span class="line">	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);</span><br><span class="line">	__pm_relax(dev-&gt;power.wakeup);</span><br><span class="line">	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void __pm_relax(struct wakeup_source *ws)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned long flags;</span><br><span class="line"></span><br><span class="line">	if (!ws)</span><br><span class="line">		return;</span><br><span class="line"></span><br><span class="line">	spin_lock_irqsave(&amp;ws-&gt;lock, flags);</span><br><span class="line">	if (ws-&gt;active)</span><br><span class="line">		wakeup_source_deactivate(ws);</span><br><span class="line">	spin_unlock_irqrestore(&amp;ws-&gt;lock, flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>pm_relax中直接调用<strong>pm_relax，\</strong>pm_relax判断wakeup source如果处于active状态，则调用wakeup_source_deactivate接口，deactivate该wakeup source。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; kernel/msm-4.4/drivers/base/power/wakeup.c</span><br><span class="line"></span><br><span class="line">static void wakeup_source_deactivate(struct wakeup_source *ws)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned int cnt, inpr, cec;</span><br><span class="line">	ktime_t duration;</span><br><span class="line">	ktime_t now;</span><br><span class="line"></span><br><span class="line">	ws-&gt;relax_count++;</span><br><span class="line">	if (ws-&gt;relax_count != ws-&gt;active_count) &#123;</span><br><span class="line">		ws-&gt;relax_count--;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ws-&gt;active = false;</span><br><span class="line"></span><br><span class="line">	now = ktime_get();</span><br><span class="line">	duration = ktime_sub(now, ws-&gt;last_time);</span><br><span class="line">	ws-&gt;total_time = ktime_add(ws-&gt;total_time, duration);</span><br><span class="line">	if (ktime_to_ns(duration) &gt; ktime_to_ns(ws-&gt;max_time))</span><br><span class="line">		ws-&gt;max_time = duration;</span><br><span class="line"></span><br><span class="line">	ws-&gt;last_time = now;</span><br><span class="line">	del_timer(&amp;ws-&gt;timer);</span><br><span class="line">	ws-&gt;timer_expires = 0;</span><br><span class="line"></span><br><span class="line">	if (ws-&gt;autosleep_enabled)</span><br><span class="line">		update_prevent_sleep_time(ws, now);</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	 * Increment the counter of registered wakeup events and decrement the</span><br><span class="line">	 * couter of wakeup events in progress simultaneously.</span><br><span class="line">	 */</span><br><span class="line">	cec = atomic_add_return(MAX_IN_PROGRESS, &amp;combined_event_count);</span><br><span class="line">	trace_wakeup_source_deactivate(ws-&gt;name, cec);</span><br><span class="line"></span><br><span class="line">	split_counters(&amp;cnt, &amp;inpr);</span><br><span class="line">	if (!inpr &amp;&amp; waitqueue_active(&amp;wakeup_count_wait_queue))</span><br><span class="line">		wake_up(&amp;wakeup_count_wait_queue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://www.wowotech.net/pm_subsystem/wakeup_events_framework.html" target="_blank" rel="external">蜗窝科技:Wakeup events framework</a></li>
+<li><a href="http://blog.csdn.net/wlwl0071986/article/details/42672591" target="_blank" rel="external">CSDN:三种休眠机制的分析和比较</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/PowerManagement/" rel="tag">#PowerManagement</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/20/android-power-basic/" rel="next" title="Android电源管理系列之Basic">
+                <i class="fa fa-chevron-left"></i> Android电源管理系列之Basic
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/05/android-power-suspend/" rel="prev" title="Android电源管理系列之Suspend">
+                Android电源管理系列之Suspend <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/05/01/android-power-system-wakeup-events-framework/"
+     data-title="Android电源管理系列之System wakeup events framework"
+     data-content=""
+     data-url="http://robinheztto.com/2017/05/01/android-power-system-wakeup-events-framework/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/01/android-power-system-wakeup-events-framework/"
+           data-title="Android电源管理系列之System wakeup events framework" data-url="http://robinheztto.com/2017/05/01/android-power-system-wakeup-events-framework/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码分析"><span class="nav-number">2.</span> <span class="nav-text">代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#机制"><span class="nav-number">2.1.</span> <span class="nav-text">机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pm-stay-awake"><span class="nav-number">2.1.1.</span> <span class="nav-text">pm_stay_awake()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pm-relax"><span class="nav-number">2.2.</span> <span class="nav-text">pm_relax()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,810 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,AlarmManagerService," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用在其生命周期之外可执行基于特定时间的操作，本篇将具体分析AlarmManager的使用及AlarmManagerService服务的初始化。
+相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/servi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之AlarmManagerService(一)">
+<meta property="og:url" content="http://robinheztto.com/2017/03/10/android-alarm-1/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用在其生命周期之外可执行基于特定时间的操作，本篇将具体分析AlarmManager的使用及AlarmManagerService服务的初始化。
+相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/servi">
+<meta property="og:updated_time" content="2018-01-07T04:07:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android之AlarmManagerService(一)">
+<meta name="twitter:description" content="Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用在其生命周期之外可执行基于特定时间的操作，本篇将具体分析AlarmManager的使用及AlarmManagerService服务的初始化。
+相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/servi">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android之AlarmManagerService(一) | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android之AlarmManagerService(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-10T09:06:08+08:00" content="2017-03-10">
+              2017-03-10
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/10/android-alarm-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/10/android-alarm-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用在其生命周期之外可执行基于特定时间的操作，本篇将具体分析AlarmManager的使用及AlarmManagerService服务的初始化。</p>
+<p>相关源码位于以下文件中:<br>frameworks/base/core/java/android/app/AlarmManager.java<br>frameworks/base/services/core/java/com/android/server/AlarmManagerService.java<br>frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</p>
+</blockquote>
+<h1 id="AlarmManager的使用"><a href="#AlarmManager的使用" class="headerlink" title="AlarmManager的使用"></a>AlarmManager的使用</h1><p><strong>1. 获取AlarmManager:</strong><br>Alarm相关的服务接口定义在AlarmManager中，与其他系统服务一样，通过Context获取AlarmManager。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Context.getSystemService(Context.ALARM_SERVICE);</span><br></pre></td></tr></table></figure></p>
+<p><strong>2. Alarm的类型:</strong></p>
+<ul>
+<li>AlarmManager.RTC_WAKEUP<br>使用系统绝对时间(当前系统时间，System.currentTimeMillis())，系统休眠状态也将唤醒系统。</li>
+<li>AlarmManager.RTC<br>使用系统绝对时间(当前系统时间，System.currentTimeMillis())，系统休眠状态下不可用。</li>
+<li>AlarmManager.ELAPSED_REALTIME_WAKEUP<br>使用系统相对时间(相对系统启动时间，SystemClock.elapsedRealtime())，系统休眠状态也将唤醒系统。</li>
+<li>AlarmManager.ELAPSED_REALTIME<br>使用系统相对时间(相对系统启动时间，SystemClock.elapsedRealtime())，系统休眠状态下不可用。</li>
+</ul>
+<p>RTC/RTC_WAKEUP和ELAPSED_REALTIME/ELAPSED_REALTIME_WAKEUP最大的差别就是RTC受time zone/locale的影响，可以通过修改手机时间触发闹钟事件，ELAPSED_REALTIME/ELAPSED_REALTIME_WAKEUP要通过真实时间的流逝，即使在休眠状态时间也会被计算。<br>WAKEUP类型的Alarm会唤醒系统，休眠状态下会增加系统的功耗，所以在使用中应尽量避免使用该种类型的Alarm。</p>
+<p><strong>2. Alarm的Flag:</strong></p>
+<ul>
+<li>FLAG_STANDALONE<br>指定stand-alone精准alarm，该alarm不会被batch，设置WINDOW_EXACT的alarm会指定此flag。</li>
+<li>FLAG_WAKE_FROM_IDLE<br>指定alarm即使在idle模式也将唤醒系统，如alarm clock。</li>
+<li>FLAG_ALLOW_WHILE_IDLE<br>针对Doze模式，alarm即使在系统idle状态下也会执行，但是不会使系统退出idle mode，只有特殊alarm才需要标记该Flag。</li>
+<li>FLAG_ALLOW_WHILE_IDLE_UNRESTRICTED<br>针对Doze模式，alarm即使在系统idle状态下也会执行而且没有时间限制，但是不会使系统退出idle mode，只有特殊alarm才需要标记该Flag。</li>
+<li>FLAG_IDLE_UNTIL<br>只有调用AlarmManager.setIdleUntil()接口才可能设置该flag，用来使系统进入idle mode直到marker alarm被执行，执行marker alarm时系统会退出idle mode(设置后进入DozeIdle状态让Alarm系统挂起，直到这个Alarm到期)。</li>
+</ul>
+<p><strong>3. Alarm的set:</strong><br>非精准Alarm，其window被指定为WINDOW_HEURISTIC：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void set(int type, long triggerAtMillis, PendingIntent operation) &#123;&#125;</span><br><span class="line">public void set(int type, long triggerAtMillis, String tag, OnAlarmListener listener,Handler targetHandler) &#123;&#125;</span><br><span class="line">public void setRepeating(int type, long triggerAtMillis,long intervalMillis, PendingIntent operation) &#123;&#125;</span><br><span class="line">public void setInexactRepeating(int type, long triggerAtMillis,long intervalMillis, PendingIntent operation) &#123;&#125;</span><br><span class="line">// Doze模式下</span><br><span class="line">public void setAndAllowWhileIdle(int type, long triggerAtMillis, PendingIntent operation) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>精准Alarm，其window被标记为WINDOW_EXACT：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void setWindow(int type, long windowStartMillis, long windowLengthMillis,PendingIntent operation) &#123;&#125;</span><br><span class="line">public void setWindow(int type, long windowStartMillis, long windowLengthMillis, String tag, OnAlarmListener listener, Handler targetHandler) &#123;&#125;</span><br><span class="line">public void setExact(int type, long triggerAtMillis, PendingIntent operation) &#123;&#125;   </span><br><span class="line">public void setExact(int type, long triggerAtMillis, String tag, OnAlarmListener listener, Handler targetHandler) &#123;&#125;  </span><br><span class="line">public void setAlarmClock(AlarmClockInfo info, PendingIntent operation) &#123;&#125;</span><br><span class="line">// Doze模式下</span><br><span class="line">public void setIdleUntil(int type, long triggerAtMillis, String tag, OnAlarmListener listener,Handler targetHandler) &#123;&#125;</span><br><span class="line">public void setExactAndAllowWhileIdle(int type, long triggerAtMillis, PendingIntent operation) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>AlarmManager中的set方法最终都是调用setImpl，下面是setImpl的具体实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/app/AlarmManager.java</span><br><span class="line"></span><br><span class="line">private void setImpl(int type, long triggerAtMillis, long windowMillis, long intervalMillis,</span><br><span class="line">        int flags, PendingIntent operation, final OnAlarmListener listener, String listenerTag,</span><br><span class="line">        Handler targetHandler, WorkSource workSource, AlarmClockInfo alarmClock) &#123;</span><br><span class="line">    // 检查触发时间，不小于０      </span><br><span class="line">    if (triggerAtMillis &lt; 0) &#123;</span><br><span class="line">        triggerAtMillis = 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // OnAlarmListener封装到ListenerWrapper，并添加到sWrappers管理</span><br><span class="line">    ListenerWrapper recipientWrapper = null;</span><br><span class="line">    if (listener != null) &#123;</span><br><span class="line">        synchronized (AlarmManager.class) &#123;</span><br><span class="line">            if (sWrappers == null) &#123;</span><br><span class="line">                sWrappers = new ArrayMap&lt;OnAlarmListener, ListenerWrapper&gt;();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            recipientWrapper = sWrappers.get(listener);</span><br><span class="line">            // no existing wrapper =&gt; build a new one</span><br><span class="line">            if (recipientWrapper == null) &#123;</span><br><span class="line">                recipientWrapper = new ListenerWrapper(listener);</span><br><span class="line">                sWrappers.put(listener, recipientWrapper);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        final Handler handler = (targetHandler != null) ? targetHandler : mMainThreadHandler;</span><br><span class="line">        recipientWrapper.setHandler(handler);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 调用AlarmManagerService</span><br><span class="line">    try &#123;</span><br><span class="line">        mService.set(mPackageName, type, triggerAtMillis, windowMillis, intervalMillis, flags,</span><br><span class="line">                operation, recipientWrapper, listenerTag, workSource, alarmClock);</span><br><span class="line">    &#125; catch (RemoteException ex) &#123;</span><br><span class="line">        throw ex.rethrowFromSystemServer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="AlarmManagerService初始化"><a href="#AlarmManagerService初始化" class="headerlink" title="AlarmManagerService初始化"></a>AlarmManagerService初始化</h1><p>AlarmManagerService在SystemServer的startOtherServices中启动，下面从AlarmManagerService的构造方法开始分析，首先看整个初始化流程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">public AlarmManagerService(Context context) &#123;</span><br><span class="line">    super(context);</span><br><span class="line">    // 创建常量类，负责Alarm相关的常量读取及更新</span><br><span class="line">    mConstants = new Constants(mHandler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面先看Constants类的具体实现，主要负责Alarm相关的常量的读取及更新。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">private final class Constants extends ContentObserver &#123;</span><br><span class="line">    // settings数据库中的key value</span><br><span class="line">    private static final String KEY_MIN_FUTURITY = &quot;min_futurity&quot;;</span><br><span class="line">    private static final String KEY_MIN_INTERVAL = &quot;min_interval&quot;;</span><br><span class="line">    private static final String KEY_ALLOW_WHILE_IDLE_SHORT_TIME = &quot;allow_while_idle_short_time&quot;;</span><br><span class="line">    private static final String KEY_ALLOW_WHILE_IDLE_LONG_TIME = &quot;allow_while_idle_long_time&quot;;</span><br><span class="line">    private static final String KEY_ALLOW_WHILE_IDLE_WHITELIST_DURATION</span><br><span class="line">            = &quot;allow_while_idle_whitelist_duration&quot;;</span><br><span class="line">    private static final String KEY_LISTENER_TIMEOUT = &quot;listener_timeout&quot;;</span><br><span class="line">    //　默认Alarm最小执行时间</span><br><span class="line">    private static final long DEFAULT_MIN_FUTURITY = 5 * 1000;</span><br><span class="line">    // 默认Repeat Alarm的最短周期时间</span><br><span class="line">    private static final long DEFAULT_MIN_INTERVAL = 60 * 1000;</span><br><span class="line">    // Doze IDLE下flag为ALLOW_WHILE_IDLE Alarm的最短时间间隔</span><br><span class="line">    private static final long DEFAULT_ALLOW_WHILE_IDLE_SHORT_TIME = DEFAULT_MIN_FUTURITY;</span><br><span class="line">    // Doze IDLE下flag为ALLOW_WHILE_IDLE Alarm的最长时间间隔</span><br><span class="line">    private static final long DEFAULT_ALLOW_WHILE_IDLE_LONG_TIME = 9*60*1000;</span><br><span class="line">    // 默认的Idle白名单时间</span><br><span class="line">    private static final long DEFAULT_ALLOW_WHILE_IDLE_WHITELIST_DURATION = 10*1000;</span><br><span class="line">    // 默认Listener的timeout</span><br><span class="line">    private static final long DEFAULT_LISTENER_TIMEOUT = 5 * 1000;</span><br><span class="line"></span><br><span class="line">    // Minimum futurity of a new alarm</span><br><span class="line">    public long MIN_FUTURITY = DEFAULT_MIN_FUTURITY;</span><br><span class="line"></span><br><span class="line">    // Minimum alarm recurrence interval</span><br><span class="line">    public long MIN_INTERVAL = DEFAULT_MIN_INTERVAL;</span><br><span class="line"></span><br><span class="line">    // Minimum time between ALLOW_WHILE_IDLE alarms when system is not idle.</span><br><span class="line">    public long ALLOW_WHILE_IDLE_SHORT_TIME = DEFAULT_ALLOW_WHILE_IDLE_SHORT_TIME;</span><br><span class="line"></span><br><span class="line">    // Minimum time between ALLOW_WHILE_IDLE alarms when system is idling.</span><br><span class="line">    public long ALLOW_WHILE_IDLE_LONG_TIME = DEFAULT_ALLOW_WHILE_IDLE_LONG_TIME;</span><br><span class="line"></span><br><span class="line">    // BroadcastOptions.setTemporaryAppWhitelistDuration() to use for FLAG_ALLOW_WHILE_IDLE.</span><br><span class="line">    public long ALLOW_WHILE_IDLE_WHITELIST_DURATION</span><br><span class="line">            = DEFAULT_ALLOW_WHILE_IDLE_WHITELIST_DURATION;</span><br><span class="line"></span><br><span class="line">    // Direct alarm listener callback timeout</span><br><span class="line">    public long LISTENER_TIMEOUT = DEFAULT_LISTENER_TIMEOUT;</span><br><span class="line"></span><br><span class="line">    private ContentResolver mResolver;</span><br><span class="line">    private final KeyValueListParser mParser = new KeyValueListParser(&apos;,&apos;);</span><br><span class="line">    private long mLastAllowWhileIdleWhitelistDuration = -1;</span><br><span class="line"></span><br><span class="line">    public Constants(Handler handler) &#123;</span><br><span class="line">        super(handler);</span><br><span class="line">        // 更新Doze IDLE下flag为ALLOW_WHILE_IDLE Alarm的执行时间</span><br><span class="line">        updateAllowWhileIdleMinTimeLocked();</span><br><span class="line">        updateAllowWhileIdleWhitelistDurationLocked();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 注册监听Settings数据库的变化并更新</span><br><span class="line">    public void start(ContentResolver resolver) &#123;</span><br><span class="line">        mResolver = resolver;</span><br><span class="line">        mResolver.registerContentObserver(Settings.Global.getUriFor(</span><br><span class="line">                Settings.Global.ALARM_MANAGER_CONSTANTS), false, this);</span><br><span class="line">        updateConstants();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void updateAllowWhileIdleMinTimeLocked() &#123;</span><br><span class="line">        mAllowWhileIdleMinTime = mPendingIdleUntil != null</span><br><span class="line">                ? ALLOW_WHILE_IDLE_LONG_TIME : ALLOW_WHILE_IDLE_SHORT_TIME;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void updateAllowWhileIdleWhitelistDurationLocked() &#123;</span><br><span class="line">        if (mLastAllowWhileIdleWhitelistDuration != ALLOW_WHILE_IDLE_WHITELIST_DURATION) &#123;</span><br><span class="line">            mLastAllowWhileIdleWhitelistDuration = ALLOW_WHILE_IDLE_WHITELIST_DURATION;</span><br><span class="line">            BroadcastOptions opts = BroadcastOptions.makeBasic();</span><br><span class="line">            opts.setTemporaryAppWhitelistDuration(ALLOW_WHILE_IDLE_WHITELIST_DURATION);</span><br><span class="line">            mIdleOptions = opts.toBundle();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onChange(boolean selfChange, Uri uri) &#123;</span><br><span class="line">        updateConstants();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void updateConstants() &#123;</span><br><span class="line">        synchronized (mLock) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                mParser.setString(Settings.Global.getString(mResolver,</span><br><span class="line">                        Settings.Global.ALARM_MANAGER_CONSTANTS));</span><br><span class="line">            &#125; catch (IllegalArgumentException e) &#123;</span><br><span class="line">                // Failed to parse the settings string, log this and move on</span><br><span class="line">                // with defaults.</span><br><span class="line">                Slog.e(TAG, &quot;Bad device idle settings&quot;, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            MIN_FUTURITY = mParser.getLong(KEY_MIN_FUTURITY, MIN_FUTURITY/*DEFAULT_MIN_FUTURITY*/);</span><br><span class="line">            MIN_INTERVAL = mParser.getLong(KEY_MIN_INTERVAL, DEFAULT_MIN_INTERVAL);</span><br><span class="line">            ALLOW_WHILE_IDLE_SHORT_TIME = mParser.getLong(KEY_ALLOW_WHILE_IDLE_SHORT_TIME,</span><br><span class="line">                    DEFAULT_ALLOW_WHILE_IDLE_SHORT_TIME);</span><br><span class="line">            ALLOW_WHILE_IDLE_LONG_TIME = mParser.getLong(KEY_ALLOW_WHILE_IDLE_LONG_TIME,</span><br><span class="line">                    DEFAULT_ALLOW_WHILE_IDLE_LONG_TIME);</span><br><span class="line">            ALLOW_WHILE_IDLE_WHITELIST_DURATION = mParser.getLong(</span><br><span class="line">                    KEY_ALLOW_WHILE_IDLE_WHITELIST_DURATION,</span><br><span class="line">                    DEFAULT_ALLOW_WHILE_IDLE_WHITELIST_DURATION);</span><br><span class="line">            LISTENER_TIMEOUT = mParser.getLong(KEY_LISTENER_TIMEOUT,</span><br><span class="line">                    DEFAULT_LISTENER_TIMEOUT);</span><br><span class="line"></span><br><span class="line">            updateAllowWhileIdleMinTimeLocked();</span><br><span class="line">            updateAllowWhileIdleWhitelistDurationLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>AlarmManagerService实例化后即调用onStart()方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">public void onStart() &#123;</span><br><span class="line">    // native层初始化</span><br><span class="line">    mNativeData = init();</span><br><span class="line">    // mNextWakeup - 下一个包含wakeup alarm的batch的start时间,</span><br><span class="line">    // mNextRtcWakeup - 下一个包含Rtc关机闹钟batch的start时间  </span><br><span class="line">    // mNextNonWakeup - 下一个非wakeup的batch的start时间</span><br><span class="line">    mNextWakeup = mNextRtcWakeup = mNextNonWakeup = 0;</span><br><span class="line"></span><br><span class="line">    AlarmManager.writePowerOffAlarmFile(AlarmManager.POWER_OFF_ALARM_SET_FILE,</span><br><span class="line">            AlarmManager.POWER_OFF_ALARM_NOT_SET);</span><br><span class="line"></span><br><span class="line">    // 设置TimeZone</span><br><span class="line">    String cryptState = SystemProperties.get(&quot;vold.decrypt&quot;);</span><br><span class="line">    if (ENCRYPTING_STATE.equals(cryptState) || ENCRYPTED_STATE.equals(cryptState)) &#123;</span><br><span class="line">        mIsEncryptStatus = true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (mIsEncryptStatus) &#123;</span><br><span class="line">        String tz =  AlarmManager</span><br><span class="line">                    .readPowerOffAlarmFile(AlarmManager.POWER_OFF_ALARM_TIMEZONE_FILE);</span><br><span class="line">        setTimeZoneImpl(tz);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        setTimeZoneImpl(SystemProperties.get(TIMEZONE_PROPERTY));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 初始化wakelock</span><br><span class="line">    PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);</span><br><span class="line">    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, &quot;*alarm*&quot;);</span><br><span class="line"></span><br><span class="line">    // 初始化ACTION_TIME_TICK发送</span><br><span class="line">    mTimeTickSender = PendingIntent.getBroadcastAsUser(getContext(), 0,</span><br><span class="line">            new Intent(Intent.ACTION_TIME_TICK).addFlags(</span><br><span class="line">                    Intent.FLAG_RECEIVER_REGISTERED_ONLY</span><br><span class="line">                    | Intent.FLAG_RECEIVER_FOREGROUND), 0,</span><br><span class="line">                    UserHandle.ALL);</span><br><span class="line">    Intent intent = new Intent(Intent.ACTION_DATE_CHANGED);</span><br><span class="line">    intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);</span><br><span class="line">    mDateChangeSender = PendingIntent.getBroadcastAsUser(getContext(), 0, intent,</span><br><span class="line">            Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT, UserHandle.ALL);</span><br><span class="line"></span><br><span class="line">    // 注册时间/日期变化广播接收并调度</span><br><span class="line">    mClockReceiver = new ClockReceiver();</span><br><span class="line">    mClockReceiver.scheduleTimeTickEvent();</span><br><span class="line">    mClockReceiver.scheduleDateChangedEvent();</span><br><span class="line">    // 注册灭屏/亮屏广播</span><br><span class="line">    mInteractiveStateReceiver = new InteractiveStateReceiver();</span><br><span class="line">    // 注册应用卸载，SD移除广播</span><br><span class="line">    mUninstallReceiver = new UninstallReceiver();</span><br><span class="line"></span><br><span class="line">    // native初始化成功，运行AlarmThread</span><br><span class="line">    if (mNativeData != 0) &#123;</span><br><span class="line">        AlarmThread waitThread = new AlarmThread();</span><br><span class="line">        waitThread.start();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Slog.w(TAG, &quot;Failed to open alarm driver. Falling back to a handler.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 监听应用退出以移除Alarm</span><br><span class="line">    try &#123;</span><br><span class="line">        ActivityManagerNative.getDefault().registerUidObserver(new UidObserver(),</span><br><span class="line">                ActivityManager.UID_OBSERVER_IDLE);</span><br><span class="line">    &#125; catch (RemoteException e) &#123;</span><br><span class="line">        // ignored; both services live in system_server</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 发布binderservice与localservice，分别供其他进程与system_server内部服务调用</span><br><span class="line">    publishBinderService(Context.ALARM_SERVICE, mService);</span><br><span class="line">    publishLocalService(LocalService.class, new LocalService());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在onStart()后，SYSTEM_SERVICES_READY时onBootPhase()将被回调。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void onBootPhase(int phase) &#123;</span><br><span class="line">    if (phase == PHASE_SYSTEM_SERVICES_READY) &#123;</span><br><span class="line">        // 监听设置常量变化</span><br><span class="line">        mConstants.start(getContext().getContentResolver());</span><br><span class="line">        // 获取AppOpsManager与DeviceIdleController服务对象</span><br><span class="line">        mAppOps = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);</span><br><span class="line">        mLocalDeviceIdleController</span><br><span class="line">                = LocalServices.getService(DeviceIdleController.LocalService.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>回到onStart()，分析native层init的调用，下面看native init()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/AlarmManagerService.java</span><br><span class="line">private native long init();</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</span><br><span class="line">static const JNINativeMethod sMethods[] = &#123;</span><br><span class="line">     /* name, signature, funcPtr */</span><br><span class="line">    &#123;&quot;init&quot;, &quot;()J&quot;, (void*)android_server_AlarmManagerService_init&#125;,</span><br><span class="line">    &#123;&quot;close&quot;, &quot;(J)V&quot;, (void*)android_server_AlarmManagerService_close&#125;,</span><br><span class="line">    &#123;&quot;set&quot;, &quot;(JIJJ)V&quot;, (void*)android_server_AlarmManagerService_set&#125;,</span><br><span class="line">    &#123;&quot;clear&quot;, &quot;(JIJJ)V&quot;, (void*)android_server_AlarmManagerService_clear&#125;,</span><br><span class="line">    &#123;&quot;waitForAlarm&quot;, &quot;(J)I&quot;, (void*)android_server_AlarmManagerService_waitForAlarm&#125;,</span><br><span class="line">    &#123;&quot;setKernelTime&quot;, &quot;(JJ)I&quot;, (void*)android_server_AlarmManagerService_setKernelTime&#125;,</span><br><span class="line">    &#123;&quot;setKernelTimezone&quot;, &quot;(JI)I&quot;, (void*)android_server_AlarmManagerService_setKernelTimezone&#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int register_android_server_AlarmManagerService(JNIEnv* env)</span><br><span class="line">&#123;</span><br><span class="line">    return jniRegisterNativeMethods(env, &quot;com/android/server/AlarmManagerService&quot;,</span><br><span class="line">                                    sMethods, NELEM(sMethods));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>register_android_server_AlarmManagerService中注册了native方法，init()即调用android_server_AlarmManagerService_init。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</span><br><span class="line"></span><br><span class="line">static jlong android_server_AlarmManagerService_init(JNIEnv*, jobject)</span><br><span class="line">&#123;</span><br><span class="line">    // 初始化/dev/alarm</span><br><span class="line">    jlong ret = init_alarm_driver();</span><br><span class="line">    if (ret) &#123;</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 如果初始化/dev/alarm不成功，则进入timerfd初始化，现一般采用timerfd方式采用</span><br><span class="line">    return init_timerfd();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Native Alarm初始化采用了二种方案，AlarmDriver与timerfd，当alarm_driver失败时则使用timerfd，现在基本使用的是timerfd。如下，AlarmImpl是Native层Alarm操作的统一接口，AlarmImplAlarmDriver与AlarmImplTimerFd是AlarmDriver与timerfd二种不同方式的具体实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">class AlarmImpl</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    AlarmImpl(int *fds, size_t n_fds);</span><br><span class="line">    virtual ~AlarmImpl();</span><br><span class="line"></span><br><span class="line">    virtual int set(int type, struct timespec *ts) = 0;</span><br><span class="line">    virtual int clear(int type, struct timespec *ts) = 0;</span><br><span class="line">    virtual int setTime(struct timeval *tv) = 0;</span><br><span class="line">    virtual int waitForAlarm() = 0;</span><br><span class="line"></span><br><span class="line">protected:</span><br><span class="line">    int *fds;</span><br><span class="line">    size_t n_fds;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class AlarmImplAlarmDriver : public AlarmImpl</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    AlarmImplAlarmDriver(int fd) : AlarmImpl(&amp;fd, 1) &#123; &#125;</span><br><span class="line"></span><br><span class="line">    int set(int type, struct timespec *ts);</span><br><span class="line">    int clear(int type, struct timespec *ts);</span><br><span class="line">    int setTime(struct timeval *tv);</span><br><span class="line">    int waitForAlarm();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class AlarmImplTimerFd : public AlarmImpl</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    AlarmImplTimerFd(int fds[N_ANDROID_TIMERFDS], int epollfd, int rtc_id) :</span><br><span class="line">        AlarmImpl(fds, N_ANDROID_TIMERFDS), epollfd(epollfd), rtc_id(rtc_id) &#123; &#125;</span><br><span class="line">    ~AlarmImplTimerFd();</span><br><span class="line"></span><br><span class="line">    int set(int type, struct timespec *ts);</span><br><span class="line">    int clear(int type, struct timespec *ts);</span><br><span class="line">    int setTime(struct timeval *tv);</span><br><span class="line">    int waitForAlarm();</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line">    int epollfd;</span><br><span class="line">    int rtc_id;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>下面先看AlarmDriver的方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</span><br><span class="line"></span><br><span class="line">static jlong init_alarm_driver()</span><br><span class="line">&#123;</span><br><span class="line">    // 打开/dev/alarm,失败则退出</span><br><span class="line">    int fd = open(&quot;/dev/alarm&quot;, O_RDWR);</span><br><span class="line">    if (fd &lt; 0) &#123;</span><br><span class="line">        ALOGV(&quot;opening alarm driver failed: %s&quot;, strerror(errno));</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 根据fd创建AlarmImplAlarmDriver对象</span><br><span class="line">    AlarmImpl *ret = new AlarmImplAlarmDriver(fd);</span><br><span class="line">    return reinterpret_cast&lt;jlong&gt;(ret);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int AlarmImplAlarmDriver::set(int type, struct timespec *ts)</span><br><span class="line">&#123;</span><br><span class="line">    return ioctl(fds[0], ANDROID_ALARM_SET(type), ts);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int AlarmImplAlarmDriver::clear(int type, struct timespec *ts)</span><br><span class="line">&#123;</span><br><span class="line">    return ioctl(fds[0], ANDROID_ALARM_CLEAR(type), ts);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int AlarmImplAlarmDriver::setTime(struct timeval *tv)</span><br><span class="line">&#123;</span><br><span class="line">    struct timespec ts;</span><br><span class="line">    int res;</span><br><span class="line"></span><br><span class="line">    ts.tv_sec = tv-&gt;tv_sec;</span><br><span class="line">    ts.tv_nsec = tv-&gt;tv_usec * 1000;</span><br><span class="line">    res = ioctl(fds[0], ANDROID_ALARM_SET_RTC, &amp;ts);</span><br><span class="line">    if (res &lt; 0)</span><br><span class="line">        ALOGV(&quot;ANDROID_ALARM_SET_RTC ioctl failed: %s\n&quot;, strerror(errno));</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int AlarmImplAlarmDriver::waitForAlarm()</span><br><span class="line">&#123;</span><br><span class="line">    return ioctl(fds[0], ANDROID_ALARM_WAIT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>AlarmImplAlarmDriver中主要通过ioctl来实现Alarm的操作。当init_alarm_driver打开/dev/alarm失败时，选择timerfd实现Alarm的操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</span><br><span class="line"></span><br><span class="line">static const size_t N_ANDROID_TIMERFDS = ANDROID_ALARM_TYPE_COUNT + 1;</span><br><span class="line">static const clockid_t android_alarm_to_clockid[N_ANDROID_TIMERFDS] = &#123;</span><br><span class="line">    CLOCK_REALTIME_ALARM,</span><br><span class="line">    CLOCK_REALTIME,</span><br><span class="line">    CLOCK_BOOTTIME_ALARM,</span><br><span class="line">    CLOCK_BOOTTIME,</span><br><span class="line">    CLOCK_MONOTONIC,</span><br><span class="line">    CLOCK_POWEROFF_ALARM,</span><br><span class="line">    CLOCK_REALTIME,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static jlong init_timerfd()</span><br><span class="line">&#123;</span><br><span class="line">    int epollfd;</span><br><span class="line">    int fds[N_ANDROID_TIMERFDS];</span><br><span class="line"></span><br><span class="line">    // 创建epoll句柄，监听N_ANDROID_TIMERFDS个文件描述符</span><br><span class="line">    epollfd = epoll_create(N_ANDROID_TIMERFDS);</span><br><span class="line">    if (epollfd &lt; 0) &#123;</span><br><span class="line">        ALOGV(&quot;epoll_create(%zu) failed: %s&quot;, N_ANDROID_TIMERFDS,</span><br><span class="line">                strerror(errno));</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (size_t i = 0; i &lt; N_ANDROID_TIMERFDS; i++) &#123;</span><br><span class="line">        // 创建定时器文件</span><br><span class="line">        fds[i] = timerfd_create(android_alarm_to_clockid[i], 0);</span><br><span class="line">        if (fds[i] &lt; 0) &#123;</span><br><span class="line">            ALOGV(&quot;timerfd_create(%u) failed: %s&quot;,  android_alarm_to_clockid[i],</span><br><span class="line">                    strerror(errno));</span><br><span class="line">            close(epollfd);</span><br><span class="line">            for (size_t j = 0; j &lt; i; j++) &#123;</span><br><span class="line">                close(fds[j]);</span><br><span class="line">            &#125;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 根据fds创建AlarmImplTimerFd对象，AlarmImplTimerFd也继承于AlarmImpl</span><br><span class="line">    AlarmImpl *ret = new AlarmImplTimerFd(fds, epollfd, wall_clock_rtc());</span><br><span class="line"></span><br><span class="line">    for (size_t i = 0; i &lt; N_ANDROID_TIMERFDS; i++) &#123;</span><br><span class="line">        epoll_event event;</span><br><span class="line">        event.events = EPOLLIN | EPOLLWAKEUP;</span><br><span class="line">        event.data.u32 = i;</span><br><span class="line"></span><br><span class="line">        // 将创建的定时器文件列表加入到epoll监听中</span><br><span class="line">        int err = epoll_ctl(epollfd, EPOLL_CTL_ADD, fds[i], &amp;event);</span><br><span class="line">        if (err &lt; 0) &#123;</span><br><span class="line">            ALOGV(&quot;epoll_ctl(EPOLL_CTL_ADD) failed: %s&quot;, strerror(errno));</span><br><span class="line">            delete ret;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    struct itimerspec spec;</span><br><span class="line">    memset(&amp;spec, 0, sizeof(spec));</span><br><span class="line"></span><br><span class="line">    int err = timerfd_settime(fds[ANDROID_ALARM_TYPE_COUNT],</span><br><span class="line">            TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &amp;spec, NULL);</span><br><span class="line">    if (err &lt; 0) &#123;</span><br><span class="line">        ALOGV(&quot;timerfd_settime() failed: %s&quot;, strerror(errno));</span><br><span class="line">        delete ret;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return reinterpret_cast&lt;jlong&gt;(ret);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>init_timerfd()中利用epoll+timerfd的方式，创建timerfd文件并加入到epoll监听中，创建的定时器文件中，我们主要使用的是CLOCK_REALTIME_ALARM，CLOCK_BOOTTIME_ALARM，CLOCK_POWEROFF_ALARM，分别对应RTC_WAKEUP(RTC)，ELAPSED_REALTIME_WAKEUP(ELAPSED_REALTIME)，RTC_POWEROFF_WAKEUP。下面具体看一下AlarmImplTimerFd::set设置定时器的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</span><br><span class="line"></span><br><span class="line">int AlarmImplTimerFd::set(int type, struct timespec *ts)</span><br><span class="line">&#123;</span><br><span class="line">    if (type &gt; ANDROID_ALARM_TYPE_COUNT) &#123;</span><br><span class="line">        errno = EINVAL;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (!ts-&gt;tv_nsec &amp;&amp; !ts-&gt;tv_sec) &#123;</span><br><span class="line">        ts-&gt;tv_nsec = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    /* timerfd interprets 0 = disarm, so replace with a practically</span><br><span class="line">       equivalent deadline of 1 ns */</span><br><span class="line"></span><br><span class="line">    struct itimerspec spec;</span><br><span class="line">    memset(&amp;spec, 0, sizeof(spec));</span><br><span class="line">    memcpy(&amp;spec.it_value, ts, sizeof(spec.it_value));</span><br><span class="line"></span><br><span class="line">    // 直接调用timerfd_settime设置Alarm定时时间</span><br><span class="line">    return timerfd_settime(fds[type], TFD_TIMER_ABSTIME, &amp;spec, NULL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在waitForAlarm中将等待Alarm的到来，下面看AlarmImplTimerFd::waitForAlarm的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp</span><br><span class="line"></span><br><span class="line">int AlarmImplTimerFd::waitForAlarm()</span><br><span class="line">&#123;</span><br><span class="line">    epoll_event events[N_ANDROID_TIMERFDS];</span><br><span class="line"></span><br><span class="line">    // 利用epolle_wait监听定时器的事件</span><br><span class="line">    int nevents = epoll_wait(epollfd, events, N_ANDROID_TIMERFDS, -1);</span><br><span class="line">    if (nevents &lt; 0) &#123;</span><br><span class="line">        return nevents;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int result = 0;</span><br><span class="line">    // 事件到来，循环读取定时器文件</span><br><span class="line">    for (int i = 0; i &lt; nevents; i++) &#123;</span><br><span class="line">        uint32_t alarm_idx = events[i].data.u32;</span><br><span class="line">        uint64_t unused;</span><br><span class="line">        ssize_t err = read(fds[alarm_idx], &amp;unused, sizeof(unused));</span><br><span class="line">        if (err &lt; 0) &#123;</span><br><span class="line">            if (alarm_idx == ANDROID_ALARM_TYPE_COUNT &amp;&amp; errno == ECANCELED) &#123;</span><br><span class="line">                // 时间改变</span><br><span class="line">                result |= ANDROID_ALARM_TIME_CHANGE_MASK;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return err;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 设置result为触发的alarm_idx</span><br><span class="line">            result |= (1 &lt;&lt; alarm_idx);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 返回结果给AlarmManagerService</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>waitForAlarm中一直在epoll_wait监听等待Alarm fd事件，当事件到来，循环读取定时器文件并向上层返回触发的Alarm index或时间改变事件。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/AlarmManagerService/" rel="tag">#AlarmManagerService</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/08/android-debug-anr/" rel="next" title="Android Debug之ANR">
+                <i class="fa fa-chevron-left"></i> Android Debug之ANR
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/11/android-alarm-2/" rel="prev" title="Android之AlarmManagerService(二)">
+                Android之AlarmManagerService(二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/03/10/android-alarm-1/"
+     data-title="Android之AlarmManagerService(一)"
+     data-content=""
+     data-url="http://robinheztto.com/2017/03/10/android-alarm-1/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/10/android-alarm-1/"
+           data-title="Android之AlarmManagerService(一)" data-url="http://robinheztto.com/2017/03/10/android-alarm-1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AlarmManager的使用"><span class="nav-number">1.</span> <span class="nav-text">AlarmManager的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AlarmManagerService初始化"><span class="nav-number">2.</span> <span class="nav-text">AlarmManagerService初始化</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

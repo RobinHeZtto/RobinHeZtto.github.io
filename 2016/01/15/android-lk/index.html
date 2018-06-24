@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Bootloader," />
+  <meta name="keywords" content="Android,BootFlow,Bootloader," />
 
 
 
@@ -86,26 +86,26 @@
 
 
 
-<meta name="description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序.
+<meta name="description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序。
 
-概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成C">
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。开机上电后，在芯片内部的SRAM控制器作用下默认跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成CP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android之LK">
 <meta property="og:url" content="http://robinheztto.com/2016/01/15/android-lk/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序.
+<meta property="og:description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序。
 
-概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成C">
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。开机上电后，在芯片内部的SRAM控制器作用下默认跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成CP">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_call_flow.png?raw=true">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_modes.jpg?raw=true">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/bootimg.png?raw=true">
 <meta property="og:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/device_tree.png?raw=true">
-<meta property="og:updated_time" content="2016-12-31T06:14:33.000Z">
+<meta property="og:updated_time" content="2018-01-07T04:07:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之LK">
-<meta name="twitter:description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序.
+<meta name="twitter:description" content="LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序。
 
-概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成C">
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。开机上电后，在芯片内部的SRAM控制器作用下默认跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成CP">
 <meta name="twitter:image" content="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_call_flow.png?raw=true">
 
 
@@ -335,14 +335,14 @@
 
       
         <blockquote>
-<p>LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序.</p>
+<p>LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序。</p>
 </blockquote>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。通常开机上电后，在芯片内部的SRAM控制器作用下将跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成CPU Core初始化后将加载bootloader程序执行。一般bootloader都分成几个文件，分阶段引导。BootROM加载bootloader第一阶段BL1到On-chip SRAM执行，BL1在完成SOC初步的初始化后将引导BL2到SDRAM执行。以MTK平台为例，启动加载顺序依次为BootROM-&gt;preloader-&gt;LK。</p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。开机上电后，在芯片内部的SRAM控制器作用下默认跳转到某一固定地址执行，该位置所在即BootROM，BootROM在完成CPU Core初始化后将加载bootloader程序执行。一般bootloader都分成几个文件，分阶段引导。BootROM加载bootloader第一阶段BL1到On-chip SRAM执行，BL1在完成SOC初步的初始化后将引导BL2到SDRAM执行。以MTK平台为例，启动加载顺序依次为BootROM-&gt;preloader-&gt;LK。</p>
 <p>LK的代码一般在源码bootable/bootloader/lk目录下，目录结构如下：<br>├── app 　　　　LK上的应用，aboot，shell等<br>├── arch　　　　体系/架构相关，arm，x86<br>├── dev 　　　　设备相关，key，usb，pmic等<br>├── include　　　头文件<br>├── kernel　　　LK核心，thread，timer等<br>├── lib　　　　　C库<br>├── LICENSE<br>├── make　　　　编译mk文件<br>├── makefile<br>├── platform　　驱动相关<br>├── project　　　makefile文件<br>├── scripts　　　Jtag脚本<br>└── target　　　具体板子相关</p>
 <p>LK的工作是引导系统启动，它主要完成以下工作：</p>
 <ul>
 <li>硬件初始化，设置中断向量表(vector table)，初始化MMU，cache，peripherals，storage，USB，crypto等</li>
-<li>加载boot.img(inux Kernel与ramdisk),引导系统启动</li>
+<li>加载boot.img(inux Kernel与ramdisk)，引导系统启动</li>
 <li>支持fastboot/recovery模式</li>
 </ul>
 <h1 id="初始化流程"><a href="#初始化流程" class="headerlink" title="初始化流程"></a>初始化流程</h1><blockquote>
@@ -355,7 +355,7 @@
 <p><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/lk_call_flow.png?raw=true" alt="LK Call Flow"><br></div></p>
 <ul>
 <li>thread_init_early();初始化线程相关结构</li>
-<li>arch_early_init();disable cache,设置中断向量表基址，初始化MMU,enable cache</li>
+<li>arch_early_init();disable cache，设置中断向量表基址，初始化MMU，enable cache</li>
 <li>platform_early_init();interrupt contr，timer block初始化</li>
 <li>target_early_init();Uart等初始化</li>
 </ul>
@@ -407,6 +407,8 @@
           
             <a href="/tags/Android/" rel="tag">#Android</a>
           
+            <a href="/tags/BootFlow/" rel="tag">#BootFlow</a>
+          
             <a href="/tags/Bootloader/" rel="tag">#Bootloader</a>
           
         </div>
@@ -416,8 +418,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/05/android-tools-tcpdump/" rel="next" title="Android工具之tcpdump">
-                <i class="fa fa-chevron-left"></i> Android工具之tcpdump
+              <a href="/2016/01/10/android-bootflow/" rel="next" title="Android之BootFlow">
+                <i class="fa fa-chevron-left"></i> Android之BootFlow
               </a>
             
           </div>
@@ -517,7 +519,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -527,7 +529,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -582,7 +584,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

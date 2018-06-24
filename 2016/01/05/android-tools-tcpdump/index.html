@@ -86,7 +86,7 @@
 
 
 
-<meta name="description" content="在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包
+<meta name="description" content="Android开发中，如果需要在Android平台上进行网络数据包的抓取，使用tcpdump是非常方便的。通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包。
 
 准备
 Root Android设备
@@ -96,12 +96,12 @@ Root Android设备
 使用
 adb root
 adb remount
-adb push tcpdum">
+adb push tcp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android工具之tcpdump">
+<meta property="og:title" content="Android开发工具之tcpdump">
 <meta property="og:url" content="http://robinheztto.com/2016/01/05/android-tools-tcpdump/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包
+<meta property="og:description" content="Android开发中，如果需要在Android平台上进行网络数据包的抓取，使用tcpdump是非常方便的。通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包。
 
 准备
 Root Android设备
@@ -111,11 +111,11 @@ Root Android设备
 使用
 adb root
 adb remount
-adb push tcpdum">
-<meta property="og:updated_time" content="2017-01-17T11:26:55.000Z">
+adb push tcp">
+<meta property="og:updated_time" content="2017-12-12T14:11:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android工具之tcpdump">
-<meta name="twitter:description" content="在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包
+<meta name="twitter:title" content="Android开发工具之tcpdump">
+<meta name="twitter:description" content="Android开发中，如果需要在Android平台上进行网络数据包的抓取，使用tcpdump是非常方便的。通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包。
 
 准备
 Root Android设备
@@ -125,7 +125,7 @@ Root Android设备
 使用
 adb root
 adb remount
-adb push tcpdum">
+adb push tcp">
 
 
 
@@ -143,7 +143,7 @@ adb push tcpdum">
   };
 </script>
 
-  <title> Android工具之tcpdump | 生活不止眼前的代码 </title>
+  <title> Android开发工具之tcpdump | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -306,7 +306,7 @@ adb push tcpdum">
             
             
               
-                Android工具之tcpdump
+                Android开发工具之tcpdump
               
             
           </h1>
@@ -355,12 +355,12 @@ adb push tcpdum">
       
         <hr>
 <blockquote>
-<p>在实际开发中，如果需要在Android平台上进行网络数据包的抓取，那么使用tcpdump是非常方便的.通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包</p>
+<p>Android开发中，如果需要在Android平台上进行网络数据包的抓取，使用tcpdump是非常方便的。通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包。</p>
 </blockquote>
 <h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><ol>
 <li>Root Android设备</li>
 <li>下载安装<a href="https://www.wireshark.org/#download" target="_blank" rel="external">Wireshark</a></li>
-<li>下载<a href="http://www.androidtcpdump.com/android-tcpdump/downloads" target="_blank" rel="external">Android tcpdump binary文件</a></li>
+<li>下载<a href="http://www.androidtcpdump.com/android-tcpdump/downloads" target="_blank" rel="external">Android tcpdump binary</a>文件</li>
 </ol>
 <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><ol>
 <li><code>adb root</code></li>
@@ -373,7 +373,7 @@ adb push tcpdum">
 </ol>
 <h1 id="tcpdump参数"><a href="#tcpdump参数" class="headerlink" title="tcpdump参数"></a>tcpdump参数</h1><ol>
 <li>-i<br>监视指定网络接口的数据包，可通过tcpdump -D查看可抓包的网卡</li>
-<li>-p<br>一般情况下,把网络接口设置为非’混杂’模式.但必须注意,在特殊情况下此网络接口还是会以’混杂’模式来工作；从而,’-p’的设与不设,不能当做以下选现的代名词:’ether host {local-hw-add}’或’ether broadcast’(nt: 前者表示只匹配以太网地址为host 的包, 后者表示匹配以太网地址为广播地址的数据包).</li>
+<li>-p<br>一般情况下,把网络接口设置为非’混杂’模式.但必须注意,在特殊情况下此网络接口还是会以’混杂’模式来工作；从而,’-p’的设与不设,不能当做以下选现的代名词:’ether host {local-hw-add}’或’ether broadcast’(nt: 前者表示只匹配以太网地址为host 的包, 后者表示匹配以太网地址为广播地址的数据包)．</li>
 <li>-s<br>抓取数据包时默认抓取长度为68字节,-S 0指定可以抓到完整的数据包</li>
 <li>-w<br>保存成pacp/cap文件，供Wireshark分析</li>
 </ol>
@@ -422,8 +422,8 @@ adb push tcpdum">
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/15/android-lk/" rel="prev" title="Android之LK">
-                Android之LK <i class="fa fa-chevron-right"></i>
+              <a href="/2016/01/10/android-bootflow/" rel="prev" title="Android之BootFlow">
+                Android之BootFlow <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -440,7 +440,7 @@ adb push tcpdum">
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2016/01/05/android-tools-tcpdump/"
-     data-title="Android工具之tcpdump"
+     data-title="Android开发工具之tcpdump"
      data-content=""
      data-url="http://robinheztto.com/2016/01/05/android-tools-tcpdump/">
   <div class="ds-share-inline">
@@ -470,7 +470,7 @@ adb push tcpdum">
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/01/05/android-tools-tcpdump/"
-           data-title="Android工具之tcpdump" data-url="http://robinheztto.com/2016/01/05/android-tools-tcpdump/">
+           data-title="Android开发工具之tcpdump" data-url="http://robinheztto.com/2016/01/05/android-tools-tcpdump/">
       </div>
     
   </div>
@@ -515,7 +515,7 @@ adb push tcpdum">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -525,7 +525,7 @@ adb push tcpdum">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -580,7 +580,7 @@ adb push tcpdum">
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

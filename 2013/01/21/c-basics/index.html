@@ -86,178 +86,61 @@
 
 
 
-<meta name="description" content="变量/常量
-常量:　字符常量，数字常量，枚举常量
+<meta name="description" content="类型/运算符/表达式变量与常量是程序处理的两种基本数据对象，通过运算符表达式将变量与常量进行组合来产生新的值，而对象的类型决定了可取值的集合与可执行的操作。
+数据类型Ｃ语言中数据对象分成基本数据类型，指针类型，枚举类型，void类型，组合类型。
 
-数据类型
-
-
+基本数据类型基本数据类型中的整型可分为有符号signed型与无符号unsigned型。
 
 
 
-数据类型
+
+基本数据类型
 32-bit
 64-bit
 
 
 
 
-char
-1
-1
-
-
-short
-2
-2
-
-
-int
-4
-4
-
-
-long
-4
-8
-
-
-float
-4
-4
-
-
-double
-8
-8
-
-
-
-
-ASCII编码
-
-关键字staticconstvolatilecontinuebreak
-
-
-
-true or falseＣ语言中，非０表示">
+cha">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C语言基础">
 <meta property="og:url" content="http://robinheztto.com/2013/01/21/c-basics/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="变量/常量
-常量:　字符常量，数字常量，枚举常量
+<meta property="og:description" content="类型/运算符/表达式变量与常量是程序处理的两种基本数据对象，通过运算符表达式将变量与常量进行组合来产生新的值，而对象的类型决定了可取值的集合与可执行的操作。
+数据类型Ｃ语言中数据对象分成基本数据类型，指针类型，枚举类型，void类型，组合类型。
 
-数据类型
-
-
+基本数据类型基本数据类型中的整型可分为有符号signed型与无符号unsigned型。
 
 
 
-数据类型
+
+基本数据类型
 32-bit
 64-bit
 
 
 
 
-char
-1
-1
-
-
-short
-2
-2
-
-
-int
-4
-4
-
-
-long
-4
-8
-
-
-float
-4
-4
-
-
-double
-8
-8
-
-
-
-
-ASCII编码
-
-关键字staticconstvolatilecontinuebreak
-
-
-
-true or falseＣ语言中，非０表示">
-<meta property="og:updated_time" content="2017-01-17T11:26:55.000Z">
+cha">
+<meta property="og:updated_time" content="2017-12-12T14:11:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言基础">
-<meta name="twitter:description" content="变量/常量
-常量:　字符常量，数字常量，枚举常量
+<meta name="twitter:description" content="类型/运算符/表达式变量与常量是程序处理的两种基本数据对象，通过运算符表达式将变量与常量进行组合来产生新的值，而对象的类型决定了可取值的集合与可执行的操作。
+数据类型Ｃ语言中数据对象分成基本数据类型，指针类型，枚举类型，void类型，组合类型。
 
-数据类型
-
-
+基本数据类型基本数据类型中的整型可分为有符号signed型与无符号unsigned型。
 
 
 
-数据类型
+
+基本数据类型
 32-bit
 64-bit
 
 
 
 
-char
-1
-1
-
-
-short
-2
-2
-
-
-int
-4
-4
-
-
-long
-4
-8
-
-
-float
-4
-4
-
-
-double
-8
-8
-
-
-
-
-ASCII编码
-
-关键字staticconstvolatilecontinuebreak
-
-
-
-true or falseＣ语言中，非０表示">
+cha">
 
 
 
@@ -485,50 +368,127 @@ true or falseＣ语言中，非０表示">
       
 
       
-        <h1 id="变量-常量"><a href="#变量-常量" class="headerlink" title="变量/常量"></a>变量/常量</h1><ul>
-<li><p>常量:　字符常量，数字常量，枚举常量</p>
-</li>
-<li><p>数据类型</p>
-</li>
+        <h1 id="类型-运算符-表达式"><a href="#类型-运算符-表达式" class="headerlink" title="类型/运算符/表达式"></a>类型/运算符/表达式</h1><p>变量与常量是程序处理的两种基本数据对象，通过运算符表达式将变量与常量进行组合来产生新的值，而对象的类型决定了可取值的集合与可执行的操作。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Ｃ语言中数据对象分成基本数据类型，指针类型，枚举类型，void类型，组合类型。</p>
+<ul>
+<li>基本数据类型<br>基本数据类型中的整型可分为有符号signed型与无符号unsigned型。</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>数据类型</th>
+<th>基本数据类型</th>
 <th style="text-align:center">32-bit</th>
-<th style="text-align:center">64-bit</th>
+<th style="text-align:right">64-bit</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>char</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
+<td style="text-align:right">1</td>
 </tr>
 <tr>
 <td>short</td>
 <td style="text-align:center">2</td>
-<td style="text-align:center">2</td>
+<td style="text-align:right">2</td>
 </tr>
 <tr>
 <td>int</td>
 <td style="text-align:center">4</td>
-<td style="text-align:center">4</td>
+<td style="text-align:right">4</td>
 </tr>
 <tr>
 <td>long</td>
 <td style="text-align:center">4</td>
-<td style="text-align:center">8</td>
+<td style="text-align:right">8</td>
 </tr>
 <tr>
 <td>float</td>
 <td style="text-align:center">4</td>
-<td style="text-align:center">4</td>
+<td style="text-align:right">4</td>
 </tr>
 <tr>
 <td>double</td>
 <td style="text-align:center">8</td>
-<td style="text-align:center">8</td>
+<td style="text-align:right">8</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>指针类型</p>
+</li>
+<li><p>void类型</p>
+</li>
+<li><p>组合类型，包括数组，结构体struct，联合体union，枚举类型enum</p>
+</li>
+</ul>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th style="text-align:center">结合性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>()　 []　 -&gt;　 .</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>! 　~ 　++　 –　 + 　- 　*　 (type)　 sizeof</td>
+<td style="text-align:center">从右到左</td>
+</tr>
+<tr>
+<td>* 　/　 %</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>+ 　-</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>&lt;&lt; 　&gt;&gt;</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>&lt; 　&lt;= 　&gt; 　&gt;=</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>== 　!=　</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>^</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>&#124;</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>&#124;&#124;</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>?:</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td>= +=   -=   *=   /=   %=   &amp;=   ^=   &#124;=   &lt;&lt;=   &gt;&gt;=</td>
+<td style="text-align:center">从右到左</td>
+</tr>
+<tr>
+<td>,</td>
+<td style="text-align:center">从右到左</td>
 </tr>
 </tbody>
 </table>
@@ -685,7 +645,7 @@ true or falseＣ语言中，非０表示">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -695,7 +655,7 @@ true or falseＣ语言中，非０表示">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -731,7 +691,7 @@ true or falseＣ语言中，非０表示">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#变量-常量"><span class="nav-number">1.</span> <span class="nav-text">变量/常量</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#类型-运算符-表达式"><span class="nav-number">1.</span> <span class="nav-text">类型/运算符/表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符"><span class="nav-number">1.2.</span> <span class="nav-text">运算符</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -750,7 +710,7 @@ true or falseＣ语言中，非０表示">
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

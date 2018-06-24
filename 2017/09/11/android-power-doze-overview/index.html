@@ -1,0 +1,858 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Power Management,Doze," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="从Android M开始，开始引入Doze和App standby两种省电技术以延长电池的使用寿命，其中Doze模式主要针对设备空闲的情况，而App standby针对于未使用的应用。当设备处于灭屏且未充电状态，静止一段时间后就会进入Doze的空闲状态(前提是编译前已通过配置xml文件开启Doze功能)，然后通过限制App访问网络，并推迟Syncs，Jobs，Alarm等工作来减少电池电量的消耗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android电源管理系列之Doze">
+<meta property="og:url" content="http://robinheztto.com/2017/09/11/android-power-doze-overview/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="从Android M开始，开始引入Doze和App standby两种省电技术以延长电池的使用寿命，其中Doze模式主要针对设备空闲的情况，而App standby针对于未使用的应用。当设备处于灭屏且未充电状态，静止一段时间后就会进入Doze的空闲状态(前提是编译前已通过配置xml文件开启Doze功能)，然后通过限制App访问网络，并推迟Syncs，Jobs，Alarm等工作来减少电池电量的消耗">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze.png?raw=true">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze-limit.png?raw=true">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze-diagram-1.png?raw=true">
+<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/DeviceIdleController.png?raw=true">
+<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android电源管理系列之Doze">
+<meta name="twitter:description" content="从Android M开始，开始引入Doze和App standby两种省电技术以延长电池的使用寿命，其中Doze模式主要针对设备空闲的情况，而App standby针对于未使用的应用。当设备处于灭屏且未充电状态，静止一段时间后就会进入Doze的空闲状态(前提是编译前已通过配置xml文件开启Doze功能)，然后通过限制App访问网络，并推迟Syncs，Jobs，Alarm等工作来减少电池电量的消耗">
+<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android电源管理系列之Doze | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android电源管理系列之Doze
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-11T11:36:35+08:00" content="2017-09-11">
+              2017-09-11
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/11/android-power-doze-overview/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/11/android-power-doze-overview/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>从Android M开始，开始引入Doze和App standby两种省电技术以延长电池的使用寿命，其中Doze模式主要针对设备空闲的情况，而App standby针对于未使用的应用。<br>当设备处于灭屏且未充电状态，静止一段时间后就会进入Doze的空闲状态(前提是编译前已通过配置xml文件开启Doze功能)，然后通过限制App访问网络，并推迟Syncs，Jobs，Alarm等工作来减少电池电量的消耗。而Appstandby，主要针对于不是经常使用的App，禁止其后台的网络活动，作业等行为。只要App在android M或更高版本的系统上运行，都会受到Doze和App Standby模式的约束。</p>
+</blockquote>
+<h1 id="Doze模式"><a href="#Doze模式" class="headerlink" title="Doze模式"></a>Doze模式</h1><p>下面是Doze模式的时序示意图，设备进入Doze模式必须满足三个前提条件，屏幕熄灭，未充电，静止一段时间。在进入Doze模式后，系统会周期性退出Doze空闲状态(下图的maintenance window)，让App有机会完成被限制的活动，以获取更好的用户体验，随着时间的推移，系统调度maintenance窗口的频率会越来越低。</p>
+<p><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze.png?raw=true" alt="doze"><br></div><br>Doze模式通过对应用活动的限制，来使系统在空闲状态下尽可能的休眠。</p>
+<p><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze-limit.png?raw=true" alt="doze"><br></div><br>如上图示，当处于Doze Idle状态时，wakelock被disable，网络访问被禁止，Jobs与Syncs，Alarm都被推迟到maintenance window执行，GPS/WiFi扫描也被禁止。</p>
+<h1 id="增强Doze模式"><a href="#增强Doze模式" class="headerlink" title="增强Doze模式"></a>增强Doze模式</h1><p>在Android N版本上，Doze模式有了进一步增强，加入了Light idle和Deep idle。相比于M版本，Android N进入Doze模式条件更加宽松，当手机处于未充电状态且灭屏一段时间(不一定是静止状态)，就可以进入Light idle浅度休眠模式。</p>
+<p><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/doze-diagram-1.png?raw=true" alt="doze"><br></div><br>Light idle与Deep idle独立运行的，系统会首先进入Light idle然后进入Deep idle，当进入Deep idle后，Light idle状态被忽略。下面是二种模式的比较：</p>
+<table>
+<thead>
+<tr>
+<th>IDLE程度</th>
+<th>进入条件</th>
+<th>对App的行为限制</th>
+<th>退出条件</th>
+<th>设备硬件要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light IDLE</td>
+<td>设备不充电，屏幕关闭</td>
+<td>1.不能访问网络；<br>2.推迟作业和同步</td>
+<td>激活屏幕，设备充电，Alarms定时时间到</td>
+<td>无</td>
+</tr>
+<tr>
+<td>Deep IDLE</td>
+<td>设备不充电，屏幕关闭，设备保持静止一段时间</td>
+<td>1.不能访问网络；<br>2.wake lock失效；<br>3.禁止GPS/WIFI 扫描；<br>4.Alarms推迟；<br>5.作业，同步推迟；</td>
+<td>激活屏幕，设备充电，移动设备，Alarms定时时间到</td>
+<td>具有SMD（Significant motion Dector），用于检测设备是否处于静止状态传感器</td>
+</tr>
+</tbody>
+</table>
+<h1 id="开启Doze功能"><a href="#开启Doze功能" class="headerlink" title="开启Doze功能"></a>开启Doze功能</h1><ol>
+<li>安装GCM服务(可选)</li>
+<li><p>打开Doze模式的配置开关(AOSP中默认关闭)，修改如下配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/res/res/values/config.xml</span><br><span class="line"></span><br><span class="line">&lt;!-- Set this to true to enable the platform&apos;s auto-power-save modes like doze and</span><br><span class="line">     app standby.  These are not enabled by default because they require a standard</span><br><span class="line">     cloud-to-device messaging service for apps to interact correctly with the modes</span><br><span class="line">     (such as to be able to deliver an instant message to the device even when it is</span><br><span class="line">     dozing).  This should be enabled if you have such services and expect apps to</span><br><span class="line">     correctly use them when installed on your device.  Otherwise, keep this disabled</span><br><span class="line">     so that applications can still use their own mechanisms. --&gt;</span><br><span class="line">&lt;bool name=&quot;config_enableAutoPowerModes&quot;&gt;true&lt;/bool&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预装App/服务适配，重要的App/服务加入白名单(如果不能使用GCM服务，App又要求具有即使推送消息功能，那么最好加入到白名单中)</p>
+</li>
+</ol>
+<h1 id="白名单"><a href="#白名单" class="headerlink" title="白名单"></a>白名单</h1><p>由于国内网络环境，Android设备基本上不能正常使用Google服务，但App又需要接收实时消息推送，所以系统提供了可以配置的白名单让App免于被Doze模式和App standby模式限制。</p>
+<ol>
+<li><p>预置应用，对于系统应用，需要默认加入到白名单中，修改<code>frameworks/base/data/etc/platform.xml</code>配置文件，如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- These are the standard packages that are white-listed to always have internet</span><br><span class="line">     access while in power save mode, even if they aren&apos;t in the foreground. --&gt;</span><br><span class="line">&lt;allow-in-power-save package=&quot;com.android.providers.downloads&quot; /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>主动配置，配置的白名单的app数据保存在<code>/data/system/deviceidle.xml</code>。</p>
+</li>
+</ol>
+<ul>
+<li>用户可以通过设置&gt;电池&gt;电池优化来手动配置白名单。</li>
+<li>App发送Intent，ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS直接导航用户到电池优化界面。</li>
+<li>App申请REQUEST_IGNORE_BATTERY_OPTIMIZATIONS权限，通过发送Intent(ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)触发请求加入白名单的对话框，用户在对话框中选择是或否在决定是否加入白名单(推荐这种方式)</li>
+</ul>
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><p><strong>在调试中所有状态都可通过命令<code>adb shell dumpsys deviceidle</code>来查看</strong></p>
+<ol>
+<li>设置手机未充电状态<br><code>$ adb shell dumpsys battery unplug</code></li>
+<li>查看手机充电状态，<code>AC powered:</code>与<code>USB powered:</code>为false说明设置成功<br><code>$ adb shell dumpsys battery</code></li>
+<li>enable Doze<br><code>$ adb shell dumpsys deviceidle enable light/deep/all</code></li>
+<li>设置Doze模式<br><code>$ adb shell dumpsys deviceidle step light/deep</code></li>
+<li>强制直接进入Deep IDLE状态<br><code>$ adb shell dumpsys deviceidle force-idle</code></li>
+<li>disable Doze<br><code>$ adb shell dumpsys deviceidle disable</code></li>
+<li>reset battery状态<br><code>$ adb shell dumpsys battery reset</code></li>
+</ol>
+<h1 id="DeviceIdleController"><a href="#DeviceIdleController" class="headerlink" title="DeviceIdleController"></a>DeviceIdleController</h1><p>DeviceIdleController是在system_server中启动的负责管理Doze模式的系统服务。如下图示，DeviceIdleController服务驱动Doze状态机，通过状态的轮转，以发送广播与调用setidle方法的方式通知关联模块对不同状态做出不同的策略。</p>
+<p><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/power/DeviceIdleController.png?raw=true" alt="DeviceIdleController"><br></div><br>在system_server启动过程，执行startOtherServices时，创建并启动了DeviceIdleController服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/java/com/android/server/SystemServer.java</span><br><span class="line"></span><br><span class="line">private void startOtherServices() &#123;</span><br><span class="line">  ......</span><br><span class="line">  mSystemServiceManager.startService(DeviceIdleController.class);</span><br><span class="line">  ......</span><br><span class="line">｝</span><br></pre></td></tr></table></figure>
+<p>DeviceIdleController继承于SystemService，并且实现AnyMotionDetector.DeviceIdleCallback接口，该接口主要用来监测设备的运动状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/DeviceIdleController.java</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Keeps track of device idleness and drives low power mode based on that.</span><br><span class="line"> */</span><br><span class="line">public class DeviceIdleController extends SystemService</span><br><span class="line">        implements AnyMotionDetector.DeviceIdleCallback &#123;</span><br><span class="line">          ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>mSystemServiceManager.startService(DeviceIdleController.class)利用反射的方式构造DeviceIdleController服务，然后调用其onStart()方法，首先看构造方法的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/DeviceIdleController.java</span><br><span class="line"></span><br><span class="line">public DeviceIdleController(Context context) &#123;</span><br><span class="line">    super(context);</span><br><span class="line">    mConfigFile = new AtomicFile(new File(getSystemDir(), &quot;deviceidle.xml&quot;));</span><br><span class="line">    mHandler = new MyHandler(BackgroundThread.getHandler().getLooper());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>DeviceIdleController构造方法中，新建对应/data/system/deviceidle.xml文件的原子操作文件对象，并且创建关联后台线程的mHandler处理消息。接下来看onStart()方法的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/DeviceIdleController.java</span><br><span class="line"></span><br><span class="line">public void onStart() &#123;</span><br><span class="line">    final PackageManager pm = getContext().getPackageManager();</span><br><span class="line"></span><br><span class="line">    synchronized (this) &#123;</span><br><span class="line">        // 读取定义在frameworks/base/core/res/res/values/config.xml文件中的config_enableAutoPowerModes</span><br><span class="line">        // 标志是否打开Doze模式     </span><br><span class="line">        mLightEnabled = mDeepEnabled = getContext().getResources().getBoolean(</span><br><span class="line">                com.android.internal.R.bool.config_enableAutoPowerModes);</span><br><span class="line">        SystemConfig sysConfig = SystemConfig.getInstance();</span><br><span class="line">        // 读取Doze模式下的系统应用白名单配置</span><br><span class="line">        // 该配置在etc/permissions/platform.xml文件中以tag:allow-in-power-save-except-idle的形式定义</span><br><span class="line">        ArraySet&lt;String&gt; allowPowerExceptIdle = sysConfig.getAllowInPowerSaveExceptIdle();</span><br><span class="line">        for (int i=0; i&lt;allowPowerExceptIdle.size(); i++) &#123;</span><br><span class="line">            String pkg = allowPowerExceptIdle.valueAt(i);</span><br><span class="line">            try &#123;</span><br><span class="line">                ApplicationInfo ai = pm.getApplicationInfo(pkg,</span><br><span class="line">                        PackageManager.MATCH_SYSTEM_ONLY);</span><br><span class="line">                int appid = UserHandle.getAppId(ai.uid);</span><br><span class="line">                mPowerSaveWhitelistAppsExceptIdle.put(ai.packageName, appid);</span><br><span class="line">                mPowerSaveWhitelistSystemAppIdsExceptIdle.put(appid, true);</span><br><span class="line">            &#125; catch (PackageManager.NameNotFoundException e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 读取Doze模式及Appstandby模式下的系统应用白名单配置</span><br><span class="line">        // 该配置在etc/permissions/platform.xml文件中以tag:allow-in-power-save的形式定义</span><br><span class="line">        ArraySet&lt;String&gt; allowPower = sysConfig.getAllowInPowerSave();</span><br><span class="line">        for (int i=0; i&lt;allowPower.size(); i++) &#123;</span><br><span class="line">            String pkg = allowPower.valueAt(i);</span><br><span class="line">            try &#123;</span><br><span class="line">                ApplicationInfo ai = pm.getApplicationInfo(pkg,</span><br><span class="line">                        PackageManager.MATCH_SYSTEM_ONLY);</span><br><span class="line">                int appid = UserHandle.getAppId(ai.uid);</span><br><span class="line">                // These apps are on both the whitelist-except-idle as well</span><br><span class="line">                // as the full whitelist, so they apply in all cases.</span><br><span class="line">                mPowerSaveWhitelistAppsExceptIdle.put(ai.packageName, appid);</span><br><span class="line">                mPowerSaveWhitelistSystemAppIdsExceptIdle.put(appid, true);</span><br><span class="line">                mPowerSaveWhitelistApps.put(ai.packageName, appid);</span><br><span class="line">                mPowerSaveWhitelistSystemAppIds.put(appid, true);</span><br><span class="line">            &#125; catch (PackageManager.NameNotFoundException e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 更新常量设置</span><br><span class="line">        mConstants = new Constants(mHandler, getContext().getContentResolver());</span><br><span class="line">        // 读取Doze模式及Appstandby模式下的用户应用白名单配置</span><br><span class="line">        // 该配置在data/system/deviceidle.xml文件中以tag:wl的形式定义</span><br><span class="line">        readConfigFileLocked();</span><br><span class="line">        // 合并系统应用及用户应用白名单，并设置到PowerManager及AlarmManager中</span><br><span class="line">        updateWhitelistAppIdsLocked();</span><br><span class="line"></span><br><span class="line">        // 初始化相关成员的状态</span><br><span class="line">        mNetworkConnected = true;</span><br><span class="line">        mScreenOn = true;</span><br><span class="line">        // Start out assuming we are charging.  If we aren&apos;t, we will at least get</span><br><span class="line">        // a battery update the next time the level drops.</span><br><span class="line">        mCharging = true;</span><br><span class="line">        mState = STATE_ACTIVE;</span><br><span class="line">        mLightState = LIGHT_STATE_ACTIVE;</span><br><span class="line">        mInactiveTimeout = mConstants.INACTIVE_TIMEOUT;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 发布BinderService与LocalService对象，提供接口给其他进程或本进程内其他服务</span><br><span class="line">    mBinderService = new BinderService();</span><br><span class="line">    publishBinderService(Context.DEVICE_IDLE_CONTROLLER, mBinderService);</span><br><span class="line">    publishLocalService(LocalService.class, new LocalService());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>onStart()中初始化了白名单设置，如下所示分成三类：</p>
+<ol>
+<li>System-excidle (system app) : used for doze<br>ArrayMap<string, interger=""> mPowerSaveWhitelistAppsExceptIdle<br>String: packageName<br>Interger: app Uid<br>From etc/permissions/platform.xml tag: allow-in-power-save-except-idle (SystemConfig.mAllowInPowerSaveExceptIdle)</string,></li>
+<li>System (system app) : used for doze &amp; app standby<br>ArrayMap<string, interger=""> mPowerSaveWhitelistApps<br>From etc/permissions/platform.xml tag : allow-in-power-save (SystemConfig.mAllowInPowerSave)</string,></li>
+<li>User :  used for doze &amp; app standby<br>ArrayMap<string,interger> mPowerSaveWhitelistUserApps<br>From data/system/deviceidle.xml tag: wl</string,interger></li>
+</ol>
+<p>当所有系统服务就绪后，会执行<code>mSystemServiceManager.startBootPhase(SystemService.PHASE_SYSTEM_SERVICES_READY);</code>回调到DeviceIdleController的onBootPhase()方法中，下面继续看onBootPhase()。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onBootPhase(int phase) &#123;</span><br><span class="line">    if (phase == PHASE_SYSTEM_SERVICES_READY) &#123;</span><br><span class="line">        synchronized (this) &#123;</span><br><span class="line">            // 获取相关的系统服务                      </span><br><span class="line">            mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);</span><br><span class="line">            mBatteryStats = BatteryStatsService.getService();</span><br><span class="line">            mLocalPowerManager = getLocalService(PowerManagerInternal.class);</span><br><span class="line">            mPowerManager = getContext().getSystemService(PowerManager.class);</span><br><span class="line">            // 创建WakeLock,用于maintenance windows时期防止系统休眠</span><br><span class="line">            mActiveIdleWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,</span><br><span class="line">                    &quot;deviceidle_maint&quot;);</span><br><span class="line">            // 设置WakeLock引用计数为false</span><br><span class="line">            mActiveIdleWakeLock.setReferenceCounted(false);</span><br><span class="line">            mConnectivityService = (ConnectivityService)ServiceManager.getService(</span><br><span class="line">                    Context.CONNECTIVITY_SERVICE);</span><br><span class="line">            mLocalAlarmManager = getLocalService(AlarmManagerService.LocalService.class);</span><br><span class="line">            mNetworkPolicyManager = INetworkPolicyManager.Stub.asInterface(</span><br><span class="line">                    ServiceManager.getService(Context.NETWORK_POLICY_SERVICE));</span><br><span class="line">            mDisplayManager = (DisplayManager) getContext().getSystemService(</span><br><span class="line">                    Context.DISPLAY_SERVICE);</span><br><span class="line">            mSensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);</span><br><span class="line">            // 读取定义在frameworks/base/core/res/res/values/config.xml文件中的config_autoPowerModeAnyMotionSensor</span><br><span class="line">            // 获取传感器ID,没有则继续获取</span><br><span class="line">            int sigMotionSensorId = getContext().getResources().getInteger(</span><br><span class="line">                    com.android.internal.R.integer.config_autoPowerModeAnyMotionSensor);</span><br><span class="line">            if (sigMotionSensorId &gt; 0) &#123;</span><br><span class="line">                mMotionSensor = mSensorManager.getDefaultSensor(sigMotionSensorId, true);</span><br><span class="line">            &#125;</span><br><span class="line">            // 读取定义在frameworks/base/core/res/res/values/config.xml文件中的config_autoPowerModePreferWristTilt</span><br><span class="line">            // 有设置，则获取传感器ID，根据ID获取传感器实例，没有则继续获取</span><br><span class="line">            if (mMotionSensor == null &amp;&amp; getContext().getResources().getBoolean(</span><br><span class="line">                    com.android.internal.R.bool.config_autoPowerModePreferWristTilt)) &#123;</span><br><span class="line">                mMotionSensor = mSensorManager.getDefaultSensor(</span><br><span class="line">                        Sensor.TYPE_WRIST_TILT_GESTURE, true);</span><br><span class="line">            &#125;</span><br><span class="line">            // 最后，获取TYPE_SIGNIFICANT_MOTION传感器，获取成功则可以进入Deep Doze模式，没有则只能进入Light Doze模式</span><br><span class="line">            if (mMotionSensor == null) &#123;</span><br><span class="line">                // As a last ditch, fall back to SMD.</span><br><span class="line">                mMotionSensor = mSensorManager.getDefaultSensor(</span><br><span class="line">                        Sensor.TYPE_SIGNIFICANT_MOTION, true);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (getContext().getResources().getBoolean(</span><br><span class="line">                    com.android.internal.R.bool.config_autoPowerModePrefetchLocation)) &#123;</span><br><span class="line">                mLocationManager = (LocationManager) getContext().getSystemService(</span><br><span class="line">                        Context.LOCATION_SERVICE);</span><br><span class="line">                mLocationRequest = new LocationRequest()</span><br><span class="line">                    .setQuality(LocationRequest.ACCURACY_FINE)</span><br><span class="line">                    .setInterval(0)</span><br><span class="line">                    .setFastestInterval(0)</span><br><span class="line">                    .setNumUpdates(1);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 获取运动传感器检测角度的阀值,并创建AnyMotionDetector</span><br><span class="line">            float angleThreshold = getContext().getResources().getInteger(</span><br><span class="line">                    com.android.internal.R.integer.config_autoPowerModeThresholdAngle) / 100f;</span><br><span class="line">            mAnyMotionDetector = new AnyMotionDetector(</span><br><span class="line">                    (PowerManager) getContext().getSystemService(Context.POWER_SERVICE),</span><br><span class="line">                    mHandler, mSensorManager, this, angleThreshold);</span><br><span class="line"></span><br><span class="line">            // light mode与deep mode的Intent,用于通知其他模块进入light/deep模式                            </span><br><span class="line">            mIdleIntent = new Intent(PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED);</span><br><span class="line">            mIdleIntent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY</span><br><span class="line">                    | Intent.FLAG_RECEIVER_FOREGROUND);</span><br><span class="line">            mLightIdleIntent = new Intent(PowerManager.ACTION_LIGHT_DEVICE_IDLE_MODE_CHANGED);</span><br><span class="line">            mLightIdleIntent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY</span><br><span class="line">                    | Intent.FLAG_RECEIVER_FOREGROUND);</span><br><span class="line"></span><br><span class="line">            // 注册BATTERY_CHANGED广播                        </span><br><span class="line">            IntentFilter filter = new IntentFilter();</span><br><span class="line">            filter.addAction(Intent.ACTION_BATTERY_CHANGED);</span><br><span class="line">            getContext().registerReceiver(mReceiver, filter);</span><br><span class="line"></span><br><span class="line">            // 注册PACKAGE_REMOVED广播   </span><br><span class="line">            filter = new IntentFilter();</span><br><span class="line">            filter.addAction(Intent.ACTION_PACKAGE_REMOVED);</span><br><span class="line">            filter.addDataScheme(&quot;package&quot;);</span><br><span class="line">            getContext().registerReceiver(mReceiver, filter);</span><br><span class="line"></span><br><span class="line">            // 注册网络变化广播</span><br><span class="line">            filter = new IntentFilter();</span><br><span class="line">            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);</span><br><span class="line">            getContext().registerReceiver(mReceiver, filter);</span><br><span class="line"></span><br><span class="line">            // 设置PowerManager,AlarmManager中Doze模式白名单应用</span><br><span class="line">            mLocalPowerManager.setDeviceIdleWhitelist(mPowerSaveWhitelistAllAppIdArray);</span><br><span class="line">            mLocalAlarmManager.setDeviceIdleUserWhitelist(mPowerSaveWhitelistUserAppIdArray);</span><br><span class="line">            // 注册屏幕亮灭监听</span><br><span class="line">            mDisplayManager.registerDisplayListener(mDisplayListener, null);</span><br><span class="line">            // 更新当前屏幕亮灭状态</span><br><span class="line">            updateDisplayLocked();</span><br><span class="line">        &#125;</span><br><span class="line">        // 更新当前网络连接状态</span><br><span class="line">        updateConnectivityState(null);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>传感器选用规则：<br>Doze 模式启动之前会对当前设备传感器进行检查，以决定doze模式的深度：<br>步骤1：检查com.android.internal.R.integer.config_autoPowerModeAnyMotionSensor，如果有设置，则获取传感器ID，根据ID获取传感器实例，没有的话跳到步骤2。<br>步骤2：检查com.android.internal.R.bool.config_autoPowerModePreferWristTilt，如果有设置，则获取传感器ID，根据ID获取传感器实例，没有的话跳到步骤3。<br>步骤3：获取TYPE_SIGNIFICANT_MOTION传感器，获取成功则有条件可以进入Deep Doze模式，没有则只能进入Light Doze模式。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Power-Management/" rel="tag">#Power Management</a>
+          
+            <a href="/tags/Doze/" rel="tag">#Doze</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/16/android-power-pms-2/" rel="next" title="Android电源管理系列之PowerManagerService(二)">
+                <i class="fa fa-chevron-left"></i> Android电源管理系列之PowerManagerService(二)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/13/android-power-doze-light/" rel="prev" title="Android电源管理系列之Light Doze">
+                Android电源管理系列之Light Doze <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/09/11/android-power-doze-overview/"
+     data-title="Android电源管理系列之Doze"
+     data-content=""
+     data-url="http://robinheztto.com/2017/09/11/android-power-doze-overview/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/11/android-power-doze-overview/"
+           data-title="Android电源管理系列之Doze" data-url="http://robinheztto.com/2017/09/11/android-power-doze-overview/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Doze模式"><span class="nav-number">1.</span> <span class="nav-text">Doze模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#增强Doze模式"><span class="nav-number">2.</span> <span class="nav-text">增强Doze模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开启Doze功能"><span class="nav-number">3.</span> <span class="nav-text">开启Doze功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#白名单"><span class="nav-number">4.</span> <span class="nav-text">白名单</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试"><span class="nav-number">5.</span> <span class="nav-text">调试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DeviceIdleController"><span class="nav-number">6.</span> <span class="nav-text">DeviceIdleController</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

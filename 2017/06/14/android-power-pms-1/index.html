@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Power Management,PowerManagerService," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="生活不止眼前的代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="PowerManagerService提供Android系统的电源管理服务，主要功能是控制系统待机状态，屏幕显示，亮度调节，光线/距离传感器的控制等。
+相关代码在以下文件中：frameworks/base/services/java/com/android/server/SystemServer.javaframeworks/base/core/java/android/os/PowerMana">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android电源管理系列之PowerManagerService(一)">
+<meta property="og:url" content="http://robinheztto.com/2017/06/14/android-power-pms-1/index.html">
+<meta property="og:site_name" content="生活不止眼前的代码">
+<meta property="og:description" content="PowerManagerService提供Android系统的电源管理服务，主要功能是控制系统待机状态，屏幕显示，亮度调节，光线/距离传感器的控制等。
+相关代码在以下文件中：frameworks/base/services/java/com/android/server/SystemServer.javaframeworks/base/core/java/android/os/PowerMana">
+<meta property="og:updated_time" content="2018-01-07T04:07:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android电源管理系列之PowerManagerService(一)">
+<meta name="twitter:description" content="PowerManagerService提供Android系统的电源管理服务，主要功能是控制系统待机状态，屏幕显示，亮度调节，光线/距离传感器的控制等。
+相关代码在以下文件中：frameworks/base/services/java/com/android/server/SystemServer.javaframeworks/base/core/java/android/os/PowerMana">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Robin He'
+    }
+  };
+</script>
+
+  <title> Android电源管理系列之PowerManagerService(一) | 生活不止眼前的代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?758948c2ee29382f2572cc69315b96dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">生活不止眼前的代码</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android电源管理系列之PowerManagerService(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-14T15:19:20+08:00" content="2017-06-14">
+              2017-06-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/14/android-power-pms-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/14/android-power-pms-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>PowerManagerService提供Android系统的电源管理服务，主要功能是控制系统待机状态，屏幕显示，亮度调节，光线/距离传感器的控制等。</p>
+<p>相关代码在以下文件中：<br>frameworks/base/services/java/com/android/server/SystemServer.java<br>frameworks/base/core/java/android/os/PowerManager.java<br>frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java<br>frameworks/base/services/core/jni/com_android_server_power_PowerManagerService.cpp<br>frameworks/base/core/java/android/os/PowerManagerInternal.java<br>frameworks/base/services/core/java/com/android/server/power/Notifier.java<br>device/qcom/common/power/power.c<br>system/core/libsuspend/autosuspend.c<br>hardware/libhardware_legacy/power/power.c</p>
+</blockquote>
+<h1 id="初始化流程"><a href="#初始化流程" class="headerlink" title="初始化流程"></a>初始化流程</h1><p>跟其他系统服务一样，PowerManagerService也是继承于SystemService并通过SystemServer启动。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">public final class PowerManagerService extends SystemService</span><br><span class="line">        implements Watchdog.Monitor &#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; frameworks/base/services/java/com/android/server/SystemServer.java</span><br><span class="line"></span><br><span class="line">private void startBootstrapServices() &#123;</span><br><span class="line">  ......</span><br><span class="line">  mPowerManagerService = mSystemServiceManager.startService(PowerManagerService.class);</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在SystemServer的startBootstrapServices中，通过SystemServiceManager.startService启动了PowerManagerService，下面首先来看PowerManagerService构造方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">public PowerManagerService(Context context) &#123;</span><br><span class="line">    super(context);</span><br><span class="line">    // mContext赋值为SystemContext</span><br><span class="line">    mContext = context;</span><br><span class="line">    // 创建消息处理线程并启动，创建关联消息处理线程的handler对象</span><br><span class="line">    mHandlerThread = new ServiceThread(TAG,</span><br><span class="line">            Process.THREAD_PRIORITY_DISPLAY, false /*allowIo*/);</span><br><span class="line">    mHandlerThread.start();</span><br><span class="line">    mHandler = new PowerManagerHandler(mHandlerThread.getLooper());</span><br><span class="line">    qcNsrmPowExt = new QCNsrmPowerExtension(this);</span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        // 创建&quot;PowerManagerService.WakeLocks&quot;的SuspendBlocker</span><br><span class="line">        mWakeLockSuspendBlocker = createSuspendBlockerLocked(&quot;PowerManagerService.WakeLocks&quot;);</span><br><span class="line">        // 创建&quot;PowerManagerService.Display&quot;的SuspendBlocker</span><br><span class="line">        mDisplaySuspendBlocker = createSuspendBlockerLocked(&quot;PowerManagerService.Display&quot;);</span><br><span class="line">        // 请求DisplaySuspendBlocker，禁止系统进入休眠</span><br><span class="line">        mDisplaySuspendBlocker.acquire();</span><br><span class="line">        mHoldingDisplaySuspendBlocker = true;</span><br><span class="line">        mHalAutoSuspendModeEnabled = false;</span><br><span class="line">        mHalInteractiveModeEnabled = true;</span><br><span class="line">        // 设置mWakefulness为唤醒状态</span><br><span class="line">        mWakefulness = WAKEFULNESS_AWAKE;</span><br><span class="line">        // 进入到native层初始化</span><br><span class="line">        nativeInit();</span><br><span class="line">        nativeSetAutoSuspend(false);</span><br><span class="line">        nativeSetInteractive(true);</span><br><span class="line">        nativeSetFeature(POWER_FEATURE_DOUBLE_TAP_TO_WAKE, 0);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>PowerManagerService构造函数中首先创建了处理消息的进程及对应的handler对象以进行消息处理，然后创建SuspendBlocker对象，用于WakeLocks与Display，并设置mWakefulness的初始状态为WAKEFULNESS_AWAKE，最后进入到native层初始化。下面先看一下关于mWakefulness的定义。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/os/PowerManagerInternal.java</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 设备处于休眠状态，只能被wakeUp()唤醒．</span><br><span class="line"> */</span><br><span class="line">public static final int WAKEFULNESS_ASLEEP = 0;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 设备处于正常工作(fully awake)状态．</span><br><span class="line"> */</span><br><span class="line">public static final int WAKEFULNESS_AWAKE = 1;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 设备处于播放屏保状态．</span><br><span class="line"> */</span><br><span class="line">public static final int WAKEFULNESS_DREAMING = 2;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 设备处于doze状态，只有低耗电的屏保可以运行，其他应用被挂起．</span><br><span class="line"> */</span><br><span class="line">public static final int WAKEFULNESS_DOZING = 3;</span><br></pre></td></tr></table></figure></p>
+<p>继续回到PowerManagerService构造函数的native初始化中，首先来看nativeInit的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_power_PowerManagerService.cpp</span><br><span class="line"></span><br><span class="line">static const JNINativeMethod gPowerManagerServiceMethods[] = &#123;</span><br><span class="line">    /* name, signature, funcPtr */</span><br><span class="line">    &#123; &quot;nativeInit&quot;, &quot;()V&quot;,</span><br><span class="line">            (void*) nativeInit &#125;,</span><br><span class="line">    &#123; &quot;nativeAcquireSuspendBlocker&quot;, &quot;(Ljava/lang/String;)V&quot;,</span><br><span class="line">            (void*) nativeAcquireSuspendBlocker &#125;,</span><br><span class="line">    &#123; &quot;nativeReleaseSuspendBlocker&quot;, &quot;(Ljava/lang/String;)V&quot;,</span><br><span class="line">            (void*) nativeReleaseSuspendBlocker &#125;,</span><br><span class="line">    &#123; &quot;nativeSetInteractive&quot;, &quot;(Z)V&quot;,</span><br><span class="line">            (void*) nativeSetInteractive &#125;,</span><br><span class="line">    &#123; &quot;nativeSetAutoSuspend&quot;, &quot;(Z)V&quot;,</span><br><span class="line">            (void*) nativeSetAutoSuspend &#125;,</span><br><span class="line">    &#123; &quot;nativeSendPowerHint&quot;, &quot;(II)V&quot;,</span><br><span class="line">            (void*) nativeSendPowerHint &#125;,</span><br><span class="line">    &#123; &quot;nativeSetFeature&quot;, &quot;(II)V&quot;,</span><br><span class="line">            (void*) nativeSetFeature &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>PowerManagerService中的native方法定义如上，nativeInit即调用nativeInit()。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_power_PowerManagerService.cpp</span><br><span class="line"></span><br><span class="line">static void nativeInit(JNIEnv* env, jobject obj) &#123;</span><br><span class="line">    // 创建一个全局对象，引用PMS</span><br><span class="line">    gPowerManagerServiceObj = env-&gt;NewGlobalRef(obj);</span><br><span class="line">    // 利用hw_get_module加载power模块</span><br><span class="line">    status_t err = hw_get_module(POWER_HARDWARE_MODULE_ID,</span><br><span class="line">            (hw_module_t const**)&amp;gPowerModule);</span><br><span class="line">    if (!err) &#123;</span><br><span class="line">        gPowerModule-&gt;init(gPowerModule);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        ALOGE(&quot;Couldn&apos;t load %s module (%s)&quot;, POWER_HARDWARE_MODULE_ID, strerror(-err));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>nativeInit的主要任务时装载power模块，该模块由厂商实现，以高通为例，如下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; device/qcom/common/power/power.c</span><br><span class="line"></span><br><span class="line">static struct hw_module_methods_t power_module_methods = &#123;</span><br><span class="line">    .open = NULL,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct power_module HAL_MODULE_INFO_SYM = &#123;</span><br><span class="line">    .common = &#123;</span><br><span class="line">        .tag = HARDWARE_MODULE_TAG,</span><br><span class="line">        .module_api_version = POWER_MODULE_API_VERSION_0_2,</span><br><span class="line">        .hal_api_version = HARDWARE_HAL_API_VERSION,</span><br><span class="line">        .id = POWER_HARDWARE_MODULE_ID,</span><br><span class="line">        .name = &quot;QCOM Power HAL&quot;,</span><br><span class="line">        .author = &quot;Qualcomm&quot;,</span><br><span class="line">        .methods = &amp;power_module_methods,</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    .init = power_init,</span><br><span class="line">    .powerHint = power_hint,</span><br><span class="line">    .setInteractive = set_interactive,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>power_module中实现了init，powerHint，setInteractive，nativeInit最终调用到HAL power模块的power_init具体实现中。接着看native初始化nativeSetAutoSuspend的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_power_PowerManagerService.cpp</span><br><span class="line"></span><br><span class="line">static void nativeSetAutoSuspend(JNIEnv* /* env */, jclass /* clazz */, jboolean enable) &#123;</span><br><span class="line">    if (enable) &#123;</span><br><span class="line">        ALOGD_IF_SLOW(100, &quot;Excessive delay in autosuspend_enable() while turning screen off&quot;);</span><br><span class="line">        autosuspend_enable();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        ALOGD_IF_SLOW(100, &quot;Excessive delay in autosuspend_disable() while turning screen on&quot;);</span><br><span class="line">        autosuspend_disable();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; system/core/libsuspend/autosuspend.c</span><br><span class="line"></span><br><span class="line">int autosuspend_disable(void)</span><br><span class="line">&#123;</span><br><span class="line">    int ret;</span><br><span class="line"></span><br><span class="line">    ret = autosuspend_init();</span><br><span class="line">    if (ret) &#123;</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ALOGV(&quot;autosuspend_disable\n&quot;);</span><br><span class="line"></span><br><span class="line">    if (!autosuspend_enabled) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ret = autosuspend_ops-&gt;disable();</span><br><span class="line">    if (ret) &#123;</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    autosuspend_enabled = false;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>nativeSetAutoSuspend最终调用到libsuspend(参考Android电源管理系列之libsuspend)的autosuspend_disable禁止系统休眠。继续看native初始化nativeSetInteractive，nativeSetFeature的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/jni/com_android_server_power_PowerManagerService.cpp</span><br><span class="line"></span><br><span class="line">static void nativeSetInteractive(JNIEnv* /* env */, jclass /* clazz */, jboolean enable) &#123;</span><br><span class="line">    if (gPowerModule) &#123;</span><br><span class="line">        if (enable) &#123;</span><br><span class="line">            ALOGD_IF_SLOW(20, &quot;Excessive delay in setInteractive(true) while turning screen on&quot;);</span><br><span class="line">            gPowerModule-&gt;setInteractive(gPowerModule, true);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            ALOGD_IF_SLOW(20, &quot;Excessive delay in setInteractive(false) while turning screen off&quot;);</span><br><span class="line">            gPowerModule-&gt;setInteractive(gPowerModule, false);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void nativeSetFeature(JNIEnv *env, jclass clazz, jint featureId, jint data) &#123;</span><br><span class="line">    int data_param = data;</span><br><span class="line"></span><br><span class="line">    if (gPowerModule &amp;&amp; gPowerModule-&gt;setFeature) &#123;</span><br><span class="line">        gPowerModule-&gt;setFeature(gPowerModule, (feature_t)featureId, data_param);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同nativeInit一样，最终都是调用到HAL power模块的具体实现中。以上是构造函数的分析流程，下面继续看PowerManagerService在系统启动过程中回调onStart()，onBootPhase()，systemReady()的实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">public void onStart() &#123;</span><br><span class="line">    publishBinderService(Context.POWER_SERVICE, new BinderService());</span><br><span class="line">    publishLocalService(PowerManagerInternal.class, new LocalService());</span><br><span class="line"></span><br><span class="line">    Watchdog.getInstance().addMonitor(this);</span><br><span class="line">    Watchdog.getInstance().addThread(mHandler);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private final class BinderService extends IPowerManager.Stub ｛</span><br><span class="line">    ......</span><br><span class="line">｝</span><br><span class="line"></span><br><span class="line">private final class LocalService extends PowerManagerInternal &#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>onStart()中发布了BinderService，LocalService分别供其他进程，进程内其他服务调用，并将PowerManagerService加入到Watchdog监控中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">public void onBootPhase(int phase) &#123;</span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        if (phase == PHASE_THIRD_PARTY_APPS_CAN_START) &#123;</span><br><span class="line">            ......</span><br><span class="line">        &#125; else if (phase == PHASE_BOOT_COMPLETED) &#123;</span><br><span class="line">            final long now = SystemClock.uptimeMillis();</span><br><span class="line">            // 设置mBootCompleted状态</span><br><span class="line">            mBootCompleted = true;</span><br><span class="line">            mDirty |= DIRTY_BOOT_COMPLETED;</span><br><span class="line">            // 更新userActivity及PowerState，后面分析</span><br><span class="line">            userActivityNoUpdateLocked(</span><br><span class="line">                    now, PowerManager.USER_ACTIVITY_EVENT_OTHER, 0, Process.SYSTEM_UID);</span><br><span class="line">            updatePowerStateLocked();</span><br><span class="line">            // 执行mBootCompletedRunnables中的runnable方法</span><br><span class="line">            if (!ArrayUtils.isEmpty(mBootCompletedRunnables)) &#123;</span><br><span class="line">                Slog.d(TAG, &quot;Posting &quot; + mBootCompletedRunnables.length + &quot; delayed runnables&quot;);</span><br><span class="line">                for (Runnable r : mBootCompletedRunnables) &#123;</span><br><span class="line">                    BackgroundThread.getHandler().post(r);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            mBootCompletedRunnables = null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>onBootPhase中主要设置mBootCompleted状态，更新PowerState状态，并执行mBootCompletedRunnables中的runnables方法(低电量模式会设置)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">public void systemReady(IAppOpsService appOps) &#123;</span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        mSystemReady = true;</span><br><span class="line">        // 获取AppOpsService</span><br><span class="line">        mAppOps = appOps;</span><br><span class="line">        // 获取DreamManager</span><br><span class="line">        mDreamManager = getLocalService(DreamManagerInternal.class);</span><br><span class="line">        // 获取DisplayManagerService</span><br><span class="line">        mDisplayManagerInternal = getLocalService(DisplayManagerInternal.class);</span><br><span class="line">        mPolicy = getLocalService(WindowManagerPolicy.class);</span><br><span class="line">        // 获取mBatteryService</span><br><span class="line">        mBatteryManagerInternal = getLocalService(BatteryManagerInternal.class);</span><br><span class="line"></span><br><span class="line">        PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);</span><br><span class="line">        // 获取屏幕默认，最大，最小亮度</span><br><span class="line">        mScreenBrightnessSettingMinimum = pm.getMinimumScreenBrightnessSetting();</span><br><span class="line">        mScreenBrightnessSettingMaximum = pm.getMaximumScreenBrightnessSetting();</span><br><span class="line">        mScreenBrightnessSettingDefault = pm.getDefaultScreenBrightnessSetting();</span><br><span class="line">        // 获取SensorManager</span><br><span class="line">        SensorManager sensorManager = new SystemSensorManager(mContext, mHandler.getLooper());</span><br><span class="line"></span><br><span class="line">        mBatteryStats = BatteryStatsService.getService();</span><br><span class="line">        // 创建Notifier对象，用于广播power state的变化</span><br><span class="line">        mNotifier = new Notifier(Looper.getMainLooper(), mContext, mBatteryStats,</span><br><span class="line">                mAppOps, createSuspendBlockerLocked(&quot;PowerManagerService.Broadcasts&quot;),</span><br><span class="line">                mPolicy);</span><br><span class="line">        // 无线充电检测</span><br><span class="line">        mWirelessChargerDetector = new WirelessChargerDetector(sensorManager,</span><br><span class="line">                createSuspendBlockerLocked(&quot;PowerManagerService.WirelessChargerDetector&quot;),</span><br><span class="line">                mHandler);</span><br><span class="line">        // 监听设置的变化</span><br><span class="line">        mSettingsObserver = new SettingsObserver(mHandler);</span><br><span class="line"></span><br><span class="line">        mLightsManager = getLocalService(LightsManager.class);</span><br><span class="line">        mAttentionLight = mLightsManager.getLight(LightsManager.LIGHT_ID_ATTENTION);</span><br><span class="line"></span><br><span class="line">        // Initialize display power management.</span><br><span class="line">        mDisplayManagerInternal.initPowerManagement(</span><br><span class="line">                mDisplayPowerCallbacks, mHandler, sensorManager);</span><br><span class="line"></span><br><span class="line">        // Register for settings changes.</span><br><span class="line">        final ContentResolver resolver = mContext.getContentResolver();</span><br><span class="line">        resolver.registerContentObserver(Settings.Secure.getUriFor(</span><br><span class="line">                Settings.Secure.SCREENSAVER_ENABLED),</span><br><span class="line">        ......</span><br><span class="line">        IVrManager vrManager =</span><br><span class="line">                (IVrManager) getBinderService(VrManagerService.VR_MANAGER_BINDER_SERVICE);</span><br><span class="line">        try &#123;</span><br><span class="line">            vrManager.registerListener(mVrStateCallbacks);</span><br><span class="line">        &#125; catch (RemoteException e) &#123;</span><br><span class="line">            Slog.e(TAG, &quot;Failed to register VR mode state listener: &quot; + e);</span><br><span class="line">        &#125;</span><br><span class="line">        // 读取配置</span><br><span class="line">        readConfigurationLocked();</span><br><span class="line">        updateSettingsLocked();</span><br><span class="line">        mDirty |= DIRTY_BATTERY_STATE;</span><br><span class="line">        updatePowerStateLocked();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Register for broadcasts from other components of the system.</span><br><span class="line">    IntentFilter filter = new IntentFilter();</span><br><span class="line">    filter.addAction(Intent.ACTION_BATTERY_CHANGED);</span><br><span class="line">    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);</span><br><span class="line">    mContext.registerReceiver(new BatteryReceiver(), filter, null, mHandler);</span><br><span class="line"></span><br><span class="line">    filter = new IntentFilter();</span><br><span class="line">    filter.addAction(Intent.ACTION_DREAMING_STARTED);</span><br><span class="line">    filter.addAction(Intent.ACTION_DREAMING_STOPPED);</span><br><span class="line">    mContext.registerReceiver(new DreamReceiver(), filter, null, mHandler);</span><br><span class="line"></span><br><span class="line">    filter = new IntentFilter();</span><br><span class="line">    filter.addAction(Intent.ACTION_USER_SWITCHED);</span><br><span class="line">    mContext.registerReceiver(new UserSwitchedReceiver(), filter, null, mHandler);</span><br><span class="line"></span><br><span class="line">    filter = new IntentFilter();</span><br><span class="line">    filter.addAction(Intent.ACTION_DOCK_EVENT);</span><br><span class="line">    mContext.registerReceiver(new DockReceiver(), filter, null, mHandler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="userActivity"><a href="#userActivity" class="headerlink" title="userActivity"></a>userActivity</h1><p>userActivity是定义在PowerManager中的SystemApi，用户向PowerManagerService报告用户活动，以更新PowerManagerService内部时间/状态值，推迟系统休眠的时间。下面首先来看userActivity的定义。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/os/PowerManager.java</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * User activity event type: Unspecified event type.</span><br><span class="line"> */</span><br><span class="line">public static final int USER_ACTIVITY_EVENT_OTHER = 0;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * User activity event type: Button or key pressed or released.</span><br><span class="line"> */</span><br><span class="line">public static final int USER_ACTIVITY_EVENT_BUTTON = 1;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * User activity event type: Touch down, move or up.</span><br><span class="line"> */</span><br><span class="line">public static final int USER_ACTIVITY_EVENT_TOUCH = 2;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * User activity event type: Accessibility taking action on behalf of user.</span><br><span class="line"> */</span><br><span class="line">public static final int USER_ACTIVITY_EVENT_ACCESSIBILITY = 3;</span><br><span class="line"></span><br><span class="line">@SystemApi</span><br><span class="line">public void userActivity(long when, int event, int flags) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        mService.userActivity(when, event, flags);</span><br><span class="line">    &#125; catch (RemoteException e) &#123;</span><br><span class="line">        throw e.rethrowFromSystemServer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">private final class BinderService extends IPowerManager.Stub &#123;</span><br><span class="line">  ......</span><br><span class="line">  public void userActivity(long eventTime, int event, int flags) &#123;</span><br><span class="line">      final long now = SystemClock.uptimeMillis();</span><br><span class="line">      ......</span><br><span class="line"></span><br><span class="line">      if (eventTime &gt; now) &#123;</span><br><span class="line">          throw new IllegalArgumentException(&quot;event time must not be in the future&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      final int uid = Binder.getCallingUid();</span><br><span class="line">      final long ident = Binder.clearCallingIdentity();</span><br><span class="line">      try &#123;</span><br><span class="line">          userActivityInternal(eventTime, event, flags, uid);</span><br><span class="line">      &#125; finally &#123;</span><br><span class="line">          Binder.restoreCallingIdentity(ident);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>PowerManager中userActivity请求调用服务端PowerManagerService BinderService的userActivity，即调用内部方法userActivityInternal。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">private void userActivityInternal(long eventTime, int event, int flags, int uid) &#123;</span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        if (userActivityNoUpdateLocked(eventTime, event, flags, uid)) &#123;</span><br><span class="line">            updatePowerStateLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>userActivityInternal中首先调用userActivityNoUpdateLocked更新相关数据及状态(***NoUpdateLocked仅仅更新内部状态并不采取任何操作)，然后调用updatePowerStateLocked更新所有PowerState，下面分析userActivityNoUpdateLocked的实现，updatePowerStateLocked是PowerManagerService的核心方法，在最后进行分析。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">private boolean userActivityNoUpdateLocked(long eventTime, int event, int flags, int uid) &#123;</span><br><span class="line">    // 如果发生时间是上一次休眠或唤醒前，或当前没有开机完成到systemReady，不采取操作直接返回</span><br><span class="line">    if (eventTime &lt; mLastSleepTime || eventTime &lt; mLastWakeTime</span><br><span class="line">            || !mBootCompleted || !mSystemReady) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">        // 更新mLastInteractivePowerHintTime时间</span><br><span class="line">        if (eventTime &gt; mLastInteractivePowerHintTime) &#123;</span><br><span class="line">            powerHintInternal(POWER_HINT_INTERACTION, 0);</span><br><span class="line">            mLastInteractivePowerHintTime = eventTime;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 通过mNotifier通知BatteryStats UserActivity事件</span><br><span class="line">        mNotifier.onUserActivity(event, uid);</span><br><span class="line"></span><br><span class="line">        if (mUserInactiveOverrideFromWindowManager) &#123;</span><br><span class="line">            mUserInactiveOverrideFromWindowManager = false;</span><br><span class="line">            mOverriddenTimeout = -1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果系统处于休眠状态，不进行处理</span><br><span class="line">        if (mWakefulness == WAKEFULNESS_ASLEEP</span><br><span class="line">                || mWakefulness == WAKEFULNESS_DOZING</span><br><span class="line">                || (flags &amp; PowerManager.USER_ACTIVITY_FLAG_INDIRECT) != 0) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 根据flag是否在已变暗的情况下是否重启活动超时更新mLastUserActivityTimeNoChangeLights或mLastUserActivityTime</span><br><span class="line">        // 并且设置mDirty DIRTY_USER_ACTIVITY</span><br><span class="line">        if ((flags &amp; PowerManager.USER_ACTIVITY_FLAG_NO_CHANGE_LIGHTS) != 0) &#123;</span><br><span class="line">            if (eventTime &gt; mLastUserActivityTimeNoChangeLights</span><br><span class="line">                    &amp;&amp; eventTime &gt; mLastUserActivityTime) &#123;</span><br><span class="line">                mLastUserActivityTimeNoChangeLights = eventTime;</span><br><span class="line">                mDirty |= DIRTY_USER_ACTIVITY;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (eventTime &gt; mLastUserActivityTime) &#123;</span><br><span class="line">                mLastUserActivityTime = eventTime;</span><br><span class="line">                mDirty |= DIRTY_USER_ACTIVITY;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_POWER);</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="gotoSleep"><a href="#gotoSleep" class="headerlink" title="gotoSleep"></a>gotoSleep</h1><p>gotoSleep在PowerManager中的定义如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/os/PowerManager.java</span><br><span class="line"></span><br><span class="line">public void goToSleep(long time) &#123;</span><br><span class="line">    goToSleep(time, GO_TO_SLEEP_REASON_APPLICATION, 0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void goToSleep(long time, int reason, int flags) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        mService.goToSleep(time, reason, flags);</span><br><span class="line">    &#125; catch (RemoteException e) &#123;</span><br><span class="line">        throw e.rethrowFromSystemServer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>与userActivity一样，gotoSleep最终将调用到goToSleepInternal。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">private final class BinderService extends IPowerManager.Stub &#123;</span><br><span class="line">  ......</span><br><span class="line">  public void goToSleep(long eventTime, int reason, int flags) &#123;</span><br><span class="line">      if (eventTime &gt; SystemClock.uptimeMillis()) &#123;</span><br><span class="line">          throw new IllegalArgumentException(&quot;event time must not be in the future&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      mContext.enforceCallingOrSelfPermission(</span><br><span class="line">              android.Manifest.permission.DEVICE_POWER, null);</span><br><span class="line"></span><br><span class="line">      final int uid = Binder.getCallingUid();</span><br><span class="line">      final long ident = Binder.clearCallingIdentity();</span><br><span class="line">      try &#123;</span><br><span class="line">          goToSleepInternal(eventTime, reason, flags, uid);</span><br><span class="line">      &#125; finally &#123;</span><br><span class="line">          Binder.restoreCallingIdentity(ident);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void goToSleepInternal(long eventTime, int reason, int flags, int uid) &#123;</span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        if (goToSleepNoUpdateLocked(eventTime, reason, flags, uid)) &#123;</span><br><span class="line">            updatePowerStateLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>goToSleepInternal中将执行goToSleepNoUpdateLocked更新内部状态，同样在updatePowerStateLocked中更新PowerState的操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</span><br><span class="line"></span><br><span class="line">private boolean goToSleepNoUpdateLocked(long eventTime, int reason, int flags, int uid) &#123;</span><br><span class="line">    // 当不处于awake状态或未开机systemReady，不处理</span><br><span class="line">    if (eventTime &lt; mLastWakeTime</span><br><span class="line">            || mWakefulness == WAKEFULNESS_ASLEEP</span><br><span class="line">            || mWakefulness == WAKEFULNESS_DOZING</span><br><span class="line">            || !mBootCompleted || !mSystemReady) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">        ......</span><br><span class="line">        // 更新mLastSleepTime时间，设置DIRTY_WAKEFULNESS标志位</span><br><span class="line">        mLastSleepTime = eventTime;</span><br><span class="line">        mSandmanSummoned = true;</span><br><span class="line">        setWakefulnessLocked(WAKEFULNESS_DOZING, reason);</span><br><span class="line"></span><br><span class="line">        // Report the number of wake locks that will be cleared by going to sleep.</span><br><span class="line">        int numWakeLocksCleared = 0;</span><br><span class="line">        final int numWakeLocks = mWakeLocks.size();</span><br><span class="line">        for (int i = 0; i &lt; numWakeLocks; i++) &#123;</span><br><span class="line">            final WakeLock wakeLock = mWakeLocks.get(i);</span><br><span class="line">            switch (wakeLock.mFlags &amp; PowerManager.WAKE_LOCK_LEVEL_MASK) &#123;</span><br><span class="line">                case PowerManager.FULL_WAKE_LOCK:</span><br><span class="line">                case PowerManager.SCREEN_BRIGHT_WAKE_LOCK:</span><br><span class="line">                case PowerManager.SCREEN_DIM_WAKE_LOCK:</span><br><span class="line">                    numWakeLocksCleared += 1;</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Skip dozing if requested.</span><br><span class="line">        if ((flags &amp; PowerManager.GO_TO_SLEEP_FLAG_NO_DOZE) != 0) &#123;</span><br><span class="line">            reallyGoToSleepNoUpdateLocked(eventTime, uid);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_POWER);</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>goToSleepNoUpdateLocked中更新mLastSleepTime，mWakefulness，mDirty状态。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Power-Management/" rel="tag">#Power Management</a>
+          
+            <a href="/tags/PowerManagerService/" rel="tag">#PowerManagerService</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/01/android-power-wakelock/" rel="next" title="Android电源管理系列之Wakelock">
+                <i class="fa fa-chevron-left"></i> Android电源管理系列之Wakelock
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/16/android-power-pms-2/" rel="prev" title="Android电源管理系列之PowerManagerService(二)">
+                Android电源管理系列之PowerManagerService(二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/06/14/android-power-pms-1/"
+     data-title="Android电源管理系列之PowerManagerService(一)"
+     data-content=""
+     data-url="http://robinheztto.com/2017/06/14/android-power-pms-1/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/06/14/android-power-pms-1/"
+           data-title="Android电源管理系列之PowerManagerService(一)" data-url="http://robinheztto.com/2017/06/14/android-power-pms-1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Robin He" />
+          <p class="site-author-name" itemprop="name">Robin He</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化流程"><span class="nav-number">1.</span> <span class="nav-text">初始化流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#userActivity"><span class="nav-number">2.</span> <span class="nav-text">userActivity</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gotoSleep"><span class="nav-number">3.</span> <span class="nav-text">gotoSleep</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin He</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xrobinhe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>
