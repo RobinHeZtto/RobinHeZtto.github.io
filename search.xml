@@ -2306,6 +2306,165 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Java核心技术之异常处理机制]]></title>
+      <url>http://robinheztto.com/2014/01/07/java-exception-error/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。</p>
+</blockquote>
+<h1 id="Exception与Error，运行时异常与一般异常的区别"><a href="#Exception与Error，运行时异常与一般异常的区别" class="headerlink" title="Exception与Error，运行时异常与一般异常的区别"></a>Exception与Error，运行时异常与一般异常的区别</h1><p>Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。<br>Exception和Error体现了Java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获，常见的比如OutOfMemoryError之类，都是Error的子类。<br>Exception又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。</p>
+<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/throwable.png?raw=true" alt="xxx"><br></center>
+
+
+<h1 id="Java-内置异常类"><a href="#Java-内置异常类" class="headerlink" title="Java 内置异常类"></a>Java 内置异常类</h1><p>Java 定义在 java.lang 包中的非检查性异常类。</p>
+<table>
+<thead>
+<tr>
+<th>异常</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ArithmeticException</td>
+<td>当出现异常的运算条件时，抛出此异常。例如，一个整数”除以零”时，抛出此类的一个实例。</td>
+</tr>
+<tr>
+<td>ArrayIndexOutOfBoundsException</td>
+<td>用非法索引访问数组时抛出的异常。如果索引为负或大于等于数组大小，则该索引为非法索引。</td>
+</tr>
+<tr>
+<td>ArrayStoreException</td>
+<td>试图将错误类型的对象存储到一个对象数组时抛出的异常。</td>
+</tr>
+<tr>
+<td>ClassCastException</td>
+<td>当试图将对象强制转换为不是实例的子类时，抛出该异常。</td>
+</tr>
+<tr>
+<td>IllegalArgumentException</td>
+<td>抛出的异常表明向方法传递了一个不合法或不正确的参数。</td>
+</tr>
+<tr>
+<td>IllegalMonitorStateException</td>
+<td>抛出的异常表明某一线程已经试图等待对象的监视器，或者试图通知其他正在等待对象的监视器而本身没有指定监视器的线程。</td>
+</tr>
+<tr>
+<td>IllegalStateException</td>
+<td>在非法或不适当的时间调用方法时产生的信号。换句话说，即 Java 环境或 Java 应用程序没有处于请求操作所要求的适当状态下。</td>
+</tr>
+<tr>
+<td>IllegalThreadStateException</td>
+<td>线程没有处于请求操作所要求的适当状态时抛出的异常。</td>
+</tr>
+<tr>
+<td>IndexOutOfBoundsException</td>
+<td>指示某排序索引（例如对数组、字符串或向量的排序）超出范围时抛出。</td>
+</tr>
+<tr>
+<td>NegativeArraySizeException</td>
+<td>如果应用程序试图创建大小为负的数组，则抛出该异常。</td>
+</tr>
+<tr>
+<td>NullPointerException</td>
+<td>当应用程序试图在需要对象的地方使用 null 时，抛出该异常</td>
+</tr>
+<tr>
+<td>NumberFormatException</td>
+<td>当应用程序试图将字符串转换成一种数值类型，但该字符串不能转换为适当格式时，抛出该异常。</td>
+</tr>
+<tr>
+<td>SecurityException</td>
+<td>由安全管理器抛出的异常，指示存在安全侵犯。</td>
+</tr>
+<tr>
+<td>StringIndexOutOfBoundsException</td>
+<td>此异常由 String 方法抛出，指示索引或者为负，或者超出字符串的大小。</td>
+</tr>
+<tr>
+<td>UnsupportedOperationException</td>
+<td>当不支持请求的操作时，抛出该异常。</td>
+</tr>
+</tbody>
+</table>
+<p>Java 定义在 java.lang 包中的检查性异常类。</p>
+<table>
+<thead>
+<tr>
+<th>异常</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClassNotFoundException</td>
+<td>应用程序试图加载类时，找不到相应的类，抛出该异常。</td>
+</tr>
+<tr>
+<td>CloneNotSupportedException</td>
+<td>当调用 Object 类中的 clone 方法克隆对象，但该对象的类无法实现 Cloneable 接口时，抛出该异常。</td>
+</tr>
+<tr>
+<td>IllegalAccessException</td>
+<td>拒绝访问一个类的时候，抛出该异常。</td>
+</tr>
+<tr>
+<td>InstantiationException</td>
+<td>当试图使用 Class 类中的 newInstance 方法创建一个类的实例，而指定的类对象因为是一个接口或是一个抽象类而无法实例化时，抛出该异常。</td>
+</tr>
+<tr>
+<td>InterruptedException</td>
+<td>一个线程被另一个线程中断，抛出该异常。</td>
+</tr>
+<tr>
+<td>NoSuchFieldException</td>
+<td>请求的变量不存在</td>
+</tr>
+<tr>
+<td>NoSuchMethodException</td>
+<td>请求的方法不存在</td>
+</tr>
+</tbody>
+</table>
+<h1 id="异常处理的基本语法"><a href="#异常处理的基本语法" class="headerlink" title="异常处理的基本语法"></a>异常处理的基本语法</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">     //try块中放可能发生异常的代码。</span><br><span class="line">     //如果执行完try且不发生异常，则接着去执行finally块和finally后面的代码（如果有的话）。</span><br><span class="line">     //如果发生异常，则尝试去匹配catch块。</span><br><span class="line">&#125; catch (SQLException SQLexception) &#123;</span><br><span class="line">    //每一个catch块用于捕获并处理一个特定的异常，或者这异常类型的子类。Java7中可以将多个异常声明在一个catch中。</span><br><span class="line">    //catch后面的括号定义了异常类型和异常参数。如果异常与之匹配且是最先匹配到的，则虚拟机将使用这个catch块来处理异常。</span><br><span class="line">    //在catch块中可以使用这个块的异常参数来获取异常的相关信息。异常参数是这个catch块中的局部变量，其它块不能访问。</span><br><span class="line">    //如果当前try块中发生的异常在后续的所有catch中都没捕获到，则先去执行finally，然后到这个函数的外部caller中去匹配异常处理器。</span><br><span class="line">    //如果try中没有发生异常，则所有的catch块将被忽略。</span><br><span class="line">&#125; catch (Exception exception) &#123;</span><br><span class="line">    //...</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    //finally块通常是可选的。</span><br><span class="line">    //无论异常是否发生，异常是否匹配被处理，finally都会执行。</span><br><span class="line">    //一个try至少要有一个catch块，否则， 至少要有1个finally块。但是finally不是用来处理异常的，finally不会捕获异常。</span><br><span class="line">    //finally主要做一些清理工作，如流的关闭，数据库连接的关闭等。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="异常处理原则"><a href="#异常处理原则" class="headerlink" title="异常处理原则"></a>异常处理原则</h2><ul>
+<li>try块中的局部变量和catch块中的局部变量（包括异常变量），以及finally中的局部变量，他们之间不可共享使用。</li>
+<li>每一个catch块用于处理一个异常。异常匹配是按照catch块的顺序从上往下寻找的，只有第一个匹配的catch会得到执行。匹配时，不仅运行精确匹配，也支持父类匹配，因此，如果同一个try块下的多个catch异常类型有父子关系，应该将子类异常放在前面，父类异常放在后面，这样保证每个catch块都有存在的意义。</li>
+<li>尽量不要捕获类似 Exception 这样的通用异常，而是应该捕获特定异常，代码应该能够直观地体现出尽量多的信息，而泛泛的Exception之类，恰恰隐藏了我们的目的。另外，也要保证程序不会捕获到不希望捕获的异常。比如，可能更希第二，不要生吞（swallow）异常望 RuntimeException 被扩散出来，而不是被捕获。</li>
+<li>不要生吞（swallow）异常。</li>
+<li>不要在finally里面抛异常，如果finally里也抛异常，就会导致真正的异常信息丢失，只会收到finally里抛的异常。</li>
+<li>勿将异常用于控制流。</li>
+</ul>
+<h2 id="finally块"><a href="#finally块" class="headerlink" title="finally块"></a>finally块</h2><p>finally块不管异常是否发生，只要对应的try执行了，则它一定也执行。只有一种方法让finally块不执行：System.exit()。因此finally块通常用来做资源释放操作：关闭文件，关闭数据库连接等等。</p>
+<p>良好的编程习惯是：在try块中打开资源，在finally块中清理释放这些资源。<br>需要注意的地方:</p>
+<ul>
+<li>finally块没有处理异常的能力。处理异常的只能是catch块。</li>
+<li>在同一try…catch…finally块中，如果try中抛出异常，且有匹配的catch块，则先执行catch块，再执行finally块。如果没有catch块匹配，则先执行finally，然后去外面的调用者中寻找合适的catch块。</li>
+<li>在同一try…catch…finally块中，try发生异常，且匹配的catch块中处理异常时也抛出异常，那么后面的finally也会执行：首先执行finally块，然后去外围调用者中寻找合适的catch块。</li>
+</ul>
+<h2 id="throw-异常抛出语句"><a href="#throw-异常抛出语句" class="headerlink" title="throw 异常抛出语句"></a>throw 异常抛出语句</h2><p>throw exceptionObject<br>可以通过throw语句手动显式的抛出一个异常，throw语句的后面必须是一个异常对象。throw语句必须写在函数中，执行throw 语句的地方就是一个异常抛出点，它和由JRE自动形成的异常抛出点没有任何差别。</p>
+<h1 id="声明自定义异常"><a href="#声明自定义异常" class="headerlink" title="声明自定义异常"></a>声明自定义异常</h1><p>在 Java 中你可以自定义异常。编写自己的异常类时需要记住下面的几点。<br>所有异常都必须是 Throwable 的子类。<br>如果希望写一个检查性异常类，则需要继承 Exception 类。<br>如果你想写一个运行时异常类，那么需要继承 RuntimeException 类。</p>
+<h1 id="try-with-resources-Java-SE7"><a href="#try-with-resources-Java-SE7" class="headerlink" title="try-with-resources(Java SE7)"></a>try-with-resources(Java SE7)</h1><p>try-with-resources语句是一种声明了一种或多种资源的try语句。资源是指在程序用完了之后必须要关闭的对象，try-with-resources语句保证了每个声明了的资源在语句结束的时候都会被关闭。任何实现了java.lang.AutoCloseable接口的对象，和实现了java.io.Closeable接口的对象，都可以当做资源使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">try (BufferedReader br = new BufferedReader(…);</span><br><span class="line">     BufferedWriter writer = new BufferedWriter(…)) &#123;// Try-with-resources</span><br><span class="line">// do something</span><br><span class="line">catch ( IOException | XEception e) &#123;// Multiple catch</span><br><span class="line">   // Handle it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Java SE7之前，使用finally代码块来确保资源一定被关闭，无论try语句正常结束还是异常结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader br = new BufferedReader(new FileReader(path));</span><br><span class="line">try &#123;</span><br><span class="line">	// do something</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    if (br != null) br.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="NoClassDefFoundError与ClassNotFoundException的区别"><a href="#NoClassDefFoundError与ClassNotFoundException的区别" class="headerlink" title="NoClassDefFoundError与ClassNotFoundException的区别"></a>NoClassDefFoundError与ClassNotFoundException的区别</h1><p>NoClassDefFoundError是一个错误(Error)，而ClassNOtFoundException是一个异常，在Java中对于错误和异常的处理是不同的，我们可以从异常中恢复程序但却不应该尝试从错误中恢复程序。<br>ClassNotFoundException的产生原因：</p>
+<p>Java支持使用Class.forName方法来动态地加载类，任意一个类的类名如果被作为参数传递给这个方法都将导致该类被加载到JVM内存中，如果这个类在类路径中没有被找到，那么此时就会在运行时抛出ClassNotFoundException异常。</p>
+<p>ClassNotFoundException的产生原因：</p>
+<p>Java支持使用Class.forName方法来动态地加载类，任意一个类的类名如果被作为参数传递给这个方法都将导致该类被加载到JVM内存中，如果这个类在类路径中没有被找到，那么此时就会在运行时抛出ClassNotFoundException异常。<br>ClassNotFoundException的产生原因主要是：<br>Java支持使用反射方式在运行时动态加载类，例如使用Class.forName方法来动态地加载类时，可以将类名作为参数传递给上述方法从而将指定类加载到JVM内存中，如果这个类在类路径中没有被找到，那么此时就会在运行时抛出ClassNotFoundException异常。<br>解决该问题需要确保所需的类连同它依赖的包存在于类路径中，常见问题在于类名书写错误。<br>另外还有一个导致ClassNotFoundException的原因就是：当一个类已经某个类加载器加载到内存中了，此时另一个类加载器又尝试着动态地从同一个包中加载这个类。通过控制动态类加载过程，可以避免上述情况发生。</p>
+<p>NoClassDefFoundError产生的原因在于：<br>如果JVM或者ClassLoader实例尝试加载（可以通过正常的方法调用，也可能是使用new来创建新的对象）类的时候却找不到类的定义。要查找的类在编译的时候是存在的，运行的时候却找不到了。这个时候就会导致NoClassDefFoundError.<br>造成该问题的原因可能是打包过程漏掉了部分类，或者jar包出现损坏或者篡改。解决这个问题的办法是查找那些在开发期间存在于类路径下但在运行期间却不在类路径下的类。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java核心技术之对Java平台的理解]]></title>
+      <url>http://robinheztto.com/2014/01/01/java-think-platform/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>Java是一种面向对象的语言，最显著的特性有两个：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，Java通过垃圾收集器（Garbage Collector）回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
+</blockquote>
+<p><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-platform.png?raw=true" alt="Java Platform"></p>
+<h1 id="Java是解释执行吗？"><a href="#Java是解释执行吗？" class="headerlink" title="Java是解释执行吗？"></a>Java是解释执行吗？</h1><p>这个说法不太准确。Java源代码首先通过Javac编译成为字节码（bytecode），然后在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如Oracle JDK提供的Hotspot JVM，都提供了JIT（Just-In-Time）编译器，也就是通常所说的动态编译器。根据二八定律，消耗大部分系统资源的只有一小部分的代码（热点代码），而这也就是JIT所需要编译的部分，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码就属于编译执行，而不是解释执行。<br>除了JIT，还有一种新的编译方式，即AOT（Aheadof-TimeCompilation），直接将字节码编译成机器代码，这样就避免了JIT预热等各方面的开销，Oracle JDK 9就引入了实验性的AOT特性，并且增加了新的jaotc工具。</p>
+<h1 id="Java语言特性"><a href="#Java语言特性" class="headerlink" title="Java语言特性"></a>Java语言特性</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><h1 id="Java类库"><a href="#Java类库" class="headerlink" title="Java类库"></a>Java类库</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><h2 id="IO-NIO"><a href="#IO-NIO" class="headerlink" title="IO/NIO"></a>IO/NIO</h2><h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h1 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h1><h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><h2 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h2><h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><h2 id="JDK工具"><a href="#JDK工具" class="headerlink" title="JDK工具"></a>JDK工具</h2>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Java系列之JVM内存区域]]></title>
       <url>http://robinheztto.com/2013/05/24/java-jvm-memory-area/</url>
       <content type="html"><![CDATA[<h1 id="Java虚拟机基本结构"><a href="#Java虚拟机基本结构" class="headerlink" title="Java虚拟机基本结构"></a>Java虚拟机基本结构</h1><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-jvm.jpeg?raw=true" alt="java-jvm"><br></div>
