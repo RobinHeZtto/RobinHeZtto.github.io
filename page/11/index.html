@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java,jvm," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -86,30 +86,15 @@
 
 
 
-<meta name="description" content="Java虚拟机基本结构
-
-如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。
-运行时数据区域JVM运行时内存区域包括方法区，堆，栈，程序计数器，本地方法栈。其中，方法区与堆是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔离的数据区。
-程序计数器程序计数器指的是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在JVM">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java系列之JVM内存区域">
-<meta property="og:url" content="http://robinheztto.com/2013/05/24/java-jvm-memory-area/index.html">
+<meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="生活不止眼前的代码">
+<meta property="og:url" content="http://robinheztto.com/page/11/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="Java虚拟机基本结构
-
-如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。
-运行时数据区域JVM运行时内存区域包括方法区，堆，栈，程序计数器，本地方法栈。其中，方法区与堆是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔离的数据区。
-程序计数器程序计数器指的是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在JVM">
-<meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-jvm.jpeg?raw=true">
-<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java系列之JVM内存区域">
-<meta name="twitter:description" content="Java虚拟机基本结构
-
-如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。
-运行时数据区域JVM运行时内存区域包括方法区，堆，栈，程序计数器，本地方法栈。其中，方法区与堆是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔离的数据区。
-程序计数器程序计数器指的是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在JVM">
-<meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-jvm.jpeg?raw=true">
+<meta name="twitter:title" content="生活不止眼前的代码">
+<meta name="twitter:description">
 
 
 
@@ -127,7 +112,7 @@
   };
 </script>
 
-  <title> Java系列之JVM内存区域 | 生活不止眼前的代码 </title>
+  <title> 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -158,7 +143,9 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,9 +255,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
   
@@ -290,7 +277,10 @@
             
             
               
-                Java系列之JVM内存区域
+                
+                <a class="post-title-link" href="/2012/09/03/ubuntu-ssh-git/" itemprop="url">
+                  Ubuntu ssh git服务搭建
+                </a>
               
             
           </h1>
@@ -302,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2013-05-24T14:46:40+08:00" content="2013-05-24">
-              2013-05-24
+            <time itemprop="dateCreated" datetime="2012-09-03T00:33:35+08:00" content="2012-09-03">
+              2012-09-03
             </time>
           </span>
 
@@ -313,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2013/05/24/java-jvm-memory-area/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2013/05/24/java-jvm-memory-area/" itemprop="commentsCount"></span>
+                <a href="/2012/09/03/ubuntu-ssh-git/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2012/09/03/ubuntu-ssh-git/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -337,100 +327,61 @@
       
 
       
-        <h1 id="Java虚拟机基本结构"><a href="#Java虚拟机基本结构" class="headerlink" title="Java虚拟机基本结构"></a>Java虚拟机基本结构</h1><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-jvm.jpeg?raw=true" alt="java-jvm"><br></div>
+        
+          
+          
+安装git与ssh
 
-<p>如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。</p>
-<h1 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h1><p>JVM运行时内存区域包括方法区，堆，栈，程序计数器，本地方法栈。其中，方法区与堆是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔离的数据区。</p>
-<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器指的是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在JVM的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令。</p>
-<ul>
-<li>每个线程都有自己的独立的程序计数器。</li>
-<li>如果线程正在执行的是Java方法，那么这个计数器的值就是正在执行的虚拟机字节码指令的地址。如果正在执行的是Native方法,这个计数器值为空(undefined)。</li>
-<li>此内存区域是唯一一个在Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域。</li>
-</ul>
-<h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>Java虚拟机栈是Java方法执行的内存区域，每个方法执行的同时都会创建一个栈帧用于存储局部变量表、操作数栈、动态链接、方法出口等信息。Java虚拟机栈是线程私有的，它的生命周期与线程相同。局部变量表存放了编译期可知的各种基本数据类型(boolean、byte、char、short、int、float、long、double)、对象引用和returnAddress类型(指向了一条字节码指令的地址)。</p>
-<p>如果线程请求栈的深度大于虚拟机所允许的深度，将抛出StackOverflowError异常，无法申请到内存抛出OutOfMemoryError异常。</p>
-<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>本地方法栈与虚拟机栈所发挥的作用是非常相似的，它们之间的区别不过是虚拟机栈为虚拟机执行java方法，而本地栈则为虚拟机使用到的Native方法服务。</p>
-<h2 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h2><p>Java堆的唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。Java堆是线程共享的，在虚拟机启动时创建。</p>
-<p>Java堆是垃圾收集器管理的主要区域，因此很多时候也被称作“GC堆”。由于现在收集器基本都采用分代收集算法，所以Java堆中还可以细分为:新生代和老年代。再细致一点的有Eden空间、From    Survivor空间、ToSurvivor空间等。在实现时,既可以实现成固定大小的，也可以是可扩展的，不过当前主流的虚拟机都是按照可扩展来实现的(通过-Xmx和-Xms控制)。</p>
-<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>线程共享,用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。这区域的内存回收目标主要是针对常量池的回收和对类型的卸载。(JDK1.7后，字面量(interned strings)，类的静态变量(class statics)转移到了java heap)。</p>
 
-      
-    </div>
+$ sudo apt-get install git-core
+$ sudo apt-get install openssh-server
+$ sudo apt-get install openssh-client
 
-    <div>
-      
+
+安装python setuptools
+
+
+$ sud
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2012/09/03/ubuntu-ssh-git/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
 
     <div>
       
-        
+    </div>
 
+    <div>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/java/" rel="tag">#java</a>
-          
-            <a href="/tags/jvm/" rel="tag">#jvm</a>
-          
-        </div>
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2013/03/01/programming-in-the-UNIX-environment/" rel="next" title="Programming in the UNIX Environment">
-                <i class="fa fa-chevron-left"></i> Programming in the UNIX Environment
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2014/01/01/java-think-platform/" rel="prev" title="Java核心技术之对Java平台的理解">
-                Java核心技术之对Java平台的理解 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-        <div class="ds-share flat" data-thread-key="2013/05/24/java-jvm-memory-area/"
-     data-title="Java系列之JVM内存区域"
-     data-content=""
-     data-url="http://robinheztto.com/2013/05/24/java-jvm-memory-area/">
-  <div class="ds-share-inline">
-    <ul  class="ds-share-icons-16">
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span>
+  </nav>
 
-      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
-      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
-      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-
-    </ul>
-    <div class="ds-share-icons-more">
-    </div>
-  </div>
-</div>
-      
-    </div>
-  </div>
 
 
           </div>
@@ -438,14 +389,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2013/05/24/java-jvm-memory-area/"
-           data-title="Java系列之JVM内存区域" data-url="http://robinheztto.com/2013/05/24/java-jvm-memory-area/">
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -465,17 +408,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -525,17 +459,6 @@
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机基本结构"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机基本结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">2.</span> <span class="nav-text">运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序计数器"><span class="nav-number">2.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-number">2.2.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地方法栈"><span class="nav-number">2.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java堆"><span class="nav-number">2.4.</span> <span class="nav-text">Java堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法区"><span class="nav-number">2.5.</span> <span class="nav-text">方法区</span></a></li></ol></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -621,10 +544,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
 
   
 
