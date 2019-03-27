@@ -86,26 +86,26 @@
 
 
 
-<meta name="description" content="Java是一种面向对象的语言，最显著的特性有两个：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，Java通过垃圾收集器（Garbage Collector）回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。
+<meta name="description" content="Java是一门面向对象的语言，有两个最显著的特性：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，通过垃圾收集器（Garbage Collector）分配内存/回收，大部分情况下，程序员不需要自己操心内存的分配和回收。
 
 
-Java是解释执行吗？这个说法不太准确。Java源代">
+Java是解释执行吗？这个说法不太准确。Java源代码首先">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java核心技术之对Java平台的理解">
+<meta property="og:title" content="Java系列之对Java平台的理解">
 <meta property="og:url" content="http://robinheztto.com/2014/01/01/java-think-platform/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
-<meta property="og:description" content="Java是一种面向对象的语言，最显著的特性有两个：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，Java通过垃圾收集器（Garbage Collector）回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。
+<meta property="og:description" content="Java是一门面向对象的语言，有两个最显著的特性：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，通过垃圾收集器（Garbage Collector）分配内存/回收，大部分情况下，程序员不需要自己操心内存的分配和回收。
 
 
-Java是解释执行吗？这个说法不太准确。Java源代">
+Java是解释执行吗？这个说法不太准确。Java源代码首先">
 <meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-platform.png?raw=true">
-<meta property="og:updated_time" content="2018-07-22T00:57:11.000Z">
+<meta property="og:updated_time" content="2018-08-26T14:29:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java核心技术之对Java平台的理解">
-<meta name="twitter:description" content="Java是一种面向对象的语言，最显著的特性有两个：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，Java通过垃圾收集器（Garbage Collector）回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。
+<meta name="twitter:title" content="Java系列之对Java平台的理解">
+<meta name="twitter:description" content="Java是一门面向对象的语言，有两个最显著的特性：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，通过垃圾收集器（Garbage Collector）分配内存/回收，大部分情况下，程序员不需要自己操心内存的分配和回收。
 
 
-Java是解释执行吗？这个说法不太准确。Java源代">
+Java是解释执行吗？这个说法不太准确。Java源代码首先">
 <meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-platform.png?raw=true">
 
 
@@ -124,7 +124,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
   };
 </script>
 
-  <title> Java核心技术之对Java平台的理解 | 生活不止眼前的代码 </title>
+  <title> Java系列之对Java平台的理解 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
             
             
               
-                Java核心技术之对Java平台的理解
+                Java系列之对Java平台的理解
               
             
           </h1>
@@ -335,10 +335,11 @@ Java是解释执行吗？这个说法不太准确。Java源代">
 
       
         <blockquote>
-<p>Java是一种面向对象的语言，最显著的特性有两个：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，Java通过垃圾收集器（Garbage Collector）回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
+<p>Java是一门面向对象的语言，有两个最显著的特性：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，通过垃圾收集器（Garbage Collector）分配内存/回收，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
 </blockquote>
 <p><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-platform.png?raw=true" alt="Java Platform"></p>
-<h1 id="Java是解释执行吗？"><a href="#Java是解释执行吗？" class="headerlink" title="Java是解释执行吗？"></a>Java是解释执行吗？</h1><p>这个说法不太准确。Java源代码首先通过Javac编译成为字节码（bytecode），然后在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如Oracle JDK提供的Hotspot JVM，都提供了JIT（Just-In-Time）编译器，也就是通常所说的动态编译器。根据二八定律，消耗大部分系统资源的只有一小部分的代码（热点代码），而这也就是JIT所需要编译的部分，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码就属于编译执行，而不是解释执行。<br>除了JIT，还有一种新的编译方式，即AOT（Aheadof-TimeCompilation），直接将字节码编译成机器代码，这样就避免了JIT预热等各方面的开销，Oracle JDK 9就引入了实验性的AOT特性，并且增加了新的jaotc工具。</p>
+<h1 id="Java是解释执行吗？"><a href="#Java是解释执行吗？" class="headerlink" title="Java是解释执行吗？"></a>Java是解释执行吗？</h1><p>这个说法不太准确。Java源代码首先通过Javac编译成为字节码（bytecode），然后在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如Oracle JDK提供的Hotspot JVM，都提供了JIT（Just-In-Time）编译器，也就是通常所说的动态编译器。根据二八定律，消耗大部分系统资源的只有一小部分的代码（热点代码），而这也就是JIT所需要编译的部分，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码就属于编译执行，而不是解释执行。(<strong><em>注：JIT为方法级，它会缓存编译过的字节码在CodeCache中，而不需要被重复解释，解释器执行会重复解析</em></strong>）</p>
+<p>除了JIT，还有一种新的编译方式，即AOT（Aheadof-TimeCompilation），直接将字节码编译成机器代码，这样就避免了JIT预热等各方面的开销，Oracle JDK 9就引入了实验性的AOT特性，并且增加了新的jaotc工具。</p>
 <h1 id="Java语言特性"><a href="#Java语言特性" class="headerlink" title="Java语言特性"></a>Java语言特性</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><h1 id="Java类库"><a href="#Java类库" class="headerlink" title="Java类库"></a>Java类库</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><h2 id="IO-NIO"><a href="#IO-NIO" class="headerlink" title="IO/NIO"></a>IO/NIO</h2><h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h1 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h1><h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><h2 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h2><h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><h2 id="JDK工具"><a href="#JDK工具" class="headerlink" title="JDK工具"></a>JDK工具</h2>
       
     </div>
@@ -369,16 +370,16 @@ Java是解释执行吗？这个说法不太准确。Java源代">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2013/05/24/java-jvm-memory-area/" rel="next" title="Java系列之JVM内存区域">
-                <i class="fa fa-chevron-left"></i> Java系列之JVM内存区域
+              <a href="/2013/12/19/java-build-openjdk/" rel="next" title="Ubuntu14.04 OpenJdk8编译">
+                <i class="fa fa-chevron-left"></i> Ubuntu14.04 OpenJdk8编译
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/01/07/java-exception-error/" rel="prev" title="Java核心技术之异常处理机制">
-                Java核心技术之异常处理机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/01/07/java-exception-error/" rel="prev" title="Java系列之异常处理机制总结">
+                Java系列之异常处理机制总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -395,7 +396,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2014/01/01/java-think-platform/"
-     data-title="Java核心技术之对Java平台的理解"
+     data-title="Java系列之对Java平台的理解"
      data-content=""
      data-url="http://robinheztto.com/2014/01/01/java-think-platform/">
   <div class="ds-share-inline">
@@ -425,7 +426,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2014/01/01/java-think-platform/"
-           data-title="Java核心技术之对Java平台的理解" data-url="http://robinheztto.com/2014/01/01/java-think-platform/">
+           data-title="Java系列之对Java平台的理解" data-url="http://robinheztto.com/2014/01/01/java-think-platform/">
       </div>
     
   </div>
@@ -470,7 +471,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -480,7 +481,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -535,7 +536,7 @@ Java是解释执行吗？这个说法不太准确。Java源代">
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

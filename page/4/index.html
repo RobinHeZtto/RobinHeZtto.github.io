@@ -278,8 +278,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/03/12/android-alarm-3/" itemprop="url">
-                  Android之AlarmManagerService(三)
+                <a class="post-title-link" href="/2014/04/15/java-memory-model/" itemprop="url">
+                  Java系列之内存模型
                 </a>
               
             
@@ -292,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-12T11:20:08+08:00" content="2017-03-12">
-              2017-03-12
+            <time itemprop="dateCreated" datetime="2014-04-15T18:47:22+08:00" content="2014-04-15">
+              2014-04-15
             </time>
           </span>
 
@@ -303,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/03/12/android-alarm-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/12/android-alarm-3/" itemprop="commentsCount"></span>
+                <a href="/2014/04/15/java-memory-model/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/04/15/java-memory-model/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -330,13 +330,11 @@
         
           
           
-本篇分析Android上对于Alarm的优化，主要是对齐唤醒机制，也就是把一定时间段内的多次Alarm唤醒合并成一次，减少系统被唤醒次数，增加待机时间。
-
-原生的对齐机制Beginning with API 19 (KITKAT) alarm delivery is inexact: the OS
+内存模型定义了共享内存系统中多线程程序读写操作行为的规范, 保证共享内存的正确性（可见性、有序性、原子性）。通过这些规则来规范对内存的读写操作，从而保证指令执行的正确性。它与处理器、缓存、并发、编译器也有关。他解决了CPU多级缓存、处理器优化、指令重排等导致的内存访问问题，保证了并发场景下的一致性
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/03/12/android-alarm-3/#more" rel="contents">
+            <a class="btn" href="/2014/04/15/java-memory-model/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -387,8 +385,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/03/11/android-alarm-2/" itemprop="url">
-                  Android之AlarmManagerService(二)
+                <a class="post-title-link" href="/2014/03/29/java-linkedlist/" itemprop="url">
+                  Java系列之LinkedList解析
                 </a>
               
             
@@ -401,8 +399,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-11T09:16:08+08:00" content="2017-03-11">
-              2017-03-11
+            <time itemprop="dateCreated" datetime="2014-03-29T14:46:40+08:00" content="2014-03-29">
+              2014-03-29
             </time>
           </span>
 
@@ -412,8 +410,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/03/11/android-alarm-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/11/android-alarm-2/" itemprop="commentsCount"></span>
+                <a href="/2014/03/29/java-linkedlist/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/03/29/java-linkedlist/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -438,13 +436,12 @@
       
         
           
-          
-本篇继续分析Alarm设置及触发的流程。
-相关源码位于以下文件中:frameworks/base/core/java/android/app/AlarmManager.javaframeworks/base/services/core/java/com/android/server/AlarmMa
+          特性LinkedList内部实现是双向链表同时也具备队列的特性，LinkedList较ArrayList在插入删除方面比较高效，但在随机访问方面效率较低。同时，LinkedList非线程安全的。
+源码分析123456public class LinkedList&lt;E&gt;    extend
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/03/11/android-alarm-2/#more" rel="contents">
+            <a class="btn" href="/2014/03/29/java-linkedlist/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -495,8 +492,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/03/10/android-alarm-1/" itemprop="url">
-                  Android之AlarmManagerService(一)
+                <a class="post-title-link" href="/2014/03/28/java-arraylist/" itemprop="url">
+                  Java系列之ArrayList解析
                 </a>
               
             
@@ -509,8 +506,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-10T09:06:08+08:00" content="2017-03-10">
-              2017-03-10
+            <time itemprop="dateCreated" datetime="2014-03-28T14:46:40+08:00" content="2014-03-28">
+              2014-03-28
             </time>
           </span>
 
@@ -520,8 +517,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/03/10/android-alarm-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/10/android-alarm-1/" itemprop="commentsCount"></span>
+                <a href="/2014/03/28/java-arraylist/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/03/28/java-arraylist/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -546,13 +543,15 @@
       
         
           
-          
-Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用在其生命周期之外可执行基于特定时间的操作，本篇将具体分析AlarmManager的使用及AlarmManagerService服务的初始化。
-相关源码位于以下文件中:frameworks/base/core/java/
+          特性ArrayList即实现List接口的动态数组(Resizable-array implementation of the List interface.)
+
+实现了所有list接口的操作
+允许元素为null
+时间复杂度：size、isEmpty、get、set、iterator和listIte
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/03/10/android-alarm-1/#more" rel="contents">
+            <a class="btn" href="/2014/03/28/java-arraylist/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -603,8 +602,8 @@ Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用
             
               
                 
-                <a class="post-title-link" href="/2017/03/08/android-debug-anr/" itemprop="url">
-                  Android Debug之ANR
+                <a class="post-title-link" href="/2014/03/21/java-collections/" itemprop="url">
+                  Java系列之集合框架总结
                 </a>
               
             
@@ -617,8 +616,8 @@ Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-08T09:40:57+08:00" content="2017-03-08">
-              2017-03-08
+            <time itemprop="dateCreated" datetime="2014-03-21T14:46:40+08:00" content="2014-03-21">
+              2014-03-21
             </time>
           </span>
 
@@ -628,8 +627,8 @@ Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/03/08/android-debug-anr/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/08/android-debug-anr/" itemprop="commentsCount"></span>
+                <a href="/2014/03/21/java-collections/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/03/21/java-collections/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -654,15 +653,11 @@ Android系统通过AlarmManager向应用提供定时/闹钟服务，以使应用
       
         
           
-          
-ANR(Application Not Responding)，即应用程序未响应。AMS与WMS会监控应用程序的执行情况，如果出现长时间未处理的情况，系统就会显示ANR对话框提示用户对应的应用处于无响应状态，提示用户继续等待或强行停止。
-
-ANR的类型
-Input Dispatching Time
+          Java框架体系Java集合框架如下图示，主要包括两种类型的容器，一种是集合（Collection），存储对象序列，另一种是图（Map），存储对象键/值对映射，其中Collection接口有3种子类型，List、Set和Queue。平常最常用的有ArrayList、LinkedList、HashSe
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/03/08/android-debug-anr/#more" rel="contents">
+            <a class="btn" href="/2014/03/21/java-collections/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -713,8 +708,8 @@ Input Dispatching Time
             
               
                 
-                <a class="post-title-link" href="/2017/01/05/android-ams-process/" itemprop="url">
-                  Android AMS系列之进程管理
+                <a class="post-title-link" href="/2014/01/25/java-constant-pool/" itemprop="url">
+                  Java系列之常量池总结
                 </a>
               
             
@@ -727,8 +722,8 @@ Input Dispatching Time
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-05T09:13:30+08:00" content="2017-01-05">
-              2017-01-05
+            <time itemprop="dateCreated" datetime="2014-01-25T11:58:33+08:00" content="2014-01-25">
+              2014-01-25
             </time>
           </span>
 
@@ -738,8 +733,8 @@ Input Dispatching Time
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/01/05/android-ams-process/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/05/android-ams-process/" itemprop="commentsCount"></span>
+                <a href="/2014/01/25/java-constant-pool/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/25/java-constant-pool/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -765,10 +760,11 @@ Input Dispatching Time
         
           
           
-          
+在Class文件结构中，开始的4个字节用于存储魔数Magic Number，用于确定一个文件是否能被JVM接受，再接着4个字节用于存储版本号，前2个字节存储次版本号，后2个存储主版本号，再接着是用于存放常量的常量池，由于常量的数量是不固定的，所以常量池的入口放置一个U2类型的(constant p
+          ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/01/05/android-ams-process/#more" rel="contents">
+            <a class="btn" href="/2014/01/25/java-constant-pool/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -819,8 +815,8 @@ Input Dispatching Time
             
               
                 
-                <a class="post-title-link" href="/2016/12/20/android-systemservice/" itemprop="url">
-                  Android之SystemService
+                <a class="post-title-link" href="/2014/01/24/java-jvm-memory-area/" itemprop="url">
+                  Java系列之JVM运行时数据区
                 </a>
               
             
@@ -833,8 +829,8 @@ Input Dispatching Time
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-20T09:37:22+08:00" content="2016-12-20">
-              2016-12-20
+            <time itemprop="dateCreated" datetime="2014-01-24T14:46:40+08:00" content="2014-01-24">
+              2014-01-24
             </time>
           </span>
 
@@ -844,8 +840,117 @@ Input Dispatching Time
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/20/android-systemservice/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/20/android-systemservice/" itemprop="commentsCount"></span>
+                <a href="/2014/01/24/java-jvm-memory-area/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/24/java-jvm-memory-area/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Java虚拟机组成
+
+如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。
+运行时数据区域JVM运行时内存区域包括程序计数器，方法区，堆，栈，直接内存，本地方法栈。其中，方法区与堆，直接内存是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/01/24/java-jvm-memory-area/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/01/21/java-reference/" itemprop="url">
+                  Java系列之引用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-01-21T08:12:10+08:00" content="2014-01-21">
+              2014-01-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/01/21/java-reference/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/21/java-reference/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -871,11 +976,791 @@ Input Dispatching Time
         
           
           
-Android系统中，大部分的系统服务都运行在SystemServer中，且基本上都继承于SystemService(除AMS,PMS等特例外)，本篇具体分析SystemService。相关代码在以下文件中：frameworks/base/services/core/java/com/androi
+Java语言中，除了原始数据类型的变量，其他所有都是引用类型，指向各种不同的对象。Java内存管理分配及回收，不需要程序员负责，通过垃圾回收的机制来回收内存，主要是看对象是否有引用指向该对象。
+
+引用类型java对象的引用类型包括强引用，软引用，弱引用，虚(幻象)引用四种类型。Java中提供这四种
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/20/android-systemservice/#more" rel="contents">
+            <a class="btn" href="/2014/01/21/java-reference/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/01/20/java-interface/" itemprop="url">
+                  Java系列之抽象类与接口
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-01-20T20:53:04+08:00" content="2014-01-20">
+              2014-01-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/01/20/java-interface/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/20/java-interface/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+　Java中，接口和抽象类体现了OOP的抽象
+
+抽象类
+抽象方法只有声明，没有实现，并且用abstract申明的方法。 抽象方法必须为public或者protected（如果为private，则不能被子类继承，子类便无法实现该方法），缺省情况下默认为public。
+
+抽象类用abstract修饰的
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/01/20/java-interface/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/01/14/java-keyword/" itemprop="url">
+                  Java系列之关键字总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-01-14T01:34:10+08:00" content="2014-01-14">
+              2014-01-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/01/14/java-keyword/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/14/java-keyword/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          final finally finalize
+final可以用来修饰类，方法，变量。final修饰的类不能被继承扩展，修饰的方法不能被覆盖重写，修饰的变量初始化后不能被修改。注意，final 并不等同于 immutable，如下代码所示，final 只能约束 strList 这个引用不可以被赋值，但
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/01/14/java-keyword/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/01/07/java-exception-error/" itemprop="url">
+                  Java系列之异常处理机制总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-01-07T12:34:10+08:00" content="2014-01-07">
+              2014-01-07
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/01/07/java-exception-error/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/07/java-exception-error/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。
+
+Exception与ErrorException和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（th
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/01/07/java-exception-error/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/01/01/java-think-platform/" itemprop="url">
+                  Java系列之对Java平台的理解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-01-01T00:34:10+08:00" content="2014-01-01">
+              2014-01-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/01/01/java-think-platform/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/01/01/java-think-platform/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Java是一门面向对象的语言，有两个最显著的特性：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，通过垃圾收集器（Garbage Collector）分配内存/回收，大部分情况下，程
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/01/01/java-think-platform/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2013/12/19/java-build-openjdk/" itemprop="url">
+                  Ubuntu14.04 OpenJdk8编译
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2013-12-19T14:54:37+08:00" content="2013-12-19">
+              2013-12-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2013/12/19/java-build-openjdk/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2013/12/19/java-build-openjdk/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Download如下图示，选择从官网直接下载的方式，下载地址：OpenJDK™ Source
+下载后目录结构如下图示：
+
+Build编译主要参考源码目录下README及README-builds.html文件，编译前本机已安装openjdk7/8作为Bootstrap JDK。
+
+bash ./co
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2013/12/19/java-build-openjdk/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2013/03/01/programming-in-the-UNIX-environment/" itemprop="url">
+                  Programming in the UNIX Environment
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2013-03-01T13:30:57+08:00" content="2013-03-01">
+              2013-03-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2013/03/01/programming-in-the-UNIX-environment/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2013/03/01/programming-in-the-UNIX-environment/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+程序：存储在磁盘上的可执行文件。进程：程序的执行实例，包括进程地址空间，系统IO资源等
+
+
+
+进程控制
+进程创建，进程执行，进程终止，进程属性
+
+进程标志每个进程都有一个非负整形值的唯一进程ID，即进程ID。获取相关ID的api如下:1234567891011#include &lt;unistd
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2013/03/01/programming-in-the-UNIX-environment/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2012/09/03/ubuntu-ssh-git/" itemprop="url">
+                  Ubuntu ssh git服务搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2012-09-03T00:33:35+08:00" content="2012-09-03">
+              2012-09-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2012/09/03/ubuntu-ssh-git/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2012/09/03/ubuntu-ssh-git/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+安装git与ssh
+
+
+$ sudo apt-get install git-core
+$ sudo apt-get install openssh-server
+$ sudo apt-get install openssh-client
+
+
+安装python setuptools
+
+
+$ sud
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2012/09/03/ubuntu-ssh-git/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -909,7 +1794,7 @@ Android系统中，大部分的系统服务都运行在SystemServer中，且基�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
   </nav>
 
 
@@ -950,7 +1835,7 @@ Android系统中，大部分的系统服务都运行在SystemServer中，且基�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -960,7 +1845,7 @@ Android系统中，大部分的系统服务都运行在SystemServer中，且基�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1004,7 +1889,7 @@ Android系统中，大部分的系统服务都运行在SystemServer中，且基�
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

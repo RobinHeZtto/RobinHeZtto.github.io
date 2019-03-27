@@ -90,15 +90,15 @@
 final可以用来修饰类，方法，变量。final修饰的类不能被继承扩展，修饰的方法不能被覆盖重写，修饰的变量初始化后不能被修改。注意，final 并不等同于 immutable，如下代码所示，final 只能约束 strList 这个引用不可以被赋值，但是 strList 对象行为不被 final 影响，添加元素等操作是完全正常的。
 123final">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java核心技术之关键字">
+<meta property="og:title" content="Java系列之关键字总结">
 <meta property="og:url" content="http://robinheztto.com/2014/01/14/java-keyword/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
 <meta property="og:description" content="final finally finalize
 final可以用来修饰类，方法，变量。final修饰的类不能被继承扩展，修饰的方法不能被覆盖重写，修饰的变量初始化后不能被修改。注意，final 并不等同于 immutable，如下代码所示，final 只能约束 strList 这个引用不可以被赋值，但是 strList 对象行为不被 final 影响，添加元素等操作是完全正常的。
 123final">
-<meta property="og:updated_time" content="2018-07-24T15:03:48.000Z">
+<meta property="og:updated_time" content="2018-10-15T14:58:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java核心技术之关键字">
+<meta name="twitter:title" content="Java系列之关键字总结">
 <meta name="twitter:description" content="final finally finalize
 final可以用来修饰类，方法，变量。final修饰的类不能被继承扩展，修饰的方法不能被覆盖重写，修饰的变量初始化后不能被修改。注意，final 并不等同于 immutable，如下代码所示，final 只能约束 strList 这个引用不可以被赋值，但是 strList 对象行为不被 final 影响，添加元素等操作是完全正常的。
 123final">
@@ -119,7 +119,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
   };
 </script>
 
-  <title> Java核心技术之关键字 | 生活不止眼前的代码 </title>
+  <title> Java系列之关键字总结 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -282,7 +282,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
             
             
               
-                Java核心技术之关键字
+                Java系列之关键字总结
               
             
           </h1>
@@ -339,6 +339,35 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
 <li><p>finalize是基础类java.lang.Object的一个方法，它的设计目的是保证对象在垃圾回收前执行指定的资源回收操作，在jdk9中，finalize被标记为deprecated。<br>finalize的执行是和垃圾收集关联在一起的，一旦实现了非空的 finalize 方法，就会导致相应对象回收呈现数量级上的变慢，有人专门做过 benchmark，大概是 40~50 倍的下降。finalize被设计成在对象被垃圾收集前调用，这就意味着实现了finalize方法的对象是个“特殊公民”，JVM 要对它进行额外处理，finalize 本质上成为了快速回收的阻碍者，可能导致对象经过多个垃圾收集周期才能被回收。</p>
 </li>
 </ol>
+<h2 id="面向对象的基本特征"><a href="#面向对象的基本特征" class="headerlink" title="面向对象的基本特征"></a>面向对象的基本特征</h2><ul>
+<li>抽象<br>将具有相同属性与行为的一类对象总结成类的过程。抽象只关注于对象的属性与行为，并不关注具体的细节。</li>
+<li>封装<br>对类的数据及数据操作进行封装，隐藏一切可隐藏的细节，只公开对外的接口。</li>
+<li>继承<br>继承已有类的信息创建新类的过程。</li>
+<li>多态<br>多态性是指允许不同子类型的对象对同一消息作出不同的响应。</li>
+</ul>
+<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ol>
+<li><p><strong>数据:</strong> 声明修饰的数据为常量(可以是编译时常量也可以是运行时常量)。</p>
+<blockquote>
+<p>对于基本数据类型，final修饰的数值不变<br>对于引用类型，final修饰的引用不变，但引用的对象本身可以改变</p>
+</blockquote>
+</li>
+<li><p><strong>方法:</strong> 声明修饰的方法不能被子类覆盖重写。private方法隐式指定为final，如果在子类中定义的方法和基类中的一个private方法签名相同，此时子类的方法不是覆盖基类方法，而是在子类中定义了一个新的方法。</p>
+</li>
+<li><p><strong>类:</strong> 声明修饰的类不允许被继承，没有子类。final类中所有的方法都被隐示定义为final，因为它们是不会被重载。</p>
+</li>
+<li><p>final关键字不能修饰接口</p>
+</li>
+</ol>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>  保留关键字</p>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ol>
+<li><strong>成员变量:</strong> 声明修饰的成员变量为静态变量(类变量)，在内存中只有一个副本，并且在类初始化时赋值，无需依赖对象调用，static成员变量的初始化顺序按照定义的顺序进行。</li>
+<li><strong>成员方法:</strong> 声明修饰的成员方法为静态方法(类方法)，在类加载时已存在，无需依赖对象调用，静态方法不能调用其他非静态成员或方法。</li>
+<li><strong>代码块:</strong> 只在类加载的时候执行一次。</li>
+</ol>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
+<li>volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。</li>
+<li>volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）</li>
+</ul>
 
       
     </div>
@@ -369,16 +398,16 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2014/01/07/java-exception-error/" rel="next" title="Java核心技术之异常处理机制">
-                <i class="fa fa-chevron-left"></i> Java核心技术之异常处理机制
+              <a href="/2014/01/07/java-exception-error/" rel="next" title="Java系列之异常处理机制总结">
+                <i class="fa fa-chevron-left"></i> Java系列之异常处理机制总结
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/01/21/java-reference/" rel="prev" title="Java核心技术之引用">
-                Java核心技术之引用 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/01/20/java-interface/" rel="prev" title="Java系列之抽象类与接口">
+                Java系列之抽象类与接口 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -395,7 +424,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2014/01/14/java-keyword/"
-     data-title="Java核心技术之关键字"
+     data-title="Java系列之关键字总结"
      data-content=""
      data-url="http://robinheztto.com/2014/01/14/java-keyword/">
   <div class="ds-share-inline">
@@ -425,7 +454,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2014/01/14/java-keyword/"
-           data-title="Java核心技术之关键字" data-url="http://robinheztto.com/2014/01/14/java-keyword/">
+           data-title="Java系列之关键字总结" data-url="http://robinheztto.com/2014/01/14/java-keyword/">
       </div>
     
   </div>
@@ -470,7 +499,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -480,7 +509,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -516,7 +545,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#final-finally-finalize"><span class="nav-number">1.</span> <span class="nav-text">final finally finalize</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#final-finally-finalize"><span class="nav-number">1.</span> <span class="nav-text">final finally finalize</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象的基本特征"><span class="nav-number">1.1.</span> <span class="nav-text">面向对象的基本特征</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键字"><span class="nav-number">2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#final"><span class="nav-number">2.1.</span> <span class="nav-text">final</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const"><span class="nav-number">2.2.</span> <span class="nav-text">const</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static"><span class="nav-number">2.3.</span> <span class="nav-text">static</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">2.4.</span> <span class="nav-text">volatile</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -535,7 +564,7 @@ final可以用来修饰类，方法，变量。final修饰的类不能被继承�
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

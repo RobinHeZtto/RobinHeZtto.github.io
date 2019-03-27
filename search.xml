@@ -4,10 +4,10 @@
   
     
     <entry>
-      <title><![CDATA[Android Overview]]></title>
+      <title><![CDATA[Overview]]></title>
       <url>http://robinheztto.com/2200/01/01/android-overview/</url>
       <content type="html"><![CDATA[<blockquote>
-<p>Android学习提纲．从底至上．RTFSC．<strong>持续学习中…</strong></p>
+<p>Android学习提纲．从底至上．RTFSC．<strong>持续学习整理中…</strong></p>
 </blockquote>
 <div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android_framework_details.png?raw=true" alt="Android stack"><br></div>
 
@@ -57,8 +57,27 @@
 <li><a href="http://www.robinheztto.com/2017/03/12/android-alarm-3/" target="_blank" rel="external">Android之AlarmManagerService(三)</a></li>
 </ul>
 <hr>
+<h1 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h1><ul>
+<li><a href="http://www.robinheztto.com/2014/08/01/android-basis-activity/" target="_blank" rel="external">Android应用开发基础之Activity</a></li>
+<li><a href="http://www.robinheztto.com/2014/08/03/android-basis-service/" target="_blank" rel="external">Android应用开发基础之Service</a></li>
+</ul>
+<hr>
+<h1 id="CI持续集成"><a href="#CI持续集成" class="headerlink" title="CI持续集成"></a>CI持续集成</h1><ul>
+<li><a href="http://www.robinheztto.com/2018/06/14/android-ci-gitolite/" target="_blank" rel="external">Android编译集成之gitolite</a></li>
+<li><a href="http://www.robinheztto.com/2018/05/19/android-build-sign/" target="_blank" rel="external">Android编译之签名机制</a></li>
+<li><a href="http://www.robinheztto.com/2018/05/03/android-ci-jenkins/" target="_blank" rel="external">Android持续集成之Jenkins</a></li>
+<li><a href="http://www.robinheztto.com/2015/08/03/ubuntu-nexus-maven/" target="_blank" rel="external">Ubuntu 14.04 Nexus Maven私服搭建</a></li>
+<li><a href="http://www.robinheztto.com/2015/06/06/ubuntu-ftp/" target="_blank" rel="external">Ubuntu14.04 FTP服务器搭建</a></li>
+<li><a href="http://www.robinheztto.com/2015/03/18/remastersys-md/" target="_blank" rel="external">remastersys 备份/制作ubuntu副本</a></li>
+<li><a href="http://www.robinheztto.com/2015/05/23/git-operate/" target="_blank" rel="external">git操作总结</a></li>
+</ul>
+<hr>
+<h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><p>Java系列之经典问答<br>Java系列之对象创建过程<br>Java系列之ThreadLocal<br>Java多线程之Volatile<br>Java多线程之synchronized<br>Java多线程之线程基础<br>Java系列之内存模型<br>Java系列之LinkedList解析<br>Java系列之ArrayList解析<br>Java系列之集合框架总结<br>Java系列之常量池总结<br>Java系列之JVM运行时数据区<br>Java系列之引用<br>Java系列之抽象类与接口<br>Java系列之关键字总结<br>Java系列之异常处理机制总结<br>Java系列之对Java平台的理解</p>
+<hr>
 <h1 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h1><ul>
 <li><a href="http://www.robinheztto.com/2016/01/01/android-env/" target="_blank" rel="external">Android Debug之系统启动</a></li>
+<li><a href="http://www.robinheztto.com/2017/03/08/android-debug-anr/" target="_blank" rel="external">Android Debug之ANR</a></li>
+<li><a href="http://www.robinheztto.com/2016/11/12/android-debug-adb/" target="_blank" rel="external">Android Debug之ADB</a></li>
 </ul>
 <hr>
 <h1 id="Env-amp-Tools"><a href="#Env-amp-Tools" class="headerlink" title="Env&amp;Tools"></a>Env&amp;Tools</h1><ul>
@@ -105,6 +124,78 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sdk-common/src/main/java/com/android/ide/common/res2/ValueResourceParser2.java</span><br><span class="line">checkDuplicate() -&gt;</span><br><span class="line">else if (set.contains(name) &amp;&amp; resource.getType() != ResourceType.PUBLIC) &#123;</span><br><span class="line">				System.out.println(&quot;checkDuplicate ------&gt; &quot; + resource.getType());</span><br><span class="line">                throw MergingException.withMessage(</span><br><span class="line">                        &quot;Found item %s/%s more than one time&quot;,</span><br><span class="line">                        resource.getType().getDisplayName(), name).withFile(from).build();</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
 <p><a href="https://groups.google.com/forum/#!topic/android-building/dxP0tp0e1MI" target="_blank" rel="external">Gradle vs. Make for AOSP build</a><br><a href="http://tools.android.com/tech-docs" target="_blank" rel="external">Android Gradle</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[语言助手开发基础]]></title>
+      <url>http://robinheztto.com/2018/12/22/voice-assistant-1/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/voice-assistant/va1.jpg?raw=true" alt=""></p>
+<ol>
+<li>语音识别（Auto Speech Recognition）</li>
+<li>语义理解（Semantic Understanding）</li>
+<li>语音合成（Text To Speech）</li>
+</ol>
+<p>语音识别将用户所说的指令转换成文本文字，而语义理解则是基于文本文字去理解用户意图，做出相关响应和操作，并且输出反馈给用户的答复文本，最后语音合成再将答复文本转换成为语音输出。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Kotlin开篇]]></title>
+      <url>http://robinheztto.com/2018/10/01/kotlin-1/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>Kotlin是一种静态类型、面向对象，旨在避免Java向后兼容性问题，基于JVM的现代编程语言。<a href="https://www.jetbrains.com/" target="_blank" rel="external">JetBrains公司</a>（开发了号称Java界最智能的集成开发工具IntelliJ IDEA的公司）于2010年开发出该编程语言并于2012年2月宣布将其开源。Kotlin语言最初设计的目的是替代Java语言。在2017 Google I/O上，Google正式宣布Kotlin为Android官方开发语言。</p>
+</blockquote>
+<h1 id="Kotlin的优势"><a href="#Kotlin的优势" class="headerlink" title="Kotlin的优势"></a>Kotlin的优势</h1><ul>
+<li>完全兼容Java</li>
+<li>Null safe</li>
+<li>支持lambda表达式（比Java8更好）</li>
+<li>支持扩展</li>
+<li>体验一致的开发工具链</li>
+</ul>
+<p>对于开发者来说：</p>
+<ul>
+<li>更少的空指针异常</li>
+<li>更少的代码量</li>
+<li>更快的开发速度</li>
+<li>更一致的开发体验</li>
+</ul>
+<h1 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h1><ol>
+<li><p>下载kotlin-compiler工具包并配置到环境变量路径</p>
+<blockquote>
+<p>下载路径：<a href="https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2（可使用最新release）" target="_blank" rel="external">https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2（可使用最新release）</a></p>
+</blockquote>
+</li>
+<li><p>使用 Kotlin 编译器编译应用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kotlinc hello.kt -include-runtime -d hello.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行应用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar hello.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Kotlin库编译<br>如果需要将生成的jar包供其他Kotlin程序使用，无需包含Kotlin的运行库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kotlinc hello.kt -d hello.jar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="参考连接"><a href="#参考连接" class="headerlink" title="参考连接"></a>参考连接</h1><ul>
+<li><a href="https://kotlinlang.org/" target="_blank" rel="external">Kotlin官方网站</a></li>
+<li><a href="https://try.kotlinlang.org/" target="_blank" rel="external">Kotlin官方教程</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Android App系列之CoordinatorLayout嵌套双层RecyclerView]]></title>
+      <url>http://robinheztto.com/2018/09/11/android-CoordinatorLayout-RecyclerView/</url>
+      <content type="html"><![CDATA[<h1 id="CoordinatorLayout嵌套RecyclerView无法点击的问题"><a href="#CoordinatorLayout嵌套RecyclerView无法点击的问题" class="headerlink" title="CoordinatorLayout嵌套RecyclerView无法点击的问题"></a>CoordinatorLayout嵌套RecyclerView无法点击的问题</h1><p>CoordinatorLayout嵌套RecyclerView，RecyclerView滚动后第一次无法点击，问题原因是RecyclerView的scrollState。当它停止滚动时，它不会立即更改scrollState为SCROLL_STATE_IDLE。当RecyclerView滚动停止后，它不立即调用setScrollState(SCROLL_STATE_IDLE)，而是等待一段时间来触发此方法。滚动越快，需等待的时间就越多。scroller.isFinished()在RecyclerView停止滚动触摸顶部之后不会立即返回true。</p>
+<p>该问题是源码的bug，问题跟踪:<br><a href="https://developer.android.com/topic/libraries/support-library/revisions.html#27-0-1" target="_blank" rel="external">https://developer.android.com/topic/libraries/support-library/revisions.html#27-0-1</a><br>After a user scrolls, they cannot click on an item in a RecyclerView. (AOSP issue 66996774)</p>
+<p>一些用户报告在支持库27.0.1中没有修复此问题。<br>问题跟踪器在这里。<br><a href="https://issuetracker.google.com/issues/66996774" target="_blank" rel="external">https://issuetracker.google.com/issues/66996774</a></p>
+<p><strong>官方解决方案</strong><br><a href="https://gist.github.com/chrisbanes/8391b5adb9ee42180893300850ed02f2" target="_blank" rel="external">https://gist.github.com/chrisbanes/8391b5adb9ee42180893300850ed02f2</a></p>
+<h1 id="CoordinatorLayout嵌套RecyclerView无法滑动的问题"><a href="#CoordinatorLayout嵌套RecyclerView无法滑动的问题" class="headerlink" title="CoordinatorLayout嵌套RecyclerView无法滑动的问题"></a>CoordinatorLayout嵌套RecyclerView无法滑动的问题</h1><p><strong><em>解决方式：为横向RecyclerView增加一句setNestedScrollingEnabled(false)</em></strong><br>CoordinatorLayout实现了NestedScrollingParent，纵向RecyclerView是CoordinatorLayout的子View，RecyclerView的滑动能通知到CoordinatorLayout，继而由CoordinatorLayout协调让CollapsingToolbarLayout发生折叠。横向RecyclerView的父View是纵向RecyclerView，而RecyclerView只实现了NestedScrollingChild，无法像CoordinatorLayout一样响应。所以要关闭横向RecyclerView的嵌套滑动功能，让横向RecyclerView如同其他嵌入纵向RecyclerView的view一样，触发折叠。</p>
+<h1 id="嵌套RecyclerView的优化"><a href="#嵌套RecyclerView的优化" class="headerlink" title="嵌套RecyclerView的优化"></a>嵌套RecyclerView的优化</h1><p>在一个RecyclerView中嵌套另一个RecyclerView，类似下面的横向滚动列表嵌套垂直滚动列表的形式。</p>
+<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-nesting-recycleview.webp?raw=true" alt=""><br></center>
+
+<p>当用户滚动横向列表的时候，inner RecyclerView可以流畅的滚动。但是当垂直滚动的时候，inner RecyclerView中的每个view再次inflated了一遍，从而感觉很卡顿。这是因为每个嵌套的RecyclerViews都有各自的view pool。</p>
+<p><strong>优化:</strong><br>为所有inner RecyclerView设置一个单一的view pool，减少了view的创建，提高了滚动性能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public OuterRecyclerViewAdapter(List&lt;Item&gt; items) &#123;</span><br><span class="line">    //Constructor stuff</span><br><span class="line">    viewPool = new RecyclerView.RecycledViewPool();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) &#123;</span><br><span class="line">    //Create viewHolder etc</span><br><span class="line">    holder.innerRecyclerView.setRecycledViewPool(viewPool);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
     </entry>
     
@@ -160,11 +251,15 @@
 </ul>
 <p>如下所示, “username”(之前用gl-setup命令时候的pubkey名称)具有读写权限而且在gitolite-admin仓库里有一个同名的公钥文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat conf/gitolite.conf</span><br><span class="line"></span><br><span class="line">repo gitolite-admin</span><br><span class="line">    RW+                 = username</span><br></pre></td></tr></table></figure></p>
 <h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><ol>
-<li>用户/仓库分组<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@oss_repos      = linux perl rakudo git gitolite</span><br><span class="line">@secret_repos   = fenestra pear</span><br><span class="line"></span><br><span class="line">@admins         = scott</span><br><span class="line">@interns        = ashok</span><br><span class="line">@engineers      = sitaram dilbert wally alice</span><br><span class="line">@staff          = @admins @engineers @interns</span><br></pre></td></tr></table></figure>
-</li>
+<li>用户/仓库分组</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@oss_repos      = linux perl rakudo git gitolite</span><br><span class="line">@secret_repos   = fenestra pear</span><br><span class="line"></span><br><span class="line">@admins         = scott</span><br><span class="line">@interns        = ashok</span><br><span class="line">@engineers      = sitaram dilbert wally alice</span><br><span class="line">@staff          = @admins @engineers @interns</span><br></pre></td></tr></table></figure>
 <p>在下面的例子里，实习生可以push ”int“分支。工程师可以push任何有”eng-“开头的branch，还有refs/tags下面用”rc”开头的后面跟数字的。而且管理员可以随便更改(包括rewind)对任何参考名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repo @oss_repos</span><br><span class="line">    RW  int$                = @interns</span><br><span class="line">    RW  eng-                = @engineers</span><br><span class="line">    RW  refs/tags/rc[0-9]   = @engineers</span><br><span class="line">    RW+                     = @admins</span><br></pre></td></tr></table></figure></p>
-]]></content>
+<p>2.GL_WILDREPOS<br>在gitolite里修改权限，添加正则表达式后提交</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">repo test/.*$</span><br><span class="line">R = test</span><br></pre></td></tr></table></figure>
+<p>提示 warning：<br>remote： bad reponame ‘test/.*$’ or you forgot to set $GL_WILDREPOS</p>
+<p>修改服务器/home/git/.gitolite.rc设置$GL_WILDREPOS=0为$GL_WILDREPOS=1即可</p>
+<h3 id="Repo仓库"><a href="#Repo仓库" class="headerlink" title="Repo仓库"></a>Repo仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">#/bin/bash</span><br><span class="line"></span><br><span class="line">set -x</span><br><span class="line"></span><br><span class="line">pwd=$&#123;PWD&#125;</span><br><span class="line">QCOM=/data/QcomBaseBackup/QcomBase</span><br><span class="line"></span><br><span class="line">attrget()  </span><br><span class="line">&#123;</span><br><span class="line">	ATTR_PAIR=$&#123;1#*$2=\&quot;&#125;</span><br><span class="line">	echo &quot;$&#123;ATTR_PAIR%%\&quot;*&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">parse_manifest()</span><br><span class="line">&#123;</span><br><span class="line">	local IFS=\&gt;</span><br><span class="line"></span><br><span class="line">	while read -d \&lt; ENTITY CONTENT</span><br><span class="line">	do</span><br><span class="line">		TAG_NAME=$&#123;ENTITY%% *&#125;</span><br><span class="line">		ATTRIBUTES=$&#123;ENTITY#* &#125;</span><br><span class="line">		if [[ $TAG_NAME == &quot;project&quot; ]];then</span><br><span class="line">			CLIENT_PATH=`attrget $&#123;ATTRIBUTES&#125; &quot;path&quot;`</span><br><span class="line">			SERVER_PATH=`attrget $&#123;ATTRIBUTES&#125; &quot;name&quot;`</span><br><span class="line">			if [ $SERVER_PATH == &quot;&quot; ];then</span><br><span class="line">				echo</span><br><span class="line">			else</span><br><span class="line">				if [ $CLIENT_PATH == &quot;name=&quot; ];then</span><br><span class="line">					CLIENT_PATH=$SERVER_PATH</span><br><span class="line">				fi</span><br><span class="line">			fi</span><br><span class="line">			repo_pro $SERVER_PATH $CLIENT_PATH</span><br><span class="line">		fi</span><br><span class="line">	done &lt; $1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">repo_pro() &#123;</span><br><span class="line">	REMOTE_PATH=$1</span><br><span class="line">	LOCAL_PATH=$2</span><br><span class="line">	workdir=$pwd/$&#123;REMOTE_PATH##*/&#125;</span><br><span class="line">	echo $workdir</span><br><span class="line">	git clone gerritroot@192.168.31.242:qcom/$REMOTE_PATH</span><br><span class="line">    	cd $workdir</span><br><span class="line">	git checkout -b master</span><br><span class="line">    	rm -rf !\(.git\)</span><br><span class="line">	cp -rf $QCOM/$CLIENT_PATH/* $workdir</span><br><span class="line">	find . -name .gitignore | xargs rm -rfv</span><br><span class="line">	git add -A</span><br><span class="line">	git commit --allow-empty -m &quot;Initial commit update&quot;</span><br><span class="line">	git push --set-upstream origin master</span><br><span class="line">	cd $pwd</span><br><span class="line">	rm -rf $workdir</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">parse_manifest $1</span><br></pre></td></tr></table></figure>]]></content>
     </entry>
     
     <entry>
@@ -187,101 +282,14 @@
 <p>可在源码根目录下运行如下脚本统一制作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">subject=&apos;/C=CN/ST=Guangdong/L=Shenzhen View/O=Android/OU=Android/CN=Android/emailAddress=robin.he.ztto@gmail.cn&apos;</span><br><span class="line">mkdir ~/.android-certs</span><br><span class="line">for x in releasekey platform shared media verity; do \</span><br><span class="line">    ./development/tools/make_key ~/.android-certs/$x &quot;$subject&quot;; \</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
 <h2 id="为DM-Verity功能生成verity-key"><a href="#为DM-Verity功能生成verity-key" class="headerlink" title="为DM-Verity功能生成verity key"></a>为DM-Verity功能生成verity key</h2><p>首先通过使用以下的命令来生成verity key的工具generate_verity_key：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source build/envsetup.sh</span><br><span class="line">choosecombo</span><br><span class="line">make generate_verity_key (mmm system/extras/verity/)</span><br></pre></td></tr></table></figure></p>
 <p>然后在前面步骤已生成verity.pk8，verity.x509.pem的基础上使用以下命令生成verity_key<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out/host/linux-x86/bin/generate_verity_key -convert verity.x509.pem verity_key</span><br></pre></td></tr></table></figure></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[面试系列之java]]></title>
-      <url>http://robinheztto.com/2018/05/08/interview-java/</url>
-      <content type="html"><![CDATA[<h2 id="面向对象的基本特征"><a href="#面向对象的基本特征" class="headerlink" title="面向对象的基本特征"></a>面向对象的基本特征</h2><ul>
-<li>抽象<br>将具有相同属性与行为的一类对象总结成类的过程。抽象只关注于对象的属性与行为，并不关注具体的细节。</li>
-<li>封装<br>对类的数据及数据操作进行封装，隐藏一切可隐藏的细节，只公开对外的接口。</li>
-<li>继承<br>继承已有类的信息创建新类的过程。</li>
-<li>多态<br>多态性是指允许不同子类型的对象对同一消息作出不同的响应。</li>
-</ul>
-<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ol>
-<li><p><strong>数据:</strong> 声明修饰的数据为常量(可以是编译时常量也可以是运行时常量)。</p>
-<blockquote>
-<p>对于基本数据类型，final修饰的数值不变<br>对于引用类型，final修饰的引用不变，但引用的对象本身可以改变</p>
-</blockquote>
-</li>
-<li><p><strong>方法:</strong> 声明修饰的方法不能被子类覆盖重写。private方法隐式指定为final，如果在子类中定义的方法和基类中的一个private方法签名相同，此时子类的方法不是覆盖基类方法，而是在子类中定义了一个新的方法。</p>
-</li>
-<li><p><strong>类:</strong> 声明修饰的类不允许被继承，没有子类。final类中所有的方法都被隐示定义为final，因为它们是不会被重载。</p>
-</li>
-<li><p>final关键字不能修饰接口</p>
+<h1 id="APK签名"><a href="#APK签名" class="headerlink" title="APK签名"></a>APK签名</h1><ol>
+<li>keystore签名<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># jarsigner -verbose -keystore debug.keystore -signedjar signed.apk unsign.apk androiddebugkey</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>  保留关键字</p>
-<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ol>
-<li><strong>成员变量:</strong> 声明修饰的成员变量为静态变量(类变量)，在内存中只有一个副本，并且在类初始化时赋值，无需依赖对象调用，static成员变量的初始化顺序按照定义的顺序进行。</li>
-<li><strong>成员方法:</strong> 声明修饰的成员方法为静态方法(类方法)，在类加载时已存在，无需依赖对象调用，静态方法不能调用其他非静态成员或方法。</li>
-<li><strong>代码块:</strong> 只在类加载的时候执行一次。</li>
+<p>签名的时候报如下的问题，说明待签的apk是已经签名过的：<br>jarsigner: 无法对 jar 进行签名: java.util.zip.ZipException: invalid entry compressed size (expected 5067 but got 5217 bytes)<br>解决的方法：<br>把要重签名的apk后缀改成zip，打开后删除里面的META-INF目录，然后重新改成apk后缀再进行签名操作</p>
+<ol>
+<li>秘钥签名<br>java -Xmx512m -jar signapk.jar xxx.x509.pem xxx.pk8 release.apk release_signed.apk</li>
 </ol>
-<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
-<li>volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。</li>
-<li>volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）</li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[面试系列之C]]></title>
-      <url>http://robinheztto.com/2018/05/08/interview-c/</url>
-      <content type="html"><![CDATA[<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ul>
-<li>局部变量:存储位置由栈变成静态存储区，生命周期由程序开始执行到结束。</li>
-<li>全局变量:限定修饰的全局变量作用域为本文件内，外部文件不可见。</li>
-<li>修饰函数:限定函数作用域范围为定义的本文件内，外部文件不可访问。</li>
-</ul>
-<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
-<li><p>修饰变量:标记标量只读</p>
-<blockquote>
-<p>const int * a;  指针指向的数据<em>a只读，指针a可以改变指向。<br>int ** const a; 指针指向的数据</em>a可修改，指针a不能改变指向。<br>const int *<em> const a; 指针的指向的数据</em>a只读，指针a不能改变指向。</p>
-</blockquote>
-</li>
-<li><p>修饰函数参数:标记参数在函数内不允许修改</p>
-</li>
-<li><p>修饰函数返回值:标志函数返回值为只读</p>
-</li>
-</ul>
-<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
-<li>volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。</li>
-<li>volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）</li>
-<li>const 可以是 volatile （如只读的状态寄存器）</li>
-<li>指针可以是 volatile</li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[面试系列之C++]]></title>
-      <url>http://robinheztto.com/2018/05/08/interview-cpp/</url>
-      <content type="html"><![CDATA[<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ul>
-<li>局部变量:存储位置由栈变成静态存储区，生命周期由程序开始执行到结束。</li>
-<li>全局变量:限定修饰的全局变量作用域为本文件内，外部文件不可见。</li>
-<li>函数:限定函数作用域范围为定义的本文件内，外部文件不可访问。</li>
-<li>成员变量:修饰成员变量为类变量，无需依赖对象调用，static修饰的成员变量要在类外初始化。</li>
-<li>成员函数:修饰静态成员函数，无需依赖对象调用，静态成员函数只能访问静态成员函数或静态成员变量，不能访问非静态成员函数或者变量。</li>
-</ul>
-<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
-<li><p>修饰变量:标记标量只读</p>
-<blockquote>
-<p>const int * a;  指针指向的数据<em>a只读，指针a可以改变指向。<br>int ** const a; 指针指向的数据</em>a可修改，指针a不能改变指向。<br>const int *<em> const a; 指针的指向的数据</em>a只读，指针a不能改变指向。</p>
-</blockquote>
-</li>
-<li><p>修饰函数参数:标记参数在函数内不允许修改</p>
-</li>
-<li><p>修饰成员函数:标志成员函数不能修改任何成员变量的值(mutable标记的成员变量除外)，另外const成员函数不能调用非const成员函数(因为非const成员函数可能修改成员变量)</p>
-</li>
-<li><p>修饰函数返回值:标志函数返回值为只读</p>
-</li>
-</ul>
-<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
-<li>volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。</li>
-<li>volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）</li>
-<li>const 可以是 volatile （如只读的状态寄存器）</li>
-<li>指针可以是 volatile</li>
-</ul>
 ]]></content>
     </entry>
     
@@ -896,13 +904,13 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Android之消息机制]]></title>
+      <title><![CDATA[Android之Handler消息机制]]></title>
       <url>http://robinheztto.com/2016/11/24/android-handler/</url>
       <content type="html"><![CDATA[<hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>消息驱动是一种进程/线程的运行模式,内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制.Android也是采用了消息驱动的机制来处理各种外部按键,触屏,系统Intent,广播事件等消息.</p>
-<p>Android的消息队列是线程相关的,每启动一个线程,都可以在内部创建一个消息队列,然后在消息队列中不断循环检查是否有新的消息需要处理,如果有,则对该消息进行处理,如果没有,线程就进入休眠状态直到有新的消息需要处理为止.</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>消息驱动是进程/线程的一种运行模式，内部或者外部的消息事件被放到进程/线程的消息队列中按序处理是现在的操作系统普遍采用的机制。同样在Android中也是采用了消息驱动的机制来处理各种外部按键，触屏，系统Intent，广播事件等消息。</p>
+<p>Android的消息队列是线程相关的，每启动一个线程，都可以在内部创建一个消息队列，然后在消息队列中不断循环检查是否有新的消息需要处理，如果有，则对该消息进行处理，如果没有，线程就进入休眠状态直到有新的消息需要处理为止。</p>
 <hr>
-<h3 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h3><p>Android中与消息机制相关的类主要有Looper,MessageQueue,Handler,Message,相关的代码主要在以下文件中:  </p>
+<h3 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h3><p>Android中与消息机制相关的类主要有Looper，MessageQueue，Handler，Message，相关的代码主要在以下文件中:</p>
 <blockquote>
 <ul>
 <li>frameworks/base/core/java/android/os/Looper.java</li>
@@ -914,32 +922,34 @@
 </ul>
 </blockquote>
 <ul>
-<li>Looper<br>Looper对象是用来创建消息队列并进入消息循环处理的.每个线程只能有一个Looper对象，同时对应着一个MessageQueue，发送到该线程的消息都将存放在该队列中，并由Looper循环处理。Android默认只为主线程)(UI线程)创建了Looper，所以当我们新建线程需要使用消息队列时必须手动创建Looper.</li>
-<li>MessageQueue<br>MessageQueue即消息队列，由Looper创建管理,一个Looper对象对应一个MessageQueue对象.</li>
-<li>Handler<br>Handler是消息的接收与处理者，Handler将Message添加到消息队列，同时也通过Handler的回调方法handleMessage()处理对应的消息.一个Handler对象只能关联一个Looper对象，但多个Handler对象可以关联到同一个Looper.默认情况下Handler会关联到实例化Handler线程的Lopper，也可以通过Handler的构造函数的Looper参数指定Handler关联到某个线程的Looper，即发送消息到某个指定线程并在该线程中回调Handler处理该消息.</li>
-<li>Message<br>Message是消息的载体，Parcelable的派生类，通过其成员变量target关联到Handler对象.  </li>
+<li>Looper<br>Looper对象是用来创建消息队列并进入消息循环处理的。每个线程只能有一个Looper对象，同时对应着一个MessageQueue，发送到该线程的消息都将存放在该队列中，并由Looper循环处理。Android默认只为主线程(UI线程)创建了Looper，所以当我们新建线程需要使用消息队列时必须手动创建Looper。</li>
+<li>MessageQueue<br>MessageQueue即消息队列，由Looper创建管理，一个Looper对象对应一个MessageQueue对象。</li>
+<li>Handler<br>Handler是消息的接收与处理者，Handler将Message添加到消息队列，同时也通过Handler的回调方法handleMessage()处理对应的消息。一个Handler对象只能关联一个Looper对象，但多个Handler对象可以关联到同一个Looper。默认情况下Handler会关联到实例化Handler线程的Lopper，也可以通过Handler的构造函数的Looper参数指定Handler关联到某个线程的Looper，即发送消息到某个指定线程并在该线程中回调Handler处理该消息。</li>
+<li>Message<br>Message是消息的载体，Parcelable的派生类，通过其成员变量target关联到Handler对象。</li>
 </ul>
-<p>它们之间关系如下图示：<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/handler-looper-messagequeue.jpg?raw=true" alt="Handler,Looper,MessageQueue之间的关系"></p>
+<p>它们之间关系如下图示：</p>
+<center><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/handler-looper-messagequeue.jpg?raw=true" alt="Handler,Looper,MessageQueue之间的关系"><br></center>
+
 <p>在代码中我们一般如下使用线程的消息机制:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LooperThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">      <span class="keyword">public</span> Handler mHandler;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          Looper.prepare();</span><br><span class="line"></span><br><span class="line">          mHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">              <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">                  <span class="comment">// process incoming messages here</span></span><br><span class="line">              &#125;</span><br><span class="line">          &#125;;</span><br><span class="line"></span><br><span class="line">          Looper.loop();</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <hr>
-<h3 id="线程消息队列的创建"><a href="#线程消息队列的创建" class="headerlink" title="线程消息队列的创建"></a>线程消息队列的创建</h3><p>线程的消息队列通过Looper创建并维护的，主线程中调用Looper.prepareMainLooper(),其他子线程中调用Looper.prepare()来创建消息队列.一个线程多次调用prepareMainLooper()或prepare()将会抛出异常.</p>
-<p>在介绍消息队列创建之前,首先了解一下Looper与MessageQueue,再看消息队列创建的流程.</p>
+<h3 id="线程消息队列的创建"><a href="#线程消息队列的创建" class="headerlink" title="线程消息队列的创建"></a>线程消息队列的创建</h3><p>线程的消息队列通过Looper创建并维护的，主线程中调用Looper.prepareMainLooper()，其他子线程中调用Looper.prepare()来创建消息队列。一个线程多次调用prepareMainLooper()或prepare()将会抛出异常。</p>
+<p>在介绍消息队列创建之前，首先了解一下Looper与MessageQueue，再看消息队列创建的流程。</p>
 <ol>
-<li><p>Looper类的主要成员变量与方法如下:  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Looper</span> </span>&#123;</span><br><span class="line">      <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Looper&gt; sThreadLocal = <span class="keyword">new</span> ThreadLocal&lt;Looper&gt;();</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">static</span> Looper sMainLooper;  </span><br><span class="line">      <span class="keyword">final</span> MessageQueue mQueue;</span><br><span class="line">      <span class="keyword">final</span> Thread mThread;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">(<span class="keyword">boolean</span> quitAllowed)</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepareMainLooper</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Looper <span class="title">getMainLooper</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>Looper类的主要成员变量与方法如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/os/Looper.java</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Looper</span> </span>&#123;</span><br><span class="line">      <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Looper&gt; sThreadLocal = <span class="keyword">new</span> ThreadLocal&lt;Looper&gt;();</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">static</span> Looper sMainLooper;</span><br><span class="line">      <span class="keyword">final</span> MessageQueue mQueue;</span><br><span class="line">      <span class="keyword">final</span> Thread mThread;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">(<span class="keyword">boolean</span> quitAllowed)</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepareMainLooper</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Looper <span class="title">getMainLooper</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>sThreadLocal是静态成员变量,用于保存线程私有的Looper对象</li>
-<li>sMainLooper是主线程的Looper对象.在prepareMainLooper()中赋值,可通过调用getMainLooper获取</li>
+<li>sThreadLocal是静态成员变量，用于保存线程私有的Looper对象</li>
+<li>sMainLooper是主线程的Looper对象，在prepareMainLooper()中赋值，可通过调用getMainLooper获取</li>
 <li>mQueue即消息队列,在Looper构造函数中初始化</li>
 <li>mThread即Looper所在的线程</li>
 </ul>
 </li>
-<li><p>MessageQueue类的主要成员变量与方法如下:  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageQueue</span> </span>&#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mQuitAllowed;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">long</span> mPtr;</span><br><span class="line">      Message mMessages;</span><br><span class="line"></span><br><span class="line">      MessageQueue(<span class="keyword">boolean</span> quitAllowed) &#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">boolean</span> <span class="title">enqueueMessage</span><span class="params">(Message msg, <span class="keyword">long</span> when)</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function">Message <span class="title">next</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>MessageQueue类的主要成员变量与方法如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; frameworks/base/core/java/android/os/MessageQueue.java</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageQueue</span> </span>&#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mQuitAllowed;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">long</span> mPtr;</span><br><span class="line">      Message mMessages;</span><br><span class="line"></span><br><span class="line">      MessageQueue(<span class="keyword">boolean</span> quitAllowed) &#123;...&#125;</span><br><span class="line">      <span class="function"><span class="keyword">boolean</span> <span class="title">enqueueMessage</span><span class="params">(Message msg, <span class="keyword">long</span> when)</span> </span>&#123;...&#125;</span><br><span class="line">      <span class="function">Message <span class="title">next</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>mQuitAllowed代表是否允许退出消息循环,主线程中默认为false,子线程默认false</li>
-<li>mPtr保存的是NativeMessageQueue的地址,通过该地址就可以找到java层MessageQueue所对应native的MessageQueue.</li>
-<li>mMessages即消息队列,通过mMessages可以遍历整个消息队列</li>
+<li>mQuitAllowed代表是否允许退出消息循环，主线程中默认为false，子线程默认false</li>
+<li>mPtr保存的是NativeMessageQueue的地址，通过该地址就可以找到java层MessageQueue所对应native的MessageQueue.</li>
+<li>mMessages即消息队列，通过mMessages可以遍历整个消息队列</li>
 </ul>
 </li>
 <li>消息队列的创建:<br>消息队列的创建从Looper.prepare()/Looper.prepareMainLooper()开始</li>
@@ -962,11 +972,13 @@
 <li>首先在Java层创建了一个Looper对象，然后创建MessageQueue对象mQueue,进入MessageQueue的创建过程</li>
 <li>MessageQueue在JNI层创建了一个NativeMessageQueue对象,并将这个对象保存在MessageQueue的成员变量mPtr中</li>
 <li>在JNI层，创建了NativeMessageQueue对象时,会创建了一个Looper对象，保存在JNI层的NativeMessageQueue对象的成员变量mLooper中，这个对象的作用是，当Java层的消息队列中没有消息时，就使Android应用程序线程进入等待状态，而当Java层的消息队列中来了新的消息后，就唤醒Android应用程序的线程来处理这个消息</li>
-<li>关于java层与JNI层的Looper,MessageQueue对象可以这样理解,java层的Looper,MessageQueue主要实现了消息队列发送处理逻辑,而JNI层的主要实现是线程的等待/唤醒.在逻辑上他们还是一一对应的关系,只不过侧重点不同.<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/Looper_MessageQueue.png?raw=true" alt="java与jni层Looper,MessageQueue关系"></li>
+<li>关于java层与JNI层的Looper,MessageQueue对象可以这样理解,java层的Looper,MessageQueue主要实现了消息队列发送处理逻辑,而JNI层的主要实现是线程的等待/唤醒.在逻辑上他们还是一一对应的关系,只不过侧重点不同.<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/Looper_MessageQueue.png?raw=true" alt="java与jni层Looper,MessageQueue关系"><br></center>
+
+</li>
 </ul>
 <hr>
-<h3 id="线程消息队列的循环"><a href="#线程消息队列的循环" class="headerlink" title="线程消息队列的循环"></a>线程消息队列的循环</h3><p>当线程消息队列创建完成后,即进入消息队列循环处理过程中,Android消息队列的循环通过Loop.Loop()来实现,整个流程如下图示.<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/android/loop_message.jpg?raw=true" alt="消息队列循环流程"></p>
-<p>下面具体来看具体分析<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">final</span> Looper me = myLooper();</span><br><span class="line">      <span class="keyword">if</span> (me == <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"No Looper; Looper.prepare() wasn't called on this thread."</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">final</span> MessageQueue queue = me.mQueue;</span><br><span class="line"></span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">          Message msg = queue.next(); <span class="comment">// might block</span></span><br><span class="line">          <span class="keyword">if</span> (msg == <span class="keyword">null</span>) &#123;</span><br><span class="line">              <span class="comment">// No message indicates that the message queue is quitting.</span></span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          ...</span><br><span class="line">          msg.target.dispatchMessage(msg);</span><br><span class="line">          ...</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="线程消息队列的循环"><a href="#线程消息队列的循环" class="headerlink" title="线程消息队列的循环"></a>线程消息队列的循环</h3><p>当线程消息队列创建完成后,即进入消息队列循环处理过程中,Android消息队列的循环通过Loop.Loop()来实现,整个流程如下图示.</p>
+<p><center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/loop_message.jpg?raw=true" alt="消息队列循环流程"><br></center><br>下面具体来看具体分析<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">final</span> Looper me = myLooper();</span><br><span class="line">      <span class="keyword">if</span> (me == <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"No Looper; Looper.prepare() wasn't called on this thread."</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">final</span> MessageQueue queue = me.mQueue;</span><br><span class="line"></span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">          Message msg = queue.next(); <span class="comment">// might block</span></span><br><span class="line">          <span class="keyword">if</span> (msg == <span class="keyword">null</span>) &#123;</span><br><span class="line">              <span class="comment">// No message indicates that the message queue is quitting.</span></span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          ...</span><br><span class="line">          msg.target.dispatchMessage(msg);</span><br><span class="line">          ...</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>进入loop前,首先通过myLooper()拿到前面创建的Looper对象,如果为null将会抛出异常,这也就是为什么必须在Looper.loop()之前调用Looper.prepare()或者Looper.prepareMainLooper()的原因.接下来通过me.mQueue拿到MessageQueue对象,而后进入到无尽循环处理中.在循环中通过queue.next()从队列中取消息,再调用msg.target.dispatchMessage(msg)处理.下面看一下queue.next()流程.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Message <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="keyword">long</span> ptr = mPtr;</span><br><span class="line">      <span class="keyword">if</span> (ptr == <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">int</span> pendingIdleHandlerCount = -<span class="number">1</span>;</span><br><span class="line">      <span class="keyword">int</span> nextPollTimeoutMillis = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">          <span class="keyword">if</span> (nextPollTimeoutMillis != <span class="number">0</span>) &#123;</span><br><span class="line">              Binder.flushPendingCommands();</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          nativePollOnce(ptr, nextPollTimeoutMillis);</span><br><span class="line"></span><br><span class="line">          <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">              <span class="keyword">final</span> <span class="keyword">long</span> now = SystemClock.uptimeMillis();</span><br><span class="line">              Message prevMsg = <span class="keyword">null</span>;</span><br><span class="line">              Message msg = mMessages;</span><br><span class="line">              <span class="keyword">if</span> (msg != <span class="keyword">null</span> &amp;&amp; msg.target == <span class="keyword">null</span>) &#123;</span><br><span class="line">                  do &#123;</span><br><span class="line">                      prevMsg = msg;</span><br><span class="line">                      msg = msg.next;</span><br><span class="line">                  &#125; <span class="keyword">while</span> (msg != <span class="keyword">null</span> &amp;&amp; !msg.isAsynchronous());</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">if</span> (msg != <span class="keyword">null</span>) &#123;</span><br><span class="line">                  <span class="keyword">if</span> (now &lt; msg.when) &#123;</span><br><span class="line">                      nextPollTimeoutMillis = (<span class="keyword">int</span>) Math.min(msg.when - now, Integer.MAX_VALUE);</span><br><span class="line">                  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                      mBlocked = <span class="keyword">false</span>;</span><br><span class="line">                      <span class="keyword">if</span> (prevMsg != <span class="keyword">null</span>) &#123;</span><br><span class="line">                          prevMsg.next = msg.next;</span><br><span class="line">                      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                          mMessages = msg.next;</span><br><span class="line">                      &#125;</span><br><span class="line">                      msg.next = <span class="keyword">null</span>;</span><br><span class="line">                      <span class="keyword">if</span> (<span class="keyword">false</span>) Log.v(<span class="string">"MessageQueue"</span>, <span class="string">"Returning message: "</span> + msg);</span><br><span class="line">                      <span class="keyword">return</span> msg;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  nextPollTimeoutMillis = -<span class="number">1</span>;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (mQuitting) &#123;</span><br><span class="line">                  dispose();</span><br><span class="line">                  <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (pendingIdleHandlerCount &lt; <span class="number">0</span></span><br><span class="line">                      &amp;&amp; (mMessages == <span class="keyword">null</span> || now &lt; mMessages.when)) &#123;</span><br><span class="line">                  pendingIdleHandlerCount = mIdleHandlers.size();</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">if</span> (pendingIdleHandlerCount &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                  mBlocked = <span class="keyword">true</span>;</span><br><span class="line">                  <span class="keyword">continue</span>;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (mPendingIdleHandlers == <span class="keyword">null</span>) &#123;</span><br><span class="line">                  mPendingIdleHandlers = <span class="keyword">new</span> IdleHandler[Math.max(pendingIdleHandlerCount, <span class="number">4</span>)];</span><br><span class="line">              &#125;</span><br><span class="line">              mPendingIdleHandlers = mIdleHandlers.toArray(mPendingIdleHandlers);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pendingIdleHandlerCount; i++) &#123;</span><br><span class="line">              <span class="keyword">final</span> IdleHandler idler = mPendingIdleHandlers[i];</span><br><span class="line">              mPendingIdleHandlers[i] = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">boolean</span> keep = <span class="keyword">false</span>;</span><br><span class="line">              <span class="keyword">try</span> &#123;</span><br><span class="line">                  keep = idler.queueIdle();</span><br><span class="line">              &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">                  Log.wtf(<span class="string">"MessageQueue"</span>, <span class="string">"IdleHandler threw exception"</span>, t);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (!keep) &#123;</span><br><span class="line">                  <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">                      mIdleHandlers.remove(idler);</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          pendingIdleHandlerCount = <span class="number">0</span>;</span><br><span class="line">          nextPollTimeoutMillis = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>先看一下开始定义的2个变量的含义,pendingIdleHandlerCount表示消息队列空闲消息处理器(IdleHandler)的个数,nextPollTimeoutMillis表示没有消息处理时,线程需睡眠等待的时间.nativePollOnce将会睡眠等待nextPollTimeoutMillis时间.从nativePollOnce返回后,再从消息队列中取消息,如果没有任何消息,那么nextPollTimeoutMillis赋值为-1,表示下一次nativePollOnce无限制等待直到其他线程把它唤醒.如果取到消息,比较消息处理的时间与当前时间,如果消息处理的时间未到(now &lt; msg.when),那么计算nextPollTimeoutMillis,等下一次时间到时再处理.如果消息处理时间已到,那么取出消息返回到Looperde的loop中处理.另外如果当前没有消息处理时,会回调注册的IdleHandler.<br>下面继续分析nativePollOnce.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">android_os_MessageQueue_nativePollOnce</span><span class="params">(JNIEnv* env, jobject obj,</span><br><span class="line">        jlong ptr, jint timeoutMillis)</span> </span>&#123;</span><br><span class="line">    NativeMessageQueue* nativeMessageQueue = <span class="keyword">reinterpret_cast</span>&lt;NativeMessageQueue*&gt;(ptr);</span><br><span class="line">    nativeMessageQueue-&gt;pollOnce(env, obj, timeoutMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> NativeMessageQueue::pollOnce(JNIEnv* env, jobject pollObj, <span class="keyword">int</span> timeoutMillis) &#123;</span><br><span class="line">    mPollEnv = env;</span><br><span class="line">    mPollObj = pollObj;</span><br><span class="line">    mLooper-&gt;pollOnce(timeoutMillis);</span><br><span class="line">    mPollObj = <span class="literal">NULL</span>;</span><br><span class="line">    mPollEnv = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mExceptionObj) &#123;</span><br><span class="line">        env-&gt;Throw(mExceptionObj);</span><br><span class="line">        env-&gt;DeleteLocalRef(mExceptionObj);</span><br><span class="line">        mExceptionObj = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2262,6 +2274,10 @@
 </li>
 <li>修改远程仓库url:<br><code>git remote set-url origin new-url</code></li>
 </ol>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>Git global setup<br>git config –global user.name “HE”<br>git config –global user.email “robin.he.ztto@gmail.com”</p>
+<p>Create a new repository<br>git clone xxx.git<br>cd fota<br>touch README.md<br>git add README.md<br>git commit -m “add README”<br>git push -u origin master</p>
+<p>Existing folder<br>cd existing_folder<br>git init<br>git remote add origin xxx.git<br>git add .<br>git commit -m “Initial commit”<br>git push -u origin master</p>
+<p>Existing Git repository<br>cd existing_repo<br>git remote rename origin old-origin<br>git remote add origin xxx.git<br>git push -u origin –all<br>git push -u origin –tags</p>
 <hr>
 ]]></content>
     </entry>
@@ -2290,7 +2306,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Java核心技术之经典问答]]></title>
+      <title><![CDATA[Java系列之经典问答]]></title>
       <url>http://robinheztto.com/2014/12/31/java-QA/</url>
       <content type="html"><![CDATA[<h1 id="String是基本数据类型吗？"><a href="#String是基本数据类型吗？" class="headerlink" title="String是基本数据类型吗？"></a>String是基本数据类型吗？</h1><p>String不是基本数据类型，String是final修饰的java类。java基本数据类型包括：<br>整型：byte，short，int，long<br>浮点型：float，double<br>字符型：char<br>布尔类型：boolean</p>
 <h1 id="比较-与equals-的区别"><a href="#比较-与equals-的区别" class="headerlink" title="比较==与equals()的区别"></a>比较==与equals()的区别</h1><p>首先，==号在比较基本数据类型时比较的是值，比较对象时比较的是两个对象的地址值。equals()是Obejct类的方法，其也是通过==来实现，另外所有的类中的equals()方法都继承自Object类，如果继承的子类没有重写equals()，将使用Object的equals()即比较对象的地址，然而，Java提供的所有类中，绝大多数类都重写了equals()方法，重写后的equals()方法一般都是比较两个对象的属性值。</p>
@@ -2302,23 +2318,417 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Ubuntu14.04 OpenJdk8编译]]></title>
-      <url>http://robinheztto.com/2014/12/19/java-build-openjdk/</url>
-      <content type="html"><![CDATA[<h1 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h1><p>如下图示，选择从官网直接下载的方式，下载地址：<a href="http://download.java.net/openjdk/jdk8/" target="_blank" rel="external">OpenJDK™ Source</a></p>
-<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-download.png?raw=true" alt="OpenJDK™ Source Download"><br></div><br>下载后目录结构如下图示：<br><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-list.png?raw=true" alt="OpenJDK™ Source List"><br></div>
+      <title><![CDATA[Java系列之对象创建过程]]></title>
+      <url>http://robinheztto.com/2014/08/24/java-object-creation/</url>
+      <content type="html"><![CDATA[<h1 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h1><center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-create-object.png?raw=true" alt=""><br></center>
 
-<h1 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h1><p>编译主要参考源码目录下README及README-builds.html文件，编译前本机已安装openjdk7/8作为Bootstrap JDK。</p>
 <ul>
-<li>bash ./configure<br>执行configure脚本会检查并配置编译环境，根据执行过程中提示<code>apt-get install</code>安装相应的包直到执行成功为止。执行成功后将输出如下所示的信息：<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-build-configure.png?raw=true" alt="OpenJDK™ Source Configure"><br></div></li>
-<li>Make<br><code>export LANG=C</code><br><code>make all</code><br>编译output在build/linux-x86_64-normal-server-release下,编译过程中错误解决：<br>This OS is not supported:” <code>uname -a</code>;<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-build-os-not-support.png?raw=true" alt="OpenJDK™ Source Configure"><br>解决方法：修改hotspot/make/linux/Makefile在SUPPORTED_OS_VERSION选项加上4%。<code>SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3% 4%</code></li>
-<li>Test<br>编译成功后输出如下信息：<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-build-success.png?raw=true" alt="OpenJDK™ Source Build Result"><br></div><br>测试编译生成java可执行文件：<br><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-build-test.png?raw=true" alt="OpenJDK™ Source Build Test"><br></div>
+<li><p>类加载检查： 虚拟机遇到一条new指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用(步骤1)，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过(步骤2)。如果没有，那必须先执行相应的类加载过程(步骤3)。</p>
+</li>
+<li><p>分配内存： 在类加载检查通过后，接下来虚拟机将为新生对象分配内存(步骤4)。对象所需的内存大小在类加载完成后便可确定，为对象分配空间的任务等同于把一块确定大小的内存从Java堆中划分出来。分配方式有 “指针碰撞” 和 “空闲列表” 两种，选择那种分配方式由 Java 堆是否规整决定，而Java堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能决定。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>在创建对象的时候有一个很重要的问题，就是线程安全，因为在实际开发过程中，创建对象是很频繁的事情，作为虚拟机来说，必须要保证线程是安全的，通常来讲，虚拟机采用两种方式来保证线程安全：<br>  CAS+失败重试： CAS是乐观锁的一种实现方式。所谓乐观锁就是，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。虚拟机采用 CAS 配上失败重试的方式保证更新操作的原子性。<br>  TLAB： 为每一个线程预先在Eden区分配一块儿内存，JVM在给线程中的对象分配内存时，首先在TLAB分配，当对象大于TLAB中的剩余内存或TLAB的内存已用尽时，再采用上述的CAS进行内存分配</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+<li><p>初始化零值：内存分配完成后，虚拟机需要将分配到的内存空间都初始化为零值（不包括对象头,步骤５），这一步操作保证了对象的实例字段在Java代码中可以不赋初始值就直接使用，程序能访问到这些字段的数据类型所对应的零值。</p>
+</li>
+<li><p>设置对象头： 初始化零值完成之后，虚拟机要对对象进行必要的设(步骤6)置，例如这个对象是那个类的实例、如何才能找到类的元数据信息、对象的哈希吗、对象的GC分代年龄等信息。 这些信息存放在对象头中。 另外，根据虚拟机当前运行状态的不同，如是否启用偏向锁等，对象头会有不同的设置方式。</p>
+</li>
+<li><p>执行init方法： 在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始， <init> 方法还没有执行，所有的字段都还为零。所以一般来说，执行 new 指令之后会接着执行 <init> 方法(步骤７)，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</init></init></p>
 </li>
 </ul>
+<h1 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h1><p>以在Hotspot虚拟机为例，对象在内存中的布局可以分为3快区域：对象头、实例数据和对齐填充。</p>
+<ul>
+<li>对象头包括两部分信息，第一部分用于存储对象自身的自身运行时数据（哈希吗、GC分代年龄、锁状态标志等等），另一部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是那个类的实例。</li>
+<li>实例数据部分是对象真正存储的有效信息，也是在程序中所定义的各种类型的字段内容。</li>
+<li>对齐填充部分不是必然存在的，也没有什么特别的含义，仅仅起占位作用。 因为Hotspot虚拟机的自动内存管理系统要求对象起始地址必须是8字节的整数倍，换句话说就是对象的大小必须是8字节的整数倍。而对象头部分正好是8字节的倍数（1倍或2倍），因此，当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</li>
+</ul>
+<h1 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h1><p>建立对象就是为了使用对象，我们的Java程序通过栈上的 reference 数据来操作堆上的具体对象。对象的访问方式有虚拟机实现而定，目前主流的访问方式有使用句柄和直接指针两种：</p>
+<ol>
+<li>句柄<br>如果使用句柄的话，那么Java堆中将会划分出一块内存来作为句柄池，reference 中存储的就是对象的句柄地址，而句柄中包含了对象实例数据与类型数据各自的具体地址信息；<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-object-memory-1.webp?raw=true" alt=""><br></center></li>
+<li>直接指针<br>如果使用直接指针访问，那么Java堆对像的布局中就必须考虑如何防止访问类型数据的相关信息，reference 中存储的直接就是对象的地址。<br><center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-object-memory-2.webp?raw=true" alt=""><br></center><br>这两种对象访问方式各有优势。使用句柄来访问的最大好处是reference中存储的是稳定的句柄地址，在对象被移动时只会改变句柄中的实例数据指针，而reference本身不需要修改。使用直接指针访问方式最大的好处就是速度快，它节省了一次指针定位的时间开销。</li>
+</ol>
 ]]></content>
     </entry>
     
     <entry>
-      <title><![CDATA[Java核心技术之引用]]></title>
+      <title><![CDATA[Android应用开发基础之Service]]></title>
+      <url>http://robinheztto.com/2014/08/03/android-basis-service/</url>
+      <content type="html"><![CDATA[<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>Android应用组件之一，后台服务，主要在后台操作耗时的逻辑，或者执行某些长期运行的任务，当界面退出的时候，程序还能在后台继续保持运行。</p>
+<h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><p>Service可通过startService和bindService二种方式启动，两种生命周期不是独立的，可以同时用startService，bindService启动服务。</p>
+<ul>
+<li>startService启动方式，其他组件用这种方式启动服务，服务会在后台一直运行，只有服务调用本身的stopSelf()方法或者其他组件调用stopService()才能停止服务。</li>
+<li>bindService启动方式，其他组件用这种方法绑定服务，服务通过IBinder与客户端通信，客户端通过unbindService接触对服务的绑定，当没有客户端绑定到服务，服务会被系统销毁。</li>
+</ul>
+<p>二种启动方式的生命周期如下图示：</p>
+<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-basis-service.webp?raw=true" alt=""><br></center>
+
+<ul>
+<li>onCreate(): 在创建服务时候，可以在这个方法中执行一些的初始化操作，它在onStartCommand()和onBind()之前被调用。如果服务已经存在，调用startService()启动服务时候这个方法不会调用，只会调用onStartCommand()方法。</li>
+<li>onStartCommand(): 其他组件通过startService()启动服务时候会回调这个方法，这个方法执行后，服务会启动被在后台运行，需要调用stopSelf()或者stopService()停止服务。</li>
+<li>onBind(): 其他组件通过bindService()绑定服务时候会回调的方法，这是Service的一个抽象方法，如果客户端需要与服务交互，需要在这个方法中返回一个IBinder实现类实例化对象，如果不想其他客户端与服务绑定，直接返回null。</li>
+<li>onDestroy(): 当服务不在还是用且即将被销毁时，会回调这个方法，可以在这个方法中做一些释放资源操作，这是服务生命周期的最后一个回调。</li>
+</ul>
+<ol>
+<li>通过startservice开启的服务.一旦服务开启, 这个服务和开启他的调用者之间就没有任何的关系了。调用者不可以访问service里面的方法。调用者如果被系统回收了或者调用了ondestroy方法, service还会继续存在。</li>
+<li>通过bindService开启的服务,服务开启之后,调用者和服务之间 还存在着联系 , 一旦调用者挂掉了, service也会跟着挂掉。</li>
+</ol>
+<h1 id="Service与Activity通信"><a href="#Service与Activity通信" class="headerlink" title="Service与Activity通信"></a>Service与Activity通信</h1><p><strong><em> Activity -&gt; Service</em></strong></p>
+<ol>
+<li><p>Intent<br>启动一个Service的时候通过Intent的对象向Service进行传值</p>
+</li>
+<li><p>绑定服务<br>通过bindService获取Ibinder实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">-&gt;Activity:</span><br><span class="line"></span><br><span class="line">private LocalService mService;</span><br><span class="line">private ServiceConnection mConnection = new ServiceConnection() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onServiceConnected(ComponentName componentName, IBinder iBinder) &#123;</span><br><span class="line">        LocalService.LocalBinder binder = (LocalService.LocalBinder) iBinder;</span><br><span class="line">        mService = binder.getService();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onServiceDisconnected(ComponentName componentName) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">bindService(new Intent(XXX.this, LocalService.class), mConnection, Context.BIND_AUTO_CREATE);</span><br><span class="line"></span><br><span class="line">-&gt;Service</span><br><span class="line"></span><br><span class="line">public class LocalService extends Service &#123;</span><br><span class="line">    public class LocalBinder extends Binder &#123;</span><br><span class="line"></span><br><span class="line">        public LocalService getService() &#123;</span><br><span class="line">            return LocalService.this;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    @Override</span><br><span class="line">    public IBinder onBind(Intent intent) &#123;</span><br><span class="line">        return new LocalBinder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>广播</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Android应用开发基础之Activity]]></title>
+      <url>http://robinheztto.com/2014/08/01/android-basis-activity/</url>
+      <content type="html"><![CDATA[<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>Android四大应用组件之一，与用户交互的接口，界面的载体。</p>
+<h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-basis-activity-overflow.gif?raw=true" alt=""><br></center>
+
+<p>1.　启动Activity，系统会先调用onCreate方法，这是生命周期第一个方法，然后调用onStart方法，最后调用onResume，Activity进入运行状态。<br>onCreate方法：一般做一些初始化工作，比如setContentView去加载布局资源，初始化Activity所需的数据。<br>onStart方法：表示Activity正在启动，已经可见，但是无法和用户交互。<br>onResume方法：Activity已经出现在前台，可见并且开始活动。</p>
+<p>2.　当前Activity被其他Activity覆盖其上或被锁屏（可以理解为没有完全遮挡界面），系统会调用onPause方法，暂停当前Activity的执行。</p>
+<p>3.　当前Activity由被覆盖状态回到前台或解锁屏，系统会调用onResume方法，再次进入运行状态。</p>
+<p>4.　当前Activity转到新的Activity界面或按Home键回到主屏，自身退居后台，系统会先调用onPause方法，然后调用onStop方法，进入停滞状态。</p>
+<p>5.　用户后退回到此Activity，系统会先调用onRestart方法，然后调用onStart方法，最后调用onResume方法，再次进入运行状态。</p>
+<p>6.　用户退出当前Activity，系统先调用onPause方法，然后调用onStop方法，最后调用onDestory方法，结束当前Activity。</p>
+<blockquote>
+<p>A Activity启动B Activity的生命周期情况：<br>A执行onCreate，onStart，onResume到可交互状态，此时启动Ｂ Activity，首先将执行A Activity的onpause暂停A Activity执行，然后执行B Activity的onCreate，onStart，onResume到可交互状态，然后再执行A Activity的onStop方法(如果B Activity未完全遮挡A Activity, 将不会回调A Activity的onStop方法)，如果启动B Activity时失败，Ａ Activity将从onPause状态回到onResume执行。</p>
+</blockquote>
+<h1 id="onSaveInstanceState与onRestoreInstanceState"><a href="#onSaveInstanceState与onRestoreInstanceState" class="headerlink" title="onSaveInstanceState与onRestoreInstanceState"></a>onSaveInstanceState与onRestoreInstanceState</h1><p>当系统“未经用户许可”销毁activity时，会回调onSaveInstanceState方法保存数据，让界面可以恢复。<br>onSaveInstanceState方法会在什么时候被执行？<br><em>onSaveInstanceState在onPause()后回调</em></p>
+<ol>
+<li>当用户按下HOME键时。系统不知道你按下HOME后要运行多少其他的程序，自然也不知道activity是否会被销毁，故系统会调用onSaveInstanceState，让用户有机会保存某些非永久性的数据。<br>2、长按HOME键，选择运行其他的程序时。<br>3、按下电源按键（关闭屏幕显示）时。<br>4、从activity A中启动一个新的activity时。<br>5、屏幕方向切换时，例如从竖屏切换到横屏时。</li>
+</ol>
+<p>onCreate()里也有Bundle参数，可以用来恢复数据，它和onRestoreInstanceState有什么区别？<br>因为onSaveInstanceState 不一定会被调用，所以onCreate()里的Bundle参数可能为空，如果使用onCreate()来恢复数据，一定要做非空判断。而onRestoreInstanceState的Bundle参数一定不会是空值，因为它只有在上次activity被回收了才会调用。而且onRestoreInstanceState是在onStart()之后被调用的。有时候我们需要onCreate()中做的一些初始化完成之后再恢复数据，用onRestoreInstanceState会比较方便。</p>
+<blockquote>
+<p><strong><em>注意:</em></strong><br>onSaveInstanceState方法和onRestoreInstanceState方法“不一定”是成对的被调用的，onRestoreInstanceState被调用的前提是，activity A“确实”被系统销毁了，而如果仅仅是停留在有这种可能性的情况下，则该方法不会被调用，例如，当正在显示activity A的时候，用户按下HOME键回到主界面，然后用户紧接着又返回到activity A，这种情况下activity A一般不会因为内存的原因被系统销毁，故activity A的onRestoreInstanceState方法不会被执行。</p>
+</blockquote>
+<p>onRestoreInstanceState的bundle参数也会传递到onCreate方法中，也可以选择在onCreate方法中做数据还原。</p>
+<h1 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h1><h2 id="任务栈-task-stack"><a href="#任务栈-task-stack" class="headerlink" title="任务栈(task stack)"></a>任务栈(task stack)</h2><p>为了记录用户开启了那些activity，记录这些activity开启的先后顺序，google引入任务栈（task stack）概念，以栈的结构(先进后出)将依次打开的activity记录保存在task stack中。</p>
+<h2 id="启动模式-1"><a href="#启动模式-1" class="headerlink" title="启动模式"></a>启动模式</h2><h3 id="Standard"><a href="#Standard" class="headerlink" title="Standard"></a>Standard</h3><p>默认Standard模式，假设没有为Activity设置启动模式的话，默认是标准模式。即每次启动一个Activity都会又一次创建一个新的实例入栈，无论这个实例是否存在。</p>
+<h3 id="SingleTop"><a href="#SingleTop" class="headerlink" title="SingleTop"></a>SingleTop</h3><p>当创建的Activity已经处于栈顶时，此时会直接复用栈顶的Activity，不会再创建新的Activity。若须要创建的Activity不处于栈顶，此时会又一次创建一个新的Activity入栈，同Standard模式一样。<br>栈顶的Activity被直接复用时，onCreate、onStart不会被系统调用，而是回调onNewIntent方法（Activity被正常创建时不会回调此方法），然后再执行onResume。</p>
+<h3 id="SingleTask"><a href="#SingleTask" class="headerlink" title="SingleTask"></a>SingleTask</h3><p>若须要创建的Activity已经处于栈中时，此时不会创建新的Activity，而是将存在栈中的Activity上面的其他Activity所有销毁，使它成为栈顶。<br>同SingleTop模式中一样，onCreate、onStart不会被系统调用，仅仅回调Activity中的onNewIntent方法。</p>
+<h3 id="SingleInstance"><a href="#SingleInstance" class="headerlink" title="SingleInstance"></a>SingleInstance</h3><p>具有此模式的Activity仅仅能单独位于一个任务栈中</p>
+<h2 id="taskAffinity"><a href="#taskAffinity" class="headerlink" title="taskAffinity"></a>taskAffinity</h2><p>taskAffinity，可以翻译为任务相关性。这个参数标识了一个 Activity 所需要的任务栈的名字，默认情况下，所有 Activity 所需的任务栈的名字为应用的包名，当 Activity 设置了 taskAffinity 属性，那么这个 Activity 在被创建时就会运行在和 taskAffinity 名字相同的任务栈中，如果没有，则新建 taskAffinity 指定的任务栈，并将 Activity 放入该栈中。另外，taskAffinity 属性主要和singleTask或者allowTaskReparenting属性配对使用，在其他情况下没有意义。</p>
+<ul>
+<li>taskAffinity对Standard与SingleTop，SingleInstance没有影响</li>
+<li>taskAffinity对SingleTask的影响<br>以A启动B来说<br>当A和B的taskAffinity相同时：第一次创建B的实例时，并不会启动新的task，而是直接将B添加到A所在的task；当B的实例已经存在时，将B所在task中位于B之上的全部Activity都删除，B就成为栈顶元素，实现跳转到B的功能。<br>当A和B的taskAffinity不同时：第一次创建B的实例时，会启动新的task，然后将B添加到新建的task中；当B的实例引进存在，将B所在task中位于B之上的全部Activity都删除，B就成为栈顶元素（也是root Activity），实现跳转到B的功能。</li>
+</ul>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li>Standard 普通情况下使用</li>
+<li>SingleTop 适用于同类型的Activity，例如通知栏消息接收启动的Activity</li>
+<li>SingleTask 主界面</li>
+<li>SingleInstance 适合公开成通用功能的Activity，例如拨号，闹钟界面等</li>
+</ul>
+<h2 id="Activity-Flags"><a href="#Activity-Flags" class="headerlink" title="Activity Flags"></a>Activity Flags</h2><ol>
+<li><p>FLAG_ACTIVITY_NEW_TASK<br>作用是为Activity指定 “SingleTask”启动模式。跟在AndroidMainfest.xml指定效果同样。</p>
+</li>
+<li><p>FLAG_ACTIVITY_SINGLE_TOP<br>作用是为Activity指定 “SingleTop”启动模式，跟在AndroidMainfest.xml指定效果同样。</p>
+</li>
+<li><p>FLAG_ACTIVITY_CLEAN_TOP<br>具有此标记位的Activity，启动时会将与该Activity在同一任务栈的其他Activity出栈。一般与SingleTask启动模式一起出现。它会完毕SingleTask的作用。但事实上SingleTask启动模式默认具有此标记位的作用</p>
+</li>
+<li><p>FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS<br>具有此标记位的Activity不会出如今历史Activity的列表中，使用场景：当某些情况下我们不希望用户通过历史列表回到Activity时，此标记位便体现了它的效果。它等同于在xml中指定Activity的属性：android:excludeFromRecents=”trure”</p>
+</li>
+</ol>
+<h1 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h1><ol>
+<li><p>Activity因系统内存不足被Kill或是因为Crash闪退的异常退出怎么保存数据?<br>Activity被销毁了以后调用了onSaveInstanceState来保存数据，这个只会在Activity即将销毁并且有机会重新显示的情况下才会去调用onSaveInstanceState，与之配对的是在onRestoreInstanceState里恢复数据。</p>
+</li>
+<li><p>资源不足时Activity的杀死顺序<br>1.前台Activity，正在和用户交互的Activity，优先级最高<br>2.可见但非前台Activity，比如Activity中弹出了一个对话框，导致Activity可见但是位于后台无法和用户直接交互。<br>3.后台Activity，已经被暂停的Activity，比如执行了onStop，优先级最低</p>
+</li>
+<li><p>横竖屏切换时候Activity的生命周期<br>跟Manifest配置有关<br>1.不设置Activity的android:configChanges时，切屏会重新调用各个生命周期默认首先销毁当前activity，然后重新创建<br>2.设置Activity的android:configChanges=”orientation|keyboardHidden”时，切屏不会重新调用各个生命周期，只会执onConfigurationChanged方法</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之ThreadLocal]]></title>
+      <url>http://robinheztto.com/2014/05/04/java-threadlocal/</url>
+      <content type="html"><![CDATA[<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>ThreadLocal是一个本地线程副本变量工具类。主要用于将私有线程和该线程存放的副本对象做一个映射，各个线程之间的变量互不干扰，在高并发场景下，可以实现无状态的调用，特别适用于各个线程依赖不通的变量值完成操作的场景。</p>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-threadlocal-1.webp?raw=true" alt=""><br></center>
+
+<p>每个Thread线程内部都有一个Map。<br>Map里面存储线程本地对象（key）和线程的变量副本（value）<br>但是，Thread内部的Map是由ThreadLocal维护的，由ThreadLocal负责向map获取和设置线程的变量值。<br>所以对于不同的线程，每次获取副本值时，别的线程并不能获取到当前线程的副本值，形成了副本的隔离，互不干扰。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class Thread implements Runnable &#123;</span><br><span class="line">    /* ThreadLocal values pertaining to this thread. This map is maintained</span><br><span class="line">     * by the ThreadLocal class. */</span><br><span class="line">    ThreadLocal.ThreadLocalMap threadLocals = null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><p>ThreadLocal<br>ThreadLocal类提供如下几个核心方法：<br>public T get()<br>public void set(T value)<br>public void remove()<br>get()方法用于获取当前线程的副本变量值。<br>set()方法用于保存当前线程的副本变量值。<br>initialValue()为当前线程初始副本变量值。<br>remove()方法移除当前前程的副本变量值。</p>
+<h2 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public T get() &#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    if (map != null) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(this);</span><br><span class="line">        if (e != null) &#123;</span><br><span class="line">            @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            return result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="set"><a href="#set" class="headerlink" title="set()"></a>set()</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void set(T value) &#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    if (map != null)</span><br><span class="line">        map.set(this, value);</span><br><span class="line">    else</span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java多线程之Volatile]]></title>
+      <url>http://robinheztto.com/2014/05/01/java-multithreading-3/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>C/C++中，volatile关键字用来告诉编译器它所修饰的变量随时都有可能改变，所以不需要对该变量的代码进行优化，每次读写该变量都直接从变量地址中读取，不使用缓存中的值。如果没用volatile关键字修饰，则编译器可能优化读取和存储，暂时使用缓存中的值，造成数据不一致的问题。</p>
+</blockquote>
+<h1 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h1><p>Volatile最重要的特性就是保证了用volatile修饰的变量对所有线程的可见性。</p>
+<h1 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h1><p>禁止重排序</p>
+<p><strong><em>注意!!! volatile关键字的非原子性</em></strong></p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><ol>
+<li>运行结果并不依赖变量的当前值，或者能够确保只有单一的线程修改变量的值。</li>
+<li>变量不需要与其他的状态变量共同参与不变约束。</li>
+</ol>
+<p>第二条是什么意思呢？可以看看下面这个场景：<br>volatile static int start = 3;<br>volatile static int end = 6;<br>线程A执行如下代码：<br>while (start &lt; end){<br>  //do something<br>}</p>
+<p>线程B执行如下代码：<br>start+=3;<br>end+=3;<br>这种情况下，一旦在线程A的循环中执行了线程B，start有可能先更新成6，造成了一瞬间 start == end，从而跳出while循环的可能性。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java多线程之synchronized]]></title>
+      <url>http://robinheztto.com/2014/05/01/java-multithreading-2/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>线程安全是并发编程中的重要部分，而线程安全问题主要是由于存在多条线程共同操作共享数据(临界资源)，为了解决线程安全问题，即当存在多个线程操作共享数据时，需要保证同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后再进行，即能达到互斥访问目的的锁(互斥锁)，也就是说当一个共享数据被当前正在访问的线程加上互斥锁后，同一个时刻，其他线程只能处于等待的状态，直到当前线程处理完毕释放该锁。</p>
+</blockquote>
+<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ul>
+<li>修饰实例方法，作用于当前实例加锁，进入同步代码前要获得当前实例的锁</li>
+<li>修饰静态方法，作用于当前类对象加锁，进入同步代码前要获得当前类对象的锁</li>
+<li>修饰代码块，指定加锁对象，对给定对象加锁，进入同步代码库前要获得给定对象的锁</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>synchronized不具有继承性，如果父类有一个带synchronized关键字的方法，子类继承并重写了这个方法，还是需要在子类方法中添加synchronized关键字。所以同步不能继承。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java多线程之线程基础]]></title>
+      <url>http://robinheztto.com/2014/05/01/java-multithreading-1/</url>
+      <content type="html"><![CDATA[<h1 id="进程与线程的区别与联系"><a href="#进程与线程的区别与联系" class="headerlink" title="进程与线程的区别与联系"></a>进程与线程的区别与联系</h1><ul>
+<li>进程是系统资源分配的最小单位，线程是系统执行的基本单位</li>
+<li>一个进程中可以存在多个线程，它们共享进程中的内存，文件，IO等系统资源</li>
+<li>Linux中系统的进程是轻量级进程，进程线程都是使用的task_struct结构体，多个线程通过映射同一块区域共享资源</li>
+</ul>
+<h1 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h1><ul>
+<li>实现Runnable接口</li>
+<li>继承Thread</li>
+<li>Callable 和 Future 创建线程</li>
+</ul>
+<h2 id="Runnable"><a href="#Runnable" class="headerlink" title="Runnable"></a>Runnable</h2><p>1】定义Runnable接口的实现类，重写run()方法，run()和Thread中的run()方法一样是线程的执行体<br>2】创建Runnable实现类的实体，并作为Thread的target来创建Thread对象<br>3】通过调用线程对象的start()方法启动线程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@FunctionalInterface</span><br><span class="line">public interface Runnable &#123;</span><br><span class="line">    public abstract void run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyRunnable implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">new Thread(new MyRunnable()).start();</span><br></pre></td></tr></table></figure></p>
+<h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>1】定义Thread类的子类，并重写该类的run()方法<br>2】创建Thread子类的实例并调用线程的start()方法启动线程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class MyThread extends Thread &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">new MyThread().start();</span><br></pre></td></tr></table></figure></p>
+<h2 id="Callable和Future"><a href="#Callable和Future" class="headerlink" title="Callable和Future"></a>Callable和Future</h2><p>Callable接口位于java.util.concurrent包，这是一个泛型接口，里面只声明了一个call()方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@FunctionalInterface</span><br><span class="line">public interface Callable&lt;V&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">     * Computes a result, or throws an exception if unable to do so.</span><br><span class="line">     *</span><br><span class="line">     * @return computed result</span><br><span class="line">     * @throws Exception if unable to compute a result</span><br><span class="line">     */</span><br><span class="line">    V call() throws Exception;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一般配合ExecutorService接口来使用Callable，在ExecutorService接口中声明了几个重载的submit方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</span><br><span class="line">&lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);</span><br><span class="line">Future&lt;?&gt; submit(Runnable task);</span><br></pre></td></tr></table></figure></p>
+<p>Future接口的实现类可以对Runnable或者Callable的任务执行取消、查询、获取结果的操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public interface Future&lt;V&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">    *取消任务</span><br><span class="line">    *@param mayInterruptIfRunning</span><br><span class="line">    *是否允许取消正在执行却没有执行完毕的任务，如果设置true，则表示可以取消正在执行过程中的任务</span><br><span class="line">    *如果任务正在执行，则返回true</span><br><span class="line">    *如果任务还没有执行，则无论mayInterruptIfRunning为true还是false，返回true</span><br><span class="line">    *如果任务已经完成，则无论mayInterruptIfRunning为true还是false，返回false</span><br><span class="line">    */</span><br><span class="line">    boolean cancel(boolean mayInterruptIfRunning);</span><br><span class="line">    /**</span><br><span class="line">    *任务是否被取消成功，如果在任务正常完成前被取消成功，则返回 true</span><br><span class="line">    */</span><br><span class="line">    boolean isCancelled();</span><br><span class="line">    /**</span><br><span class="line">    *任务是否完成</span><br><span class="line">    */</span><br><span class="line">    boolean isDone();</span><br><span class="line">    /**</span><br><span class="line">    *通过阻塞获取执行结果</span><br><span class="line">    */</span><br><span class="line">    T get() throws InterruptedException, ExecutionException;</span><br><span class="line">    /**</span><br><span class="line">    *通过阻塞获取执行结果。如果在指定的时间内没有返回，则返回null</span><br><span class="line">    */</span><br><span class="line">    T get(long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException, ExecutionException, TimeoutException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用Future创建新线程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class MyCallable implements Callable&lt;String&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String call() throws Exception &#123;</span><br><span class="line">        return Thread.currentThread().getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ExecutorService service = Executors.newCachedThreadPool();</span><br><span class="line">Future&lt;String&gt; future = service.submit(new MyCallable());</span><br></pre></td></tr></table></figure></p>
+<h1 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h1><ol>
+<li>start()<br>使该线程开始执行</li>
+<li>currentThread()<br>返回对当前正在执行的线程对象的引用</li>
+<li>getId()<br>返回当前线程的ID</li>
+<li>setName()<br>设置线程名</li>
+<li>setPriority()<br>设置线程优先级</li>
+<li>isAlive()<br>测试当前线程是否处于活动状态</li>
+<li>sleep()<br>在指定的毫秒数内让当前正在执行的线程休眠（暂停执行），此操作受到系统计时器和调度程序精度和准确性的影响</li>
+<li>isDaemon()<br>测试当前线程是否是守护线程</li>
+<li>setDaemon(boolean on)<br>将当前线程标记为daemon线程或普通线程</li>
+<li>join()<br>A线程中调用B线程的join()方法，A线程需等待B线程结束后才会执行</li>
+<li>yield()<br>放弃当前线程的执行权，让其他线程先执行</li>
+</ol>
+<h1 id="线程的优先级"><a href="#线程的优先级" class="headerlink" title="线程的优先级"></a>线程的优先级</h1><ul>
+<li>每个线程都具有各自的优先级，线程的优先级可以在程序中表明该线程的重要性，如果有很多线程处于就绪状态，系统会根据优先级来决定首先使哪个线程进入运行状态。但并不意味着低优先级的线程得不到运行(优先权不会导致死锁)，只是它运行的几率比较小，如垃圾回收机制线程的优先级就比较低，所以很多垃圾得不到及时的回收处理。</li>
+<li>继承特性:子线程继承父进程的优先级</li>
+<li>随机性:高优先级线程不一定每次都先执行</li>
+</ul>
+<p>Java线程优先级定义如下，默认情况下线程优先级为NORM_PRIORITY。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * The minimum priority that a thread can have.</span><br><span class="line"> */</span><br><span class="line">public final static int MIN_PRIORITY = 1;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * The default priority that is assigned to a thread.</span><br><span class="line"> */</span><br><span class="line">public final static int NORM_PRIORITY = 5;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * The maximum priority that a thread can have.</span><br><span class="line"> */</span><br><span class="line">public final static int MAX_PRIORITY = 10;</span><br></pre></td></tr></table></figure></p>
+<h1 id="线程退出"><a href="#线程退出" class="headerlink" title="线程退出"></a>线程退出</h1><ol>
+<li>设置线程退出标志</li>
+<li>调用interrupt，线程中通过isInterrupted()(该方法会清除中断标志)标志为判断条件退出</li>
+</ol>
+<h1 id="join-方法"><a href="#join-方法" class="headerlink" title="join()方法"></a>join()方法</h1><p>Thread类中的join方法的主要作用是同步，它可以使得线程之间的并行执行变为串行执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class MyTest &#123;</span><br><span class="line">    public static void main(String args[]) &#123;</span><br><span class="line">        MyTestThread thread1 = new MyTestThread(&quot;TestThread1&quot;);</span><br><span class="line">        MyTestThread thread2 = new MyTestThread(&quot;TestThread2&quot;);</span><br><span class="line">        thread1.start();</span><br><span class="line">        try &#123;</span><br><span class="line">        	// join()方法要在start()后才有效</span><br><span class="line">            thread1.join();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyTestThread extends Thread &#123;</span><br><span class="line">    MyTestThread(String name) &#123;</span><br><span class="line">        super(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        for (int i = 0; i &lt; 1000; i++) &#123;</span><br><span class="line">            System.out.println(this.getName() + &quot;:&quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面程序结果是先打印完TestThread1线程，后打印TestThread2线程。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之内存模型]]></title>
+      <url>http://robinheztto.com/2014/04/15/java-memory-model/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>内存模型定义了共享内存系统中多线程程序读写操作行为的规范, 保证共享内存的正确性（可见性、有序性、原子性）。通过这些规则来规范对内存的读写操作，从而保证指令执行的正确性。它与处理器、缓存、并发、编译器也有关。他解决了CPU多级缓存、处理器优化、指令重排等导致的内存访问问题，保证了并发场景下的一致性、原子性和有序性。</p>
+</blockquote>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>Java内存模型（Java Memory Model ,JMM）就是一种符合内存模型规范的，屏蔽了各种硬件和操作系统的访问差异的，保证了Java程序在各种平台下对内存的访问都能保证效果一致的机制及规范。</p>
+<p>Java内存模型规定了所有的变量都存储在主内存中，每条线程还有自己的工作内存，线程的工作内存中保存了该线程中是用到的变量的主内存副本拷贝，线程对变量的所有操作都必须在工作内存中进行，而不能直接读写主内存。不同的线程之间也无法直接访问对方工作内存中的变量，线程间变量的传递均需要自己的工作内存和主存之间进行数据同步进行。</p>
+<h2 id="主内存与工作内存"><a href="#主内存与工作内存" class="headerlink" title="主内存与工作内存"></a>主内存与工作内存</h2><p>　　Java内存模型的主要目标是定义程序中各个变量的访问规则，即在虚拟机中将变量存储到内存和从内存中取出变量这样底层细节。<strong><em>此处的变量与Java编程时所说的变量不一样，指包括了实例字段、静态字段和构成数组对象的元素，但是不包括局部变量与方法参数，后者是线程私有的，不会被共享。</em></strong></p>
+<p>　　Java内存模型中规定了所有的变量都存储在主内存中，每条线程还有自己的工作内存，线程的工作内存中保存了该线程使用到的变量到主内存副本拷贝，线程对变量的所有操作（读取、赋值）都必须在工作内存中进行，而不能直接读写主内存中的变量。不同线程之间无法直接访问对方工作内存中的变量，线程间变量值的传递均需要在主内存来完成，线程、主内存和工作内存的交互关系如下图所示。</p>
+<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-memory_model.jpg?raw=true" alt=""><br></center>
+
+<h2 id="内存间交互操作"><a href="#内存间交互操作" class="headerlink" title="内存间交互操作"></a>内存间交互操作</h2><p>　　关于主内存与工作内存之间的具体交互协议，即一个变量如何从主内存拷贝到工作内存、如何从工作内存同步到主内存之间的实现细节，Java内存模型定义了以下八种操作来完成：</p>
+<ul>
+<li>lock（锁定）：作用于主内存的变量，把一个变量标识为一条线程独占状态。</li>
+<li>unlock（解锁）：作用于主内存变量，把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。</li>
+<li>read（读取）：作用于主内存变量，把一个变量值从主内存传输到线程的工作内存中，以便随后的load动作使用</li>
+<li>load（载入）：作用于工作内存的变量，它把read操作从主内存中得到的变量值放入工作内存的变量副本中。</li>
+<li>use（使用）：作用于工作内存的变量，把工作内存中的一个变量值传递给执行引擎，每当虚拟机遇到一个需要使用变量的值的字节码指令时将会执行这个操作。</li>
+<li>assign（赋值）：作用于工作内存的变量，它把一个从执行引擎接收到的值赋值给工作内存的变量，每当虚拟机遇到一个给变量赋值的字节码指令时执行这个操作。</li>
+<li>store（存储）：作用于工作内存的变量，把工作内存中的一个变量的值传送到主内存中，以便随后的write的操作。</li>
+<li>write（写入）：作用于主内存的变量，它把store操作从工作内存中一个变量的值传送到主内存的变量中。</li>
+</ul>
+<p>　　如果要把一个变量从主内存中复制到工作内存，就需要按顺寻地执行read和load操作，如果把变量从工作内存中同步回主内存中，就要按顺序地执行store和write操作。Java内存模型只要求上述操作必须按顺序执行，而没有保证必须是连续执行。也就是read和load之间，store和write之间是可以插入其他指令的，如对主内存中的变量a、b进行访问时，可能的顺序是read a，read b，load b， load a。Java内存模型还规定了在执行上述八种基本操作时，必须满足如下规则：</p>
+<ul>
+<li>不允许read和load、store和write操作之一单独出现</li>
+<li>不允许一个线程丢弃它的最近assign的操作，即变量在工作内存中改变了之后必须同步到主内存中。</li>
+<li>不允许一个线程无原因地（没有发生过任何assign操作）把数据从工作内存同步回主内存中。</li>
+<li>一个新的变量只能在主内存中诞生，不允许在工作内存中直接使用一个未被初始化（load或assign）的变量。即就是对一个变量实施use和store操作之前，必须先执行过了assign和load操作。</li>
+<li>一个变量在同一时刻只允许一条线程对其进行lock操作，lock和unlock必须成对出现</li>
+<li>如果对一个变量执行lock操作，将会清空工作内存中此变量的值，在执行引擎使用这个变量前需要重新执行load或assign操作初始化变量的值</li>
+<li>如果一个变量事先没有被lock操作锁定，则不允许对它执行unlock操作；也不允许去unlock一个被其他线程锁定的变量。</li>
+<li>对一个变量执行unlock操作之前，必须先把此变量同步到主内存中（执行store和write操作）。</li>
+</ul>
+<h2 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h2><p>在执行程序时为了提高性能，编译器和处理器经常会对指令进行重排序。重排序分成三种类型：</p>
+<p>编译器优化的重排序。编译器在不改变单线程程序语义放入前提下，可以重新安排语句的执行顺序。<br>指令级并行的重排序。现代处理器采用了指令级并行技术来将多条指令重叠执行。如果不存在数据依赖性，处理器可以改变语句对应机器指令的执行顺序。<br>内存系统的重排序。由于处理器使用缓存和读写缓冲区，这使得加载和存储操作看上去可能是在乱序执行。</p>
+<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-memory_model_1.png?raw=true" alt=""><br></center>
+
+
+<h1 id="原子性-可见性-有序性"><a href="#原子性-可见性-有序性" class="headerlink" title="原子性,可见性,有序性"></a>原子性,可见性,有序性</h1><p><strong><em>缓存一致性问题其实就是可见性问题。而处理器优化是可以导致原子性问题的。指令重排即会导致有序性问题。</em></strong></p>
+<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p>原子性是指一个或多个操作要么全部执行，且执行的过程不会被任何因素打断，要么就都不执行，java内存模型中定义的8种操作都是原子性的。</p>
+<p><strong><em>!!!注意: 变量从主内存中复制到工作内存中执行read，load操作，工作内存同步到主内存中执行store，write操作。需要注意的是：java内存模型只是要求上述两个操作是顺序执行，但并不一定是连续执行的。也就是说read和load之间可以插入其他指令，store和writer可以插入其他指令，比如对主内存中的a，b进行访问可能出现这样的操作顺序：read a，read b，load b，load a。</em></strong></p>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>可见性是指当一个线程修改了线程共享变量的值，其它线程能够立即得知这个修改。<br>Java内存模型是通过在变量修改后将新值同步回主内存，在变量读取前从主内存刷新变量值这种依赖主内存作为传递媒介的方法来实现可见性的，无论是普通变量还是volatile变量都是如此。volatile的特殊规保证了新值能立即同步到主内存，以及每使用前立即从内存刷新。因为可以说volatile保证了线程操作时变量的可见性，而普通变量则不能保证这一点。</p>
+<p>被volatile关键字修饰的变量在被修改后可以立即同步到主内存，被其修饰的变量在每次是用之前都从主内存刷新。因此，可以使用volatile来保证多线程操作时变量的可见性。除了volatile，Java中的synchronized和final两个关键字也可以实现可见性。</p>
+<h2 id="有序性：即程序执行的顺序按照代码的先后顺序执行。"><a href="#有序性：即程序执行的顺序按照代码的先后顺序执行。" class="headerlink" title="有序性：即程序执行的顺序按照代码的先后顺序执行。"></a>有序性：即程序执行的顺序按照代码的先后顺序执行。</h2><p>有序性指程序执行的顺序按照代码的先后顺序执行。<br>Java内存模型中的程序天然有序性可以总结为一句话：如果在本线程内观察，所有操作都是有序的；如果在一个线程中观察另一个线程，所有操作都是无序的。前半句是指“线程内表现为串行语义”，后半句是指“指令重排序”现象和“工作内存主主内存同步延迟”现象。</p>
+<p>使用synchronized和volatile来保证多线程之间操作的有序性。实现方式有所区别，volatile关键字会禁止指令重排。synchronized关键字保证同一时刻只允许一条线程操作。</p>
+<p>有序性的语意有几层，</p>
+<ol>
+<li>最常见的就是保证多线程运行的串行顺序</li>
+<li>防止重排序引起的问题</li>
+<li>程序运行的先后顺序。比方JMM定义的一些Happens-before规则</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之LinkedList解析]]></title>
+      <url>http://robinheztto.com/2014/03/29/java-linkedlist/</url>
+      <content type="html"><![CDATA[<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>LinkedList内部实现是双向链表同时也具备队列的特性，LinkedList较ArrayList在插入删除方面比较高效，但在随机访问方面效率较低。同时，LinkedList非线程安全的。</p>
+<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class LinkedList&lt;E&gt;</span><br><span class="line">    extends AbstractSequentialList&lt;E&gt;</span><br><span class="line">    implements List&lt;E&gt;, Deque&lt;E&gt;, Cloneable, java.io.Serializable</span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>LinkedList继承于AbstractSequentialList并且实现了List，Deque，Cloneable，Serializable</p>
+<p>Node结构:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private static class Node&lt;E&gt; &#123;</span><br><span class="line">    E item;</span><br><span class="line">    Node&lt;E&gt; next;</span><br><span class="line">    Node&lt;E&gt; prev;</span><br><span class="line"></span><br><span class="line">    Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) &#123;</span><br><span class="line">        this.item = element;</span><br><span class="line">        this.next = next;</span><br><span class="line">        this.prev = prev;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>LinkedList由Node节点串联组成，Node是LinkedList中的内部私有类，有三个属性，分别是前驱节点，当前节点的值，后继结点。</p>
+<p>成员变量:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">transient int size = 0;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * first node.</span><br><span class="line"> * Invariant: (first == null &amp;&amp; last == null) ||</span><br><span class="line"> *            (first.prev == null &amp;&amp; first.item != null)</span><br><span class="line"> */</span><br><span class="line">transient Node&lt;E&gt; first;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * last node.</span><br><span class="line"> * Invariant: (first == null &amp;&amp; last == null) ||</span><br><span class="line"> *            (last.next == null &amp;&amp; last.item != null)</span><br><span class="line"> */</span><br><span class="line">transient Node&lt;E&gt; last;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 序列化ID</span><br><span class="line">*/</span><br><span class="line">private static final long serialVersionUID = 876323262645176354L;</span><br></pre></td></tr></table></figure></p>
+<p>构造方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public LinkedList() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 已有的集合创建链表的构造方法</span><br><span class="line"> */</span><br><span class="line">public LinkedList(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    this();</span><br><span class="line">    addAll(c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>add:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    linkLast(e);</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void addLast(E e) &#123;</span><br><span class="line">    linkLast(e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* List尾部添加元素</span><br><span class="line">*</span><br><span class="line">void linkLast(E e) &#123;</span><br><span class="line">    final Node&lt;E&gt; l = last;</span><br><span class="line">    // 以last作为前驱节点创建node插入到链表最后</span><br><span class="line">    final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);</span><br><span class="line">    last = newNode;</span><br><span class="line">    // 如果last为null,说明链表前面没有节点,该node为第一个节点</span><br><span class="line">    if (l == null)</span><br><span class="line">        first = newNode;</span><br><span class="line">    else</span><br><span class="line">    	// last的next指向newNode,newNode变成新的last节点</span><br><span class="line">        l.next = newNode;</span><br><span class="line">    size++;</span><br><span class="line">    modCount++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void addFirst(E e) &#123;</span><br><span class="line">    linkFirst(e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* List头部添加元素</span><br><span class="line">*</span><br><span class="line">private void linkFirst(E e) &#123;</span><br><span class="line">    final Node&lt;E&gt; f = first;</span><br><span class="line">    // 以first作为后继结点创建node插入到链表最后</span><br><span class="line">    final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);</span><br><span class="line">    first = newNode;</span><br><span class="line">    // 如果first为null,说明链表没有节点,该node为第一个节点</span><br><span class="line">    if (f == null)</span><br><span class="line">        last = newNode;</span><br><span class="line">    else</span><br><span class="line">        // first的prev指向newNode,newNode变成新的first节点</span><br><span class="line">        f.prev = newNode;</span><br><span class="line">    size++;</span><br><span class="line">    modCount++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* List指定位置添加元素</span><br><span class="line">*</span><br><span class="line">public void add(int index, E element) &#123;</span><br><span class="line">    checkPositionIndex(index);</span><br><span class="line">	// index为当前长度,插入到尾部</span><br><span class="line">    if (index == size)</span><br><span class="line">        linkLast(element);</span><br><span class="line">    else</span><br><span class="line">        linkBefore(element, node(index));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Node&lt;E&gt; node(int index) &#123;</span><br><span class="line">    // assert isElementIndex(index);</span><br><span class="line"></span><br><span class="line">    if (index &lt; (size &gt;&gt; 1)) &#123;</span><br><span class="line">        Node&lt;E&gt; x = first;</span><br><span class="line">        for (int i = 0; i &lt; index; i++)</span><br><span class="line">            x = x.next;</span><br><span class="line">        return x;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Node&lt;E&gt; x = last;</span><br><span class="line">        for (int i = size - 1; i &gt; index; i--)</span><br><span class="line">            x = x.prev;</span><br><span class="line">        return x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void linkBefore(E e, Node&lt;E&gt; succ) &#123;</span><br><span class="line">    // assert succ != null;</span><br><span class="line">    final Node&lt;E&gt; pred = succ.prev;</span><br><span class="line">    final Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, succ);</span><br><span class="line">    succ.prev = newNode;</span><br><span class="line">    if (pred == null)</span><br><span class="line">        first = newNode;</span><br><span class="line">    else</span><br><span class="line">        pred.next = newNode;</span><br><span class="line">    size++;</span><br><span class="line">    modCount++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>删除:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">public E remove() &#123;</span><br><span class="line">    return removeFirst();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E removeFirst() &#123;</span><br><span class="line">    final Node&lt;E&gt; f = first;</span><br><span class="line">    if (f == null)</span><br><span class="line">        throw new NoSuchElementException();</span><br><span class="line">    return unlinkFirst(f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private E unlinkFirst(Node&lt;E&gt; f) &#123;</span><br><span class="line">    // assert f == first &amp;&amp; f != null;</span><br><span class="line">    final E element = f.item;</span><br><span class="line">    final Node&lt;E&gt; next = f.next;</span><br><span class="line">    // 断开与后续节点的连接</span><br><span class="line">    f.item = null;</span><br><span class="line">    f.next = null; // help GC</span><br><span class="line">    first = next;</span><br><span class="line">    if (next == null)</span><br><span class="line">        last = null;</span><br><span class="line">    else</span><br><span class="line">        next.prev = null;</span><br><span class="line">    size--;</span><br><span class="line">    modCount++;</span><br><span class="line">    return element;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E removeLast() &#123;</span><br><span class="line">    final Node&lt;E&gt; l = last;</span><br><span class="line">    if (l == null)</span><br><span class="line">        throw new NoSuchElementException();</span><br><span class="line">    return unlinkLast(l);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private E unlinkLast(Node&lt;E&gt; l) &#123;</span><br><span class="line">    // assert l == last &amp;&amp; l != null;</span><br><span class="line">    final E element = l.item;</span><br><span class="line">    final Node&lt;E&gt; prev = l.prev;</span><br><span class="line">    // 断开与前驱节点的连接</span><br><span class="line">    l.item = null;</span><br><span class="line">    l.prev = null; // help GC</span><br><span class="line">    last = prev;</span><br><span class="line">    if (prev == null)</span><br><span class="line">        first = null;</span><br><span class="line">    else</span><br><span class="line">        prev.next = null;</span><br><span class="line">    size--;</span><br><span class="line">    modCount++;</span><br><span class="line">    return element;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E remove(int index) &#123;</span><br><span class="line">    checkElementIndex(index);</span><br><span class="line">    return unlink(node(index));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">E unlink(Node&lt;E&gt; x) &#123;</span><br><span class="line">    // assert x != null;</span><br><span class="line">    final E element = x.item;</span><br><span class="line">    final Node&lt;E&gt; next = x.next;</span><br><span class="line">    final Node&lt;E&gt; prev = x.prev;</span><br><span class="line"></span><br><span class="line">	// 断开与前驱节点的连接</span><br><span class="line">    if (prev == null) &#123;</span><br><span class="line">        first = next;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        prev.next = next;</span><br><span class="line">        x.prev = null;</span><br><span class="line">    &#125;</span><br><span class="line">	// 断开与后续节点的连接</span><br><span class="line">    if (next == null) &#123;</span><br><span class="line">        last = prev;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        next.prev = prev;</span><br><span class="line">        x.next = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    x.item = null;</span><br><span class="line">    size--;</span><br><span class="line">    modCount++;</span><br><span class="line">    return element;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之ArrayList解析]]></title>
+      <url>http://robinheztto.com/2014/03/28/java-arraylist/</url>
+      <content type="html"><![CDATA[<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>ArrayList即实现List接口的动态数组(<strong><em>Resizable-array implementation of the List interface.</em></strong>)</p>
+<ul>
+<li>实现了所有list接口的操作</li>
+<li>允许元素为null</li>
+<li>时间复杂度：size、isEmpty、get、set、iterator和listIterator时间复杂度为O(1)，add和remove时间复杂度为O(n)</li>
+<li>容量：添加元素是自动增长</li>
+<li>线程同步：未实现同步</li>
+<li>迭代器：iterator和listIterator返回fail-fast迭代器（尽最大努力抛出ConcurrentModificationException）</li>
+</ul>
+<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;</span><br><span class="line">        implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable</span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ArrayList继承AbstractList并实现了List接口。内部通过数组队列实现，提供了相关的添加、删除、修改、遍历等功能。实现了RandmoAccess接口，即提供了随机访问功能，ArrayList中可通过元素的序号快速获取元素对象。实现了Cloneable接口，即覆盖了函数clone()，能被克隆。实现java.io.Serializable接口，即支持序列化，能通过序列化传输。</p>
+<p>成员变量:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 序列化序列号</span><br><span class="line"> */</span><br><span class="line">private static final long serialVersionUID = 8683452581122892189L;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 默认初始capacity</span><br><span class="line"> */</span><br><span class="line">private static final int DEFAULT_CAPACITY = 10;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 空数组（用于空实例）</span><br><span class="line"> */</span><br><span class="line">private static final Object[] EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Shared empty array instance used for default sized empty instances. We</span><br><span class="line"> * distinguish this from EMPTY_ELEMENTDATA to know how much to inflate when</span><br><span class="line"> * first element is added.</span><br><span class="line"> */</span><br><span class="line">private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 保存ArrayList数据的数组</span><br><span class="line"> */</span><br><span class="line">transient Object[] elementData; // non-private to simplify nested class access</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 包含的元素个数</span><br><span class="line"> */</span><br><span class="line">private int size;</span><br></pre></td></tr></table></figure></p>
+<p>构造方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 带初始容量参数的构造方法</span><br><span class="line"> */</span><br><span class="line">public ArrayList(int initialCapacity) &#123;</span><br><span class="line">	//创建initialCapacity大小的数组</span><br><span class="line">    if (initialCapacity &gt; 0) &#123;</span><br><span class="line">        this.elementData = new Object[initialCapacity];</span><br><span class="line">      //创建空数组</span><br><span class="line">    &#125; else if (initialCapacity == 0) &#123;</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+</span><br><span class="line">                                           initialCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 默认构造函数，默认初始容量为10</span><br><span class="line"> */</span><br><span class="line">public ArrayList() &#123;</span><br><span class="line">    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 构造包含指定集合的元素的列表</span><br><span class="line"> */</span><br><span class="line">public ArrayList(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    elementData = c.toArray();</span><br><span class="line">    //指定集合元素个数不为0</span><br><span class="line">    if ((size = elementData.length) != 0) &#123;</span><br><span class="line">        // c.toArray可能返回的不是Object类型的数组</span><br><span class="line">        if (elementData.getClass() != Object[].class)</span><br><span class="line">            elementData = Arrays.copyOf(elementData, size, Object[].class);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // replace with empty array.</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>成员方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 增加容量，确保ArrayList至少能容纳元素的数量</span><br><span class="line"> *</span><br><span class="line"> * @param   minCapacity   最小容量</span><br><span class="line"> */</span><br><span class="line">public void ensureCapacity(int minCapacity) &#123;</span><br><span class="line">    int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)</span><br><span class="line">        // any size if not default element table</span><br><span class="line">        ? 0</span><br><span class="line">        // larger than default for default empty table. It&apos;s already</span><br><span class="line">        // supposed to be at default size.</span><br><span class="line">        : DEFAULT_CAPACITY;</span><br><span class="line"></span><br><span class="line">    if (minCapacity &gt; minExpand) &#123;</span><br><span class="line">        ensureExplicitCapacity(minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void ensureExplicitCapacity(int minCapacity) &#123;</span><br><span class="line">    modCount++;</span><br><span class="line"></span><br><span class="line">    // overflow-conscious code</span><br><span class="line">    if (minCapacity - elementData.length &gt; 0)</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void grow(int minCapacity) &#123;</span><br><span class="line">    // overflow-conscious code</span><br><span class="line">    int oldCapacity = elementData.length;</span><br><span class="line">    // 将oldCapacity右移一位，即oldCapacity/2，在旧容量基础上扩容1.5倍</span><br><span class="line">    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);</span><br><span class="line">    if (newCapacity - minCapacity &lt; 0)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    // hugeCapacity()比较minCapacity和 MAX_ARRAY_SIZE</span><br><span class="line">    // minCapacity大于最大容量，则新容量则为ArrayList定义的最大容量，否则，新容量大小则为 minCapacity</span><br><span class="line">    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    // minCapacity is usually close to size, so this is a win:</span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 返回元素个数</span><br><span class="line"> */</span><br><span class="line">public int size() &#123;</span><br><span class="line">    return size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean isEmpty() &#123;</span><br><span class="line">    return size == 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 是否包含指定的元素</span><br><span class="line"> */</span><br><span class="line">public boolean contains(Object o) &#123;</span><br><span class="line">    return indexOf(o) &gt;= 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 返回指定元素首次出现的索引,没有则返回-1</span><br><span class="line"> */</span><br><span class="line">public int indexOf(Object o) &#123;</span><br><span class="line">    if (o == null) &#123;</span><br><span class="line">        for (int i = 0; i &lt; size; i++)</span><br><span class="line">            if (elementData[i]==null)</span><br><span class="line">                return i;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        for (int i = 0; i &lt; size; i++)</span><br><span class="line">            if (o.equals(elementData[i]))</span><br><span class="line">                return i;</span><br><span class="line">    &#125;</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 返回指定元素最后出现的索引,没有则返回-1</span><br><span class="line"> */</span><br><span class="line">public int lastIndexOf(Object o) &#123;</span><br><span class="line">    if (o == null) &#123;</span><br><span class="line">        for (int i = size-1; i &gt;= 0; i--)</span><br><span class="line">            if (elementData[i]==null)</span><br><span class="line">                return i;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        for (int i = size-1; i &gt;= 0; i--)</span><br><span class="line">            if (o.equals(elementData[i]))</span><br><span class="line">                return i;</span><br><span class="line">    &#125;</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 浅拷贝</span><br><span class="line">*/</span><br><span class="line">public Object clone() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        ArrayList&lt;?&gt; v = (ArrayList&lt;?&gt;) super.clone();</span><br><span class="line">        v.elementData = Arrays.copyOf(elementData, size);</span><br><span class="line">        v.modCount = 0;</span><br><span class="line">        return v;</span><br><span class="line">    &#125; catch (CloneNotSupportedException e) &#123;</span><br><span class="line">        // this shouldn&apos;t happen, since we are Cloneable</span><br><span class="line">        throw new InternalError(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 按顺序返回列表中所有元素的数组</span><br><span class="line">*/</span><br><span class="line">public Object[] toArray() &#123;</span><br><span class="line">    return Arrays.copyOf(elementData, size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">E elementData(int index) &#123;</span><br><span class="line">    return (E) elementData[index];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 返回指定位置的元素</span><br><span class="line">*/</span><br><span class="line">public E get(int index) &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line"></span><br><span class="line">    return elementData(index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 设置指定位置的元素</span><br><span class="line">*/</span><br><span class="line">public E set(int index, E element) &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line"></span><br><span class="line">    E oldValue = elementData(index);</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    return oldValue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 添加元素到末尾</span><br><span class="line"> */</span><br><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    ensureCapacityInternal(size + 1);  // Increments modCount!!</span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 添加元素到指定位置</span><br><span class="line"> */</span><br><span class="line">public void add(int index, E element) &#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line">	// 确保容量足够大</span><br><span class="line">    ensureCapacityInternal(size + 1);  // Increments modCount!!</span><br><span class="line">    // 将index开始的元素拷贝到index+1开始的位置</span><br><span class="line">    System.arraycopy(elementData, index, elementData, index + 1,</span><br><span class="line">                     size - index);</span><br><span class="line">    // 插入元素</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 删除指定位置的元素</span><br><span class="line"> */</span><br><span class="line">public E remove(int index) &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    E oldValue = elementData(index);</span><br><span class="line"></span><br><span class="line">    int numMoved = size - index - 1;</span><br><span class="line">    if (numMoved &gt; 0)</span><br><span class="line">        System.arraycopy(elementData, index+1, elementData, index,</span><br><span class="line">                         numMoved);</span><br><span class="line">    elementData[--size] = null; // clear to let GC do its work</span><br><span class="line"></span><br><span class="line">    return oldValue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 删除第一次出现的指定元素</span><br><span class="line"> */</span><br><span class="line">public boolean remove(Object o) &#123;</span><br><span class="line">    if (o == null) &#123;</span><br><span class="line">        for (int index = 0; index &lt; size; index++)</span><br><span class="line">            if (elementData[index] == null) &#123;</span><br><span class="line">                fastRemove(index);</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        for (int index = 0; index &lt; size; index++)</span><br><span class="line">            if (o.equals(elementData[index])) &#123;</span><br><span class="line">                fastRemove(index);</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 清除所有元素</span><br><span class="line">*/</span><br><span class="line">public void clear() &#123;</span><br><span class="line">    modCount++;</span><br><span class="line"></span><br><span class="line">    // clear to let GC do its work</span><br><span class="line">    for (int i = 0; i &lt; size; i++)</span><br><span class="line">        elementData[i] = null;</span><br><span class="line"></span><br><span class="line">    size = 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure></p>
+<p>从源码可知，ArrayList中动态数组的操作主要是通过System.arraycopy()和Arrays.copyOf()来完成.</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之集合框架总结]]></title>
+      <url>http://robinheztto.com/2014/03/21/java-collections/</url>
+      <content type="html"><![CDATA[<h1 id="Java框架体系"><a href="#Java框架体系" class="headerlink" title="Java框架体系"></a>Java框架体系</h1><p>Java集合框架如下图示，主要包括两种类型的容器，一种是集合（Collection），存储对象序列，另一种是图（Map），存储对象键/值对映射，其中Collection接口有3种子类型，List、Set和Queue。平常最常用的有ArrayList、LinkedList、HashSet、LinkedHashSet、HashMap、LinkedHashMap等等。</p>
+<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-collections-arth.gif?raw=true" alt="Java框架体系"><br></center>
+
+<p>java集合框架即用来代表和操纵集合的统一架构，位于java.util包中。</p>
+<ul>
+<li>接口：集合的抽象数据类型，例如Collection、List、Set、Map等，不同的接口代表不同集合对象的操作方式。</li>
+<li>实现（类）：集合接口的具体实现。</li>
+<li>算法：实现集合接口的对象里的对元素的操作，搜索和排序等。<center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-collection-arth-1.png?raw=true" alt="Java框架体系"></center>
+
+</li>
+</ul>
+<h1 id="集合类"><a href="#集合类" class="headerlink" title="集合类"></a>集合类</h1><h2 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h2><p>实现List的接口，内部动态数组实现，在随机访问和遍历元素时能提供更好的性能。非同步的，在多线程的情况下不要使用。ArrayList扩容时增加当前长度的50%，插入删除效率比较低。</p>
+<h2 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h2><p>实现List接口，内部双向链表实现，允许有null（空）元素。非同步的，在多线程的情况下不要使用。ArrayLis插入删除效率比较高，随机访问效率比较低。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之常量池总结]]></title>
+      <url>http://robinheztto.com/2014/01/25/java-constant-pool/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>在Class文件结构中，开始的4个字节用于存储魔数Magic Number，用于确定一个文件是否能被JVM接受，再接着4个字节用于存储版本号，前2个字节存储次版本号，后2个存储主版本号，再接着是用于存放常量的常量池，由于常量的数量是不固定的，所以常量池的入口放置一个U2类型的(constant pool count)存储常量池容量计数值。</p>
+</blockquote>
+<h1 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h1><p>在jdk1.7之前，常量池是方法区的一部分，jdk1.7及之后的版本中将常量池从方法区中移了出来，在堆中开辟了一块区域存储常量池。<br>常量池主要用于存放两大类型常量：字面量(Literal)和符号引用量(Symbolic References)，字面量即Java语言层面常量的概念，如文本字符串，声明为final的常量值等，符号引用则属于编译原理方面的概念，包括了如下三种类型的常量：</p>
+<ul>
+<li>接口的全限定名</li>
+<li>字段名称和描述符</li>
+<li>方法名称和描述符</li>
+</ul>
+<p>常量池避免了频繁的创建和销毁对象而影响系统性能，实现了对象的共享。使用常量池主要带来了如下两个好处：</p>
+<ul>
+<li>节省内存空间： 常量池中所有相同的字符串常量被合并，只占用一个空间。</li>
+<li>节省运行时间： 比较字符串时，==比equals()快。对于两个引用变量，只用==判断引用是否相等，也就可以判断实际值是否相等。</li>
+</ul>
+<h1 id="包装类型常量池"><a href="#包装类型常量池" class="headerlink" title="包装类型常量池"></a>包装类型常量池</h1><p>java中基本类型的包装类型Byte，Short，Integer，Long，Character，Boolean都实现了常量池技术。这5种包装类默认创建了数值[-128，127]的相应类型的缓存数据，只有创建超出此范围的包装类型才会去创建新的对象。<br>(<strong><em>注意: 浮点数类型的包装类Float,Double并没有实现常量池技术</em></strong>)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//Integer缓存：</span><br><span class="line">public static Integer valueOf(int i)</span><br><span class="line">&#123;</span><br><span class="line">	assert IntegerCache.high &gt;= 127;</span><br><span class="line">	if (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">		return IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">	return new Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如下代码所示，当对Integer直接赋值且值范围在在-128-127内时，编译的时候会直接将代码封装成Integer.valueOf(value)的形式，从而直接使用常量池中的对象。如果不在此范围内，则在堆上new出新的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer i = 127;</span><br><span class="line">Integer j = 127;</span><br><span class="line">System.out.println(i == j); //true</span><br><span class="line"></span><br><span class="line">Integer a = 128;</span><br><span class="line">Integer b = 128;</span><br><span class="line">System.out.println(a == b); //false</span><br></pre></td></tr></table></figure></p>
+<p>注意，当Integer使用运算符时，将会进行拆箱操作，示例:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Integer i1 = 66;</span><br><span class="line">Integer i2 = 66;</span><br><span class="line">Integer i3 = 0;</span><br><span class="line">Integer i4 = new Integer(66);</span><br><span class="line">Integer i5 = new Integer(66);</span><br><span class="line">Integer i6 = new Integer(0);</span><br><span class="line"></span><br><span class="line">System.out.println(i1 == i2); // true</span><br><span class="line">System.out.println(i1 == i3 + i4); //true</span><br><span class="line">System.out.println(i4 == i5); // false</span><br><span class="line">System.out.println(i4 == i5 + i6); // true</span><br><span class="line">System.out.println(66 == i5 + i6); // true</span><br></pre></td></tr></table></figure></p>
+<h1 id="String常量池"><a href="#String常量池" class="headerlink" title="String常量池"></a>String常量池</h1><h2 id="String对象创建方式"><a href="#String对象创建方式" class="headerlink" title="String对象创建方式"></a>String对象创建方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String a = &quot;abc&quot;; // 常量池对象</span><br><span class="line">String b = new String(&quot;abc&quot;);　//堆上创建对象</span><br><span class="line">System.out.print(a == b); // false</span><br></pre></td></tr></table></figure>
+<p>String s1 = newString(“xyz”); 创建了几个对象？<br>考虑类加载阶段和实际执行时，共创建了２个</p>
+<ul>
+<li>类加载对一个类只会进行一次。”xyz”在类加载时就已经创建并驻留了（如果该类被加载之前已经有”xyz”字符串被驻留过则不需要重复创建用于驻留的”xyz”实例）。驻留的字符串是放在全局共享的字符串常量池中的。</li>
+<li>在这段代码后续被运行的时候，”xyz”字面量对应的String实例已经固定了，不会再被重复创建。所以这段代码将常量池中的对象复制一份放到heap中，并且把heap中的这个对象的引用交给s1持有。</li>
+</ul>
+<h2 id="字符串连接＋"><a href="#字符串连接＋" class="headerlink" title="字符串连接＋"></a>字符串连接＋</h2><ul>
+<li>使用引号包含文本的方式创建的String对象之间使用“+”连接产生的新对象才会被加入字符串池中。</li>
+<li>对于所有包含new方式新建对象（包括null）的“+”连接表达式，它所产生的新对象都不会被加入字符串池中。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String s1 = &quot;abc&quot;;</span><br><span class="line">String s2 = &quot;def&quot;;</span><br><span class="line">String s3 = &quot;abc&quot; + &quot;def&quot;;</span><br><span class="line">String s4 = s1 + s2;</span><br><span class="line">System.out.print(s3 == s4);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>特例，如下所示，s1与s2都是常量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class MyClass &#123;</span><br><span class="line">    public static final String s1 = &quot;ab&quot;;</span><br><span class="line">    public static final String s2 = &quot;cd&quot;;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        String s3 = s1 + s2;</span><br><span class="line">        String s4 = &quot;abcd&quot;;</span><br><span class="line">        System.out.print(s3 == s4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="intern"><a href="#intern" class="headerlink" title="intern()"></a>intern()</h2><p>Java语言并不一定要求只有编译期才能产生，也就是并非预置入CLass文件中常量池的内容才能进入方法区运行时常量池，运行期间也可能将新的常量放入池中，例如使用比较多的就是String类的intern()方法。<br>String的intern()方法会查找在常量池中是否存在一份equal相等的字符串,如果有则返回该字符串的引用,如果没有则添加自己的字符串进入常量池。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String s1 = new String(&quot;abc&quot;);</span><br><span class="line">String s2 = s1.intern();</span><br><span class="line">String s3 = &quot;abc&quot;;</span><br><span class="line">System.out.println(s1 == s2);</span><br><span class="line">System.out.println(s2 == s3);</span><br></pre></td></tr></table></figure></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之JVM运行时数据区]]></title>
+      <url>http://robinheztto.com/2014/01/24/java-jvm-memory-area/</url>
+      <content type="html"><![CDATA[<h1 id="Java虚拟机组成"><a href="#Java虚拟机组成" class="headerlink" title="Java虚拟机组成"></a>Java虚拟机组成</h1><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-jvm.jpeg?raw=true" alt="java-jvm"><br></div>
+
+<p>如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。</p>
+<h1 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h1><p>JVM运行时内存区域包括程序计数器，方法区，堆，栈，直接内存，本地方法栈。其中，方法区与堆，直接内存是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔离的数据区。</p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器(Program Counter Register)指的是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在JVM的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令。</p>
+<ul>
+<li>每个线程都有自己的独立的程序计数器。</li>
+<li>如果线程正在执行的是Java方法，那么这个计数器的值就是正在执行的虚拟机字节码指令的地址。如果正在执行的是Native方法，这个计数器值为空(undefined)。</li>
+<li>此内存区域是唯一一个在Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域。</li>
+</ul>
+<h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>Java虚拟机栈(Java Virtual Machine Stacks)是Java方法执行的内存区域，每个方法执行的同时都会创建一个栈帧用于存储局部变量表、操作数栈、动态链接、方法出口等信息。Java虚拟机栈是线程私有的，它的生命周期与线程相同。局部变量表存放了编译期可知的各种基本数据类型(boolean、byte、char、short、int、float、long、double)、对象引用和returnAddress类型(指向了一条字节码指令的地址)。</p>
+<ul>
+<li>如果线程请求分配的栈容量超过Java虚拟机栈允许的最大容量时，Java虚拟机将会抛出一个StackOverflowError 异常。</li>
+<li>如果Java虚拟机栈可以动态扩展，并且扩展的动作已经尝试过，但是目前无法申请到足够的内存去完成扩展，或者在建立新的线程时没有足够的内存去创建对应的虚拟机栈，那Java虚拟机将会抛出一个OutOfMemoryError异常。</li>
+</ul>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>本地方法栈(Native Method Stack)与虚拟机栈所发挥的作用是非常相似的，它们之间的区别不过是虚拟机栈为虚拟机执行java方法，而本地栈则为虚拟机使用到的Native方法服务。(<strong><em>注:在HotSpot虚拟机中和Java虚拟机栈合二为一</em></strong>)</p>
+<ul>
+<li>如果线程请求分配的栈容量超过本地方法栈允许的最大容量时，Java虚拟机将会抛出一个StackOverflowError异常。</li>
+<li>如果本地方法栈可以动态扩展,并且扩展的动作已经尝试过，但是目前无法申请到足够的内存去完成扩展，或者在建立新的线程时没有足够的内存去创建对应的本地方法栈，那Java虚拟机将会抛出一个OutOfMemoryError异常。</li>
+</ul>
+<h2 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h2><p>Java堆(Java Heap)Java虚拟机所管理的内存中最大的一块，Java堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。</p>
+<p>Java堆是垃圾收集器管理的主要区域，因此也被称作GC堆（Garbage Collected Heap），从垃圾回收的角度，由于现在收集器基本都采用分代垃圾收集算法，所以Java堆还可以细分为：新生代和老年代：在细致一点有：Eden空间、From Survivor、To Survivor空间等。进一步划分的目的是更好地回收内存，或者更快地分配内存。在实现时,既可以实现成固定大小的，也可以是可扩展的，不过当前主流的虚拟机都是按照可扩展来实现的(通过-Xmx和-Xms控制)。</p>
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>方法区(Method Area)与Java堆一样，是各个线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做 Non-Heap（非堆），目的应该是与 Java 堆区分开来。</p>
+<p>HotSpot虚拟机中方法区也常被称为 “永久代”，本质上两者并不等价。仅仅是因为HotSpot虚拟机设计团队用永久代来实现方法区而已，这样HotSpot虚拟机的垃圾收集器就可以像管理Java堆一样管理这部分内存了。但是这并不是一个好主意，因为这样更容易遇到内存溢出问题。</p>
+<p>相对而言，垃圾收集行为在这个区域是比较少出现的，但并非数据进入方法区后就“永久存在”了。</p>
+<h2 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h2><p>运行时常量池(Runtime Constant Pool)是方法区的一部分。Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有常量池信息（用于存放编译期生成的各种字面量和符号引用）</p>
+<p>既然运行时常量池时方法区的一部分，自然受到方法区内存的限制，当常量池无法再申请到内存时会抛出OutOfMemoryError异常。</p>
+<p>JDK1.7及之后版本的JVM已经将运行时常量池从方法区中移了出来，在Java堆（Heap）中开辟了一块区域存放运行时常量池。同时在jdk1.8中移除整个永久代，取而代之的是一个叫元空间（Metaspace）的区域。</p>
+<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><p>直接内存并不是虚拟机运行时数据区的一部分，也不是虚拟机规范中定义的内存区域，但是这部分内存也被频繁地使用。而且也可能导致OutOfMemoryError异常出现。</p>
+<p>JDK1.4中新加入的NIO(New Input/Output)类，引入了一种基于通道（Channel） 与缓存区（Buffer） 的I/O方式，它可以直接使用Native函数库直接分配堆外内存，然后通过一个存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。这样就能在一些场景中显著提高性能，因为避免了在Java堆和Native堆之间来回复制数据。</p>
+<p>本机直接内存的分配不会收到Java堆的限制，但是，既然是内存就会受到本机总内存大小以及处理器寻址空间的限制。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之引用]]></title>
       <url>http://robinheztto.com/2014/01/21/java-reference/</url>
       <content type="html"><![CDATA[<blockquote>
 <p>Java语言中，除了原始数据类型的变量，其他所有都是引用类型，指向各种不同的对象。<br>Java内存管理分配及回收，不需要程序员负责，通过垃圾回收的机制来回收内存，主要是看对象是否有引用指向该对象。</p>
@@ -2348,7 +2758,57 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Java核心技术之关键字]]></title>
+      <title><![CDATA[Java系列之抽象类与接口]]></title>
+      <url>http://robinheztto.com/2014/01/20/java-interface/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>　Java中，接口和抽象类体现了OOP的抽象</p>
+</blockquote>
+<h1 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h1><ol>
+<li><p>抽象方法<br>只有声明，没有实现，并且用abstract申明的方法。<br><strong><em> 抽象方法必须为public或者protected（如果为private，则不能被子类继承，子类便无法实现该方法），缺省情况下默认为public。</em></strong></p>
+</li>
+<li><p>抽象类<br>用abstract修饰的类即抽象类，抽象类中可以有一个或者多个抽象方法，也可以没有一个抽象方法。</p>
+</li>
+<li><p>抽象类和普通类的主要有三点区别：</p>
+<ul>
+<li>抽象方法必须为public或者protected，缺省情况下默认为public。</li>
+<li>抽象类不能用来创建对象。</li>
+<li>如果一个类继承于一个抽象类，则子类必须实现父类的抽象方法。如果子类没有实现父类的抽象方法，则必须将子类也定义为为abstract类。</li>
+</ul>
+</li>
+</ol>
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><p>抽象方法的集合，以interface来声明。</p>
+<ul>
+<li>接口中每一个方法也是隐式抽象的,接口中的方法会被隐式的指定为public abstract（只能是public abstract，其他修饰符都会报错）。</li>
+<li>接口中可以含有变量，但是接口中的变量会被隐式的指定为public static final变量（并且只能是public，用private修饰会报编译错误）。</li>
+<li>接口可以继承接口。</li>
+<li>Java8之前接口中的方法是不能在接口中实现的，只能由实现接口的类来实现。</li>
+</ul>
+<h1 id="java8接口增强"><a href="#java8接口增强" class="headerlink" title="java8接口增强"></a>java8接口增强</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public interface InterfaceTest &#123;</span><br><span class="line">    static void staticTest() &#123;</span><br><span class="line">        System.out.println(&quot;Hello World&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    default void defaultTest() &#123;</span><br><span class="line">        System.out.println(&quot;Hello World&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>默认方法<br>默认方法允许接口方法定义默认实现，子类方法不必须实现此方法而就可以拥有该方法及实现。默认方法主要优势是提供了一种扩展接口的方法，而不破坏现有代码。如果一个已经投入使用的接口需要扩展一个新的方法，在JDK8以前，我们必须再该接口的所有实现类中都添加该方法的实现，否则编译会出错。如果实现类数量很少且我们有修改的权限，可能工作量会少，但是如果实现类很多或者我们没有修改代码的权限，这样的话就很难解决了。而默认方法提供了一个实现，当没有显式提供时就默认采用这个实现，这样新添加的接口就不会破坏现有的代码。默认方法另一个优势是该方法是可选的，子类可以根据不同的需求而且经override或者采用默认实现。<br><strong><em>注意!!!</em></strong></p>
+<ul>
+<li>如果一个类实现两个或两个以上接口，并且多个接口中包含统一默认方法，此时，编译器将报错。这种情况，我们必须让子类Override该方法，否则无法编译通过。</li>
+<li>在所有的情况，类实现的优先级高于接口的默认实现，也就是先使用自己类中定义的方法或者是父类中的方法。如果是一个接口继承了另外一个接口，2个接口中也包含相同的默认方法，那么继承接口的版本具有更高的优先级。比如A扩展了B接口，那么优先使用A类里面的test方法。</li>
+<li>通过使用super，可以显式的引用被继承接口的默认实现，语法如下：InterfaceName.super.methodName()。</li>
+</ul>
+</li>
+<li><p>静态方法<br>java8中为接口新增了一项功能：定义一个或者更多个静态方法。类似于类中的静态方法，接口定义的静态方法可以独立于任何对象调用。所以，在调用静态方法时，不需要实现接口，也不需要接口的实例，也就是说和调用类的静态方法的方式类似。语法如：接口名字.静态方法名。</p>
+</li>
+</ol>
+<h1 id="抽象类和接口的区别"><a href="#抽象类和接口的区别" class="headerlink" title="抽象类和接口的区别"></a>抽象类和接口的区别</h1><ol>
+<li>抽象类中的方法可以有方法体，java8前接口中的不能实现方法体，java8以后可以定义static，default方法体。</li>
+<li>抽象类中的成员变量可以是各种类型的，而接口中的成员变量只能是public static final类型(默认)的。</li>
+<li>一个类只能继承一个抽象类，而一个类却可以实现多个接口。</li>
+<li>抽象类可以有构造器，接口不能有构造器，除了不能实例化抽象类之外，它和普通Java类没有任何区 接口是完全不同的类型</li>
+<li>抽象方法可以有public、protected和default这些修饰符 接口方法默认修饰符是public。你不可以使用其它修饰符。</li>
+<li>抽象类在java语言中所表示的是一种继承关系，一个子类只能存在一个父类，但是可以存在多个接口。</li>
+<li>抽象类比接口速度要快，接口是稍微有点慢的，因为它需要时间去寻找在类中实现的方法。</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java系列之关键字总结]]></title>
       <url>http://robinheztto.com/2014/01/14/java-keyword/</url>
       <content type="html"><![CDATA[<h1 id="final-finally-finalize"><a href="#final-finally-finalize" class="headerlink" title="final finally finalize"></a>final finally finalize</h1><ol>
 <li><p>final可以用来修饰类，方法，变量。final修饰的类不能被继承扩展，修饰的方法不能被覆盖重写，修饰的变量初始化后不能被修改。<br>注意，final 并不等同于 immutable，如下代码所示，final 只能约束 strList 这个引用不可以被赋值，但是 strList 对象行为不被 final 影响，添加元素等操作是完全正常的。</p>
@@ -2360,16 +2820,45 @@
 <li><p>finalize是基础类java.lang.Object的一个方法，它的设计目的是保证对象在垃圾回收前执行指定的资源回收操作，在jdk9中，finalize被标记为deprecated。<br>finalize的执行是和垃圾收集关联在一起的，一旦实现了非空的 finalize 方法，就会导致相应对象回收呈现数量级上的变慢，有人专门做过 benchmark，大概是 40~50 倍的下降。finalize被设计成在对象被垃圾收集前调用，这就意味着实现了finalize方法的对象是个“特殊公民”，JVM 要对它进行额外处理，finalize 本质上成为了快速回收的阻碍者，可能导致对象经过多个垃圾收集周期才能被回收。</p>
 </li>
 </ol>
+<h2 id="面向对象的基本特征"><a href="#面向对象的基本特征" class="headerlink" title="面向对象的基本特征"></a>面向对象的基本特征</h2><ul>
+<li>抽象<br>将具有相同属性与行为的一类对象总结成类的过程。抽象只关注于对象的属性与行为，并不关注具体的细节。</li>
+<li>封装<br>对类的数据及数据操作进行封装，隐藏一切可隐藏的细节，只公开对外的接口。</li>
+<li>继承<br>继承已有类的信息创建新类的过程。</li>
+<li>多态<br>多态性是指允许不同子类型的对象对同一消息作出不同的响应。</li>
+</ul>
+<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ol>
+<li><p><strong>数据:</strong> 声明修饰的数据为常量(可以是编译时常量也可以是运行时常量)。</p>
+<blockquote>
+<p>对于基本数据类型，final修饰的数值不变<br>对于引用类型，final修饰的引用不变，但引用的对象本身可以改变</p>
+</blockquote>
+</li>
+<li><p><strong>方法:</strong> 声明修饰的方法不能被子类覆盖重写。private方法隐式指定为final，如果在子类中定义的方法和基类中的一个private方法签名相同，此时子类的方法不是覆盖基类方法，而是在子类中定义了一个新的方法。</p>
+</li>
+<li><p><strong>类:</strong> 声明修饰的类不允许被继承，没有子类。final类中所有的方法都被隐示定义为final，因为它们是不会被重载。</p>
+</li>
+<li><p>final关键字不能修饰接口</p>
+</li>
+</ol>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>  保留关键字</p>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ol>
+<li><strong>成员变量:</strong> 声明修饰的成员变量为静态变量(类变量)，在内存中只有一个副本，并且在类初始化时赋值，无需依赖对象调用，static成员变量的初始化顺序按照定义的顺序进行。</li>
+<li><strong>成员方法:</strong> 声明修饰的成员方法为静态方法(类方法)，在类加载时已存在，无需依赖对象调用，静态方法不能调用其他非静态成员或方法。</li>
+<li><strong>代码块:</strong> 只在类加载的时候执行一次。</li>
+</ol>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
+<li>volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。</li>
+<li>volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）</li>
+</ul>
 ]]></content>
     </entry>
     
     <entry>
-      <title><![CDATA[Java核心技术之异常处理机制]]></title>
+      <title><![CDATA[Java系列之异常处理机制总结]]></title>
       <url>http://robinheztto.com/2014/01/07/java-exception-error/</url>
       <content type="html"><![CDATA[<blockquote>
 <p>异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。</p>
 </blockquote>
-<h1 id="Exception与Error，运行时异常与一般异常的区别"><a href="#Exception与Error，运行时异常与一般异常的区别" class="headerlink" title="Exception与Error，运行时异常与一般异常的区别"></a>Exception与Error，运行时异常与一般异常的区别</h1><p>Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。<br>Exception和Error体现了Java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获，常见的比如OutOfMemoryError之类，都是Error的子类。<br>Exception又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。</p>
+<h1 id="Exception与Error"><a href="#Exception与Error" class="headerlink" title="Exception与Error"></a>Exception与Error</h1><p>Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。<br>Exception和Error体现了Java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获，常见的比如OutOfMemoryError之类，都是Error的子类。<br>Exception又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。</p>
 <center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/throwable.png?raw=true" alt="xxx"><br></center>
 
 
@@ -2512,35 +3001,30 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Java核心技术之对Java平台的理解]]></title>
+      <title><![CDATA[Java系列之对Java平台的理解]]></title>
       <url>http://robinheztto.com/2014/01/01/java-think-platform/</url>
       <content type="html"><![CDATA[<blockquote>
-<p>Java是一种面向对象的语言，最显著的特性有两个：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，Java通过垃圾收集器（Garbage Collector）回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
+<p>Java是一门面向对象的语言，有两个最显著的特性：一是“Write once, run anywhere”（一次编写，到处运行），平台无关性；另外就是自动垃圾回收（GC，Garbage Collection）机制，通过垃圾收集器（Garbage Collector）分配内存/回收，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
 </blockquote>
 <p><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-platform.png?raw=true" alt="Java Platform"></p>
-<h1 id="Java是解释执行吗？"><a href="#Java是解释执行吗？" class="headerlink" title="Java是解释执行吗？"></a>Java是解释执行吗？</h1><p>这个说法不太准确。Java源代码首先通过Javac编译成为字节码（bytecode），然后在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如Oracle JDK提供的Hotspot JVM，都提供了JIT（Just-In-Time）编译器，也就是通常所说的动态编译器。根据二八定律，消耗大部分系统资源的只有一小部分的代码（热点代码），而这也就是JIT所需要编译的部分，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码就属于编译执行，而不是解释执行。<br>除了JIT，还有一种新的编译方式，即AOT（Aheadof-TimeCompilation），直接将字节码编译成机器代码，这样就避免了JIT预热等各方面的开销，Oracle JDK 9就引入了实验性的AOT特性，并且增加了新的jaotc工具。</p>
+<h1 id="Java是解释执行吗？"><a href="#Java是解释执行吗？" class="headerlink" title="Java是解释执行吗？"></a>Java是解释执行吗？</h1><p>这个说法不太准确。Java源代码首先通过Javac编译成为字节码（bytecode），然后在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如Oracle JDK提供的Hotspot JVM，都提供了JIT（Just-In-Time）编译器，也就是通常所说的动态编译器。根据二八定律，消耗大部分系统资源的只有一小部分的代码（热点代码），而这也就是JIT所需要编译的部分，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码就属于编译执行，而不是解释执行。(<strong><em>注：JIT为方法级，它会缓存编译过的字节码在CodeCache中，而不需要被重复解释，解释器执行会重复解析</em></strong>）</p>
+<p>除了JIT，还有一种新的编译方式，即AOT（Aheadof-TimeCompilation），直接将字节码编译成机器代码，这样就避免了JIT预热等各方面的开销，Oracle JDK 9就引入了实验性的AOT特性，并且增加了新的jaotc工具。</p>
 <h1 id="Java语言特性"><a href="#Java语言特性" class="headerlink" title="Java语言特性"></a>Java语言特性</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><h1 id="Java类库"><a href="#Java类库" class="headerlink" title="Java类库"></a>Java类库</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><h2 id="IO-NIO"><a href="#IO-NIO" class="headerlink" title="IO/NIO"></a>IO/NIO</h2><h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h1 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h1><h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><h2 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h2><h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><h2 id="JDK工具"><a href="#JDK工具" class="headerlink" title="JDK工具"></a>JDK工具</h2>]]></content>
     </entry>
     
     <entry>
-      <title><![CDATA[Java系列之JVM内存区域]]></title>
-      <url>http://robinheztto.com/2013/05/24/java-jvm-memory-area/</url>
-      <content type="html"><![CDATA[<h1 id="Java虚拟机基本结构"><a href="#Java虚拟机基本结构" class="headerlink" title="Java虚拟机基本结构"></a>Java虚拟机基本结构</h1><div align="center"><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/java-jvm.jpeg?raw=true" alt="java-jvm"><br></div>
+      <title><![CDATA[Ubuntu14.04 OpenJdk8编译]]></title>
+      <url>http://robinheztto.com/2013/12/19/java-build-openjdk/</url>
+      <content type="html"><![CDATA[<h1 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h1><p>如下图示，选择从官网直接下载的方式，下载地址：<a href="http://download.java.net/openjdk/jdk8/" target="_blank" rel="external">OpenJDK™ Source</a></p>
+<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-download.png?raw=true" alt="OpenJDK™ Source Download"><br></div><br>下载后目录结构如下图示：<br><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-list.png?raw=true" alt="OpenJDK™ Source List"><br></div>
 
-<p>如上图示，Java虚拟机包括垃圾回收，类加载子系统，运行时数据区域，执行引擎，JNI，本地库接口等模块。</p>
-<h1 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h1><p>JVM运行时内存区域包括方法区，堆，栈，程序计数器，本地方法栈。其中，方法区与堆是所有线程共享数据区，而栈，程序计数器，本地方法栈是线程隔离的数据区。</p>
-<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器指的是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在JVM的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令。</p>
+<h1 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h1><p>编译主要参考源码目录下README及README-builds.html文件，编译前本机已安装openjdk7/8作为Bootstrap JDK。</p>
 <ul>
-<li>每个线程都有自己的独立的程序计数器。</li>
-<li>如果线程正在执行的是Java方法，那么这个计数器的值就是正在执行的虚拟机字节码指令的地址。如果正在执行的是Native方法,这个计数器值为空(undefined)。</li>
-<li>此内存区域是唯一一个在Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域。</li>
+<li>bash ./configure<br>执行configure脚本会检查并配置编译环境，根据执行过程中提示<code>apt-get install</code>安装相应的包直到执行成功为止。执行成功后将输出如下所示的信息：<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-build-configure.png?raw=true" alt="OpenJDK™ Source Configure"><br></div></li>
+<li>Make<br><code>export LANG=C</code><br><code>make all</code><br>编译output在build/linux-x86_64-normal-server-release下,编译过程中错误解决：<br>This OS is not supported:” <code>uname -a</code>;<br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-build-os-not-support.png?raw=true" alt="OpenJDK™ Source Configure"><br>解决方法：修改hotspot/make/linux/Makefile在SUPPORTED_OS_VERSION选项加上4%。<code>SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3% 4%</code></li>
+<li>Test<br>编译成功后输出如下信息：<div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-build-success.png?raw=true" alt="OpenJDK™ Source Build Result"><br></div><br>测试编译生成java可执行文件：<br><div align="center"><br><img src="https://github.com/XRobinHe/Resource/blob/master/blog/image/java/openjdk-source-build-test.png?raw=true" alt="OpenJDK™ Source Build Test"><br></div>
+</li>
 </ul>
-<h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>Java虚拟机栈是Java方法执行的内存区域，每个方法执行的同时都会创建一个栈帧用于存储局部变量表、操作数栈、动态链接、方法出口等信息。Java虚拟机栈是线程私有的，它的生命周期与线程相同。局部变量表存放了编译期可知的各种基本数据类型(boolean、byte、char、short、int、float、long、double)、对象引用和returnAddress类型(指向了一条字节码指令的地址)。</p>
-<p>如果线程请求栈的深度大于虚拟机所允许的深度，将抛出StackOverflowError异常，无法申请到内存抛出OutOfMemoryError异常。</p>
-<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>本地方法栈与虚拟机栈所发挥的作用是非常相似的，它们之间的区别不过是虚拟机栈为虚拟机执行java方法，而本地栈则为虚拟机使用到的Native方法服务。</p>
-<h2 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h2><p>Java堆的唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。Java堆是线程共享的，在虚拟机启动时创建。</p>
-<p>Java堆是垃圾收集器管理的主要区域，因此很多时候也被称作“GC堆”。由于现在收集器基本都采用分代收集算法，所以Java堆中还可以细分为:新生代和老年代。再细致一点的有Eden空间、From    Survivor空间、ToSurvivor空间等。在实现时,既可以实现成固定大小的，也可以是可扩展的，不过当前主流的虚拟机都是按照可扩展来实现的(通过-Xmx和-Xms控制)。</p>
-<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>线程共享,用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。这区域的内存回收目标主要是针对常量池的回收和对类型的卸载。(JDK1.7后，字面量(interned strings)，类的静态变量(class statics)转移到了java heap)。</p>
 ]]></content>
     </entry>
     
@@ -2571,205 +3055,6 @@
 <h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><blockquote>
 <p>IPC InterProcess Communication.</p>
 </blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Java语言基础]]></title>
-      <url>http://robinheztto.com/2013/01/21/java-basics/</url>
-      <content type="html"><![CDATA[<ul>
-<li>数据类型<br>由于java的平台无关性，java所有基本数据类型的存储大小及取值范围固定，且没有signed与unsigned之分，默认为signed类型，所以java也没有sizeof关键字。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>基本数据类型</th>
-<th style="text-align:center">长度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>boolean</td>
-<td style="text-align:center">-</td>
-</tr>
-<tr>
-<td>byte</td>
-<td style="text-align:center">1bit</td>
-</tr>
-<tr>
-<td>short</td>
-<td style="text-align:center">2byte</td>
-</tr>
-<tr>
-<td>int</td>
-<td style="text-align:center">4byte</td>
-</tr>
-<tr>
-<td>long</td>
-<td style="text-align:center">8byte</td>
-</tr>
-<tr>
-<td>float</td>
-<td style="text-align:center">4byte</td>
-</tr>
-<tr>
-<td>double</td>
-<td style="text-align:center">8byte</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[C语言基础]]></title>
-      <url>http://robinheztto.com/2013/01/21/c-basics/</url>
-      <content type="html"><![CDATA[<h1 id="类型-运算符-表达式"><a href="#类型-运算符-表达式" class="headerlink" title="类型/运算符/表达式"></a>类型/运算符/表达式</h1><p>变量与常量是程序处理的两种基本数据对象，通过运算符表达式将变量与常量进行组合来产生新的值，而对象的类型决定了可取值的集合与可执行的操作。</p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Ｃ语言中数据对象分成基本数据类型，指针类型，枚举类型，void类型，组合类型。</p>
-<ul>
-<li>基本数据类型<br>基本数据类型中的整型可分为有符号signed型与无符号unsigned型。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>基本数据类型</th>
-<th style="text-align:center">32-bit</th>
-<th style="text-align:right">64-bit</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>char</td>
-<td style="text-align:center">1</td>
-<td style="text-align:right">1</td>
-</tr>
-<tr>
-<td>short</td>
-<td style="text-align:center">2</td>
-<td style="text-align:right">2</td>
-</tr>
-<tr>
-<td>int</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">4</td>
-</tr>
-<tr>
-<td>long</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">8</td>
-</tr>
-<tr>
-<td>float</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">4</td>
-</tr>
-<tr>
-<td>double</td>
-<td style="text-align:center">8</td>
-<td style="text-align:right">8</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>指针类型</p>
-</li>
-<li><p>void类型</p>
-</li>
-<li><p>组合类型，包括数组，结构体struct，联合体union，枚举类型enum</p>
-</li>
-</ul>
-<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><table>
-<thead>
-<tr>
-<th>运算符</th>
-<th style="text-align:center">结合性</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>()　 []　 -&gt;　 .</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>! 　~ 　++　 –　 + 　- 　*　 (type)　 sizeof</td>
-<td style="text-align:center">从右到左</td>
-</tr>
-<tr>
-<td>* 　/　 %</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>+ 　-</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>&lt;&lt; 　&gt;&gt;</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>&lt; 　&lt;= 　&gt; 　&gt;=</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>== 　!=　</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>&amp;</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>^</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>&#124;</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>&amp;&amp;</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>&#124;&#124;</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>?:</td>
-<td style="text-align:center">从左到右</td>
-</tr>
-<tr>
-<td>= +=   -=   *=   /=   %=   &amp;=   ^=   &#124;=   &lt;&lt;=   &gt;&gt;=</td>
-<td style="text-align:center">从右到左</td>
-</tr>
-<tr>
-<td>,</td>
-<td style="text-align:center">从右到左</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>ASCII编码</p>
-</li>
-<li><p>关键字<br>static<br>const<br>volatile<br>continue<br>break</p>
-</li>
-</ul>
-<ul>
-<li><p>true or false<br>Ｃ语言中，非０表示真，０表示假</p>
-</li>
-<li><p>const<br>const并不能把变量变为常量，只是通过编译器限定其只读属性。</p>
-</li>
-</ul>
-<p>预处理，编译，汇编，链接，加载</p>
-<ul>
-<li>链接脚本<br>lds文件，定义链接过程中各代码段的存储顺序<br>链接器对部分地址进行绑定并分配相对地址，加载器完成重定位并赋予实际地址。</li>
-</ul>
-<p>参考资料：</p>
-<ul>
-<li><a href="http://docs.linuxtone.org/ebooks/C&amp;CPP/c/" target="_blank" rel="external">Linux C编程一站式学习</a></li>
-<li>《链接器和加载器》</li>
-<li>《C专家编程》</li>
-</ul>
 ]]></content>
     </entry>
     

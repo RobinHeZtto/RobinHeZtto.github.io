@@ -278,8 +278,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/14/android-power-pms-1/" itemprop="url">
-                  Android电源管理系列之PowerManagerService(一)
+                <a class="post-title-link" href="/2016/02/01/android-init-language/" itemprop="url">
+                  Android之Init.rc语法
                 </a>
               
             
@@ -292,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-14T15:19:20+08:00" content="2017-06-14">
-              2017-06-14
+            <time itemprop="dateCreated" datetime="2016-02-01T15:09:08+08:00" content="2016-02-01">
+              2016-02-01
             </time>
           </span>
 
@@ -303,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/06/14/android-power-pms-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/14/android-power-pms-1/" itemprop="commentsCount"></span>
+                <a href="/2016/02/01/android-init-language/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/android-init-language/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -330,12 +330,15 @@
         
           
           
-PowerManagerService提供Android系统的电源管理服务，主要功能是控制系统待机状态，屏幕显示，亮度调节，光线/距离传感器的控制等。
-相关代码在以下文件中：frameworks/base/services/java/com/android/server/SystemServer.
+译自system/core/init/readme.txt
+
+Android init.rc语法Android init.rc包含四种类型的声明，分别是 Actions，Commands，Services，和 Options。其语法规则如下：
+
+init.rc所有的语句都是以行为单位，行间使用空格
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/14/android-power-pms-1/#more" rel="contents">
+            <a class="btn" href="/2016/02/01/android-init-language/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -386,8 +389,8 @@ PowerManagerService提供Android系统的电源管理服务，主要功能是控
             
               
                 
-                <a class="post-title-link" href="/2017/06/01/android-power-wakelock/" itemprop="url">
-                  Android电源管理系列之Wakelock
+                <a class="post-title-link" href="/2016/01/25/android-recovery/" itemprop="url">
+                  Android之Recovery
                 </a>
               
             
@@ -400,8 +403,8 @@ PowerManagerService提供Android系统的电源管理服务，主要功能是控
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-01T11:19:20+08:00" content="2017-06-01">
-              2017-06-01
+            <time itemprop="dateCreated" datetime="2016-01-25T19:44:54+08:00" content="2016-01-25">
+              2016-01-25
             </time>
           </span>
 
@@ -411,8 +414,8 @@ PowerManagerService提供Android系统的电源管理服务，主要功能是控
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/06/01/android-power-wakelock/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/01/android-power-wakelock/" itemprop="commentsCount"></span>
+                <a href="/2016/01/25/android-recovery/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/25/android-recovery/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -438,12 +441,13 @@ PowerManagerService提供Android系统的电源管理服务，主要功能是控
         
           
           
-wakelocks最初来源于Android在linux kernel上的一个补丁集，旨在允许用户空间的应用能够通过持有Wakelock来阻止系统进入低功耗模式。
-相关代码在以下文件中：kernel/msm-4.4/kernel/power/wakelock.ckernel/msm-4.4/kern
-          ...
+Android Recovery模式主要用于系统升级，恢复出厂设置等操作。
+
+
+          
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/01/android-power-wakelock/#more" rel="contents">
+            <a class="btn" href="/2016/01/25/android-recovery/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -494,8 +498,8 @@ wakelocks最初来源于Android在linux kernel上的一个补丁集，旨在允�
             
               
                 
-                <a class="post-title-link" href="/2017/05/20/android-power-libsuspend/" itemprop="url">
-                  Android电源管理系列之libsuspend
+                <a class="post-title-link" href="/2016/01/15/android-lk/" itemprop="url">
+                  Android之LK
                 </a>
               
             
@@ -508,8 +512,8 @@ wakelocks最初来源于Android在linux kernel上的一个补丁集，旨在允�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-20T16:38:19+08:00" content="2017-05-20">
-              2017-05-20
+            <time itemprop="dateCreated" datetime="2016-01-15T19:44:54+08:00" content="2016-01-15">
+              2016-01-15
             </time>
           </span>
 
@@ -519,8 +523,8 @@ wakelocks最初来源于Android在linux kernel上的一个补丁集，旨在允�
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/05/20/android-power-libsuspend/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/20/android-power-libsuspend/" itemprop="commentsCount"></span>
+                <a href="/2016/01/15/android-lk/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/15/android-lk/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -546,11 +550,13 @@ wakelocks最初来源于Android在linux kernel上的一个补丁集，旨在允�
         
           
           
-Android向上层提供了操作休眠相关的接口(即读写/sys/power/目录下文件)，即libsuspend.so，源码位于system/core/libsuspend下：system/core/libsuspendkernel/msm-4.4/kernel/power/suspend.cker
+LK是Little Kernel的简称，它是一款bootloader程序，类似的bootloader还有以前的U-Boot，vivi。现Qualcomm、MTK都使用LK来作为系统引导程序。
+
+概述Bootloader是移动平台/嵌入式系统在开机上电后执行的一段或几段程序。开机上电后，在芯片内部的
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/20/android-power-libsuspend/#more" rel="contents">
+            <a class="btn" href="/2016/01/15/android-lk/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -601,8 +607,8 @@ Android向上层提供了操作休眠相关的接口(即读写/sys/power/目录�
             
               
                 
-                <a class="post-title-link" href="/2017/05/05/android-power-suspend/" itemprop="url">
-                  Android电源管理系列之Suspend
+                <a class="post-title-link" href="/2016/01/10/android-bootflow/" itemprop="url">
+                  Android之BootFlow
                 </a>
               
             
@@ -615,8 +621,8 @@ Android向上层提供了操作休眠相关的接口(即读写/sys/power/目录�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-05T15:46:56+08:00" content="2017-05-05">
-              2017-05-05
+            <time itemprop="dateCreated" datetime="2016-01-10T10:00:55+08:00" content="2016-01-10">
+              2016-01-10
             </time>
           </span>
 
@@ -626,8 +632,8 @@ Android向上层提供了操作休眠相关的接口(即读写/sys/power/目录�
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/05/05/android-power-suspend/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/05/android-power-suspend/" itemprop="commentsCount"></span>
+                <a href="/2016/01/10/android-bootflow/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/10/android-bootflow/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -653,11 +659,13 @@ Android向上层提供了操作休眠相关的接口(即读写/sys/power/目录�
         
           
           
-kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/msm-4.4/kernel/power/process.ckernel/msm-4.4/kernel/power/console.ckern
+Android BootFlow包括Boot引导阶段，Kernel启动阶段，Android核心启动几个阶段。
+
+Android系统启动的整个流程如下图所示，在开机上电后即进入Boot引导，包括BootROM与Bootloader，在Bootloader加载Kernel，Kernel完成初始化后启动
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/05/android-power-suspend/#more" rel="contents">
+            <a class="btn" href="/2016/01/10/android-bootflow/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -708,8 +716,8 @@ kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/ms
             
               
                 
-                <a class="post-title-link" href="/2017/05/01/android-power-system-wakeup-events-framework/" itemprop="url">
-                  Android电源管理系列之System wakeup events framework
+                <a class="post-title-link" href="/2016/01/05/android-tools-tcpdump/" itemprop="url">
+                  Android开发工具之tcpdump
                 </a>
               
             
@@ -722,8 +730,8 @@ kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/ms
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-01T15:46:56+08:00" content="2017-05-01">
-              2017-05-01
+            <time itemprop="dateCreated" datetime="2016-01-05T13:42:46+08:00" content="2016-01-05">
+              2016-01-05
             </time>
           </span>
 
@@ -733,8 +741,8 @@ kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/ms
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/05/01/android-power-system-wakeup-events-framework/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/01/android-power-system-wakeup-events-framework/" itemprop="commentsCount"></span>
+                <a href="/2016/01/05/android-tools-tcpdump/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/05/android-tools-tcpdump/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -760,11 +768,17 @@ kernel/msm-4.4/kernel/power/main.ckernel/msm-4.4/kernel/power/suspend.ckernel/ms
         
           
           
-kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup.hkernel/msm-4.4/include/linux/pm.hkernel/msm-4.4/include/linux/devic
+
+Android开发中，如果需要在Android平台上进行网络数据包的抓取，使用tcpdump是非常方便的。通过tcpdump抓取数据包，pull到本地后可以利用Wireshark非常直观地分析数据包。
+
+准备
+Root Android设备
+下载安装Wireshark
+下载Android tcpd
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/01/android-power-system-wakeup-events-framework/#more" rel="contents">
+            <a class="btn" href="/2016/01/05/android-tools-tcpdump/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -815,8 +829,8 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
             
               
                 
-                <a class="post-title-link" href="/2017/04/20/android-power-basic/" itemprop="url">
-                  Android电源管理系列之Basic
+                <a class="post-title-link" href="/2016/01/01/android-env/" itemprop="url">
+                  Android之开发环境搭建
                 </a>
               
             
@@ -829,8 +843,8 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-04-20T09:07:54+08:00" content="2017-04-20">
-              2017-04-20
+            <time itemprop="dateCreated" datetime="2016-01-01T14:35:04+08:00" content="2016-01-01">
+              2016-01-01
             </time>
           </span>
 
@@ -840,8 +854,8 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/04/20/android-power-basic/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/20/android-power-basic/" itemprop="commentsCount"></span>
+                <a href="/2016/01/01/android-env/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/01/android-env/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -866,11 +880,1533 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
       
         
           
-          1. Sleep/Suspend系统休眠Sleep，Linux Kernel中称作Suspend。系统进入Suspend状态确切来说时CPU进入了Suspend模式，因为对整个系统来说CPU休眠是整个系统休眠的先决条件。CPU Suspend即CPU进入Wait for interrupt状态（WF
+          
+系统安装Google推荐使用64位Ubuntu操作系统开发Android，针对不同的Android版本，推荐使用相对应的Ubuntu版本。
+
+Android 6.0 (Marshmallow) - AOSP master: Ubuntu 14.04 (Trusty)    
+Android 2.3
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/04/20/android-power-basic/#more" rel="contents">
+            <a class="btn" href="/2016/01/01/android-env/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/06/jni-basis/" itemprop="url">
+                  JNI基础
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-06T19:38:26+08:00" content="2015-11-06">
+              2015-11-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/06/jni-basis/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/06/jni-basis/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          $ gcc -shared -fPIC -I /usr/lib/jvm/java-8-openjdk-amd64/include/ -I /usr/lib/jvm/java-8-openjdk-amd64/include/linux hellojni.c -o libHelloJni.so$ jav
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/06/jni-basis/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/08/19/ubuntu-rsync/" itemprop="url">
+                  Ubuntu下使用rsync进行数据同步备份
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-19T15:31:08+08:00" content="2015-08-19">
+              2015-08-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/19/ubuntu-rsync/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/19/ubuntu-rsync/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介rsync是remote sync的简称,它是一款类unix系统下数据同步备份,增量文件快速传输的工具.rsync采用”rsync算法”,不仅能为client和server的提供文件快速同步,并且能够对整个目录树/文件系统进行同步备份.
+安装默认情况Ubuntu已经安装了rsync服务,如果没有
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/08/19/ubuntu-rsync/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/08/03/ubuntu-nexus-maven/" itemprop="url">
+                  Ubuntu 14.04 Nexus Maven私服搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-03T16:13:06+08:00" content="2015-08-03">
+              2015-08-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/03/ubuntu-nexus-maven/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/03/ubuntu-nexus-maven/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Maven是Apache基于POM(project object model)一个项目管理工具.Maven能够管理项目的构建build,reporting和documentation.
+Nexus是一个强大的Maven仓库管理器，它极大地简化了内部仓库的维护和外部仓库的访问，可以在局域网搭建一个m
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/08/03/ubuntu-nexus-maven/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/06/06/ubuntu-ftp/" itemprop="url">
+                  Ubuntu14.04 FTP服务器搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-06-06T16:14:12+08:00" content="2015-06-06">
+              2015-06-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/06/06/ubuntu-ftp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/06/ubuntu-ftp/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介vsftpd 是“very secure FTP daemon”的缩写，它是一款在Linux发行版中最受推崇的FTP服务器程序，安全性是它的一个最大的特点.
+安装
+安装： sudo apt-get install vsftpd    
+创建FTP账户： sudo useradd -g ftp -
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/06/06/ubuntu-ftp/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/05/23/git-operate/" itemprop="url">
+                  git操作总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-05-23T16:58:56+08:00" content="2015-05-23">
+              2015-05-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/05/23/git-operate/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/23/git-operate/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+基本操作
+配置Usage: git config –global|–system|–local|–list$ git config --global user.name [username]$ git config --global user.email [email]$ git config -
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/05/23/git-operate/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/18/remastersys-md/" itemprop="url">
+                  remastersys 备份/制作ubuntu副本
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-18T19:48:30+08:00" content="2015-03-18">
+              2015-03-18
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/18/remastersys-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/18/remastersys-md/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介Remastersys是由Tony Brijeski 发起的免费软件项目,可以把已安装的Ubuntu、Debian及其衍生版打包成一个可以用来安装的Live CD/DVD的iso文件.
+安装
+环境: ubuntu14.04
+步骤:$ wget &quot;https://www.freesoft
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/03/18/remastersys-md/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/12/31/java-QA/" itemprop="url">
+                  Java系列之经典问答
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-12-31T08:12:10+08:00" content="2014-12-31">
+              2014-12-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/12/31/java-QA/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/31/java-QA/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          String是基本数据类型吗？String不是基本数据类型，String是final修饰的java类。java基本数据类型包括：整型：byte，short，int，long浮点型：float，double字符型：char布尔类型：boolean
+比较==与equals()的区别首先，==号在比较基本
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/31/java-QA/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/24/java-object-creation/" itemprop="url">
+                  Java系列之对象创建过程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-24T20:53:04+08:00" content="2014-08-24">
+              2014-08-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/24/java-object-creation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/24/java-object-creation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          对象创建
+
+
+类加载检查： 虚拟机遇到一条new指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用(步骤1)，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过(步骤2)。如果没有，那必须先执行相应的类加载过程(步骤3)。
+
+分配内存： 在类加载检查通过后，接下来虚拟机
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/08/24/java-object-creation/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/03/android-basis-service/" itemprop="url">
+                  Android应用开发基础之Service
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-03T11:56:04+08:00" content="2014-08-03">
+              2014-08-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/03/android-basis-service/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/03/android-basis-service/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概念Android应用组件之一，后台服务，主要在后台操作耗时的逻辑，或者执行某些长期运行的任务，当界面退出的时候，程序还能在后台继续保持运行。
+生命周期Service可通过startService和bindService二种方式启动，两种生命周期不是独立的，可以同时用startService，bin
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/08/03/android-basis-service/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/01/android-basis-activity/" itemprop="url">
+                  Android应用开发基础之Activity
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-01T11:56:04+08:00" content="2014-08-01">
+              2014-08-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/01/android-basis-activity/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/01/android-basis-activity/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概念Android四大应用组件之一，与用户交互的接口，界面的载体。
+生命周期
+
+1.　启动Activity，系统会先调用onCreate方法，这是生命周期第一个方法，然后调用onStart方法，最后调用onResume，Activity进入运行状态。onCreate方法：一般做一些初始化工作，比如s
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/08/01/android-basis-activity/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/05/04/java-threadlocal/" itemprop="url">
+                  Java系列之ThreadLocal
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-05-04T20:36:01+08:00" content="2014-05-04">
+              2014-05-04
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/05/04/java-threadlocal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/05/04/java-threadlocal/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概念ThreadLocal是一个本地线程副本变量工具类。主要用于将私有线程和该线程存放的副本对象做一个映射，各个线程之间的变量互不干扰，在高并发场景下，可以实现无状态的调用，特别适用于各个线程依赖不通的变量值完成操作的场景。
+数据结构
+
+每个Thread线程内部都有一个Map。Map里面存储线程本地
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/05/04/java-threadlocal/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/05/01/java-multithreading-3/" itemprop="url">
+                  Java多线程之Volatile
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-05-01T18:47:22+08:00" content="2014-05-01">
+              2014-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/05/01/java-multithreading-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/05/01/java-multithreading-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+C/C++中，volatile关键字用来告诉编译器它所修饰的变量随时都有可能改变，所以不需要对该变量的代码进行优化，每次读写该变量都直接从变量地址中读取，不使用缓存中的值。如果没用volatile关键字修饰，则编译器可能优化读取和存储，暂时使用缓存中的值，造成数据不一致的问题。
+
+可见性Volat
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/05/01/java-multithreading-3/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/05/01/java-multithreading-2/" itemprop="url">
+                  Java多线程之synchronized
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-05-01T14:47:22+08:00" content="2014-05-01">
+              2014-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/05/01/java-multithreading-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/05/01/java-multithreading-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+线程安全是并发编程中的重要部分，而线程安全问题主要是由于存在多条线程共同操作共享数据(临界资源)，为了解决线程安全问题，即当存在多个线程操作共享数据时，需要保证同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后再进行，即能达到互斥访问目的的锁(互斥锁)，也就是说当一个共享数
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/05/01/java-multithreading-2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/05/01/java-multithreading-1/" itemprop="url">
+                  Java多线程之线程基础
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-05-01T13:47:22+08:00" content="2014-05-01">
+              2014-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/05/01/java-multithreading-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/05/01/java-multithreading-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          进程与线程的区别与联系
+进程是系统资源分配的最小单位，线程是系统执行的基本单位
+一个进程中可以存在多个线程，它们共享进程中的内存，文件，IO等系统资源
+Linux中系统的进程是轻量级进程，进程线程都是使用的task_struct结构体，多个线程通过映射同一块区域共享资源
+
+创建
+实现Runnable
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/05/01/java-multithreading-1/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -904,7 +2440,7 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -945,7 +2481,7 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -955,7 +2491,7 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -999,7 +2535,7 @@ kernel/msm-4.4/drivers/base/power/wakeup.ckernel/msm-4.4/include/linux/pm_wakeup
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

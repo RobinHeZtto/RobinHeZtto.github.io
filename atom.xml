@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://robinheztto.com/"/>
-  <updated>2018-06-24T16:24:25.000Z</updated>
+  <updated>2018-10-15T14:58:13.000Z</updated>
   <id>http://robinheztto.com/</id>
   
   <author>
@@ -16,14 +16,14 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Android Overview</title>
+    <title>Overview</title>
     <link href="http://robinheztto.com/2200/01/01/android-overview/"/>
     <id>http://robinheztto.com/2200/01/01/android-overview/</id>
     <published>2199-12-31T16:00:00.000Z</published>
-    <updated>2018-06-24T16:24:25.000Z</updated>
+    <updated>2018-10-15T14:58:13.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
-&lt;p&gt;Android学习提纲．从底至上．RTFSC．&lt;strong&gt;持续学习中…&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Android学习提纲．从底至上．RTFSC．&lt;strong&gt;持续学习整理中…&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android_framework_details.png?raw=true&quot; alt=&quot;Android stack&quot;&gt;&lt;br&gt;&lt;/div&gt;
 
@@ -73,8 +73,27 @@
 &lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2017/03/12/android-alarm-3/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android之AlarmManagerService(三)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
+&lt;h1 id=&quot;APP&quot;&gt;&lt;a href=&quot;#APP&quot; class=&quot;headerlink&quot; title=&quot;APP&quot;&gt;&lt;/a&gt;APP&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2014/08/01/android-basis-activity/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android应用开发基础之Activity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2014/08/03/android-basis-service/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android应用开发基础之Service&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;CI持续集成&quot;&gt;&lt;a href=&quot;#CI持续集成&quot; class=&quot;headerlink&quot; title=&quot;CI持续集成&quot;&gt;&lt;/a&gt;CI持续集成&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2018/06/14/android-ci-gitolite/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android编译集成之gitolite&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2018/05/19/android-build-sign/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android编译之签名机制&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2018/05/03/android-ci-jenkins/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android持续集成之Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2015/08/03/ubuntu-nexus-maven/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ubuntu 14.04 Nexus Maven私服搭建&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2015/06/06/ubuntu-ftp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ubuntu14.04 FTP服务器搭建&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2015/03/18/remastersys-md/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;remastersys 备份/制作ubuntu副本&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2015/05/23/git-operate/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;git操作总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;Java&quot;&gt;&lt;a href=&quot;#Java&quot; class=&quot;headerlink&quot; title=&quot;Java&quot;&gt;&lt;/a&gt;Java&lt;/h1&gt;&lt;p&gt;Java系列之经典问答&lt;br&gt;Java系列之对象创建过程&lt;br&gt;Java系列之ThreadLocal&lt;br&gt;Java多线程之Volatile&lt;br&gt;Java多线程之synchronized&lt;br&gt;Java多线程之线程基础&lt;br&gt;Java系列之内存模型&lt;br&gt;Java系列之LinkedList解析&lt;br&gt;Java系列之ArrayList解析&lt;br&gt;Java系列之集合框架总结&lt;br&gt;Java系列之常量池总结&lt;br&gt;Java系列之JVM运行时数据区&lt;br&gt;Java系列之引用&lt;br&gt;Java系列之抽象类与接口&lt;br&gt;Java系列之关键字总结&lt;br&gt;Java系列之异常处理机制总结&lt;br&gt;Java系列之对Java平台的理解&lt;/p&gt;
+&lt;hr&gt;
 &lt;h1 id=&quot;Debug&quot;&gt;&lt;a href=&quot;#Debug&quot; class=&quot;headerlink&quot; title=&quot;Debug&quot;&gt;&lt;/a&gt;Debug&lt;/h1&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2016/01/01/android-env/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Debug之系统启动&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2017/03/08/android-debug-anr/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Debug之ANR&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.robinheztto.com/2016/11/12/android-debug-adb/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Debug之ADB&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h1 id=&quot;Env-amp-Tools&quot;&gt;&lt;a href=&quot;#Env-amp-Tools&quot; class=&quot;headerlink&quot; title=&quot;Env&amp;amp;Tools&quot;&gt;&lt;/a&gt;Env&amp;amp;Tools&lt;/h1&gt;&lt;ul&gt;
@@ -92,9 +111,9 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;Android学习提纲．从底至上．RTFSC．&lt;strong&gt;持续学习中…&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Android学习提纲．从底至上．RTFSC．&lt;strong&gt;持续学习整理中…&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/RobinH
+&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/Robi
     
     </summary>
     
@@ -154,11 +173,128 @@
   </entry>
   
   <entry>
+    <title>语言助手开发基础</title>
+    <link href="http://robinheztto.com/2018/12/22/voice-assistant-1/"/>
+    <id>http://robinheztto.com/2018/12/22/voice-assistant-1/</id>
+    <published>2018-12-22T14:07:37.000Z</published>
+    <updated>2018-12-22T14:18:02.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;https://github.com/RobinHeZtto/Resource/blob/master/blog/image/voice-assistant/va1.jpg?raw=true&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;语音识别（Auto Speech Recognition）&lt;/li&gt;
+&lt;li&gt;语义理解（Semantic Understanding）&lt;/li&gt;
+&lt;li&gt;语音合成（Text To Speech）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;语音识别将用户所说的指令转换成文本文字，而语义理解则是基于文本文字去理解用户意图，做出相关响应和操作，并且输出反馈给用户的答复文本，最后语音合成再将答复文本转换成为语音输出。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://github.com/RobinHeZtto/Resource/blob/master/blog/image/voice-assistant/va1.jpg?raw=true&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;语音识别（Auto
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Kotlin开篇</title>
+    <link href="http://robinheztto.com/2018/10/01/kotlin-1/"/>
+    <id>http://robinheztto.com/2018/10/01/kotlin-1/</id>
+    <published>2018-10-01T00:12:10.000Z</published>
+    <updated>2019-03-27T14:54:02.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Kotlin是一种静态类型、面向对象，旨在避免Java向后兼容性问题，基于JVM的现代编程语言。&lt;a href=&quot;https://www.jetbrains.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JetBrains公司&lt;/a&gt;（开发了号称Java界最智能的集成开发工具IntelliJ IDEA的公司）于2010年开发出该编程语言并于2012年2月宣布将其开源。Kotlin语言最初设计的目的是替代Java语言。在2017 Google I/O上，Google正式宣布Kotlin为Android官方开发语言。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;Kotlin的优势&quot;&gt;&lt;a href=&quot;#Kotlin的优势&quot; class=&quot;headerlink&quot; title=&quot;Kotlin的优势&quot;&gt;&lt;/a&gt;Kotlin的优势&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;完全兼容Java&lt;/li&gt;
+&lt;li&gt;Null safe&lt;/li&gt;
+&lt;li&gt;支持lambda表达式（比Java8更好）&lt;/li&gt;
+&lt;li&gt;支持扩展&lt;/li&gt;
+&lt;li&gt;体验一致的开发工具链&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于开发者来说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更少的空指针异常&lt;/li&gt;
+&lt;li&gt;更少的代码量&lt;/li&gt;
+&lt;li&gt;更快的开发速度&lt;/li&gt;
+&lt;li&gt;更一致的开发体验&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;命令行工具&quot;&gt;&lt;a href=&quot;#命令行工具&quot; class=&quot;headerlink&quot; title=&quot;命令行工具&quot;&gt;&lt;/a&gt;命令行工具&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;下载kotlin-compiler工具包并配置到环境变量路径&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;下载路径：&lt;a href=&quot;https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2（可使用最新release）&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/JetBrains/kotlin/releases/tag/v1.1.2-2（可使用最新release）&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;使用 Kotlin 编译器编译应用:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ kotlinc hello.kt -include-runtime -d hello.jar&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;运行应用:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ java -jar hello.jar&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Kotlin库编译&lt;br&gt;如果需要将生成的jar包供其他Kotlin程序使用，无需包含Kotlin的运行库：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ kotlinc hello.kt -d hello.jar&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;参考连接&quot;&gt;&lt;a href=&quot;#参考连接&quot; class=&quot;headerlink&quot; title=&quot;参考连接&quot;&gt;&lt;/a&gt;参考连接&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://kotlinlang.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Kotlin官方网站&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://try.kotlinlang.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Kotlin官方教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;Kotlin是一种静态类型、面向对象，旨在避免Java向后兼容性问题，基于JVM的现代编程语言。&lt;a href=&quot;https://www.jetbrains.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JetBrain
+    
+    </summary>
+    
+    
+      <category term="Kotlin" scheme="http://robinheztto.com/tags/Kotlin/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android App系列之CoordinatorLayout嵌套双层RecyclerView</title>
+    <link href="http://robinheztto.com/2018/09/11/android-CoordinatorLayout-RecyclerView/"/>
+    <id>http://robinheztto.com/2018/09/11/android-CoordinatorLayout-RecyclerView/</id>
+    <published>2018-09-11T06:47:22.000Z</published>
+    <updated>2018-10-15T14:58:13.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;CoordinatorLayout嵌套RecyclerView无法点击的问题&quot;&gt;&lt;a href=&quot;#CoordinatorLayout嵌套RecyclerView无法点击的问题&quot; class=&quot;headerlink&quot; title=&quot;CoordinatorLayout嵌套RecyclerView无法点击的问题&quot;&gt;&lt;/a&gt;CoordinatorLayout嵌套RecyclerView无法点击的问题&lt;/h1&gt;&lt;p&gt;CoordinatorLayout嵌套RecyclerView，RecyclerView滚动后第一次无法点击，问题原因是RecyclerView的scrollState。当它停止滚动时，它不会立即更改scrollState为SCROLL_STATE_IDLE。当RecyclerView滚动停止后，它不立即调用setScrollState(SCROLL_STATE_IDLE)，而是等待一段时间来触发此方法。滚动越快，需等待的时间就越多。scroller.isFinished()在RecyclerView停止滚动触摸顶部之后不会立即返回true。&lt;/p&gt;
+&lt;p&gt;该问题是源码的bug，问题跟踪:&lt;br&gt;&lt;a href=&quot;https://developer.android.com/topic/libraries/support-library/revisions.html#27-0-1&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://developer.android.com/topic/libraries/support-library/revisions.html#27-0-1&lt;/a&gt;&lt;br&gt;After a user scrolls, they cannot click on an item in a RecyclerView. (AOSP issue 66996774)&lt;/p&gt;
+&lt;p&gt;一些用户报告在支持库27.0.1中没有修复此问题。&lt;br&gt;问题跟踪器在这里。&lt;br&gt;&lt;a href=&quot;https://issuetracker.google.com/issues/66996774&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://issuetracker.google.com/issues/66996774&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;官方解决方案&lt;/strong&gt;&lt;br&gt;&lt;a href=&quot;https://gist.github.com/chrisbanes/8391b5adb9ee42180893300850ed02f2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gist.github.com/chrisbanes/8391b5adb9ee42180893300850ed02f2&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;CoordinatorLayout嵌套RecyclerView无法滑动的问题&quot;&gt;&lt;a href=&quot;#CoordinatorLayout嵌套RecyclerView无法滑动的问题&quot; class=&quot;headerlink&quot; title=&quot;CoordinatorLayout嵌套RecyclerView无法滑动的问题&quot;&gt;&lt;/a&gt;CoordinatorLayout嵌套RecyclerView无法滑动的问题&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;&lt;em&gt;解决方式：为横向RecyclerView增加一句setNestedScrollingEnabled(false)&lt;/em&gt;&lt;/strong&gt;&lt;br&gt;CoordinatorLayout实现了NestedScrollingParent，纵向RecyclerView是CoordinatorLayout的子View，RecyclerView的滑动能通知到CoordinatorLayout，继而由CoordinatorLayout协调让CollapsingToolbarLayout发生折叠。横向RecyclerView的父View是纵向RecyclerView，而RecyclerView只实现了NestedScrollingChild，无法像CoordinatorLayout一样响应。所以要关闭横向RecyclerView的嵌套滑动功能，让横向RecyclerView如同其他嵌入纵向RecyclerView的view一样，触发折叠。&lt;/p&gt;
+&lt;h1 id=&quot;嵌套RecyclerView的优化&quot;&gt;&lt;a href=&quot;#嵌套RecyclerView的优化&quot; class=&quot;headerlink&quot; title=&quot;嵌套RecyclerView的优化&quot;&gt;&lt;/a&gt;嵌套RecyclerView的优化&lt;/h1&gt;&lt;p&gt;在一个RecyclerView中嵌套另一个RecyclerView，类似下面的横向滚动列表嵌套垂直滚动列表的形式。&lt;/p&gt;
+&lt;center&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/RobinHeZtto/Resource/blob/master/blog/image/android/android-nesting-recycleview.webp?raw=true&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/center&gt;
+
+&lt;p&gt;当用户滚动横向列表的时候，inner RecyclerView可以流畅的滚动。但是当垂直滚动的时候，inner RecyclerView中的每个view再次inflated了一遍，从而感觉很卡顿。这是因为每个嵌套的RecyclerViews都有各自的view pool。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优化:&lt;/strong&gt;&lt;br&gt;为所有inner RecyclerView设置一个单一的view pool，减少了view的创建，提高了滚动性能&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;public OuterRecyclerViewAdapter(List&amp;lt;Item&amp;gt; items) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    //Constructor stuff&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    viewPool = new RecyclerView.RecycledViewPool();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@Override&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    //Create viewHolder etc&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    holder.innerRecyclerView.setRecycledViewPool(viewPool);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;CoordinatorLayout嵌套RecyclerView无法点击的问题&quot;&gt;&lt;a href=&quot;#CoordinatorLayout嵌套RecyclerView无法点击的问题&quot; class=&quot;headerlink&quot; title=&quot;CoordinatorLayou
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://robinheztto.com/tags/Android/"/>
+    
+      <category term="App" scheme="http://robinheztto.com/tags/App/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Android编译集成之gitolite</title>
     <link href="http://robinheztto.com/2018/06/14/android-ci-gitolite/"/>
     <id>http://robinheztto.com/2018/06/14/android-ci-gitolite/</id>
     <published>2018-06-14T07:01:14.000Z</published>
-    <updated>2018-06-24T16:24:25.000Z</updated>
+    <updated>2018-10-15T14:58:13.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;在Git服务管理领域，主要有三种流行的方案:&lt;br&gt;Gitosis - 轻量级，开源项目，使用SSH公钥认证，只能做到库级的权限控制，目前项目已经停止开发，不再维护。&lt;br&gt;Gitolite - 轻量级，开源项目，使用SSH公钥认证，能做到分支级的权限控制。&lt;br&gt;Git + Repo + Gerrit - 超级重量级，集版本控制，库管理和代码审核为一身，可管理大型及超大型项目。&lt;/p&gt;
@@ -209,11 +345,15 @@
 &lt;/ul&gt;
 &lt;p&gt;如下所示, “username”(之前用gl-setup命令时候的pubkey名称)具有读写权限而且在gitolite-admin仓库里有一个同名的公钥文件。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ cat conf/gitolite.conf&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;repo gitolite-admin&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    RW+                 = username&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;h3 id=&quot;配置-1&quot;&gt;&lt;a href=&quot;#配置-1&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;用户/仓库分组&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@oss_repos      = linux perl rakudo git gitolite&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@secret_repos   = fenestra pear&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@admins         = scott&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@interns        = ashok&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@engineers      = sitaram dilbert wally alice&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@staff          = @admins @engineers @interns&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
+&lt;li&gt;用户/仓库分组&lt;/li&gt;
 &lt;/ol&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@oss_repos      = linux perl rakudo git gitolite&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@secret_repos   = fenestra pear&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@admins         = scott&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@interns        = ashok&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@engineers      = sitaram dilbert wally alice&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@staff          = @admins @engineers @interns&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;在下面的例子里，实习生可以push ”int“分支。工程师可以push任何有”eng-“开头的branch，还有refs/tags下面用”rc”开头的后面跟数字的。而且管理员可以随便更改(包括rewind)对任何参考名。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;repo @oss_repos&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    RW  int$                = @interns&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    RW  eng-                = @engineers&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    RW  refs/tags/rc[0-9]   = @engineers&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    RW+                     = @admins&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-</content>
+&lt;p&gt;2.GL_WILDREPOS&lt;br&gt;在gitolite里修改权限，添加正则表达式后提交&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;repo test/.*$&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;R = test&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;提示 warning：&lt;br&gt;remote： bad reponame ‘test/.*$’ or you forgot to set $GL_WILDREPOS&lt;/p&gt;
+&lt;p&gt;修改服务器/home/git/.gitolite.rc设置$GL_WILDREPOS=0为$GL_WILDREPOS=1即可&lt;/p&gt;
+&lt;h3 id=&quot;Repo仓库&quot;&gt;&lt;a href=&quot;#Repo仓库&quot; class=&quot;headerlink&quot; title=&quot;Repo仓库&quot;&gt;&lt;/a&gt;Repo仓库&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#/bin/bash&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;set -x&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;pwd=$&amp;#123;PWD&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;QCOM=/data/QcomBaseBackup/QcomBase&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;attrget()  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	ATTR_PAIR=$&amp;#123;1#*$2=\&amp;quot;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	echo &amp;quot;$&amp;#123;ATTR_PAIR%%\&amp;quot;*&amp;#125;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;parse_manifest()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	local IFS=\&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	while read -d \&amp;lt; ENTITY CONTENT&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	do&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		TAG_NAME=$&amp;#123;ENTITY%% *&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		ATTRIBUTES=$&amp;#123;ENTITY#* &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if [[ $TAG_NAME == &amp;quot;project&amp;quot; ]];then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			CLIENT_PATH=`attrget $&amp;#123;ATTRIBUTES&amp;#125; &amp;quot;path&amp;quot;`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			SERVER_PATH=`attrget $&amp;#123;ATTRIBUTES&amp;#125; &amp;quot;name&amp;quot;`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			if [ $SERVER_PATH == &amp;quot;&amp;quot; ];then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				echo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			else&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				if [ $CLIENT_PATH == &amp;quot;name=&amp;quot; ];then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;					CLIENT_PATH=$SERVER_PATH&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			repo_pro $SERVER_PATH $CLIENT_PATH&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		fi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	done &amp;lt; $1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;repo_pro() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	REMOTE_PATH=$1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	LOCAL_PATH=$2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	workdir=$pwd/$&amp;#123;REMOTE_PATH##*/&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	echo $workdir&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	git clone gerritroot@192.168.31.242:qcom/$REMOTE_PATH&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    	cd $workdir&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	git checkout -b master&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    	rm -rf !\(.git\)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	cp -rf $QCOM/$CLIENT_PATH/* $workdir&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	find . -name .gitignore | xargs rm -rfv&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	git add -A&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	git commit --allow-empty -m &amp;quot;Initial commit update&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	git push --set-upstream origin master&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	cd $pwd&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	rm -rf $workdir&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;parse_manifest $1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
     
     <summary type="html">
     
@@ -234,7 +374,7 @@
     <link href="http://robinheztto.com/2018/05/19/android-build-sign/"/>
     <id>http://robinheztto.com/2018/05/19/android-build-sign/</id>
     <published>2018-05-19T03:11:12.000Z</published>
-    <updated>2018-06-24T16:24:25.000Z</updated>
+    <updated>2018-12-22T14:06:41.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;Android OS 镜像在两个地方使用加密签名：&lt;/p&gt;
@@ -253,6 +393,14 @@
 &lt;p&gt;可在源码根目录下运行如下脚本统一制作：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;subject=&amp;apos;/C=CN/ST=Guangdong/L=Shenzhen View/O=Android/OU=Android/CN=Android/emailAddress=robin.he.ztto@gmail.cn&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mkdir ~/.android-certs&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;for x in releasekey platform shared media verity; do \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ./development/tools/make_key ~/.android-certs/$x &amp;quot;$subject&amp;quot;; \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;done&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;h2 id=&quot;为DM-Verity功能生成verity-key&quot;&gt;&lt;a href=&quot;#为DM-Verity功能生成verity-key&quot; class=&quot;headerlink&quot; title=&quot;为DM-Verity功能生成verity key&quot;&gt;&lt;/a&gt;为DM-Verity功能生成verity key&lt;/h2&gt;&lt;p&gt;首先通过使用以下的命令来生成verity key的工具generate_verity_key：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;source build/envsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;choosecombo&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;make generate_verity_key (mmm system/extras/verity/)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;然后在前面步骤已生成verity.pk8，verity.x509.pem的基础上使用以下命令生成verity_key&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;out/host/linux-x86/bin/generate_verity_key -convert verity.x509.pem verity_key&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;APK签名&quot;&gt;&lt;a href=&quot;#APK签名&quot; class=&quot;headerlink&quot; title=&quot;APK签名&quot;&gt;&lt;/a&gt;APK签名&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;keystore签名&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;# jarsigner -verbose -keystore debug.keystore -signedjar signed.apk unsign.apk androiddebugkey&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;签名的时候报如下的问题，说明待签的apk是已经签名过的：&lt;br&gt;jarsigner: 无法对 jar 进行签名: java.util.zip.ZipException: invalid entry compressed size (expected 5067 but got 5217 bytes)&lt;br&gt;解决的方法：&lt;br&gt;把要重签名的apk后缀改成zip，打开后删除里面的META-INF目录，然后重新改成apk后缀再进行签名操作&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;秘钥签名&lt;br&gt;java -Xmx512m -jar signapk.jar xxx.x509.pem xxx.pk8 release.apk release_signed.apk&lt;/li&gt;
+&lt;/ol&gt;
 </content>
     
     <summary type="html">
@@ -271,150 +419,6 @@
       <category term="Build" scheme="http://robinheztto.com/tags/Build/"/>
     
       <category term="Sign" scheme="http://robinheztto.com/tags/Sign/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>面试系列之java</title>
-    <link href="http://robinheztto.com/2018/05/08/interview-java/"/>
-    <id>http://robinheztto.com/2018/05/08/interview-java/</id>
-    <published>2018-05-08T03:18:32.000Z</published>
-    <updated>2018-06-24T16:24:25.000Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;面向对象的基本特征&quot;&gt;&lt;a href=&quot;#面向对象的基本特征&quot; class=&quot;headerlink&quot; title=&quot;面向对象的基本特征&quot;&gt;&lt;/a&gt;面向对象的基本特征&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;抽象&lt;br&gt;将具有相同属性与行为的一类对象总结成类的过程。抽象只关注于对象的属性与行为，并不关注具体的细节。&lt;/li&gt;
-&lt;li&gt;封装&lt;br&gt;对类的数据及数据操作进行封装，隐藏一切可隐藏的细节，只公开对外的接口。&lt;/li&gt;
-&lt;li&gt;继承&lt;br&gt;继承已有类的信息创建新类的过程。&lt;/li&gt;
-&lt;li&gt;多态&lt;br&gt;多态性是指允许不同子类型的对象对同一消息作出不同的响应。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;关键字&quot;&gt;&lt;a href=&quot;#关键字&quot; class=&quot;headerlink&quot; title=&quot;关键字&quot;&gt;&lt;/a&gt;关键字&lt;/h1&gt;&lt;h2 id=&quot;final&quot;&gt;&lt;a href=&quot;#final&quot; class=&quot;headerlink&quot; title=&quot;final&quot;&gt;&lt;/a&gt;final&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;数据:&lt;/strong&gt; 声明修饰的数据为常量(可以是编译时常量也可以是运行时常量)。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;对于基本数据类型，final修饰的数值不变&lt;br&gt;对于引用类型，final修饰的引用不变，但引用的对象本身可以改变&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;方法:&lt;/strong&gt; 声明修饰的方法不能被子类覆盖重写。private方法隐式指定为final，如果在子类中定义的方法和基类中的一个private方法签名相同，此时子类的方法不是覆盖基类方法，而是在子类中定义了一个新的方法。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;类:&lt;/strong&gt; 声明修饰的类不允许被继承，没有子类。final类中所有的方法都被隐示定义为final，因为它们是不会被重载。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;final关键字不能修饰接口&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;const&quot;&gt;&lt;a href=&quot;#const&quot; class=&quot;headerlink&quot; title=&quot;const&quot;&gt;&lt;/a&gt;const&lt;/h2&gt;&lt;p&gt;  保留关键字&lt;/p&gt;
-&lt;h2 id=&quot;static&quot;&gt;&lt;a href=&quot;#static&quot; class=&quot;headerlink&quot; title=&quot;static&quot;&gt;&lt;/a&gt;static&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;成员变量:&lt;/strong&gt; 声明修饰的成员变量为静态变量(类变量)，在内存中只有一个副本，并且在类初始化时赋值，无需依赖对象调用，static成员变量的初始化顺序按照定义的顺序进行。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;成员方法:&lt;/strong&gt; 声明修饰的成员方法为静态方法(类方法)，在类加载时已存在，无需依赖对象调用，静态方法不能调用其他非静态成员或方法。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;代码块:&lt;/strong&gt; 只在类加载的时候执行一次。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;volatile&quot;&gt;&lt;a href=&quot;#volatile&quot; class=&quot;headerlink&quot; title=&quot;volatile&quot;&gt;&lt;/a&gt;volatile&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。&lt;/li&gt;
-&lt;li&gt;volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;面向对象的基本特征&quot;&gt;&lt;a href=&quot;#面向对象的基本特征&quot; class=&quot;headerlink&quot; title=&quot;面向对象的基本特征&quot;&gt;&lt;/a&gt;面向对象的基本特征&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;抽象&lt;br&gt;将具有相同属性与行为的一类对象总结成类的过程。抽象只关注于对
-    
-    </summary>
-    
-    
-      <category term="interview" scheme="http://robinheztto.com/tags/interview/"/>
-    
-      <category term="Java" scheme="http://robinheztto.com/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>面试系列之C</title>
-    <link href="http://robinheztto.com/2018/05/08/interview-c/"/>
-    <id>http://robinheztto.com/2018/05/08/interview-c/</id>
-    <published>2018-05-08T03:18:30.000Z</published>
-    <updated>2018-06-24T16:24:25.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;关键字&quot;&gt;&lt;a href=&quot;#关键字&quot; class=&quot;headerlink&quot; title=&quot;关键字&quot;&gt;&lt;/a&gt;关键字&lt;/h1&gt;&lt;h2 id=&quot;static&quot;&gt;&lt;a href=&quot;#static&quot; class=&quot;headerlink&quot; title=&quot;static&quot;&gt;&lt;/a&gt;static&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;局部变量:存储位置由栈变成静态存储区，生命周期由程序开始执行到结束。&lt;/li&gt;
-&lt;li&gt;全局变量:限定修饰的全局变量作用域为本文件内，外部文件不可见。&lt;/li&gt;
-&lt;li&gt;修饰函数:限定函数作用域范围为定义的本文件内，外部文件不可访问。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;const&quot;&gt;&lt;a href=&quot;#const&quot; class=&quot;headerlink&quot; title=&quot;const&quot;&gt;&lt;/a&gt;const&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;修饰变量:标记标量只读&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;const int * a;  指针指向的数据&lt;em&gt;a只读，指针a可以改变指向。&lt;br&gt;int ** const a; 指针指向的数据&lt;/em&gt;a可修改，指针a不能改变指向。&lt;br&gt;const int *&lt;em&gt; const a; 指针的指向的数据&lt;/em&gt;a只读，指针a不能改变指向。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;修饰函数参数:标记参数在函数内不允许修改&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;修饰函数返回值:标志函数返回值为只读&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;volatile&quot;&gt;&lt;a href=&quot;#volatile&quot; class=&quot;headerlink&quot; title=&quot;volatile&quot;&gt;&lt;/a&gt;volatile&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。&lt;/li&gt;
-&lt;li&gt;volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）&lt;/li&gt;
-&lt;li&gt;const 可以是 volatile （如只读的状态寄存器）&lt;/li&gt;
-&lt;li&gt;指针可以是 volatile&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;关键字&quot;&gt;&lt;a href=&quot;#关键字&quot; class=&quot;headerlink&quot; title=&quot;关键字&quot;&gt;&lt;/a&gt;关键字&lt;/h1&gt;&lt;h2 id=&quot;static&quot;&gt;&lt;a href=&quot;#static&quot; class=&quot;headerlink&quot; title=&quot;static&quot;&gt;&lt;
-    
-    </summary>
-    
-    
-      <category term="C" scheme="http://robinheztto.com/tags/C/"/>
-    
-      <category term="interview" scheme="http://robinheztto.com/tags/interview/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>面试系列之C++</title>
-    <link href="http://robinheztto.com/2018/05/08/interview-cpp/"/>
-    <id>http://robinheztto.com/2018/05/08/interview-cpp/</id>
-    <published>2018-05-08T03:18:30.000Z</published>
-    <updated>2018-06-24T16:24:25.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;关键字&quot;&gt;&lt;a href=&quot;#关键字&quot; class=&quot;headerlink&quot; title=&quot;关键字&quot;&gt;&lt;/a&gt;关键字&lt;/h1&gt;&lt;h2 id=&quot;static&quot;&gt;&lt;a href=&quot;#static&quot; class=&quot;headerlink&quot; title=&quot;static&quot;&gt;&lt;/a&gt;static&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;局部变量:存储位置由栈变成静态存储区，生命周期由程序开始执行到结束。&lt;/li&gt;
-&lt;li&gt;全局变量:限定修饰的全局变量作用域为本文件内，外部文件不可见。&lt;/li&gt;
-&lt;li&gt;函数:限定函数作用域范围为定义的本文件内，外部文件不可访问。&lt;/li&gt;
-&lt;li&gt;成员变量:修饰成员变量为类变量，无需依赖对象调用，static修饰的成员变量要在类外初始化。&lt;/li&gt;
-&lt;li&gt;成员函数:修饰静态成员函数，无需依赖对象调用，静态成员函数只能访问静态成员函数或静态成员变量，不能访问非静态成员函数或者变量。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;const&quot;&gt;&lt;a href=&quot;#const&quot; class=&quot;headerlink&quot; title=&quot;const&quot;&gt;&lt;/a&gt;const&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;修饰变量:标记标量只读&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;const int * a;  指针指向的数据&lt;em&gt;a只读，指针a可以改变指向。&lt;br&gt;int ** const a; 指针指向的数据&lt;/em&gt;a可修改，指针a不能改变指向。&lt;br&gt;const int *&lt;em&gt; const a; 指针的指向的数据&lt;/em&gt;a只读，指针a不能改变指向。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;修饰函数参数:标记参数在函数内不允许修改&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;修饰成员函数:标志成员函数不能修改任何成员变量的值(mutable标记的成员变量除外)，另外const成员函数不能调用非const成员函数(因为非const成员函数可能修改成员变量)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;修饰函数返回值:标志函数返回值为只读&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;volatile&quot;&gt;&lt;a href=&quot;#volatile&quot; class=&quot;headerlink&quot; title=&quot;volatile&quot;&gt;&lt;/a&gt;volatile&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素（操作系统、硬件、其它线程等）更改。&lt;/li&gt;
-&lt;li&gt;volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）&lt;/li&gt;
-&lt;li&gt;const 可以是 volatile （如只读的状态寄存器）&lt;/li&gt;
-&lt;li&gt;指针可以是 volatile&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;关键字&quot;&gt;&lt;a href=&quot;#关键字&quot; class=&quot;headerlink&quot; title=&quot;关键字&quot;&gt;&lt;/a&gt;关键字&lt;/h1&gt;&lt;h2 id=&quot;static&quot;&gt;&lt;a href=&quot;#static&quot; class=&quot;headerlink&quot; title=&quot;static&quot;&gt;&lt;
-    
-    </summary>
-    
-    
-      <category term="interview" scheme="http://robinheztto.com/tags/interview/"/>
-    
-      <category term="C++" scheme="http://robinheztto.com/tags/C/"/>
     
   </entry>
   

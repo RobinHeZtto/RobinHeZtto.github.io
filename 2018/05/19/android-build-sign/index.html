@@ -100,7 +100,7 @@
 映像中的所有.apk文件都必须经过签名。Android软件包管理器通过下列两种方式使用.apk 签名：
 更换应用时，必须使用与旧应用相同的密钥对其签名，才能存取旧应用的数据。无论是通过覆盖.apk 来更新用户应用，还是使用安装在 /data 下的新版本应用来覆盖系统应用，这一点都适用。
 如果两个或多个应用想要共享同一个用户 ID（方便共享数据">
-<meta property="og:updated_time" content="2018-06-24T16:24:25.000Z">
+<meta property="og:updated_time" content="2018-12-22T14:06:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译之签名机制">
 <meta name="twitter:description" content="Android OS 镜像在两个地方使用加密签名：
@@ -352,6 +352,14 @@
 <p>可在源码根目录下运行如下脚本统一制作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">subject=&apos;/C=CN/ST=Guangdong/L=Shenzhen View/O=Android/OU=Android/CN=Android/emailAddress=robin.he.ztto@gmail.cn&apos;</span><br><span class="line">mkdir ~/.android-certs</span><br><span class="line">for x in releasekey platform shared media verity; do \</span><br><span class="line">    ./development/tools/make_key ~/.android-certs/$x &quot;$subject&quot;; \</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
 <h2 id="为DM-Verity功能生成verity-key"><a href="#为DM-Verity功能生成verity-key" class="headerlink" title="为DM-Verity功能生成verity key"></a>为DM-Verity功能生成verity key</h2><p>首先通过使用以下的命令来生成verity key的工具generate_verity_key：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source build/envsetup.sh</span><br><span class="line">choosecombo</span><br><span class="line">make generate_verity_key (mmm system/extras/verity/)</span><br></pre></td></tr></table></figure></p>
 <p>然后在前面步骤已生成verity.pk8，verity.x509.pem的基础上使用以下命令生成verity_key<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out/host/linux-x86/bin/generate_verity_key -convert verity.x509.pem verity_key</span><br></pre></td></tr></table></figure></p>
+<h1 id="APK签名"><a href="#APK签名" class="headerlink" title="APK签名"></a>APK签名</h1><ol>
+<li>keystore签名<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># jarsigner -verbose -keystore debug.keystore -signedjar signed.apk unsign.apk androiddebugkey</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>签名的时候报如下的问题，说明待签的apk是已经签名过的：<br>jarsigner: 无法对 jar 进行签名: java.util.zip.ZipException: invalid entry compressed size (expected 5067 but got 5217 bytes)<br>解决的方法：<br>把要重签名的apk后缀改成zip，打开后删除里面的META-INF目录，然后重新改成apk后缀再进行签名操作</p>
+<ol>
+<li>秘钥签名<br>java -Xmx512m -jar signapk.jar xxx.x509.pem xxx.pk8 release.apk release_signed.apk</li>
+</ol>
 
       
     </div>
@@ -386,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/08/interview-java/" rel="next" title="面试系列之java">
-                <i class="fa fa-chevron-left"></i> 面试系列之java
+              <a href="/2018/05/03/android-ci-jenkins/" rel="next" title="Android持续集成之Jenkins">
+                <i class="fa fa-chevron-left"></i> Android持续集成之Jenkins
               </a>
             
           </div>
@@ -487,7 +495,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -497,7 +505,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -533,7 +541,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#密钥"><span class="nav-number">1.</span> <span class="nav-text">密钥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义Key"><span class="nav-number">1.1.</span> <span class="nav-text">自定义Key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为DM-Verity功能生成verity-key"><span class="nav-number">1.2.</span> <span class="nav-text">为DM-Verity功能生成verity key</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#密钥"><span class="nav-number">1.</span> <span class="nav-text">密钥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义Key"><span class="nav-number">1.1.</span> <span class="nav-text">自定义Key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为DM-Verity功能生成verity-key"><span class="nav-number">1.2.</span> <span class="nav-text">为DM-Verity功能生成verity key</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#APK签名"><span class="nav-number">2.</span> <span class="nav-text">APK签名</span></a></li></ol></div>
             
           </div>
         </section>
@@ -552,7 +560,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

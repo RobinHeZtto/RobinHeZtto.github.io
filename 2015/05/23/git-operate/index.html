@@ -102,7 +102,7 @@
 初始化版本库$ git init
 
 暂存$ git a">
-<meta property="og:updated_time" content="2016-12-25T09:34:56.000Z">
+<meta property="og:updated_time" content="2018-10-15T14:58:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git操作总结">
 <meta name="twitter:description" content="基本操作
@@ -362,6 +362,10 @@
 </li>
 <li>修改远程仓库url:<br><code>git remote set-url origin new-url</code></li>
 </ol>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>Git global setup<br>git config –global user.name “HE”<br>git config –global user.email “robin.he.ztto@gmail.com”</p>
+<p>Create a new repository<br>git clone xxx.git<br>cd fota<br>touch README.md<br>git add README.md<br>git commit -m “add README”<br>git push -u origin master</p>
+<p>Existing folder<br>cd existing_folder<br>git init<br>git remote add origin xxx.git<br>git add .<br>git commit -m “Initial commit”<br>git push -u origin master</p>
+<p>Existing Git repository<br>cd existing_repo<br>git remote rename origin old-origin<br>git remote add origin xxx.git<br>git push -u origin –all<br>git push -u origin –tags</p>
 <hr>
 
       
@@ -494,7 +498,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -504,7 +508,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -540,7 +544,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li></ol></div>
             
           </div>
         </section>
@@ -559,7 +563,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

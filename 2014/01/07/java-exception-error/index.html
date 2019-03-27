@@ -88,21 +88,21 @@
 
 <meta name="description" content="异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。
 
-Exception与Error，运行时异常与一般异常的区别Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。Exce">
+Exception与ErrorException和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。Exception和Error体现了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java核心技术之异常处理机制">
+<meta property="og:title" content="Java系列之异常处理机制总结">
 <meta property="og:url" content="http://robinheztto.com/2014/01/07/java-exception-error/index.html">
 <meta property="og:site_name" content="生活不止眼前的代码">
 <meta property="og:description" content="异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。
 
-Exception与Error，运行时异常与一般异常的区别Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。Exce">
+Exception与ErrorException和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。Exception和Error体现了">
 <meta property="og:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/throwable.png?raw=true">
-<meta property="og:updated_time" content="2018-07-22T15:47:07.000Z">
+<meta property="og:updated_time" content="2018-08-26T14:29:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java核心技术之异常处理机制">
+<meta name="twitter:title" content="Java系列之异常处理机制总结">
 <meta name="twitter:description" content="异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。
 
-Exception与Error，运行时异常与一般异常的区别Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。Exce">
+Exception与ErrorException和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。Exception和Error体现了">
 <meta name="twitter:image" content="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/throwable.png?raw=true">
 
 
@@ -121,7 +121,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
   };
 </script>
 
-  <title> Java核心技术之异常处理机制 | 生活不止眼前的代码 </title>
+  <title> Java系列之异常处理机制总结 | 生活不止眼前的代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -284,7 +284,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
             
             
               
-                Java核心技术之异常处理机制
+                Java系列之异常处理机制总结
               
             
           </h1>
@@ -334,7 +334,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
         <blockquote>
 <p>异常处理机制能让程序在异常发生时，按照代码的预先设定的异常处理逻辑，针对性地处理异常，让程序尽最大可能恢复正常并继续执行，且保持代码的清晰。</p>
 </blockquote>
-<h1 id="Exception与Error，运行时异常与一般异常的区别"><a href="#Exception与Error，运行时异常与一般异常的区别" class="headerlink" title="Exception与Error，运行时异常与一般异常的区别"></a>Exception与Error，运行时异常与一般异常的区别</h1><p>Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。<br>Exception和Error体现了Java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获，常见的比如OutOfMemoryError之类，都是Error的子类。<br>Exception又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。</p>
+<h1 id="Exception与Error"><a href="#Exception与Error" class="headerlink" title="Exception与Error"></a>Exception与Error</h1><p>Exception和Error都是继承了Throwable类，在Java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。<br>Exception和Error体现了Java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获，常见的比如OutOfMemoryError之类，都是Error的子类。<br>Exception又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。</p>
 <center><br><img src="https://github.com/RobinHeZtto/Resource/blob/master/blog/image/java/throwable.png?raw=true" alt="xxx"><br></center>
 
 
@@ -503,16 +503,16 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2014/01/01/java-think-platform/" rel="next" title="Java核心技术之对Java平台的理解">
-                <i class="fa fa-chevron-left"></i> Java核心技术之对Java平台的理解
+              <a href="/2014/01/01/java-think-platform/" rel="next" title="Java系列之对Java平台的理解">
+                <i class="fa fa-chevron-left"></i> Java系列之对Java平台的理解
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/01/14/java-keyword/" rel="prev" title="Java核心技术之关键字">
-                Java核心技术之关键字 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/01/14/java-keyword/" rel="prev" title="Java系列之关键字总结">
+                Java系列之关键字总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -529,7 +529,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2014/01/07/java-exception-error/"
-     data-title="Java核心技术之异常处理机制"
+     data-title="Java系列之异常处理机制总结"
      data-content=""
      data-url="http://robinheztto.com/2014/01/07/java-exception-error/">
   <div class="ds-share-inline">
@@ -559,7 +559,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2014/01/07/java-exception-error/"
-           data-title="Java核心技术之异常处理机制" data-url="http://robinheztto.com/2014/01/07/java-exception-error/">
+           data-title="Java系列之异常处理机制总结" data-url="http://robinheztto.com/2014/01/07/java-exception-error/">
       </div>
     
   </div>
@@ -604,7 +604,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">63</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -614,7 +614,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -650,7 +650,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Exception与Error，运行时异常与一般异常的区别"><span class="nav-number">1.</span> <span class="nav-text">Exception与Error，运行时异常与一般异常的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内置异常类"><span class="nav-number">2.</span> <span class="nav-text">Java 内置异常类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理的基本语法"><span class="nav-number">3.</span> <span class="nav-text">异常处理的基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常处理原则"><span class="nav-number">3.1.</span> <span class="nav-text">异常处理原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finally块"><span class="nav-number">3.2.</span> <span class="nav-text">finally块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#throw-异常抛出语句"><span class="nav-number">3.3.</span> <span class="nav-text">throw 异常抛出语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#声明自定义异常"><span class="nav-number">4.</span> <span class="nav-text">声明自定义异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#try-with-resources-Java-SE7"><span class="nav-number">5.</span> <span class="nav-text">try-with-resources(Java SE7)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NoClassDefFoundError与ClassNotFoundException的区别"><span class="nav-number">6.</span> <span class="nav-text">NoClassDefFoundError与ClassNotFoundException的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Exception与Error"><span class="nav-number">1.</span> <span class="nav-text">Exception与Error</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内置异常类"><span class="nav-number">2.</span> <span class="nav-text">Java 内置异常类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理的基本语法"><span class="nav-number">3.</span> <span class="nav-text">异常处理的基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常处理原则"><span class="nav-number">3.1.</span> <span class="nav-text">异常处理原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finally块"><span class="nav-number">3.2.</span> <span class="nav-text">finally块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#throw-异常抛出语句"><span class="nav-number">3.3.</span> <span class="nav-text">throw 异常抛出语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#声明自定义异常"><span class="nav-number">4.</span> <span class="nav-text">声明自定义异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#try-with-resources-Java-SE7"><span class="nav-number">5.</span> <span class="nav-text">try-with-resources(Java SE7)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NoClassDefFoundError与ClassNotFoundException的区别"><span class="nav-number">6.</span> <span class="nav-text">NoClassDefFoundError与ClassNotFoundException的区别</span></a></li></ol></div>
             
           </div>
         </section>
@@ -669,7 +669,7 @@ Exception与Error，运行时异常与一般异常的区别Exception和Error都�
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
